@@ -1,0 +1,7 @@
+catalina.home_IS_UNDEFINED
+target/
+.tern-project
+.springBeans
+.settings/
+.classpath
+.project

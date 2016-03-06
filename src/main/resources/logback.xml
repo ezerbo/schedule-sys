@@ -1,0 +1,30 @@
+<!DOCTYPE configuration>
+<configuration>
+
+	<appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${catalina.home}/logs/${project.artifactId}.log</File>
+		<append>true</append>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder"> 
+			<pattern>
+				%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5level | %logger{35} | %msg%n
+			</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>
+				${catalina.home}/logs/${project.artifactId}.log.%d
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+	
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%level \(%C:%L\) %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- To log cxf requests set the below to DEBUG & enable logging in cxf.xml -->
+	<root level="DEBUG" >
+		<appender-ref ref="STDOUT" />
+	</root>
+
+</configuration>

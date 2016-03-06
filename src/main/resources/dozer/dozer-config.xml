@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">
+	
+	<mapping>
+		<class-a>com.rj.sys.domain.User</class-a>
+		<class-b>com.rj.sys.view.model.UserViewModel</class-b>
+		<field>
+			<a>position.name</a>
+			<b>position</b>
+		</field>
+		<field>
+			<a>userType.type</a>
+			<b>userType</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.rj.sys.domain.Position</class-a>
+		<class-b>com.rj.sys.view.model.PositionViewModel</class-b>
+		<field>
+			<a>name</a>
+			<b>positionName</b>
+		</field>
+	</mapping>
+</mappings>
