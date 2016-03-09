@@ -1,6 +1,5 @@
 package com.rj.sys.view.controller;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rj.sys.domain.Position;
 import com.rj.sys.service.PositionService;
 import com.rj.sys.view.model.PositionViewModel;
 
@@ -25,40 +24,46 @@ import com.rj.sys.view.model.PositionViewModel;
 @RequestMapping("/positions")
 public class PositionController {
 	
-	private final static String allPositionsType = "all";
-	
-	private final static String nursePositionsType = "nurse";
-	
-	private final static String caregiverPositionsType = "caregiver";
-	
 	private @Autowired PositionService positionService;
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
-	public  @ResponseBody ResponseEntity<?> findPositions(@RequestParam(name = "type") String positionType){
-		
-		List<PositionViewModel> viewModels = new LinkedList<PositionViewModel>();
-		
-		if(StringUtils.equalsIgnoreCase(positionType, allPositionsType)){
-			
-			log.info("Finding all positions");
-			viewModels = positionService.findAllPositions();
-			
-		}else if(StringUtils.equalsIgnoreCase(positionType, nursePositionsType) 
-				|| StringUtils.equalsIgnoreCase(positionType, caregiverPositionsType)){
-			
-			log.info("Finding all {} positions", positionType);
-			viewModels = positionService.findAllPositions(positionType.toUpperCase());
-			
-		}else{
-			log.error("No such position type : {}", positionType);
-			return new ResponseEntity<String> (
-					"No such position type : " + positionType, HttpStatus.BAD_REQUEST
-					);
-		}
+	public  @ResponseBody ResponseEntity<?> findPositions(){
+		log.info("Finding all positions");
+		List<PositionViewModel> viewModels = positionService.findAllPositions();
 		
 		if(viewModels.isEmpty()){
 			log.info("No position was found");
 			return new ResponseEntity<String> ("No position found", HttpStatus.NOT_FOUND);
+		}
+		
+		log.info("Positions found : {}", viewModels);
+		return new ResponseEntity<List<PositionViewModel>> (viewModels, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/nurses", method = RequestMethod.GET, produces = "application/json")
+	public  @ResponseBody ResponseEntity<?> findNursePositions(){
+		log.info("Finding nurse positions");
+		List<PositionViewModel> viewModels = positionService.findAllPositions(Position.NURSE_POSITION);
+		
+		if(viewModels.isEmpty()){
+			log.info("No position was found");
+			return new ResponseEntity<String> ("No nurse position found", HttpStatus.NOT_FOUND);
+		}
+		
+		log.info("Positions found : {}", viewModels);
+		return new ResponseEntity<List<PositionViewModel>> (viewModels, HttpStatus.OK);
+		
+	}
+	
+	@RequestMapping(value = "/caregivers", method = RequestMethod.GET, produces = "application/json")
+	public  @ResponseBody ResponseEntity<?> findCaregiverPositions(){
+		log.info("Finding caregiver positions");
+		List<PositionViewModel> viewModels = positionService.findAllPositions(Position.CAREGIVER_POSITION);
+		
+		if(viewModels.isEmpty()){
+			log.info("No position was found");
+			return new ResponseEntity<String> ("No caregiver position found", HttpStatus.NOT_FOUND);
 		}
 		
 		log.info("Positions found : {}", viewModels);
@@ -89,7 +94,24 @@ public class PositionController {
 	
 	@RequestMapping(method = RequestMethod.POST, produces = "application/json")
 	public @ResponseBody ResponseEntity<String> createPosition(@RequestBody PositionViewModel viewModel){
+		
 		log.info("Create position request received : {}", viewModel);
+		if(!StringUtils.endsWithIgnoreCase(viewModel.getPositionType(), Position.CAREGIVER_POSITION)
+				&& !StringUtils.endsWithIgnoreCase(viewModel.getPositionType(), Position.NURSE_POSITION)){
+			log.info("No such position type : {}", viewModel.getPositionType());
+			return new ResponseEntity<String>("No such position type : " + viewModel.getPositionType(), HttpStatus.BAD_REQUEST);
+		}
+		
+		if(positionService.findByName(viewModel.getPositionName()) != null){
+			log.info("A position already exist with name : {}", viewModel.getPositionName());
+			return new ResponseEntity<String>(
+					"A position already exist with name : " + viewModel.getPositionName(), HttpStatus.INTERNAL_SERVER_ERROR
+					);
+		}
+		
+		viewModel = positionService.createOrUpdatePosition(viewModel);
+		
+		log.info("Successfully created position : {}", viewModel);
 		return new ResponseEntity<String>("Position successfully created", HttpStatus.CREATED);
 	}
 	

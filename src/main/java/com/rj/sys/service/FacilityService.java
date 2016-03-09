@@ -25,19 +25,22 @@ public class FacilityService {
 	private @Autowired DozerBeanMapper dozerMapper;
 	
 	@Transactional
-	public void createFacility(FacilityViewModel viewModel){
+	public FacilityViewModel createOrUpdateFacility(FacilityViewModel viewModel){
+		
 		log.info("Creating Facility : {}", viewModel);
+		Facility facility = dozerMapper.map(viewModel, Facility.class);
+		facility = facilityDao.merge(facility);
+		
+		return dozerMapper.map(facility, FacilityViewModel.class);
 	}
 	
 	@Transactional
-	public void updateFacility(FacilityViewModel viewModel){
-		log.info("Updating Facility : {}", viewModel);
-	}
-	
-	@Transactional
-	public void deleteFacility(Long id){
-		//TODO add soft delete features to the service
+	public FacilityViewModel deleteFacility(Long id){
+		
 		log.info("Deleting facility with id : {}", id);
+		Facility facility = facilityDao.delete(id);
+		
+		return dozerMapper.map(facility, FacilityViewModel.class);
 	}
 	
 	@Transactional
@@ -75,10 +78,28 @@ public class FacilityService {
 	public FacilityViewModel findById(Long id){
 		log.info("Finding facility by id : {}", id);
 		FacilityViewModel viewModel = null;
-		Facility facility = facilityDao.findOne(id);
-		if(facility != null){
-			viewModel = dozerMapper.map(facility, FacilityViewModel.class);
+		try{
+			viewModel = dozerMapper.map(
+					facilityDao.findOne(id), FacilityViewModel.class
+					);
+		}catch(NoResultException nre){
+			log.info("No facility found with id : {}", id);
 		}
+		return viewModel;
+	}
+	
+	@Transactional
+	public FacilityViewModel findByPhoneNumber(String phoneNumber){
+		log.info("Finding facility by phone number : {}", phoneNumber);
+		FacilityViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					facilityDao.findByPhoneNumber(phoneNumber), FacilityViewModel.class
+					);
+		}catch(NoResultException nre){
+			log.info("No facility found with phone number : {}", phoneNumber);
+		}
+		
 		return viewModel;
 	}
 	

@@ -3,6 +3,8 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -68,8 +70,13 @@ public class UserService {
 	@Transactional
 	public UserViewModel findOneActiveUserById(Long id){
 		log.info("Finding one user by id : {}", id);
-		User user = userDao.findOneActiveUserById(id);
-		UserViewModel viewModel = dozerMapper.map(user, UserViewModel.class);
+		UserViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(userDao.findOneActiveUserById(id), UserViewModel.class);;
+		}catch(NoResultException nre){
+			log.info("No user found with id : {}", id);
+		}
+		
 		return viewModel;
 	}
 	

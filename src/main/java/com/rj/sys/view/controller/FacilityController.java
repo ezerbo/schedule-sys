@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,21 +63,88 @@ public class FacilityController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	public @ResponseBody ResponseEntity<?> createFacility(@RequestBody FacilityViewModel viewModel){
+	public @ResponseBody ResponseEntity<?> createFacility(
+			@RequestBody @Validated FacilityViewModel viewModel, BindingResult result){
+		//TODO add validation messages in properties files
 		log.info("Create request recieved for facility : {}", viewModel);
+		
+		if(result.hasErrors()){
+			List<ObjectError> errors = result.getGlobalErrors();
+			log.error("Validation error occured : {}", errors);
+			return new ResponseEntity<List<ObjectError>>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(facilityService.findByName(viewModel.getName()) != null){
+			log.info("A facility already exist with name : {}", viewModel.getName());
+			return new ResponseEntity<String>(
+					"A facility with name : " + viewModel.getName() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
+					);
+		}
+		
+		if(facilityService.findByPhoneNumber(viewModel.getPhoneNumber()) != null){
+			log.info("A facility with phone number : {} already exist", viewModel.getPhoneNumber());
+			return new ResponseEntity<String>(
+					"A facility with phone number : " + viewModel.getPhoneNumber() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
+					);
+		}
+		
+		viewModel = facilityService.createOrUpdateFacility(viewModel);
+		
+		log.info("Successfully created facility : {}", viewModel);
 		return new ResponseEntity<String>("Facility successfully created", HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-	public @ResponseBody ResponseEntity<?> updateFacility(@PathVariable Long id, @RequestBody FacilityViewModel viewModel){
+	public @ResponseBody ResponseEntity<?> updateFacility(
+			@PathVariable Long id, @RequestBody FacilityViewModel viewModel, BindingResult result){
+		
 		log.info("Update request recieved for facility {} with id: {}", viewModel, id);
+		
+		if(facilityService.findById(id) == null){
+			log.info("No facikity found with id : {}", id);
+			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		if(result.hasErrors()){
+			List<ObjectError> errors = result.getGlobalErrors();
+			log.error("Validation error occured : {}", errors);
+			return new ResponseEntity<List<ObjectError>>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		if(facilityService.findByName(viewModel.getName()) != null){
+			log.info("A facility already exist with name : {}", viewModel.getName());
+			return new ResponseEntity<String>(
+					"A facility with name : " + viewModel.getName() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
+					);
+		}
+		
+		if(facilityService.findByPhoneNumber(viewModel.getPhoneNumber()) != null){
+			log.info("A facility with phone number : {} already exist", viewModel.getPhoneNumber());
+			return new ResponseEntity<String>(
+					"A facility with phone number : " + viewModel.getPhoneNumber() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
+					);
+		}
+		
+		viewModel = facilityService.createOrUpdateFacility(viewModel);
+		
+		log.info("Facility successfully updated : {}", viewModel);
 		return new ResponseEntity<String>("Facility successfully updated", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = "application/json")
 	public @ResponseBody ResponseEntity<?> deleteFacility(@PathVariable Long id){
+		
 		log.info("Delete request recieved for facility with id : {}", id);
-		return new ResponseEntity<String>("Facility successfully deleted", HttpStatus.CREATED);
+		//TODO add a soft delete feature to Facility
+		if(facilityService.findById(id) == null){
+			log.info("No facility found with id : {}", id);
+			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		FacilityViewModel viewModel = facilityService.deleteFacility(id);
+		
+		log.info("Facility successfully deleted : {}", viewModel);
+		return new ResponseEntity<String>("Facility successfully deleted", HttpStatus.OK);
 	}
 	
 }

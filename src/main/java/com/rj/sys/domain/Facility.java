@@ -48,6 +48,9 @@ public class Facility implements Serializable {
 	@Column(name="PHONE_NUMBER")
 	private String phoneNumber;
 	
+	@Column(name="ISDELETED")
+	private Boolean isDeleted;
+	
 	@OneToMany(mappedBy="facility")
 	private List<Schedule> schedules;
 	

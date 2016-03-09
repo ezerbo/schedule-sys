@@ -3,6 +3,8 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -11,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rj.sys.dao.PositionDao;
+import com.rj.sys.dao.PositionTypeDao;
 import com.rj.sys.domain.Position;
+import com.rj.sys.domain.PositionType;
 import com.rj.sys.view.model.PositionViewModel;
 
 @Slf4j
@@ -19,8 +23,23 @@ import com.rj.sys.view.model.PositionViewModel;
 public class PositionService {
 	
 	private @Autowired PositionDao positionDao;
+	private @Autowired PositionTypeDao positionTypeDao;
 	
 	private @Autowired DozerBeanMapper dozerMapper;
+	
+	@Transactional
+	public PositionViewModel createOrUpdatePosition(PositionViewModel viewModel){
+		
+		log.info("Creating a new position : {}", viewModel);
+		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
+		Position position = Position.builder()
+				.name(viewModel.getPositionName())
+				.positionType(positionType)
+				.build();
+		position = positionDao.merge(position);
+		
+		return dozerMapper.map(position, PositionViewModel.class);
+	}
 	
 	@Transactional
 	public List<PositionViewModel> findAllPositions(){
@@ -57,9 +76,14 @@ public class PositionService {
 	public PositionViewModel findByName(String positionName){
 		
 		log.info("Finding position by name : {}", positionName);
-		
-		Position position = positionDao.findByName(positionName);
-		PositionViewModel viewModel = dozerMapper.map(position, PositionViewModel.class);
+		PositionViewModel viewModel = null;
+		try{
+		viewModel = dozerMapper.map(
+				positionDao.findByName(positionName), PositionViewModel.class
+				);
+		}catch(NoResultException nre){
+			log.info("No position found with name : {}", positionName);
+		}
 		
 		return viewModel;
 	}

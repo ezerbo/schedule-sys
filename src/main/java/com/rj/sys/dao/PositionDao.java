@@ -34,7 +34,7 @@ public class PositionDao extends GenericDao<Position>{
 	public List<Position> findAllByType(String positionType){
 		
 		List<Position> positions = entityManager.createQuery(
-				"from Position p where p.positionType =:positionType", Position.class)
+				"from Position p where p.positionType.type =:positionType", Position.class)
 				.setParameter("positionType", positionType)
 				.getResultList();
 		

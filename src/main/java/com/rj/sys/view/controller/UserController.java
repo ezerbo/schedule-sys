@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.sys.service.UserService;
@@ -24,9 +23,6 @@ import com.rj.sys.view.model.UserViewModel;
 public class UserController {
 	
 	private @Autowired UserService userService;
-	
-	private final static String activateOperation = "activate";
-	private final static String deactivateOperation = "deactivate";
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody ResponseEntity<?> getAllActiveUsers(){
@@ -42,12 +38,17 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody ResponseEntity<UserViewModel> getUserById(@PathVariable Long id){
+	public @ResponseBody ResponseEntity<?> getUserById(@PathVariable Long id){
 		
 		log.info("Getting user with id : {}", id);
-		
 		UserViewModel viewModel = userService.findOneActiveUserById(id);
 		
+		if(viewModel == null){
+			log.info("No user found with id : {}", id);
+			return new ResponseEntity<String>("No user found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		log.info("User found : {}", viewModel);
 		return new ResponseEntity<UserViewModel>(viewModel, HttpStatus.OK);
 	}
 	
@@ -58,24 +59,19 @@ public class UserController {
 	}
 	
 	
-	@RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<String> updateUser(@RequestBody UserViewModel viewModel){
 		log.info("User update request received : {}", viewModel);
 		return new ResponseEntity<String>("User successfully updated",HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<String> updateUserStatus(@PathVariable Long id, @RequestParam(name = "op") String operation){
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = "application/json")
+	public ResponseEntity<String> updateUserStatus(@PathVariable Long id){
 		
-		log.info("{} request received for user with id {}",operation, id);
+		log.info("Deactivation request received for user with id {}", id);
 		
-		if(operation == activateOperation){
-			return new ResponseEntity<String>("User successfully activated", HttpStatus.OK);
-		}else if (operation == deactivateOperation){
-			return new ResponseEntity<String>("User successfully deactivated", HttpStatus.OK);
-		}else{
-			return new ResponseEntity<String>("No such operation " + operation , HttpStatus.BAD_REQUEST);
-		}
+		return new ResponseEntity<String>("User successfully deactivated", HttpStatus.OK);
+		
 	}
 	
 }
