@@ -3,6 +3,7 @@ package com.rj.sys.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -35,9 +36,6 @@ public class Position implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public final static String NURSE_POSITION = "NURSE";
-	public final static String CAREGIVER_POSITION = "CAREGIVER";
-	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -47,6 +45,9 @@ public class Position implements Serializable {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="TYPE_ID")
 	private PositionType positionType;
+	
+	@Column(name = "ISDELETED")
+	private Boolean isDeleted;
 	
 	@OneToMany(mappedBy="position")
 	private List<User> users;

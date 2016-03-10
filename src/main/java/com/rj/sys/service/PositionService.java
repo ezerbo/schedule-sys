@@ -28,16 +28,40 @@ public class PositionService {
 	private @Autowired DozerBeanMapper dozerMapper;
 	
 	@Transactional
-	public PositionViewModel createOrUpdatePosition(PositionViewModel viewModel){
+	public PositionViewModel updatePosition(PositionViewModel viewModel){
 		
-		log.info("Creating a new position : {}", viewModel);
+		log.info("Updating position : {}", viewModel);
+		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
+		Position position = Position.builder()
+				.id(viewModel.getId())
+				.name(viewModel.getPositionName())
+				.positionType(positionType)
+				.isDeleted(false)
+				.build();
+		position = positionDao.merge(position);
+		
+		return dozerMapper.map(position, PositionViewModel.class);
+	}
+	
+	@Transactional
+	public PositionViewModel createPosition(PositionViewModel viewModel){
+		
+		log.info("Creating a position : {}", viewModel);
 		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
 		Position position = Position.builder()
 				.name(viewModel.getPositionName())
 				.positionType(positionType)
+				.isDeleted(false)
 				.build();
 		position = positionDao.merge(position);
 		
+		return dozerMapper.map(position, PositionViewModel.class);
+	}
+	
+	@Transactional
+	public PositionViewModel deletePosition(Long id){
+		log.info("Deleteing position with id : {}", id);
+		Position position = positionDao.delete(id);
 		return dozerMapper.map(position, PositionViewModel.class);
 	}
 	
@@ -91,10 +115,14 @@ public class PositionService {
 	@Transactional
 	public PositionViewModel findById(Long id){
 		log.info("Finding position by id : {}", id);
-		
-		Position position = positionDao.findOne(id);
-		PositionViewModel viewModel = dozerMapper.map(position, PositionViewModel.class);
-		
+		PositionViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					positionDao.findOne(id), PositionViewModel.class
+					);
+		}catch(NoResultException nre){
+			log.info("No position found by id : {}", id);
+		}
 		return viewModel;
 	}
 

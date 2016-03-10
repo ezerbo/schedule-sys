@@ -6,7 +6,7 @@
 	<mapping>
 		<class-a>com.rj.sys.domain.User</class-a>
 		<class-b>com.rj.sys.view.model.UserViewModel</class-b>
-		<field type="one-way">
+		<field>
 			<a>id</a>
 			<b>id</b>
 		</field>
@@ -23,7 +23,7 @@
 	<mapping>
 		<class-a>com.rj.sys.domain.Position</class-a>
 		<class-b>com.rj.sys.view.model.PositionViewModel</class-b>
-		<field type="one-way">
+		<field>
 			<a>id</a>
 			<b>id</b>
 		</field>
@@ -40,7 +40,7 @@
 	<mapping>
 		<class-a>com.rj.sys.domain.Facility</class-a>
 		<class-b>com.rj.sys.view.model.FacilityViewModel</class-b>
-		<field type="one-way">
+		<field>
 			<a>id</a>
 			<b>id</b>
 		</field>

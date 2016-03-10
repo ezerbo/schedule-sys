@@ -31,6 +31,9 @@ public class PositionType implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public final static String NURSE_POSITION = "NURSE";
+	public final static String CAREGIVER_POSITION = "CAREGIVER";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

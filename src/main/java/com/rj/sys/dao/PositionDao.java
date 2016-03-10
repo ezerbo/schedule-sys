@@ -20,9 +20,29 @@ public class PositionDao extends GenericDao<Position>{
 	public Position findByName(String positionName){
 		
 		Position position = entityManager.createQuery(
-				"from Position p where p.name = :name ", Position.class)
+				"from Position p where p.name = :name and p.isDeleted = 0", Position.class)
 				.setParameter("name", positionName)
 		.getSingleResult();
+		
+		return position;
+	}
+	
+	public Position delete(Long id){
+		Position position  = findOne(id);
+		position.setIsDeleted(true);
+		return position;
+	}
+	
+	/**
+	 * @param id
+	 * @return
+	 */
+	public Position findOne(Long id){
+		
+		Position position = entityManager.createQuery(
+				"from Position p where p.id =:id and p.isDeleted = 0", Position.class)
+				.setParameter("id", id)
+				.getSingleResult();
 		
 		return position;
 	}
@@ -34,11 +54,11 @@ public class PositionDao extends GenericDao<Position>{
 	public List<Position> findAllByType(String positionType){
 		
 		List<Position> positions = entityManager.createQuery(
-				"from Position p where p.positionType.type =:positionType", Position.class)
+				"from Position p where p.positionType.type =:positionType where isDeleted = 0", Position.class)
 				.setParameter("positionType", positionType)
 				.getResultList();
 		
 		return positions;
 	}
-		
+	
 }

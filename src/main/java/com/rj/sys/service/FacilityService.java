@@ -29,6 +29,7 @@ public class FacilityService {
 		
 		log.info("Creating Facility : {}", viewModel);
 		Facility facility = dozerMapper.map(viewModel, Facility.class);
+		facility.setIsDeleted(false);
 		facility = facilityDao.merge(facility);
 		
 		return dozerMapper.map(facility, FacilityViewModel.class);
@@ -102,6 +103,5 @@ public class FacilityService {
 		
 		return viewModel;
 	}
-	
 	
 }

@@ -46,12 +46,6 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 		})
 public class ContextConfig extends WebMvcConfigurerAdapter{
 	
-	private final static String packagesToScan = "com.rj.sys.domain";
-	
-	private final static String dozerMappingFileLocation = "dozer/dozer-config.xml";
-	
-	private final static String defaultPropertiesFileLocation = "properties/rj_default.properties";
-
 	@Value("${db.username}")
 	private String dbUsername;
 	
@@ -78,7 +72,7 @@ public class ContextConfig extends WebMvcConfigurerAdapter{
 	@Bean
 	public DozerBeanMapper dozerBeanMapper(){
 		List<String> mappingFiles = new ArrayList<String>();
-		mappingFiles.add(dozerMappingFileLocation);
+		mappingFiles.add("dozer/dozer-config.xml");
 		DozerBeanMapper bm = new DozerBeanMapper(mappingFiles);
 		return bm;
 	}
@@ -123,7 +117,7 @@ public class ContextConfig extends WebMvcConfigurerAdapter{
 		emf.setDataSource(dataSource());
 		emf.setJpaPropertyMap(this.jpaProperties());
 		emf.setJpaVendorAdapter(this.jpaVendorAdapter());
-		emf.setPackagesToScan(packagesToScan);
+		emf.setPackagesToScan("com.rj.sys.domain");
 		return emf;
 	}
 	
@@ -132,11 +126,25 @@ public class ContextConfig extends WebMvcConfigurerAdapter{
 		PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
 		
 		Resource[] resources = new ClassPathResource[]{
-				new ClassPathResource(defaultPropertiesFileLocation)
+				new ClassPathResource("rj.properties")
+				};
+		configurer.setLocations(resources);
+		configurer.setIgnoreResourceNotFound(true);
+		configurer.setIgnoreUnresolvablePlaceholders(true);
+		configurer.setOrder(1);
+		return configurer;
+	}
+	
+	@Bean
+	public static PropertyPlaceholderConfigurer defaultPlaceholderConfigurer(){
+		PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
+		
+		Resource[] resources = new ClassPathResource[]{
+				new ClassPathResource("properties/rj_default.properties")
 				};
 		configurer.setLocations(resources);
 		configurer.setIgnoreUnresolvablePlaceholders(true);
-		configurer.setOrder(1);
+		configurer.setOrder(2);
 		return configurer;
 	}
 	
