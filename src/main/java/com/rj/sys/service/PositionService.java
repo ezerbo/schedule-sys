@@ -27,32 +27,16 @@ public class PositionService {
 	
 	private @Autowired DozerBeanMapper dozerMapper;
 	
-	@Transactional
-	public PositionViewModel updatePosition(PositionViewModel viewModel){
-		
-		log.info("Updating position : {}", viewModel);
-		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
-		Position position = Position.builder()
-				.id(viewModel.getId())
-				.name(viewModel.getPositionName())
-				.positionType(positionType)
-				.isDeleted(false)
-				.build();
-		position = positionDao.merge(position);
-		
-		return dozerMapper.map(position, PositionViewModel.class);
-	}
 	
 	@Transactional
-	public PositionViewModel createPosition(PositionViewModel viewModel){
+	public PositionViewModel createOrUpdatePosition(PositionViewModel viewModel){
 		
 		log.info("Creating a position : {}", viewModel);
+		
 		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
-		Position position = Position.builder()
-				.name(viewModel.getPositionName())
-				.positionType(positionType)
-				.isDeleted(false)
-				.build();
+		Position position = dozerMapper.map(viewModel, Position.class);
+		position.setIsDeleted(false);
+		position.setPositionType(positionType);
 		position = positionDao.merge(position);
 		
 		return dozerMapper.map(position, PositionViewModel.class);

@@ -118,7 +118,7 @@ public class PositionController {
 					);
 		}
 		
-		viewModel = positionService.createPosition(viewModel);
+		viewModel = positionService.createOrUpdatePosition(viewModel);
 		
 		log.info("Successfully created position : {}", viewModel);
 		return new ResponseEntity<String>("Position successfully created", HttpStatus.CREATED);
@@ -147,7 +147,7 @@ public class PositionController {
 		}
 		
 		viewModel.setId(id);//Overriding the id received in the message body
-		viewModel = positionService.updatePosition(viewModel);
+		viewModel = positionService.createOrUpdatePosition(viewModel);
 		
 		log.info("Position updated successfully : {}", viewModel);
 		return new ResponseEntity<String>("Position was successfully updated", HttpStatus.OK);
