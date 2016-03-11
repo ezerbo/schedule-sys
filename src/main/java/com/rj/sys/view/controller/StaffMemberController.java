@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.rj.sys.service.FacilityService;
 import com.rj.sys.service.StaffMemberService;
 import com.rj.sys.view.model.StaffMemberViewModel;
-
+//http://stackoverflow.com/questions/30126754/how-to-implement-basic-spring-security-session-management-for-single-page-angu
 @Slf4j
 @Controller
 @RequestMapping("/staff-members")

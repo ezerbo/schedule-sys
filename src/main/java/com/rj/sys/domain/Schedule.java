@@ -40,7 +40,7 @@ public class Schedule implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private Long id;
 	
 	@Column(name="CREATE_DATE")
 	private Date createDate;
@@ -56,7 +56,7 @@ public class Schedule implements Serializable {
 	private Date scheduleDate;
 	
 	@Column(name="TIMESHEET_RECEIVED")
-	private boolean timesheetReceived;
+	private Boolean timesheetReceived;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ASSIGNEE_ID")

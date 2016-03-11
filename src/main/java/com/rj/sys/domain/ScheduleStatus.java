@@ -33,10 +33,10 @@ public class ScheduleStatus implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private Long id;
 	
 	@Column(name = "STATUS")
-	private int status;
+	private String status;
 	
 	@OneToMany(mappedBy="scheduleStatus")
 	private List<Schedule> schedules;
