@@ -63,11 +63,30 @@ public class ContextConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
 	public InternalResourceViewResolver viewResolver(){
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/view/");
-		resolver.setSuffix(".jsp");
-		return resolver;
+		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
+		viewResolver.setPrefix("/WEB-INF/views/");
+		viewResolver.setSuffix(".jsp");
+		viewResolver.setOrder(2);
+		return viewResolver;
 	}
+	
+//	@Bean
+//	public UrlBasedViewResolver tilesViewResolver(){
+//		UrlBasedViewResolver viewResolver = new UrlBasedViewResolver();
+//		viewResolver.setViewClass(TilesView.class);
+//		viewResolver.setOrder(1);
+//		return viewResolver;
+//	}
+//	
+//	@Bean
+//	public TilesConfigurer tilesConfigurer(){
+//		TilesConfigurer tilesConfigurer = new TilesConfigurer();
+//		tilesConfigurer.setDefinitions(
+//				 "/WEB-INF/tiles-layout/tiles-config.xml"
+//				,"/WEB-INF/views/**/views.xml"
+//				);
+//		return tilesConfigurer;
+//	}
 	
 	@Bean
 	public DozerBeanMapper dozerBeanMapper(){

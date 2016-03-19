@@ -31,6 +31,10 @@ public class UserType implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public final static String employeesType = "EMPLOYEE";
+	public final static String supervisorsType = "SUPERVISOR";
+	public final static String adminsType = "ADMIN";
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;

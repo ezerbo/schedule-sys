@@ -23,7 +23,7 @@
 	</appender>
 	
 	<!-- To log cxf requests set the below to DEBUG & enable logging in cxf.xml -->
-	<root level="DEBUG" >
+	<root level="INFO" >
 		<appender-ref ref="STDOUT" />
 	</root>
 

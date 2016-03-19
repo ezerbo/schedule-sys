@@ -5,14 +5,23 @@
 	
 	<mapping>
 		<class-a>com.rj.sys.domain.User</class-a>
-		<class-b>com.rj.sys.view.model.UserViewModel</class-b>
+		<class-b>com.rj.sys.view.model.EmployeeViewModel</class-b>
 		<field>
 			<a>position.name</a>
 			<b>position</b>
 		</field>
 		<field>
-			<a>userType.type</a>
-			<b>userType</b>
+			<a>position.positionType.type</a>
+			<b>positionType</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.rj.sys.domain.User</class-a>
+		<class-b>com.rj.sys.view.model.SupervisorViewModel</class-b>
+		<field>
+			<a>primaryPhoneNumber</a>
+			<b>phoneNumber</b>
 		</field>
 	</mapping>
 	

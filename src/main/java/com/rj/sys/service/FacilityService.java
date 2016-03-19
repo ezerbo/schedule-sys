@@ -60,6 +60,22 @@ public class FacilityService {
 	}
 	
 	@Transactional
+	public FacilityViewModel findActiveByName(String name){
+		
+		log.info("Finding facility by name : {}", name);
+		FacilityViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					facilityDao.findActiveByName(name), FacilityViewModel.class
+					); 
+		}catch(NoResultException nre){
+			log.info("No facility found by name : {}", name);
+		}
+		
+		return viewModel;
+	}
+	
+	@Transactional
 	public FacilityViewModel findByName(String name){
 		
 		log.info("Finding facility by name : {}", name);
@@ -75,6 +91,21 @@ public class FacilityService {
 		return viewModel;
 	}
 	
+	
+	@Transactional
+	public FacilityViewModel findActiveById(Long id){
+		log.info("Finding facility by id : {}", id);
+		FacilityViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					facilityDao.findActiveById(id), FacilityViewModel.class
+					);
+		}catch(NoResultException nre){
+			log.info("No facility found with id : {}", id);
+		}
+		return viewModel;
+	}
+	
 	@Transactional
 	public FacilityViewModel findById(Long id){
 		log.info("Finding facility by id : {}", id);
@@ -86,6 +117,21 @@ public class FacilityService {
 		}catch(NoResultException nre){
 			log.info("No facility found with id : {}", id);
 		}
+		return viewModel;
+	}
+	
+	@Transactional
+	public FacilityViewModel findActiveByPhoneNumber(String phoneNumber){
+		log.info("Finding facility by phone number : {}", phoneNumber);
+		FacilityViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					facilityDao.findActiveByPhoneNumber(phoneNumber), FacilityViewModel.class
+					);
+		}catch(NoResultException nre){
+			log.info("No facility found with phone number : {}", phoneNumber);
+		}
+		
 		return viewModel;
 	}
 	

@@ -41,20 +41,14 @@ public class FacilityController {
 		return new ResponseEntity<List<FacilityViewModel>>(viewModels, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{idOrName}", method = RequestMethod.GET, produces = "application/json")
-	public @ResponseBody ResponseEntity<?> findByIdOrName(@PathVariable String idOrName){
-		FacilityViewModel viewModel = null;
-		if(StringUtils.isNumeric(idOrName)){
-			log.info("Finding facility by id : {}", idOrName);
-			viewModel = facilityService.findById(Long.valueOf(idOrName));
-		}else{
-			log.info("Finding facility by name : {}", idOrName);
-			viewModel = facilityService.findByName(idOrName);
-		}
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> findByIdOrName(@PathVariable Long id){
+		
+		FacilityViewModel viewModel = facilityService.findActiveById(id);
 		
 		if(viewModel == null){
 			return new ResponseEntity<String>(
-					"No facility found with either id or name : " + idOrName, HttpStatus.NOT_FOUND
+					"No facility found with either id : " + id, HttpStatus.NOT_FOUND
 					);
 		}
 		
@@ -99,8 +93,9 @@ public class FacilityController {
 			@PathVariable Long id, @RequestBody FacilityViewModel viewModel, BindingResult result){
 		
 		log.info("Update request recieved for facility {} with id: {}", viewModel, id);
+		FacilityViewModel vm = facilityService.findById(id);
 		
-		if(facilityService.findById(id) == null){
+		if(vm == null){
 			log.info("No facikity found with id : {}", id);
 			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
 		}
@@ -111,19 +106,25 @@ public class FacilityController {
 			return new ResponseEntity<List<ObjectError>>(errors, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		if(facilityService.findByName(viewModel.getName()) != null){
-			log.info("A facility already exist with name : {}", viewModel.getName());
-			return new ResponseEntity<String>(
-					"A facility with name : " + viewModel.getName() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
-					);
+		if(!StringUtils.equalsIgnoreCase(vm.getName(), viewModel.getName())){
+			if(facilityService.findByName(viewModel.getName()) != null){
+				log.info("A facility already exist with name : {}", viewModel.getName());
+				return new ResponseEntity<String>(
+						"A facility with name : " + viewModel.getName() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
+						);
+			}
 		}
 		
-		if(facilityService.findByPhoneNumber(viewModel.getPhoneNumber()) != null){
-			log.info("A facility with phone number : {} already exist", viewModel.getPhoneNumber());
-			return new ResponseEntity<String>(
-					"A facility with phone number : " + viewModel.getPhoneNumber() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
-					);
+		if(!StringUtils.equalsIgnoreCase(vm.getName(), viewModel.getName())){
+			if(facilityService.findByPhoneNumber(viewModel.getPhoneNumber()) != null){
+				log.info("A facility with phone number : {} already exist", viewModel.getPhoneNumber());
+				return new ResponseEntity<String>(
+						"A facility with phone number : " + viewModel.getPhoneNumber() + " already exist", HttpStatus.INTERNAL_SERVER_ERROR
+						);
+			}
 		}
+		
+		viewModel.setId(id);//overriding the id
 		
 		viewModel = facilityService.createOrUpdateFacility(viewModel);
 		
@@ -131,12 +132,12 @@ public class FacilityController {
 		return new ResponseEntity<String>("Facility successfully updated", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes = "application/json")
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<?> deleteFacility(@PathVariable Long id){
 		
 		log.info("Delete request recieved for facility with id : {}", id);
 		//TODO add a soft delete feature to Facility
-		if(facilityService.findById(id) == null){
+		if(facilityService.findActiveById(id) == null){
 			log.info("No facility found with id : {}", id);
 			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
 		}

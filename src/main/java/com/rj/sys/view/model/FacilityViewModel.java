@@ -16,7 +16,7 @@ import com.rj.sys.domain.annotation.PhoneNumber;
 @AllArgsConstructor
 public class FacilityViewModel {
 	
-	private int id;
+	private Long id;
 	
 	@NotBlank
 	private String address;

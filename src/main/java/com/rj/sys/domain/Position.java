@@ -31,7 +31,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "POSITION")
-@ToString(exclude = {"users"})
+@ToString(exclude = {"users", "positionType"})
 public class Position implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

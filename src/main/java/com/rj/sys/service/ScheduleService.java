@@ -1,7 +1,11 @@
 package com.rj.sys.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import lombok.extern.slf4j.Slf4j;
 
+import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +28,6 @@ import com.rj.sys.view.model.ScheduleViewModel;
 @Service
 public class ScheduleService {
 	
-	
 	private @Autowired UserDao userDao;
 	private @Autowired ShiftDao shiftDao;
 	private @Autowired FacilityDao facilityDao;
@@ -32,14 +35,61 @@ public class ScheduleService {
 	private @Autowired ScheduleStatusDao scheduleStatusDao;
 	private @Autowired SchedulePostStatusDao schedulePostStatusDao;
 	
+	private @Autowired DozerBeanMapper dozerMapper;
+	
 	@Transactional
 	public ScheduleViewModel createSchedule(ScheduleViewModel viewModel){
-		log.info("Creating schedule : {}", viewModel);
+		Schedule schedule = buildSchedule(viewModel);
+		log.info("Creating schedule : {}", schedule);
+		schedule = scheduleDao.merge(schedule);
+		return dozerMapper.map(schedule, ScheduleViewModel.class);
+	}
+	
+	@Transactional
+	public ScheduleViewModel updateSchedule(ScheduleViewModel viewModel){
+		Schedule schedule = buildSchedule(viewModel);
+		SchedulePostStatus schedulePostStatus = schedulePostStatusDao.findByStatus(
+				viewModel.getSchedulePostStatus()
+				);
+		schedule.setSchedulePostStatus(schedulePostStatus);
+		log.debug("Updating schedule : {}",schedule);
+		schedule = scheduleDao.merge(schedule);
+		return dozerMapper.map(schedule, ScheduleViewModel.class);
+	}
+	
+	@Transactional
+	public List<ScheduleViewModel> findScheduleByAssigneeId(Long id){
+		
+		List<Schedule> schedules = scheduleDao.findByAssigneeId(id);
+		List<ScheduleViewModel> viewModels = new LinkedList<ScheduleViewModel>();
+		
+		for(Schedule schedule : schedules){
+			viewModels.add(dozerMapper.map(schedule, ScheduleViewModel.class));
+		}
+		
+		return viewModels;
+	}
+	
+	@Transactional
+	public List<ScheduleViewModel> findScheduleByAssigneerId(Long id){
+		
+		List<Schedule> schedules = scheduleDao.findByAssigneerId(id);
+		List<ScheduleViewModel> viewModels = new LinkedList<ScheduleViewModel>();
+		
+		for(Schedule schedule : schedules){
+			viewModels.add(dozerMapper.map(schedule, ScheduleViewModel.class));
+		}
+		
+		return viewModels;
+	}
+	
+	private Schedule buildSchedule(ScheduleViewModel viewModel){
+		log.info("Building schedule : {}", viewModel);
+		
 		User assignee = userDao.findOne(viewModel.getAssigneeId());
 		Shift shift = shiftDao.findByName(viewModel.getShift());
-		Facility facility = facilityDao.findByName(viewModel.getFacility());
+		Facility facility = facilityDao.findActiveByName(viewModel.getFacility());
 		ScheduleStatus scheduleStatus = scheduleStatusDao.findByStatus(viewModel.getScheduleStatus());
-		//SchedulePostStatus schedulePostStatus = schedulePostStatusDao.findByStatus(viewModel.getSchedulePostStatus());
 		Schedule schedule = Schedule.builder()
 				.assignee(assignee)
 				.facility(facility)
@@ -47,12 +97,8 @@ public class ScheduleService {
 				.shift(shift)
 				.scheduleDate(viewModel.getCreateDate())
 				.scheduleComment(viewModel.getScheduleComment())
-				.build();
-		return viewModel;
-	}
-	
-	@Transactional
-	public void updateSchedule(){
-		log.debug("Updating user {}");
+				.build()
+				;
+		return schedule;
 	}
 }

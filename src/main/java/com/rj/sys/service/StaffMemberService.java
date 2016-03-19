@@ -28,10 +28,10 @@ public class StaffMemberService {
 	private @Autowired DozerBeanMapper dozerMapper;
 	
 	@Transactional
-	public StaffMemberViewModel createOrUpdateStaffMember(StaffMemberViewModel viewModel){
+	public StaffMemberViewModel createOrUpdateStaffMember(StaffMemberViewModel viewModel, Long facilityId){
 		
 		log.info("Creating a staff member : {}", viewModel);
-		Facility facility = facilityDao.findByName(viewModel.getFacility());
+		Facility facility = facilityDao.findActiveById(facilityId);
 		StaffMember staffMember = dozerMapper.map(viewModel, StaffMember.class);
 		staffMember.setFacility(facility);
 		staffMember = staffMemberDao.merge(staffMember);
@@ -42,9 +42,9 @@ public class StaffMemberService {
 	
 	
 	@Transactional
-	public List<StaffMemberViewModel> findAll(){
+	public List<StaffMemberViewModel> findAllByFacilityId(Long id){
 		log.info("Finding all staffMembers");
-		List<StaffMember> staffMembers = staffMemberDao.findAll();
+		List<StaffMember> staffMembers = staffMemberDao.findAllByFacilityId(id);
 		List<StaffMemberViewModel> viewModels = new LinkedList<StaffMemberViewModel>();
 		
 		for(StaffMember staffMember : staffMembers){
@@ -52,6 +52,21 @@ public class StaffMemberService {
 		}
 		
 		return viewModels;
+	}
+	
+	@Transactional
+	public StaffMemberViewModel findByFacilityIdAndStaffMemberId(Long facilityId, Long staffMemberId){
+		log.info("Finding staff member with id : {} in facility with id : {}", staffMemberId, facilityId);
+		StaffMemberViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					staffMemberDao.findByFacilityIdAndStaffMemberId(facilityId, staffMemberId), StaffMemberViewModel.class
+					);
+		}catch(NoResultException nre){
+			log.info("No staff member found with id : {} in facility with id : {}", staffMemberId, facilityId);
+		}
+		
+		return viewModel;
 	}
 	
 	@Transactional

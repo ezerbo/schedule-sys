@@ -51,7 +51,7 @@ public class UserServiceTest {
 		UserTO userToBeSaved = buildUser();
 		//userToBeSaved.setPositionType(position);
 		userToBeSaved.setType(userType.getType());
-		userService.createUser(userToBeSaved);
+		//userService.createUser(userToBeSaved);
 		entityManager.flush();
 		User savedUser = userDao.findOneByEmailAddress(userToBeSaved.getEmailAddress());
 		
