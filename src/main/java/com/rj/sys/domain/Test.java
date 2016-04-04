@@ -33,29 +33,12 @@ public class Test implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	
 	@Column(name="TEST_NAME")
 	private String testName;
 	
-	@Column(name="TEST_TYPE")
-	private String testType;
-	
 	@OneToMany(mappedBy="test")
-	private List<UserTest> userTests;
+	private List<TestType> testTypes;
 	
-	public UserTest addUserTest(UserTest userTest) {
-		getUserTests().add(userTest);
-		userTest.setTest(this);
-
-		return userTest;
-	}
-
-	public UserTest removeUserTest(UserTest userTest) {
-		getUserTests().remove(userTest);
-		userTest.setTest(null);
-
-		return userTest;
-	}
-
 }

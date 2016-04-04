@@ -11,11 +11,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rj.sys.config.TestConfiguration;
 import com.rj.sys.dao.PositionDao;
 import com.rj.sys.dao.UserDao;
 import com.rj.sys.dao.UserTypeDao;
@@ -26,7 +24,7 @@ import com.rj.sys.dto.UserTO;
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestConfiguration.class})
+//@ContextConfiguration(classes = {TestConfiguration.class})
 public class UserServiceTest {
 	
 	private @PersistenceContext EntityManager entityManager;

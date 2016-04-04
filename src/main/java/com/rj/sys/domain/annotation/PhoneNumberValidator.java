@@ -4,7 +4,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 public class PhoneNumberValidator implements ConstraintValidator<PhoneNumber, String> {
 	
-	private String pattern = "^[0-9]{3}-[0-9]{3}-[0-9]{4}$";
+	private String pattern = "^([0-9]{3})-[0-9]{3}-[0-9]{4}$";
 	
 	@Override
 	public void initialize(PhoneNumber constraintAnnotation) {

@@ -8,6 +8,13 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.0.RELEASE</version>
+		<relativePath />
+	</parent>
+
 	<developers>
 		<developer>
 			<name>Boureima Edouard ZERBO</name>
@@ -25,95 +32,87 @@
 	</description>
 	<properties>
 		<java-version>1.8</java-version>
-
-		<junit-version>4.10</junit-version>
-
-		<javax.servlet-version>3.0.1</javax.servlet-version>
-
 		<javax.servlet.jsp-version>2.3.1</javax.servlet.jsp-version>
 		<jackson-2-version>2.6.0</jackson-2-version>
-
 		<lombok-version>1.16.0</lombok-version>
-
-		<org.h2-version>1.3.156</org.h2-version>
-
 		<java.el.api-version>1.1</java.el.api-version>
-
 		<org.slf4j-version>1.7.2</org.slf4j-version>
-
 		<net.sf.dozer-version>5.5.1</net.sf.dozer-version>
-
-		<ch.qos.logback-version>1.1.3</ch.qos.logback-version>
-
 		<org.hibernate-version>4.3.9.Final</org.hibernate-version>
-
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-
-		<mysql.connector.java-version>5.1.6</mysql.connector.java-version>
-
-		<spring.framework.version>4.2.4.RELEASE</spring.framework.version>
-
-		<org.hibernate.validator-version>5.1.0.Final</org.hibernate.validator-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>oss-jfrog-artifactory</id><!-- for swagger -->
+			<name>oss-jfrog-artifactory-releases</name>
+			<url>http://oss.jfrog.org/artifactory/oss-release-local</url>
+		</repository>
+	</repositories>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>de.psm</groupId>
+				<artifactId>jwt-public-config</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.mangofactory</groupId>
+				<artifactId>swagger-springmvc</artifactId>
+				<version>0.9.3</version>
+			</dependency>
+			<!-- Add provided dependency for the following scala library. This is 
+				for 0.9.3 onwards. ref: https://speakerdeck.com/ankinson/documenting-restful-apis -->
+			<dependency>
+				<groupId>org.scala-lang</groupId>
+				<artifactId>scala-library</artifactId>
+				<version>2.10.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ajar</groupId>
+				<artifactId>swagger-spring-mvc-ui</artifactId>
+				<version>0.2</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<dependencies>
-		<!-- Redirect all logging over slf4j -->
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.servlet-version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>javax.servlet.jsp-api</artifactId>
-			<version>${javax.servlet.jsp-version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
+
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>log4j-over-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
-			<version>${org.slf4j-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${ch.qos.logback-version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<version>${lombok-version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${org.hibernate-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${org.hibernate.validator-version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
@@ -121,84 +120,34 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-template</artifactId>
-			<version>3.0.5</version>
+			<groupId>com.mangofactory</groupId>
+			<artifactId>swagger-springmvc</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-jsp</artifactId>
-			<version>3.0.5</version>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.ajar</groupId>
+			<artifactId>swagger-spring-mvc-ui</artifactId>
 		</dependency>
 
-
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>el-api</artifactId>
-			<version>${java.el.api-version}</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit-version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<version>${spring.framework.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-			<version>${spring.framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${spring.framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${spring.framework.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson-2-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson-2-version}</version>
-		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.connector.java-version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>2.7.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>${org.h2-version}</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>com.h2database</groupId> -->
+		<!-- <artifactId>h2</artifactId> -->
+		<!-- <scope>test</scope> -->
+		<!-- </dependency> -->
+
 	</dependencies>
 
 	<build>
@@ -206,49 +155,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
 				<configuration>
 					<source>${java-version}</source>
 					<target>${java-version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
 		</plugins>
 	</build>
-
-	<!-- <pluginRepositories> -->
-	<!-- <pluginRepository> -->
-	<!-- <id>Codehaus</id> -->
-	<!-- <url>http://repository.codehaus.org/</url> -->
-	<!-- <snapshots> -->
-	<!-- <enabled>false</enabled> -->
-	<!-- </snapshots> -->
-	<!-- </pluginRepository> -->
-	<!-- </pluginRepositories> -->
-	<!-- <repositories> -->
-	<!-- <repository> -->
-	<!-- <id>org.jboss.repository.releases</id> -->
-	<!-- <name>JBoss Maven Release Repository</name> -->
-	<!-- <url>https://repository.jboss.org/nexus/content/repositories/releases</url> -->
-	<!-- <snapshots> -->
-	<!-- <enabled>false</enabled> -->
-	<!-- </snapshots> -->
-	<!-- </repository> -->
-	<!-- </repositories> -->
-	<!-- <distributionManagement> -->
-	<!-- <downloadUrl>http://www.springframework.org/download</downloadUrl> -->
-	<!-- <site> -->
-	<!-- <id>staging</id> -->
-	<!-- <url>file:///${user.dir}/target/staging/org.springframework.batch.archetype/${pom.artifactId}</url> -->
-	<!-- </site> -->
-	<!-- <repository> -->
-	<!-- <id>spring-release</id> -->
-	<!-- <name>Spring Release Repository</name> -->
-	<!-- <url>file:///${user.dir}/target/staging/release</url> -->
-	<!-- </repository> -->
-	<!-- <snapshotRepository> -->
-	<!-- <id>spring-snapshot</id> -->
-	<!-- <name>Spring Snapshot Repository</name> -->
-	<!-- <url>file:///${user.dir}/target/staging/snapshot</url> -->
-	<!-- </snapshotRepository> -->
-	<!-- </distributionManagement> -->
 </project>

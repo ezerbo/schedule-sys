@@ -61,7 +61,7 @@ public class UserDao extends GenericDao<User> {
 				"from User u where u.isDeleted = false "
 				+ "and u.id =:id "
 				+ "and u.userType.type = 'EMPLOYEE' "
-				+ "and u.isDeleted = false", User.class)
+				, User.class)
 				.setParameter("id", id)
 				.getSingleResult()
 		;

@@ -1,7 +1,10 @@
 package com.rj.sys.service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.persistence.NoResultException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,9 +51,18 @@ public class ScheduleService {
 	@Transactional
 	public ScheduleViewModel updateSchedule(ScheduleViewModel viewModel){
 		Schedule schedule = buildSchedule(viewModel);
-		SchedulePostStatus schedulePostStatus = schedulePostStatusDao.findByStatus(
+		SchedulePostStatus schedulePostStatus = null;
+		
+		if(viewModel.getSchedulePostStatus() == null){
+			try{
+			schedulePostStatus = schedulePostStatusDao.findByStatus(
 				viewModel.getSchedulePostStatus()
 				);
+			}catch(NoResultException nre){
+				log.info("No schedule status found by status : {}", viewModel.getScheduleStatus());
+			}
+		}
+		
 		schedule.setSchedulePostStatus(schedulePostStatus);
 		log.debug("Updating schedule : {}",schedule);
 		schedule = scheduleDao.merge(schedule);
@@ -58,9 +70,9 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public List<ScheduleViewModel> findScheduleByAssigneeId(Long id){
+	public List<ScheduleViewModel> findScheduleByAssigneeId(Long id, Date scheduleDate){
 		
-		List<Schedule> schedules = scheduleDao.findByAssigneeId(id);
+		List<Schedule> schedules = scheduleDao.findByAssigneeId(id, scheduleDate);
 		List<ScheduleViewModel> viewModels = new LinkedList<ScheduleViewModel>();
 		
 		for(Schedule schedule : schedules){
@@ -68,6 +80,21 @@ public class ScheduleService {
 		}
 		
 		return viewModels;
+	}
+	
+	@Transactional
+	public ScheduleViewModel findScheduleByAssigneeIdAndShiftNameAndScheduleDate(Long id, String shift, Date scheduleDate){
+		
+		Schedule schedule = scheduleDao.findByAssigneeIdAndShiftNameAndScheduleDate(id, shift, scheduleDate);
+		ScheduleViewModel viewModel = null;
+		
+		try{
+			viewModel = dozerMapper.map(schedule, ScheduleViewModel.class);
+		}catch(NoResultException nre){
+			log.info("No schedule found for employee with id : {} on shift with name : {}", id, shift);
+		}
+		
+		return viewModel;
 	}
 	
 	@Transactional

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -43,9 +44,11 @@ public class ScheduleUpdate implements Serializable {
 	private Date updateTime;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private Schedule schedule;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private User user;
 
 }

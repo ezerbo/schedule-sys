@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,13 +41,15 @@ public class UserTest implements Serializable {
 	private Date completedDate;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="EXPIRY_DATE")
-	private Date expiryDate;
+	@Column(name="EXPIRATION_DATE")
+	private Date expirationDate;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	private Test test;
+	@JoinColumn(name = "TEST_TYPE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+	private TestType testType;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
 	private User user;
 	
 }

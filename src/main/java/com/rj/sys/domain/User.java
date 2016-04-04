@@ -47,10 +47,10 @@ public class User implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	private Integer id;
 	
 	@Column(name="CPR")
-	private String cpr;
+	private Boolean cpr;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="DATE_OF_HIRE")

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.rj.sys.domain.annotation.PhoneNumber;
 import com.rj.sys.utils.JsonDateSerializer;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @JsonAutoDetect
 public class EmployeeViewModel {
 	private Long id;
-	private String cpr;
+	private Boolean cpr;
 	private Boolean ebc;
 	private String firstName;
 	private String lastName;
@@ -31,7 +32,10 @@ public class EmployeeViewModel {
 	private Date dateOfHire;
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date lastDateOfHire;
+	@PhoneNumber
 	private String otherPhoneNumber;
+	@PhoneNumber
 	private String primaryPhoneNumber;
+	@PhoneNumber
 	private String secondaryPhoneNumber;
 }

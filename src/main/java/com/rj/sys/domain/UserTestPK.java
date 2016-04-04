@@ -21,8 +21,8 @@ public class UserTestPK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name="TEST_ID", insertable=false, updatable=false)
-	private int testId;
+	@Column(name="TEST_TYPE_ID", insertable=false, updatable=false)
+	private int testTypeId;
 	
 	@Column(name="USER_ID", insertable=false, updatable=false)
 	private int userId;
@@ -36,14 +36,14 @@ public class UserTestPK implements Serializable {
 		}
 		UserTestPK castOther = (UserTestPK)other;
 		return 
-			(this.testId == castOther.testId)
+			(this.testTypeId == castOther.testTypeId)
 			&& (this.userId == castOther.userId);
 	}
 
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.testId;
+		hash = hash * prime + this.testTypeId;
 		hash = hash * prime + this.userId;
 		
 		return hash;

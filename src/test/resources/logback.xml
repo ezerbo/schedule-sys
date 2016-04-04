@@ -22,8 +22,6 @@
 		</encoder>
 	</appender>
 	
-	<!-- To log cxf requests set the below to DEBUG & enable logging in cxf.xml -->
-	<logger name="org.hibernate.SQL" level="DEBUG" />
 	<root level="INFO" >
 		<appender-ref ref="STDOUT" />
 	</root>

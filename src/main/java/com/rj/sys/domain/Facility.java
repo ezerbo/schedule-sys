@@ -34,7 +34,7 @@ public class Facility implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	private Integer id;
 	
 	@Column(name="ADDRESS")
 	private String address;

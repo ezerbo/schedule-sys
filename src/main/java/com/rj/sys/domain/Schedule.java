@@ -34,13 +34,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "SCHEDULE")
+//@ToString(exclude = {"assignee","facility",""})
 public class Schedule implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+	private Integer id;
 	
 	@Column(name="CREATE_DATE")
 	private Date createDate;
