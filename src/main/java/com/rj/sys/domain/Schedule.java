@@ -41,7 +41,7 @@ public class Schedule implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Column(name="CREATE_DATE")
 	private Date createDate;

@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -72,7 +70,7 @@ public class UserService {
 		try{
 			User user = userDao.findByEmailAddress(emailAddress);
 			log.info("user : {} found by emailAddress : {}", user, emailAddress);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No user found with email address : {}", emailAddress);
 			return false;
 		}
@@ -84,7 +82,7 @@ public class UserService {
 		try{
 			User user = userDao.findByPrimaryPhoneNumber(primaryPhoneNumber);
 			log.info("user : {} found by primary phone number : {}", user, primaryPhoneNumber);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No user found with primary phone number : {}", primaryPhoneNumber);
 			return false;
 		}
@@ -96,7 +94,7 @@ public class UserService {
 		try{
 			User user = userDao.findBySecondaryPhoneNumber(secondaryPhoneNumber);
 			log.info("user : {} found by secondary phone number {}", user, secondaryPhoneNumber);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No user found with secondary phone number : {}", secondaryPhoneNumber);
 			return false;
 		}
@@ -108,7 +106,7 @@ public class UserService {
 		try{
 			User user = userDao.findByOtherPhoneNumber(otherPhoneNumber);
 			log.info("user : {} found by other phone number : {}", user, otherPhoneNumber);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No user found with other phone number : {}", otherPhoneNumber);
 			return false;
 		}
@@ -135,7 +133,7 @@ public class UserService {
 			viewModel = dozerMapper.map(
 					userDao.findOneActiveUserById(id), EmployeeViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No user found with id : {}", id);
 		}
 		
@@ -150,7 +148,7 @@ public class UserService {
 			viewModel = dozerMapper.map(
 					userDao.findEmployeeById(id), EmployeeViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No employee found with id : {}", id);
 		}
 		
@@ -165,7 +163,7 @@ public class UserService {
 			viewModel = dozerMapper.map(
 					userDao.findSupervisorById(id), SupervisorViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No supervisor found by id : {}", id);
 		}
 		

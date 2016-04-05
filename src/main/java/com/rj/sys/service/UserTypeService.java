@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -32,7 +30,7 @@ public class UserTypeService {
 			viewModel = dozerMapper.map(
 						userTypeDao.findByType(userType), UserTypeViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No such user type : {}", userType);
 		}
 		return viewModel;

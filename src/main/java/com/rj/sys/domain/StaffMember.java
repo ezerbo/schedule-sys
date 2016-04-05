@@ -33,7 +33,7 @@ public class StaffMember implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Column(name="FIRST_NAME")
 	private String firstName;

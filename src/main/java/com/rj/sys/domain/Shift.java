@@ -36,7 +36,7 @@ public class Shift implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Temporal(TemporalType.TIME)
 	@Column(name="END_TIME")

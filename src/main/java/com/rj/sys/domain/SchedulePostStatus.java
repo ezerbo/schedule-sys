@@ -33,7 +33,7 @@ public class SchedulePostStatus implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Column(name = "STATUS")
 	private String status;

@@ -48,4 +48,17 @@
 		</field>
 	</mapping>
 	
+	<mapping>
+		<class-a>com.rj.sys.domain.UserTest</class-a>
+		<class-b>com.rj.sys.view.model.UserTestViewModel</class-b>
+		<field>
+			<a>user.id</a>
+			<b>userId</b>
+		</field>
+		<field>
+			<a>testType.typeName</a>
+			<b>testTypeName</b>
+		</field>
+	</mapping>
+	
 </mappings>

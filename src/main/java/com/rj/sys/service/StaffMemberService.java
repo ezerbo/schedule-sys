@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -39,8 +37,6 @@ public class StaffMemberService {
 		return dozerMapper.map(staffMember, StaffMemberViewModel.class);
 	}
 	
-	
-	
 	@Transactional
 	public List<StaffMemberViewModel> findAllByFacilityId(Long id){
 		log.info("Finding all staffMembers");
@@ -62,7 +58,7 @@ public class StaffMemberService {
 			viewModel = dozerMapper.map(
 					staffMemberDao.findByFacilityIdAndStaffMemberId(facilityId, staffMemberId), StaffMemberViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No staff member found with id : {} in facility with id : {}", staffMemberId, facilityId);
 		}
 		
@@ -77,7 +73,7 @@ public class StaffMemberService {
 			viewModel = dozerMapper.map(
 					staffMemberDao.find(firstName, lastName, title), StaffMemberViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No staff member found with firstname : {}, lastname :{}, title : {}", firstName, lastName, title);
 		}
 		

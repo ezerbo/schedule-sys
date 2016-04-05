@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -82,7 +80,7 @@ public class TestTypeService {
 		TestTypeViewModel viewModel = null;
 		try{
 			viewModel = dozerMapper.map(testTypeDao.findByName(name), TestTypeViewModel.class);
-		}catch(NoResultException e){
+		}catch(Exception e){
 			log.info("No test type found with name : {}", name);
 		}
 		log.info("Test type found : {}", viewModel);
@@ -121,7 +119,7 @@ public class TestTypeService {
 			viewModel = dozerMapper.map(
 					testTypeDao.findByIdAndTestId(id, testId), TestTypeViewModel.class
 					);
-		}catch(NoResultException e){
+		}catch(Exception e){
 			log.info("No type with id : {} found for test with id : {}", id, testId);
 		}
 		
@@ -134,7 +132,7 @@ public class TestTypeService {
 			TestType testType = testTypeDao.findByNameAndTestId(testTypeName, testId);
 			log.info("test type : {} found, name : {}, test id : {}", testType, testTypeName, testId);
 			return true;
-		}catch(NoResultException e){
+		}catch(Exception e){
 			log.info("No test type found with name : {} and test id : {}", testTypeName, testId);
 		}
 		return false;

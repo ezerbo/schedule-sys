@@ -28,7 +28,7 @@ public class TestType implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Column(name="TYPE_NAME")
 	private String typeName;

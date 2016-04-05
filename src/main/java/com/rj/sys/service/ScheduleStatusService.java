@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -63,7 +61,7 @@ public class ScheduleStatusService {
 			viewModel = dozerMapper.map(
 					scheduleStatusDao.findByStatus(status), ScheduleStatusViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No schedule status found with status : {}", status);
 		}
 		

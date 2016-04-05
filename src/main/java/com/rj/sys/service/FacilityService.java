@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -68,7 +66,7 @@ public class FacilityService {
 			viewModel = dozerMapper.map(
 					facilityDao.findActiveByName(name), FacilityViewModel.class
 					); 
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No facility found by name : {}", name);
 		}
 		
@@ -84,7 +82,7 @@ public class FacilityService {
 			viewModel = dozerMapper.map(
 					facilityDao.findByName(name), FacilityViewModel.class
 					); 
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No facility found by name : {}", name);
 		}
 		
@@ -100,7 +98,7 @@ public class FacilityService {
 			viewModel = dozerMapper.map(
 					facilityDao.findActiveById(id), FacilityViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No facility found with id : {}", id);
 		}
 		return viewModel;
@@ -114,7 +112,7 @@ public class FacilityService {
 			viewModel = dozerMapper.map(
 					facilityDao.findOne(id), FacilityViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No facility found with id : {}", id);
 		}
 		return viewModel;
@@ -128,7 +126,7 @@ public class FacilityService {
 			viewModel = dozerMapper.map(
 					facilityDao.findActiveByPhoneNumber(phoneNumber), FacilityViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No facility found with phone number : {}", phoneNumber);
 		}
 		
@@ -143,7 +141,7 @@ public class FacilityService {
 			viewModel = dozerMapper.map(
 					facilityDao.findByPhoneNumber(phoneNumber), FacilityViewModel.class
 					);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No facility found with phone number : {}", phoneNumber);
 		}
 		

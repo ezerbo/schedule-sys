@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -59,7 +57,7 @@ public class TestService {
 		TestViewModel viewModel = null;
 		try{
 			viewModel = dozerMapper.map(testDao.findByName(name), TestViewModel.class);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No test found with name : {}", name);
 		}
 		return viewModel;

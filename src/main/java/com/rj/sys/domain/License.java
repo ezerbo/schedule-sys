@@ -36,7 +36,7 @@ public class License implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name="EXPIRATION_DATE")

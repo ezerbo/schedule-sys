@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -47,7 +45,7 @@ public class ShiftService {
 			viewModel = dozerMapper.map(
 					shiftDao.findByName(shiftName), ShiftViewModel.class
 					) ;
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No shift found with name : {}", shiftName);
 		}
 		

@@ -17,9 +17,9 @@ public class UserTestDao extends GenericDao<UserTest> {
 	public UserTest findById(UserTestPK id){
 		UserTest userTest = entityManager.createQuery(
 				"from UserTest ut where ut.user.id =:userId "
-				+ "and ut.test.id =:testId", UserTest.class)
-				.setParameter("userId", id.getUserId())
-				.setParameter("testId", id.getTestTypeId())
+				+ "and ut.testType.id =:testId", UserTest.class)
+				.setParameter("userId", Long.valueOf(id.getUserId()))
+				.setParameter("testId", Long.valueOf(id.getTestTypeId()))
 				.getSingleResult();
 		return userTest;
 	}

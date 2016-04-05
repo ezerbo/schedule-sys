@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import lombok.extern.slf4j.Slf4j;
 
 import org.dozer.DozerBeanMapper;
@@ -58,7 +56,7 @@ public class ScheduleService {
 			schedulePostStatus = schedulePostStatusDao.findByStatus(
 				viewModel.getSchedulePostStatus()
 				);
-			}catch(NoResultException nre){
+			}catch(Exception nre){
 				log.info("No schedule status found by status : {}", viewModel.getScheduleStatus());
 			}
 		}
@@ -90,7 +88,7 @@ public class ScheduleService {
 		
 		try{
 			viewModel = dozerMapper.map(schedule, ScheduleViewModel.class);
-		}catch(NoResultException nre){
+		}catch(Exception nre){
 			log.info("No schedule found for employee with id : {} on shift with name : {}", id, shift);
 		}
 		
