@@ -33,17 +33,17 @@ public class TestController {
 		
 		if(testService.findById(id) == null){
 			log.info("No test found with id : {}", id);
-			return new ResponseEntity<String>("No test found id : " + id, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("No test found id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
 		List<TestTypeViewModel> viewModels = testTypeService.findAllByTestId(id);
 		if(viewModels.isEmpty()){
 			log.info("No test types found for test with id : {}", id);
-			return new ResponseEntity<String>("No type found for test with id : " + id, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("No type found for test with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
 		log.info("Types found");
-		return new ResponseEntity<List<TestTypeViewModel>>(viewModels, HttpStatus.OK);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}/test-types", method = RequestMethod.POST, consumes = "application/json")
@@ -55,7 +55,7 @@ public class TestController {
 			return new ResponseEntity<String>("No test found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
-		if(testTypeService.isTestTypeExistant(viewModel.getTypeName(), id)){
+		if(testTypeService.findByName(viewModel.getTypeName()) != null){
 			log.info("A type with name : {} already exist for test with id : {}", viewModel.getTypeName(), id);
 			return new ResponseEntity<String>(
 					"A type with name : " + viewModel.getTypeName() + " already exists for test with id : " + id, HttpStatus.INTERNAL_SERVER_ERROR
@@ -99,12 +99,14 @@ public class TestController {
 		
 		TestTypeViewModel testType = testTypeService.findById(typeId);
 		if(!StringUtils.equals(testType.getTypeName(), viewModel.getTypeName())){
-			if(testTypeService.isTestTypeExistant(viewModel.getTypeName(), id)){
-				log.info("A type with name : {} already exist for test with id : {}", viewModel.getTypeName(), id);
+			
+			if(testTypeService.findByName(viewModel.getTypeName()) != null){
+				log.info("A type with name : {} already exists", viewModel.getTypeName(), id);
 				return new ResponseEntity<String>(
-						"A type with name : " + viewModel.getTypeName() + " already exists for test with id : " + id, HttpStatus.INTERNAL_SERVER_ERROR
+						"A type with name : " + viewModel.getTypeName() + " already exists : " + id, HttpStatus.INTERNAL_SERVER_ERROR
 						);
 			}
+			
 		}
 		
 		viewModel.setId(typeId);//Overriding the one sent in the DTO 
@@ -154,7 +156,7 @@ public class TestController {
 					"A test with name : " + viewModel.getTestName() + " already exists", HttpStatus.INTERNAL_SERVER_ERROR
 					);
 		}
-		
+		viewModel.setId(null);
 		viewModel = testService.createOrUpdateTest(viewModel);
 		log.info("Test created : {}", viewModel);
 		return new ResponseEntity<String>("Test created successfully", HttpStatus.CREATED);

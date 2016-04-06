@@ -61,4 +61,13 @@
 		</field>
 	</mapping>
 	
+	<mapping>
+		<class-a>com.rj.sys.domain.License</class-a>
+		<class-b>com.rj.sys.view.model.LicenseViewModel</class-b>
+		<field>
+			<a>user.id</a>
+			<b>userId</b>
+		</field>
+	</mapping>
+	
 </mappings>

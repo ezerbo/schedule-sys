@@ -60,7 +60,7 @@ public class EmployeeTestController {
 					+ " found for user with id : " + employeeViewModel.getId(), HttpStatus.INTERNAL_SERVER_ERROR
 					);
 		}
-		
+		viewModel.setUserId(id);
 		viewModel = userTestService.addOrUpdateTestForUser(viewModel);
 		
 		return new ResponseEntity<String>("Test type added successfully", HttpStatus.CREATED);
@@ -86,6 +86,36 @@ public class EmployeeTestController {
 		log.info("Tests found : {}", viewModels);
 		
 		return new ResponseEntity<>(viewModels, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/tests/{testTypeName}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> findBidUserIdAndTestTypeName(@PathVariable Long id, @PathVariable String testTypeName){
+		log.info("Finding test with name : {} for user with id : {}", testTypeName, id);
+		
+		EmployeeViewModel employeeViewModel = userService.findEmployeeById(id);
+		if(employeeViewModel == null){
+			log.info("No employee found with id : {}", id);
+			return new ResponseEntity<>("No employee found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		TestTypeViewModel testTypeViewModel = testTypeService.findByName(testTypeName);
+		if(testTypeViewModel == null){
+			log.info("No such test type : {}", testTypeName);
+			return new ResponseEntity<>("No such test type : " + testTypeName, HttpStatus.NOT_FOUND);
+		}
+		
+		UserTestViewModel viewModel = userTestService.findById(
+				employeeViewModel.getId(), testTypeViewModel.getId()
+				);
+		if(viewModel == null){
+			log.info("No test type with name : {} found for user with id : {}", testTypeName, id);
+			return new ResponseEntity<>(
+					"No test type with name : " + testTypeName + " found for user with id : " + id, HttpStatus.NOT_FOUND
+					);
+		}
+		log.info("User test found : {}", viewModel);
+		return new ResponseEntity<>(viewModel, HttpStatus.OK); 
+		
 	}
 	
 	@RequestMapping(value = "/{id}/tests/{testTypeName}", method = RequestMethod.PUT, produces = "application/json")
