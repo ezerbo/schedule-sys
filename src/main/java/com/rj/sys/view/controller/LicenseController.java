@@ -4,7 +4,6 @@ import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,7 +51,7 @@ public class LicenseController {
 	}
 	
 	@RequestMapping(value = "/{id}/licenses/{licenseId}", method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<?> updateLicense(@PathVariable Long id,@PathVariable Long licenseId, @RequestBody LicenseViewModel viewModel){
+	public ResponseEntity<?> updateLicense(@PathVariable Long id, @PathVariable Long licenseId, @RequestBody LicenseViewModel viewModel){
 		log.info("Updating license : {} for user with id : {}", viewModel, id);
 		
 		if(userService.findEmployeeById(id) == null){
@@ -68,14 +67,11 @@ public class LicenseController {
 					);
 		}
 		
-		if(!StringUtils.equals(viewModel.getLicenseNumber(), licenseViewModel.getLicenseNumber())){
-			
-			if(licenseService.findByLicenseNumber(viewModel.getLicenseNumber()) != null){
-				log.info("A license with number : {} already exists", viewModel.getLicenseNumber());
-				return new ResponseEntity<>(
-						"A license with number : " + viewModel.getLicenseNumber() + " already exists", HttpStatus.INTERNAL_SERVER_ERROR
-						);
-			}
+		if(licenseService.findByLicenseNumber(viewModel.getLicenseNumber()) != null){
+			log.info("A license with number : {} already exists", viewModel.getLicenseNumber());
+			return new ResponseEntity<>(
+					"A license with number : " + viewModel.getLicenseNumber() + " already exists", HttpStatus.INTERNAL_SERVER_ERROR
+					);
 		}
 		
 		viewModel.setId(licenseId);

@@ -29,6 +29,7 @@ public class LicenseService {
 		log.info("Creating or updating license : {}", viewModel);
 		User user = userDao.findOne(viewModel.getUserId());
 		License license = License.builder()
+				.id(viewModel.getId())
 				.user(user)
 				.licenseNumber(viewModel.getLicenseNumber())
 				.expirationDate(viewModel.getExpirationDate())
