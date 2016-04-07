@@ -25,14 +25,14 @@ import com.rj.sys.view.model.ScheduleViewModel;
 
 @Slf4j
 @Controller
-@RequestMapping("/users/employees")
+@RequestMapping("/employees")
 public class ScheduleController {
 	
 	private @Autowired UserService userService;
 	private @Autowired ShiftService shiftService;
 	private @Autowired FacilityService facilityService;
 	private @Autowired ScheduleService scheduleService;
-	private @Autowired ScheduleStatusService scheduleScheduleService;
+	private @Autowired ScheduleStatusService scheduleStatusService;
 	
 	
 	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
@@ -79,7 +79,7 @@ public class ScheduleController {
 					);
 		}
 		
-		if(scheduleScheduleService.findByStatus(viewModel.getScheduleStatus()) == null){
+		if(scheduleStatusService.findByStatus(viewModel.getScheduleStatus()) == null){
 			log.info("No such schedule status : {}", viewModel.getScheduleStatus());
 			return new ResponseEntity<String>(
 					"No such schedule status : " + viewModel.getScheduleStatus(), HttpStatus.NOT_FOUND
@@ -93,16 +93,19 @@ public class ScheduleController {
 					);
 		}
 		
-		Date today = new Date();
-		
-		if(scheduleService.findScheduleByAssigneeIdAndShiftNameAndScheduleDate(id, viewModel.getShift(), today) != null){
+		if(scheduleService.findScheduleByAssigneeIdAndShiftNameAndScheduleDate(id, viewModel.getShift(), viewModel.getScheduleDate()) != null){
 			log.info("A schedule already exists for employee with id : {}", id);
 			return new ResponseEntity<String>(
-					"A schedule already exists for employee with id : " + id, HttpStatus.NOT_FOUND
+					"A schedule already exists for employee with id : " + id +" on : " + viewModel.getScheduleDate(), HttpStatus.NOT_FOUND
 					);
 		}
 		
 		return new ResponseEntity<String>("Schedule successfully saved", HttpStatus.CREATED);
 		
 	}
+	
+//	@RequestMapping(value = "/{id}/schedules/{scheduleId}", method = RequestMethod.PUT, consumes = "application/json")
+//	public ResponseEntity<?> updateSchedule(Long id,Long scheduleId, ScheduleViewModel viewModel){
+//		log.info("updating schedule with id : {}");
+//	}
 }

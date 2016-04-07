@@ -5,8 +5,22 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-<!-- 	<jdbc:initialize-database data-source="dataSource"> -->
-		
-<!-- 	</jdbc:initialize-database> -->
+	<jdbc:initialize-database data-source="dataSource">
+		<jdbc:script location="classpath:test-data/facility.sql"/>
+		<jdbc:script location="classpath:test-data/position_type.sql"/>
+		<jdbc:script location="classpath:test-data/position.sql"/>
+		<jdbc:script location="classpath:test-data/schedule_post_status.sql"/>
+		<jdbc:script location="classpath:test-data/schedule_status.sql"/>
+		<jdbc:script location="classpath:test-data/shift.sql"/>
+		<jdbc:script location="classpath:test-data/staff_member.sql"/>
+		<jdbc:script location="classpath:test-data/user_type.sql"/>
+		<jdbc:script location="classpath:test-data/users.sql"/>
+		<jdbc:script location="classpath:test-data/license.sql"/>
+		<jdbc:script location="classpath:test-data/schedule.sql"/>
+		<jdbc:script location="classpath:test-data/schedule_update.sql"/>
+		<jdbc:script location="classpath:test-data/test.sql"/>
+		<jdbc:script location="classpath:test-data/test_type.sql"/>
+		<jdbc:script location="classpath:test-data/user_test.sql"/>
+	</jdbc:initialize-database>
 	
 </beans>

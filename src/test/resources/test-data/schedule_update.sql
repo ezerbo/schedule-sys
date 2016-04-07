@@ -1,0 +1,2 @@
+INSERT INTO SCHEDULE_UPDATE(SCHEDULE_ID, USER_ID, UPDATE_TIME, UPDATE_COMMENT)
+	VALUES(1, 1, current_time(), 'Schedule upate comment');

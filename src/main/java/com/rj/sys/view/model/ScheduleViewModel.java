@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ScheduleViewModel {
 	private Long id;
-	private Date createDate;
 	private String scheduleComment;
 	private Date scheduleDate;
 	private Boolean timesheetReceived;

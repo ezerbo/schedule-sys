@@ -39,23 +39,25 @@ public class ScheduleService {
 	private @Autowired DozerBeanMapper dozerMapper;
 	
 	@Transactional
-	public ScheduleViewModel createSchedule(ScheduleViewModel viewModel){
-		Schedule schedule = buildSchedule(viewModel);
+	public ScheduleViewModel createSchedule(ScheduleViewModel viewModel, Long assignerId){
+		Schedule schedule = buildSchedule(viewModel, assignerId);
 		log.info("Creating schedule : {}", schedule);
 		schedule = scheduleDao.merge(schedule);
-		return dozerMapper.map(schedule, ScheduleViewModel.class);
+		viewModel = dozerMapper.map(schedule, ScheduleViewModel.class);
+		log.info("Created schedule : {}", viewModel);
+		return viewModel;
 	}
 	
 	@Transactional
-	public ScheduleViewModel updateSchedule(ScheduleViewModel viewModel){
-		Schedule schedule = buildSchedule(viewModel);
+	public ScheduleViewModel updateSchedule(ScheduleViewModel viewModel, Long assignerId){
+		Schedule schedule = buildSchedule(viewModel, assignerId);
 		SchedulePostStatus schedulePostStatus = null;
 		
 		if(viewModel.getSchedulePostStatus() == null){
 			try{
-			schedulePostStatus = schedulePostStatusDao.findByStatus(
-				viewModel.getSchedulePostStatus()
-				);
+				schedulePostStatus = schedulePostStatusDao.findByStatus(
+						viewModel.getSchedulePostStatus()
+						);
 			}catch(Exception nre){
 				log.info("No schedule status found by status : {}", viewModel.getScheduleStatus());
 			}
@@ -83,11 +85,12 @@ public class ScheduleService {
 	@Transactional
 	public ScheduleViewModel findScheduleByAssigneeIdAndShiftNameAndScheduleDate(Long id, String shift, Date scheduleDate){
 		
-		Schedule schedule = scheduleDao.findByAssigneeIdAndShiftNameAndScheduleDate(id, shift, scheduleDate);
 		ScheduleViewModel viewModel = null;
 		
 		try{
-			viewModel = dozerMapper.map(schedule, ScheduleViewModel.class);
+			viewModel = dozerMapper.map(
+					scheduleDao.findByAssigneeIdAndShiftNameAndScheduleDate(id, shift, scheduleDate), ScheduleViewModel.class
+					);
 		}catch(Exception nre){
 			log.info("No schedule found for employee with id : {} on shift with name : {}", id, shift);
 		}
@@ -108,19 +111,20 @@ public class ScheduleService {
 		return viewModels;
 	}
 	
-	private Schedule buildSchedule(ScheduleViewModel viewModel){
+	private Schedule buildSchedule(ScheduleViewModel viewModel, Long assignerId){
 		log.info("Building schedule : {}", viewModel);
 		
 		User assignee = userDao.findOne(viewModel.getAssigneeId());
+		User assigner = userDao.findOne(assignerId);
 		Shift shift = shiftDao.findByName(viewModel.getShift());
 		Facility facility = facilityDao.findActiveByName(viewModel.getFacility());
 		ScheduleStatus scheduleStatus = scheduleStatusDao.findByStatus(viewModel.getScheduleStatus());
 		Schedule schedule = Schedule.builder()
 				.assignee(assignee)
+				.assigner(assigner)
 				.facility(facility)
 				.scheduleStatus(scheduleStatus)
 				.shift(shift)
-				.scheduleDate(viewModel.getCreateDate())
 				.scheduleComment(viewModel.getScheduleComment())
 				.build()
 				;
