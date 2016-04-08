@@ -3,8 +3,6 @@ package com.rj.sys.view.controller;
 import java.util.Date;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rj.sys.service.AuthenticationService;
 import com.rj.sys.service.FacilityService;
 import com.rj.sys.service.ScheduleService;
 import com.rj.sys.service.ScheduleStatusService;
 import com.rj.sys.service.ShiftService;
 import com.rj.sys.service.UserService;
 import com.rj.sys.view.model.ScheduleViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -33,6 +34,7 @@ public class ScheduleController {
 	private @Autowired FacilityService facilityService;
 	private @Autowired ScheduleService scheduleService;
 	private @Autowired ScheduleStatusService scheduleStatusService;
+	private @Autowired AuthenticationService authenticationService;
 	
 	
 	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
@@ -99,7 +101,9 @@ public class ScheduleController {
 					"A schedule already exists for employee with id : " + id +" on : " + viewModel.getScheduleDate(), HttpStatus.NOT_FOUND
 					);
 		}
-		
+		viewModel.setId(null);
+		viewModel = scheduleService.createSchedule(viewModel, authenticationService.getAuthenticationService().getId());
+		log.info("Schedule saved : {}", viewModel);
 		return new ResponseEntity<String>("Schedule successfully saved", HttpStatus.CREATED);
 		
 	}

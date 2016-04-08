@@ -3,8 +3,6 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,16 +10,16 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.rj.sys.dao.TestDao;
-import com.rj.sys.dao.UserDao;
 import com.rj.sys.domain.Test;
 import com.rj.sys.view.model.TestViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class TestService {
  
 	private @Autowired TestDao testDao;
-	private @Autowired UserDao userDao;
 	private @Autowired DozerBeanMapper dozerMapper;
 	
 	@Transactional

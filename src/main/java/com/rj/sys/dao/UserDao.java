@@ -30,6 +30,14 @@ public class UserDao extends GenericDao<User> {
 		return user;
 	}
 	
+	public User findByUsername(String username){
+		User user = entityManager.createQuery(
+				"from User u where u.isDeleted = false and u.username =:username", User.class)
+				.setParameter("username", username)
+				.getSingleResult()
+		;
+		return user;
+	}
 	/**
 	 * @return activeUsers: all active users in the system
 	 */
