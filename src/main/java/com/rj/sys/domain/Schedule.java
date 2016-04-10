@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -51,6 +52,12 @@ public class Schedule implements Serializable {
 	
 	@Column(name="IS_DELETED")
 	private boolean isDeleted;
+	
+	@Column(name="HOURS")
+	private Double hours;
+	
+	@Column(name="OVERTIME")
+	private Double overtime;
 	
 	@Column(name="SCHEDULE_COMMENT")
 	private String scheduleComment;
@@ -90,6 +97,14 @@ public class Schedule implements Serializable {
 	@PrePersist
 	public void onCreate(){
 		setCreateDate(new Date());
+		setTimesheetReceived(false);
+	}
+	
+	@PreUpdate
+	public void onUpdate(){
+		if(getTimesheetReceived() == null){
+			setTimesheetReceived(false);
+		}
 	}
 	
 	public ScheduleUpdate addScheduleUpdate(ScheduleUpdate scheduleUpdate) {

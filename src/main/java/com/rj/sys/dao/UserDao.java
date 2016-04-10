@@ -38,6 +38,15 @@ public class UserDao extends GenericDao<User> {
 		;
 		return user;
 	}
+	
+	public User findByFirstAndLastNames(String firstname, String lastname){
+		User user = entityManager.createQuery(
+				"from User u where u.isDeleted = false and u.firstName =:firstname and u.lastName =:lastname", User.class)
+				.setParameter("firstname", firstname)
+				.setParameter("lastname", lastname)
+				.getSingleResult();
+		return user;
+	}
 	/**
 	 * @return activeUsers: all active users in the system
 	 */

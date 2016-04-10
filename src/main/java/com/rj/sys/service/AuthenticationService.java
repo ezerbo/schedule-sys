@@ -19,7 +19,7 @@ public class AuthenticationService {
 	private @Autowired UserDao userDao;
 	
 	@Transactional
-	public User getAuthenticationService(){
+	public User getAuthenticatedUser(){
 		log.info("Getting authenticated user");
 		
 		OAuth2Authentication user = 

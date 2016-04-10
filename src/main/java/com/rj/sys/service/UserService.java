@@ -150,6 +150,7 @@ public class UserService {
 					);
 		}catch(Exception nre){
 			log.info("No employee found with id : {}", id);
+			log.error("", nre);
 		}
 		
 		return viewModel;
@@ -167,6 +168,20 @@ public class UserService {
 			log.info("No supervisor found by id : {}", id);
 		}
 		
+		return viewModel;
+	}
+	
+	@Transactional
+	public EmployeeViewModel findByFirstAndLastNames(String firstname, String lastname){
+		log.info("Finding employee by firstname : {} and lastname : {}", firstname, lastname);
+		EmployeeViewModel viewModel = null;
+		try{
+			viewModel = dozerMapper.map(
+					userDao.findByFirstAndLastNames(firstname, lastname), EmployeeViewModel.class
+					);
+		}catch(Exception e){
+			log.info("No employee found with firstname : {} and lastname : {}", firstname, lastname);
+		}
 		return viewModel;
 	}
 	

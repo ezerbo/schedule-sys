@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleViewModel {
+public class ScheduleUpdateViewModel {
 	
 	private Long id;
 	
@@ -31,4 +31,12 @@ public class ScheduleViewModel {
 	private String shift;
 	
 	private String scheduleStatus;
+	
+	private String schedulePostStatus;
+	
+	private Boolean timesheetReceived;
+	
+	private Double hours;
+	
+	private Long overtime;
 }

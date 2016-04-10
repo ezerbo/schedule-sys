@@ -30,7 +30,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @ImportResource("classpath:init-db.xml")
-@ComponentScan(basePackages = {"com.rj.sys.dao", "com.rj.sys.service"})
+@ComponentScan(basePackages = {"com.rj.sys.dao", "com.rj.sys.service", "com.rj.sys.utils"})
 public class TestConfiguration {
 	
 	private final static String packagesToScan = "com.rj.sys.domain";

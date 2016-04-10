@@ -100,6 +100,7 @@ public class FacilityService {
 					);
 		}catch(Exception nre){
 			log.info("No facility found with id : {}", id);
+			log.error("", nre);
 		}
 		return viewModel;
 	}

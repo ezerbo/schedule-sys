@@ -30,13 +30,12 @@ public class ScheduleServiceTest {
 	public void test(){
 		int sizeBeforeCreation = scheduleDao.findAll().size();
 		ScheduleViewModel viewModel = ScheduleViewModel.builder()
-				.assigneeId(2L)
-				.facility("Brandywine")
+				.employeeName("test-fn,test-ln")
 				.scheduleComment("Comment on the schedule")
-				.scheduleDate(new Date())
+				.scheduleDate(new Date(System.currentTimeMillis() + (24*60*60*1000)))
+				.facility("Sunnyside")
 				.scheduleStatus("CONFIRMED")
 				.shift("NIGHT")
-				.timesheetReceived(false)
 				.build();
 		
 		scheduleService.createSchedule(viewModel, 1L);

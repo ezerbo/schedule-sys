@@ -1,7 +1,6 @@
 package com.rj.sys.domain;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -10,8 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,12 +36,9 @@ public class ScheduleUpdate implements Serializable {
 	@EmbeddedId
 	private ScheduleUpdatePK id;
 	
-	@Column(name="UPDATE_COMMENT")
-	private String updateComment;
-	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name="UPDATE_TIME")
-	private Date updateTime;
+	private DateTime updateTime;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "ID", insertable = false, updatable = false)

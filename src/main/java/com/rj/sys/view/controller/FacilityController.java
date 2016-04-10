@@ -1,8 +1,7 @@
 package com.rj.sys.view.controller;
 
+import java.util.Date;
 import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.sys.service.FacilityService;
+import com.rj.sys.service.ScheduleService;
+import com.rj.sys.view.model.EmployeeScheduleViewModel;
 import com.rj.sys.view.model.FacilityViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -27,6 +31,7 @@ import com.rj.sys.view.model.FacilityViewModel;
 public class FacilityController {
 	
 	private @Autowired FacilityService facilityService;
+	private @Autowired ScheduleService scheduleService;
 
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody ResponseEntity<?> findAllFacilities(){
@@ -146,6 +151,27 @@ public class FacilityController {
 		
 		log.info("Facility successfully deleted : {}", viewModel);
 		return new ResponseEntity<String>("Facility successfully deleted", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> findSchedules(@PathVariable Long id, @RequestParam Date startDate, @RequestParam Date endDate){
+		log.info("Finding schedules between startDate : {} and endDate : {} for facility with id : {}", startDate, endDate);
+		
+		if(facilityService.findActiveById(id) == null){
+			log.info("No facility found with id : {}", id);
+			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		List<EmployeeScheduleViewModel> viewModels = scheduleService.findAllBetweenDatesByFacilityId(startDate, endDate, id);
+		if(viewModels.isEmpty()){
+			log.info("No schedules found between : {} and : {} for facility with id : {}", startDate, endDate, id);
+			return new ResponseEntity<>(
+					"No schedules found between : " + startDate + " and : " + endDate + " for facility with id : " + id, HttpStatus.NOT_FOUND
+					);
+		}
+		
+		log.info("Schedules found : {}", viewModels);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}
 	
 }

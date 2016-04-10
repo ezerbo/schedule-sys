@@ -2,8 +2,6 @@ package com.rj.sys.view.controller;
 
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +17,14 @@ import com.rj.sys.service.UserService;
 import com.rj.sys.view.model.EmployeeViewModel;
 import com.rj.sys.view.model.SupervisorViewModel;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Controller
 @RequestMapping("/users")
 public class UserController {
-	
+	//TODO Split into employee and supervisor controllers
 	private @Autowired UserService userService;
-	
 	private @Autowired PositionService positionService;
 	
 	@RequestMapping(value = "/employees", method = RequestMethod.POST, consumes = "application/json")
@@ -279,4 +278,5 @@ public class UserController {
 		
 		return new ResponseEntity<String>("Supervisor successfully deleted", HttpStatus.OK);
 	}
+	
 }

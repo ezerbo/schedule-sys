@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 /**
@@ -12,7 +14,9 @@ import lombok.NoArgsConstructor;
  */
 
 @Embeddable
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class ScheduleUpdatePK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
