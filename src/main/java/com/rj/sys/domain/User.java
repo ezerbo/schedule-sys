@@ -75,8 +75,8 @@ public class User implements Serializable {
 	@Column(name="OTHER_PHONE_NUMBER")
 	private String otherPhoneNumber;
 	
-	@Column(name="PASSWORD")
-	private String password;
+	@Column(name="PASSWORDHASH")
+	private String passwordHash;
 	
 	@Column(name="PRIMARY_PHONE_NUMBER")
 	private String primaryPhoneNumber;

@@ -9,6 +9,9 @@ public class ServiceHelper {
 	}
 	
 	public static String [] getFirstAndLastNames(String formattedName){
+		if(!formattedName.contains(",")){
+			throw new RuntimeException(formattedName + " is not well formatted, example : firstname,lastname");
+		}
 		return formattedName.split(",");
 	}
 	

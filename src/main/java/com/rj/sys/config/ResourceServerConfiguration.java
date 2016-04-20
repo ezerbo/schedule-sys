@@ -73,13 +73,10 @@ public class ResourceServerConfiguration  extends ResourceServerConfigurerAdapte
                 .antMatchers("/**")
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/**").access("#oauth2.hasScope('read')")
-                .antMatchers(HttpMethod.PATCH, "/**").access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.POST, "/**").access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.PUT, "/**").access("#oauth2.hasScope('write')")
-                .antMatchers(HttpMethod.DELETE, "/**").access("#oauth2.hasScope('write')")
-                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
+                .antMatchers(HttpMethod.GET, "/**").hasAnyAuthority("ADMIN","EMPLOYEE", "SUPERVISOR")
+                .antMatchers(HttpMethod.POST, "/**").hasAnyAuthority("ADMIN", "SUPERVISOR")
+                .antMatchers(HttpMethod.PUT, "/**").hasAnyAuthority("ADMIN", "SUPERVISOR")
+                .antMatchers(HttpMethod.DELETE, "/**").hasAnyAuthority("ADMIN", "SUPERVISOR");
         // @formatter:on
     }
     

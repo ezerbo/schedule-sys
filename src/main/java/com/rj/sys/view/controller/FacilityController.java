@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.sys.service.FacilityService;
 import com.rj.sys.service.ScheduleService;
-import com.rj.sys.view.model.EmployeeScheduleViewModel;
 import com.rj.sys.view.model.FacilityViewModel;
+import com.rj.sys.view.model.ScheduleViewModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -162,14 +162,14 @@ public class FacilityController {
 			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
-		List<EmployeeScheduleViewModel> viewModels = scheduleService.findAllBetweenDatesByFacilityId(startDate, endDate, id);
+		List<ScheduleViewModel> viewModels = scheduleService.findAllBetweenDatesByFacilityId(startDate, endDate, id);
 		if(viewModels.isEmpty()){
 			log.info("No schedules found between : {} and : {} for facility with id : {}", startDate, endDate, id);
 			return new ResponseEntity<>(
 					"No schedules found between : " + startDate + " and : " + endDate + " for facility with id : " + id, HttpStatus.NOT_FOUND
 					);
 		}
-		
+	
 		log.info("Schedules found : {}", viewModels);
 		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}

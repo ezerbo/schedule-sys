@@ -85,40 +85,6 @@
 			<a>facility.name</a>
 			<b>facility</b>
 		</field>
-	</mapping>
-	
-	<mapping>
-		<class-a>com.rj.sys.domain.Schedule</class-a>
-		<class-b>com.rj.sys.view.model.ScheduleUpdateViewModel</class-b>
-		<field>
-			<a>shift.shiftName</a>
-			<b>shift</b>
-		</field>
-		<field>
-			<a>scheduleStatus.status</a>
-			<b>scheduleStatus</b>
-		</field>
-		<field>
-			<a>facility.name</a>
-			<b>facility</b>
-		</field>
-	</mapping>
-	
-	<mapping>
-		<class-a>com.rj.sys.domain.Schedule</class-a>
-		<class-b>com.rj.sys.view.model.EmployeeScheduleViewModel</class-b>
-		<field>
-			<a>shift.shiftName</a>
-			<b>shift</b>
-		</field>
-		<field>
-			<a>scheduleStatus.status</a>
-			<b>scheduleStatus</b>
-		</field>
-		<field>
-			<a>facility.name</a>
-			<b>facility</b>
-		</field>
 		<field>
 			<a>shift.startTime</a>
 			<b>time.startTime</b>

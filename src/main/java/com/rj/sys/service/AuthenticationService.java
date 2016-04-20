@@ -25,8 +25,9 @@ public class AuthenticationService {
 		OAuth2Authentication user = 
 				(OAuth2Authentication) SecurityContextHolder.getContext()
 									.getAuthentication();
+		
 		User authenticatedUser = userDao.findByUsername(user.getName());
-		log.info("Authenticated user : {}", authenticatedUser);
+		log.info("Authenticated user : {} with authorities : {}", authenticatedUser, user.getAuthorities());
 		return authenticatedUser;
 	}
 }

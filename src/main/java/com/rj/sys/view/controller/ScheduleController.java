@@ -18,7 +18,6 @@ import com.rj.sys.service.FacilityService;
 import com.rj.sys.service.ScheduleService;
 import com.rj.sys.service.ScheduleStatusService;
 import com.rj.sys.service.ShiftService;
-import com.rj.sys.view.model.ScheduleUpdateViewModel;
 import com.rj.sys.view.model.ScheduleViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +80,7 @@ public class ScheduleController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-	public ResponseEntity<?> updateSchedule(@PathVariable Long id, @RequestBody ScheduleUpdateViewModel viewModel){
+	public ResponseEntity<?> updateSchedule(@PathVariable Long id, @RequestBody ScheduleViewModel viewModel){
 		log.info("Updating schedule with id : {} : {}", id, viewModel);
 		
 		ScheduleViewModel vm = scheduleService.findById(id);
@@ -105,7 +104,7 @@ public class ScheduleController {
 						);
 			}
 			
-			if(viewModel.getEmployeeName() !=null){
+			if(viewModel.getEmployeeName() != null){
 				if(scheduleService.findScheduleByAssigneeNameAndShiftNameAndScheduleDate(
 						viewModel.getEmployeeName(), viewModel.getShift(), viewModel.getScheduleDate()) != null){
 					log.info("A schedule already exists for employee with id : {}", id);

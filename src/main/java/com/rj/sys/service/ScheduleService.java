@@ -28,8 +28,6 @@ import com.rj.sys.domain.User;
 import com.rj.sys.utils.Constants;
 import com.rj.sys.utils.ObjectValidator;
 import com.rj.sys.utils.ServiceHelper;
-import com.rj.sys.view.model.EmployeeScheduleViewModel;
-import com.rj.sys.view.model.ScheduleUpdateViewModel;
 import com.rj.sys.view.model.ScheduleViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +60,7 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public ScheduleUpdateViewModel updateSchedule(ScheduleUpdateViewModel viewModel, Long userUpdatingScheduleId){
+	public ScheduleViewModel updateSchedule(ScheduleViewModel viewModel, Long userUpdatingScheduleId){
 		Schedule schedule = buildSchedule(viewModel);
 		User userUpdatingSchedule = userDao.findOne(userUpdatingScheduleId);
 		log.info("Updating schedule : {}", schedule);
@@ -83,7 +81,7 @@ public class ScheduleService {
 		scheduleUpdate = scheduleUpdateDao.merge(scheduleUpdate);
 		log.info("ScheduleUpdate : {}", scheduleUpdate);
 		
-		return dozerMapper.map(schedule, ScheduleUpdateViewModel.class);
+		return dozerMapper.map(schedule, ScheduleViewModel.class);
 	}
 	
 	@Transactional
@@ -100,15 +98,15 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public List<EmployeeScheduleViewModel> findAllBetweenDatesByFacilityId(Date startDate, Date endDate, Long facilityId){
+	public List<ScheduleViewModel> findAllBetweenDatesByFacilityId(Date startDate, Date endDate, Long facilityId){
 		
 		log.info("Finding schedules between startDate : {} and endDate : {} for facility with id : {}", startDate, endDate, facilityId);
 		
-		List<EmployeeScheduleViewModel> viewModels = new LinkedList<>();
+		List<ScheduleViewModel> viewModels = new LinkedList<>();
 		List<Schedule> schedules = scheduleDao.findAllBetweenDatesByFacilityId(startDate, endDate, facilityId);
 		for(Schedule schedule : schedules){
 			
-			EmployeeScheduleViewModel viewModel = dozerMapper.map(schedule, EmployeeScheduleViewModel.class);
+			ScheduleViewModel viewModel = dozerMapper.map(schedule, ScheduleViewModel.class);
 			User assigner = schedule.getAssigner();
 			User assignee = schedule.getAssignee();
 			viewModel.setFilledBy(ServiceHelper.formatFirstAndLastNames(assigner));
@@ -177,7 +175,7 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public ScheduleUpdateViewModel findByFacilityIdAndScheduleId(Long facilityId, Long scheduleId){
+	public ScheduleViewModel findByFacilityIdAndScheduleId(Long facilityId, Long scheduleId){
 		log.info("Finding schedule by facilityId : {} and scheduleId : {}", facilityId, scheduleId);
 		return null;
 	}
@@ -238,7 +236,7 @@ public class ScheduleService {
 		return schedule;
 	}
 	
-	private Schedule buildSchedule(ScheduleUpdateViewModel viewModel){
+	private Schedule buildSchedule(ScheduleViewModel viewModel){
 		log.info("Building schedule with : {}", viewModel);
 		
 		User assignee = findAssignee(viewModel.getEmployeeName());
