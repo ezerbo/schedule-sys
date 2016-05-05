@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,11 @@ public class ScheduleService {
 	@Transactional
 	public ScheduleViewModel createSchedule(ScheduleViewModel viewModel, Long assignerId){
 		validator.validate(viewModel);
+		//schedulePostStatus, overtime, hours are not needed when creating a schedule
+		//Only one view model has been used for all operations on schedule, so not all the fields are required for every operation
+		viewModel.setSchedulePostStatus(null);
+		viewModel.setOvertime(0.);
+		viewModel.setHours(0.);
 		Schedule schedule = buildSchedule(viewModel, assignerId);
 		log.info("Creating schedule : {}", schedule);
 		schedule = scheduleDao.merge(schedule);
@@ -61,7 +67,8 @@ public class ScheduleService {
 	
 	@Transactional
 	public ScheduleViewModel updateSchedule(ScheduleViewModel viewModel, Long userUpdatingScheduleId){
-		Schedule schedule = buildSchedule(viewModel);
+		validator.validate(viewModel);
+		Schedule schedule = buildSchedule(viewModel, null);
 		User userUpdatingSchedule = userDao.findOne(userUpdatingScheduleId);
 		log.info("Updating schedule : {}", schedule);
 		schedule = scheduleDao.merge(schedule);
@@ -71,13 +78,13 @@ public class ScheduleService {
 				.userId(userUpdatingScheduleId.intValue())
 				.build();
 		
-		
 		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder()
 				.id(pk)
 				.schedule(schedule)
 				.user(userUpdatingSchedule)
 				.updateTime(new DateTime())
 				.build();
+		
 		scheduleUpdate = scheduleUpdateDao.merge(scheduleUpdate);
 		log.info("ScheduleUpdate : {}", scheduleUpdate);
 		
@@ -126,7 +133,6 @@ public class ScheduleService {
 			
 			viewModels.add(viewModel);
 		}
-		
 		
 		log.info("Schedule found : {}", viewModels);
 		return viewModels;
@@ -195,7 +201,7 @@ public class ScheduleService {
 			log.info(
 					"No schedule found for employee with name : {} on shift with name : {}", firstAndLastNames[0], shift
 					);
-			log.error("", nre);
+			log.error("Error message : {}", nre.getMessage());
 		}
 		
 		return viewModel;
@@ -215,45 +221,25 @@ public class ScheduleService {
 	}
 	
 	private Schedule buildSchedule(ScheduleViewModel viewModel, Long assignerId){
-		log.info("Building schedule : {}", viewModel);
-		
-		User assignee = findAssignee(viewModel.getEmployeeName());
-		
-		User assigner = userDao.findOne(assignerId);
-		Shift shift = shiftDao.findByName(viewModel.getShift());
-		Facility facility = facilityDao.findActiveByName(viewModel.getFacility());
-		ScheduleStatus scheduleStatus = scheduleStatusDao.findByStatus(viewModel.getScheduleStatus());
-		Schedule schedule = Schedule.builder()
-				.assignee(assignee)
-				.assigner(assigner)
-				.facility(facility)
-				.scheduleStatus(scheduleStatus)
-				.shift(shift)
-				.scheduleComment(viewModel.getScheduleComment())
-				.scheduleDate(viewModel.getScheduleDate())
-				.build()
-				;
-		return schedule;
-	}
-	
-	private Schedule buildSchedule(ScheduleViewModel viewModel){
 		log.info("Building schedule with : {}", viewModel);
 		
 		User assignee = findAssignee(viewModel.getEmployeeName());
-		User assigner = scheduleDao.findOne(viewModel.getId()).getAssigner();
-		Shift shift = shiftDao.findByName(viewModel.getShift());
+		User assigner = null;
+		
+		assigner = (assignerId == null)	
+					?(scheduleDao.findOne(viewModel.getId()).getAssigner())
+					:userDao.findOne(assignerId);
+		
+		Shift shift = shiftDao.findByName(StringUtils.upperCase(viewModel.getShift()));
+		
 		Facility facility = facilityDao.findActiveByName(viewModel.getFacility());
-		ScheduleStatus scheduleStatus = scheduleStatusDao.findByStatus(viewModel.getScheduleStatus());
+		ScheduleStatus scheduleStatus = scheduleStatusDao.findByStatus(StringUtils.upperCase(viewModel.getScheduleStatus()));
 		SchedulePostStatus schedulePostStatus = null;
 		
-		if(viewModel.getSchedulePostStatus() == null){
-			try{
-				schedulePostStatus = schedulePostStatusDao.findByStatus(
-						viewModel.getSchedulePostStatus()
-						);
-			}catch(Exception nre){
-				log.info("No schedule status found by status : {}", viewModel.getScheduleStatus());
-			}
+		if(viewModel.getSchedulePostStatus() != null){
+			schedulePostStatus = schedulePostStatusDao.findByStatus(
+					StringUtils.upperCase(viewModel.getSchedulePostStatus())
+					);
 		}
 		
 		Schedule schedule = Schedule.builder()
@@ -265,9 +251,16 @@ public class ScheduleService {
 				.schedulePostStatus(schedulePostStatus)
 				.shift(shift)
 				.scheduleComment(viewModel.getScheduleComment())
-				.scheduleDate(viewModel.getScheduleDate())
+				//.scheduleDate(viewModel.getScheduleDate())
+				.timesheetReceived(viewModel.getTimesheetReceived())
+				.hours(viewModel.getHours())
+				.overtime(viewModel.getOvertime())
 				.build();
-
+		
+		if(viewModel.getScheduleDate() != null){
+			schedule.setScheduleDate(viewModel.getScheduleDate());
+		}
+		
 		return schedule;
 	}
 	
@@ -280,4 +273,5 @@ public class ScheduleService {
 		}
 		return assignee;
 	}
+	
 }

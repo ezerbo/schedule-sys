@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rj.sys.utils.JsonDateSerializer;
 
@@ -34,6 +35,7 @@ public class ScheduleViewModel {
 	
 	@Future
 	@JsonSerialize(using = JsonDateSerializer.class)
+	@JsonFormat(timezone = "America/New_York")
 	private Date scheduleDate;
 	
 	private String facility;
@@ -48,7 +50,7 @@ public class ScheduleViewModel {
 	
 	private Double hours;
 	
-	private Long overtime;
+	private Double overtime;
 	
 	private TimeViewModel time;
 }

@@ -38,43 +38,57 @@ public class ScheduleController {
 		
 		log.info("Saving schedule : {} ", viewModel);
 		
+		//If an employee name is provided, make sure there is no schedule for that employee on the same date
 		if(viewModel.getEmployeeName() != null){
 			if(scheduleService.findScheduleByAssigneeNameAndShiftNameAndScheduleDate(
 					viewModel.getEmployeeName(), viewModel.getShift(), viewModel.getScheduleDate()) != null){
 				log.info("A schedule already exists for employee : {}", viewModel.getEmployeeName());
 				return new ResponseEntity<String>(
 						"A schedule already exists for employee : " + viewModel.getEmployeeName() 
-						+ " on : " + viewModel.getScheduleDate(), HttpStatus.INTERNAL_SERVER_ERROR
-						);
+						+ " on : " + viewModel.getScheduleDate(), HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
 		
+		//Make sure the schedule date has been provided
+		
+		if(viewModel.getScheduleDate() == null){
+			log.error("No schedule date provided");
+			return new ResponseEntity<String>("No schedule provided", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		//Verify that the facility provided exists
 		if(facilityService.findActiveByName(viewModel.getFacility()) == null){
 			log.info("No facility found by name : {}", viewModel.getFacility());
 			return new ResponseEntity<String>(
 					"No facility found by name : " + viewModel.getFacility(), HttpStatus.NOT_FOUND
 					);
 		}
-		
-		if(scheduleStatusService.findByStatus(viewModel.getScheduleStatus()) == null){
+		//Validates the schedule status provided
+		//TODO can schedule status be CONFIRMED when no employee is provided ?
+		if(scheduleStatusService.findByStatus(StringUtils.upperCase(viewModel.getScheduleStatus())) == null){
 			log.info("No such schedule status : {}", viewModel.getScheduleStatus());
 			return new ResponseEntity<String>(
 					"No such schedule status : " + viewModel.getScheduleStatus(), HttpStatus.NOT_FOUND
 					);
 		}
-		
-		if(shiftService.findByName(viewModel.getShift()) == null){
+		//Verify that the shift provided is valid
+		if(shiftService.findByName(StringUtils.upperCase(viewModel.getShift())) == null){
 			log.info("No such shift : {}", viewModel.getShift());
 			return new ResponseEntity<String>(
 					"No such shift : " + viewModel.getShift(), HttpStatus.NOT_FOUND
 					);
 		}
 		
-		viewModel.setId(null);
+		viewModel.setId(null);//set the schedule ID to null so that a new record can be created
+		//Otherwise, if a schedule exists with the same ID, it's going to be updated
+		try{
 		viewModel = scheduleService.createSchedule(
 				viewModel, authenticationService.getAuthenticatedUser().getId()
 				);
-		
+		}catch(Exception e){
+			log.error("An unexpected error occured : {}", e.getMessage());
+			return new ResponseEntity<String>("An unexpected error occured", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		log.info("Schedule saved : {}", viewModel);
 		return new ResponseEntity<String>("Schedule successfully saved", HttpStatus.CREATED);
 	}
@@ -108,6 +122,7 @@ public class ScheduleController {
 				if(scheduleService.findScheduleByAssigneeNameAndShiftNameAndScheduleDate(
 						viewModel.getEmployeeName(), viewModel.getShift(), viewModel.getScheduleDate()) != null){
 					log.info("A schedule already exists for employee with id : {}", id);
+					
 					return new ResponseEntity<String>(
 							"A schedule already exists for employee with id : " + id +" on : " + viewModel.getScheduleDate(), HttpStatus.INTERNAL_SERVER_ERROR
 							);
@@ -121,7 +136,7 @@ public class ScheduleController {
 				);
 		log.info("Updated schedule : {}", viewModel);
 		
-		return new ResponseEntity<>("Schedule updated successfully", HttpStatus.OK);
+		return ResponseEntity.ok("Schedule updated successfully");
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
