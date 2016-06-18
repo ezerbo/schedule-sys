@@ -1,15 +1,7 @@
 package com.rj.sys.domain;
 
 import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,73 +9,56 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 
 /**
- * The persistent class for the facility database table.
+ * The persistent class for the FACILITY database table.
  * 
  */
-
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "FACILITY")
+@Table(name="FACILITY")
 @ToString(exclude = {"schedules", "staffMembers"})
 public class Facility implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID", unique=true, nullable=false)
 	private Long id;
-	
-	@Column(name="ADDRESS")
+
+	@Column(name="ADDRESS", nullable=false, length=50)
 	private String address;
-	
-	@Column(name="FAX")
+
+	@Column(name="FAX", nullable=false, length=50)
 	private String fax;
-	
-	@Column(name="NAME")
+
+	@Column(name="NAME", nullable=false, length=50)
 	private String name;
-	
-	@Column(name="PHONE_NUMBER")
+
+	@Column(name="PHONE_NUMBER", nullable=false, length=50)
 	private String phoneNumber;
-	
-	@Column(name="ISDELETED")
-	private Boolean isDeleted;
-	
+
 	@OneToMany(mappedBy="facility")
 	private List<Schedule> schedules;
-	
+
 	@OneToMany(mappedBy="facility")
 	private List<StaffMember> staffMembers;
-
-	public Schedule addSchedule(Schedule schedule) {
-		getSchedules().add(schedule);
-		schedule.setFacility(this);
-
-		return schedule;
-	}
-
-	public Schedule removeSchedule(Schedule schedule) {
-		getSchedules().remove(schedule);
-		schedule.setFacility(null);
-
-		return schedule;
-	}
 
 	public StaffMember addStaffMember(StaffMember staffMember) {
 		getStaffMembers().add(staffMember);
 		staffMember.setFacility(this);
-
 		return staffMember;
 	}
 
 	public StaffMember removeStaffMember(StaffMember staffMember) {
 		getStaffMembers().remove(staffMember);
 		staffMember.setFacility(null);
-
 		return staffMember;
 	}
 

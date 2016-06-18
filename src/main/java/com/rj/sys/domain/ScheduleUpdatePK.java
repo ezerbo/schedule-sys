@@ -1,7 +1,6 @@
 package com.rj.sys.domain;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -9,23 +8,23 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 /**
- * The primary key class for the schedule_update database table.
- * 
+ * The primary key class for the SCHEDULE_UPDATE database table.
+ * @author ezerbo
  */
-
-@Embeddable
 @Builder
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleUpdatePK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Column(name="SCHEDULE_ID", insertable=false, updatable=false)
+
+	@Column(name="SCHEDULE_ID", unique=true, nullable=false)
 	private int scheduleId;
-	
-	@Column(name="USER_ID", insertable=false, updatable=false)
+
+	@Column(name="USER_ID", insertable=false, updatable=false, unique=true, nullable=false)
 	private int userId;
+
 
 	public boolean equals(Object other) {
 		if (this == other) {

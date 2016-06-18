@@ -27,12 +27,6 @@ public class PositionDao extends GenericDao<Position>{
 		return position;
 	}
 	
-	public Position delete(Long id){
-		Position position  = findOne(id);
-		position.setIsDeleted(true);
-		return position;
-	}
-	
 	/**
 	 * @param id
 	 * @return

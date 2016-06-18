@@ -3,96 +3,84 @@
 	xsi:schemaLocation="http://dozer.sourceforge.net
           http://dozer.sourceforge.net/schema/beanmapping.xsd">
 	
+	
 	<mapping>
-		<class-a>com.rj.sys.domain.User</class-a>
-		<class-b>com.rj.sys.view.model.EmployeeViewModel</class-b>
+		<class-a>com.rj.sys.domain.ScheduleSysUser</class-a>
+		<class-b>com.rj.sys.view.model.ScheduleSysUserViewModel</class-b>
 		<field>
-			<a>position.name</a>
-			<b>position</b>
-		</field>
-		<field>
-			<a>position.positionType.type</a>
-			<b>positionType</b>
+			<a>userRole.userRole</a>
+			<b>userRole</b>
 		</field>
 	</mapping>
 	
-	<mapping>
-		<class-a>com.rj.sys.domain.User</class-a>
-		<class-b>com.rj.sys.view.model.SupervisorViewModel</class-b>
-		<field>
-			<a>primaryPhoneNumber</a>
-			<b>phoneNumber</b>
-		</field>
-	</mapping>
-	
-	<mapping>
-		<class-a>com.rj.sys.domain.Position</class-a>
-		<class-b>com.rj.sys.view.model.PositionViewModel</class-b>
-		<field>
-			<a>name</a>
-			<b>positionName</b>
-		</field>
-		<field type="one-way">
-			<a>positionType.type</a>
-			<b>positionType</b>
-		</field>
-	</mapping>
+<!-- 	<mapping> -->
+<!-- 		<class-a>com.rj.sys.domain.Position</class-a> -->
+<!-- 		<class-b>com.rj.sys.view.model.PositionViewModel</class-b> -->
+<!-- 		<field> -->
+<!-- 			<a>name</a> -->
+<!-- 			<b>positionName</b> -->
+<!-- 		</field> -->
+<!-- 		<field type="one-way"> -->
+<!-- 			<a>positionType.type</a> -->
+<!-- 			<b>positionType</b> -->
+<!-- 		</field> -->
+<!-- 	</mapping> -->
 	
 	
-	<mapping>
-		<class-a>com.rj.sys.domain.StaffMember</class-a>
-		<class-b>com.rj.sys.view.model.StaffMemberViewModel</class-b>
-		<field type="one-way">
-			<a>facility.name</a>
-			<b>facility</b>
-		</field>
-	</mapping>
+<!-- 	<mapping> -->
+<!-- 		<class-a>com.rj.sys.domain.StaffMember</class-a> -->
+<!-- 		<class-b>com.rj.sys.view.model.StaffMemberViewModel</class-b> -->
+<!-- 		<field type="one-way"> -->
+<!-- 			<a>facility.name</a> -->
+<!-- 			<b>facility</b> -->
+<!-- 		</field> -->
+<!-- 	</mapping> -->
 	
-	<mapping>
-		<class-a>com.rj.sys.domain.UserTest</class-a>
-		<class-b>com.rj.sys.view.model.UserTestViewModel</class-b>
-		<field>
-			<a>user.id</a>
-			<b>userId</b>
-		</field>
-		<field>
-			<a>testType.typeName</a>
-			<b>testTypeName</b>
-		</field>
-	</mapping>
+<!-- 	<mapping> -->
+<!-- 		<class-a>com.rj.sys.domain.UserTest</class-a> -->
+<!-- 		<class-b>com.rj.sys.view.model.UserTestViewModel</class-b> -->
+<!-- 		<field> -->
+<!-- 			<a>user.id</a> -->
+<!-- 			<b>userId</b> -->
+<!-- 		</field> -->
+<!-- 		<field> -->
+<!-- 			<a>testType.typeName</a> -->
+<!-- 			<b>testTypeName</b> -->
+<!-- 		</field> -->
+<!-- 	</mapping> -->
 	
-	<mapping>
-		<class-a>com.rj.sys.domain.License</class-a>
-		<class-b>com.rj.sys.view.model.LicenseViewModel</class-b>
-		<field>
-			<a>user.id</a>
-			<b>userId</b>
-		</field>
-	</mapping>
+<!-- 	<mapping> -->
+<!-- 		<class-a>com.rj.sys.domain.License</class-a> -->
+<!-- 		<class-b>com.rj.sys.view.model.LicenseViewModel</class-b> -->
+<!-- 		<field> -->
+<!-- 			<a>user.id</a> -->
+<!-- 			<b>userId</b> -->
+<!-- 		</field> -->
+<!-- 	</mapping> -->
 	
-	<mapping>
-		<class-a>com.rj.sys.domain.Schedule</class-a>
-		<class-b>com.rj.sys.view.model.ScheduleViewModel</class-b>
-		<field>
-			<a>shift.shiftName</a>
-			<b>shift</b>
-		</field>
-		<field>
-			<a>scheduleStatus.status</a>
-			<b>scheduleStatus</b>
-		</field>
-		<field>
-			<a>facility.name</a>
-			<b>facility</b>
-		</field>
-		<field>
-			<a>shift.startTime</a>
-			<b>time.startTime</b>
-		</field>
-		<field>
-			<a>shift.endTime</a>
-			<b>time.endTime</b>
-		</field>
-	</mapping>
+<!-- 	<mapping> -->
+<!-- 		<class-a>com.rj.sys.domain.Schedule</class-a> -->
+<!-- 		<class-b>com.rj.sys.view.model.ScheduleViewModel</class-b> -->
+<!-- 		<field> -->
+<!-- 			<a>shift.shiftName</a> -->
+<!-- 			<b>shift</b> -->
+<!-- 		</field> -->
+<!-- 		<field> -->
+<!-- 			<a>scheduleStatus.status</a> -->
+<!-- 			<b>scheduleStatus</b> -->
+<!-- 		</field> -->
+<!-- 		<field> -->
+<!-- 			<a>facility.name</a> -->
+<!-- 			<b>facility</b> -->
+<!-- 		</field> -->
+<!-- 		<field> -->
+<!-- 			<a>shift.startTime</a> -->
+<!-- 			<b>time.startTime</b> -->
+<!-- 		</field> -->
+<!-- 		<field> -->
+<!-- 			<a>shift.endTime</a> -->
+<!-- 			<b>time.endTime</b> -->
+<!-- 		</field> -->
+<!-- 	</mapping> -->
 	
 </mappings>

@@ -34,19 +34,20 @@ public class TestService {
 	public void deleteTest(Long testId){
 		log.info("Deleting test with id : {}", testId);
 		Test test = testDao.findOne(testId);
-		if(test.getTestTypes().isEmpty()){
-			testDao.delete(test);
-		}else{
-			log.info("Test wiht id : {} cannot be deleted because it still has types");
-			throw new RuntimeException("Test with id : " + testId + " cannot be deleted");
-		}
+//		if(test.getTestTypes().isEmpty()){
+//			testDao.delete(test);
+//		}else{
+//			log.info("Test wiht id : {} cannot be deleted because it still has types");
+//			throw new RuntimeException("Test with id : " + testId + " cannot be deleted");
+//		}
 	}
 	
 	@Transactional
 	public boolean hasTypes(Long id){
 		Test test = testDao.findOne(id);
 		Assert.notNull(test, "No test found with id : " + id);
-		return !test.getTestTypes().isEmpty();
+		//return !test.getTestTypes().isEmpty();
+		return false;
 	}
 	
 	@Transactional

@@ -1,6 +1,6 @@
 package com.rj.sys.utils;
 
-import com.rj.sys.domain.User;
+import com.rj.sys.domain.Employee;
 
 public class ServiceHelper {
 	
@@ -15,7 +15,7 @@ public class ServiceHelper {
 		return formattedName.split(",");
 	}
 	
-	public static String formatFirstAndLastNames(User user){
+	public static String formatFirstAndLastNames(Employee user){
 		String filledBy = new StringBuilder()
 							.append(user.getFirstName())
 							.append(",")

@@ -3,25 +3,22 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rj.sys.dao.PositionDao;
-import com.rj.sys.dao.PositionTypeDao;
 import com.rj.sys.domain.Position;
-import com.rj.sys.domain.PositionType;
 import com.rj.sys.view.model.PositionViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class PositionService {
 	
 	private @Autowired PositionDao positionDao;
-	private @Autowired PositionTypeDao positionTypeDao;
 	
 	private @Autowired DozerBeanMapper dozerMapper;
 	
@@ -31,21 +28,21 @@ public class PositionService {
 		
 		log.info("Creating a position : {}", viewModel);
 		
-		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
-		Position position = dozerMapper.map(viewModel, Position.class);
-		position.setIsDeleted(false);
-		position.setPositionType(positionType);
-		position = positionDao.merge(position);
+//		PositionType positionType = positionTypeDao.findByType(viewModel.getPositionType());
+//		Position position = dozerMapper.map(viewModel, Position.class);
+//		position.setIsDeleted(false);
+//		position.setPositionType(positionType);
+//		position = positionDao.merge(position);
 		
-		return dozerMapper.map(position, PositionViewModel.class);
+		return dozerMapper.map(null, PositionViewModel.class);
 	}
 	
-	@Transactional
-	public PositionViewModel deletePosition(Long id){
-		log.info("Deleteing position with id : {}", id);
-		Position position = positionDao.delete(id);
-		return dozerMapper.map(position, PositionViewModel.class);
-	}
+//	@Transactional
+//	public PositionViewModel deletePosition(Long id){
+//		log.info("Deleteing position with id : {}", id);
+//		Position position = positionDao.delete(id);
+//		return dozerMapper.map(position, PositionViewModel.class);
+//	}
 	
 	@Transactional
 	public List<PositionViewModel> findAllPositions(){

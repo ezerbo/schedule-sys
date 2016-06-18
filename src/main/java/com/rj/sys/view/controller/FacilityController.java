@@ -147,7 +147,7 @@ public class FacilityController {
 			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
-		FacilityViewModel viewModel = facilityService.deleteFacility(id);
+		FacilityViewModel viewModel = null;//facilityService.deleteFacility(id);
 		
 		log.info("Facility successfully deleted : {}", viewModel);
 		return new ResponseEntity<String>("Facility successfully deleted", HttpStatus.OK);

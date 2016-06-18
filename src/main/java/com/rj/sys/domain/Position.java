@@ -1,28 +1,18 @@
 package com.rj.sys.domain;
 
 import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import java.util.List;
 
 
 /**
- * The persistent class for the position database table.
+ * The persistent class for the POSITION database table.
  * 
  */
 @Data
@@ -30,40 +20,32 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "POSITION")
-@ToString(exclude = {"users", "positionType"})
+@Table(name="POSITION")
 public class Position implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	private String name;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="TYPE_ID")
-	private PositionType positionType;
-	
-	@Column(name = "ISDELETED")
-	private Boolean isDeleted;
-	
-	@OneToMany(mappedBy="position")
-	private List<User> users;
-	
-	public User addUser(User user) {
-		getUsers().add(user);
-		user.setPosition(this);
 
-		return user;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID", unique=true, nullable=false)
+	private Long id;
+
+	@Column(name="NAME", nullable=false, length=50)
+	private String name;
+
+	@OneToMany(mappedBy="position")
+	private List<Employee> employees;
+
+	public Employee addEmployee(Employee employee) {
+		getEmployees().add(employee);
+		employee.setPosition(this);
+		return employee;
 	}
-	
-	public User removeUser(User user) {
-		getUsers().remove(user);
-		user.setPosition(null);
-		
-		return user;
+
+	public Employee removeEmployee(Employee employee) {
+		getEmployees().remove(employee);
+		employee.setPosition(null);
+		return employee;
 	}
-	
+
 }

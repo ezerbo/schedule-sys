@@ -30,29 +30,24 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @ImportResource("classpath:init-db.xml")
-@ComponentScan(basePackages = {"com.rj.sys.dao", "com.rj.sys.service", "com.rj.sys.utils"})
+@ComponentScan(basePackages = {"com.rj.sys"})
 public class TestConfiguration {
 	
-	private final static String packagesToScan = "com.rj.sys.domain";
-	private final static String dozerMappingFileLocation = "dozer/dozer-config.xml";
-	private final static String propertiesFileLocation = "test-application.properties";
-	
-	
-	@Value("${db.username}")
+	@Value("${schedule-sys.db.username}")
 	private String dbUsername;
-	@Value("${db.password}")
+	@Value("${schedule-sys.db.password}")
 	private String dbPassword;
-	@Value("${db.url}")
+	@Value("${schedule-sys.db.url}")
 	private String dbUrl;
-	@Value("${db.autoddl}")
+	@Value("${schedule-sys.db.autoddl}")
 	private String dbAutoDdl;
-	@Value("${db.driver}")
+	@Value("${schedule-sys.db.driver}")
 	private String driverClassName;
 	
 	@Bean
 	public DozerBeanMapper dozerBeanMapper(){
 		List<String> mappingFiles = new ArrayList<String>();
-		mappingFiles.add(dozerMappingFileLocation);
+		mappingFiles.add("dozer/dozer-config.xml");
 		DozerBeanMapper bm = new DozerBeanMapper(mappingFiles);
 		return bm;
 	}
@@ -79,6 +74,7 @@ public class TestConfiguration {
 		Map<String, Object> props = new HashMap<String, Object>();
 		props.put("hibernate.dialect", H2Dialect.class.getName());
 		props.put("hibernate.hbm2ddl.auto", dbAutoDdl);
+		props.put("hibernate.show_sql", false);
 		return props;
 	}
 	
@@ -97,14 +93,14 @@ public class TestConfiguration {
 		emf.setDataSource(dataSource());
 		emf.setJpaPropertyMap(jpaProperties());
 		emf.setJpaVendorAdapter(jpaVendorAdapter());
-		emf.setPackagesToScan(packagesToScan);
+		emf.setPackagesToScan("com.rj.sys.domain");
 		return emf;
 	}
 	
 	@Bean
 	public static PropertyPlaceholderConfigurer placeholderConfigurer(){
 		PropertyPlaceholderConfigurer configurer = new PropertyPlaceholderConfigurer();
-		Resource[] resources = new ClassPathResource[]{new ClassPathResource(propertiesFileLocation)};
+		Resource[] resources = new ClassPathResource[]{new ClassPathResource("test-application.properties")};
 		configurer.setLocations(resources);
 		configurer.setIgnoreUnresolvablePlaceholders(true);
 		configurer.setOrder(1);

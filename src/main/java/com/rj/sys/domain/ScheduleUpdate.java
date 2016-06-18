@@ -1,26 +1,18 @@
 package com.rj.sys.domain;
 
 import java.io.Serializable;
-
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.joda.time.DateTime;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 
 /**
- * The persistent class for the schedule_update database table.
+ * The persistent class for the SCHEDULE_UPDATE database table.
  * 
  */
 @Data
@@ -32,20 +24,19 @@ import lombok.NoArgsConstructor;
 public class ScheduleUpdate implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	@EmbeddedId
 	private ScheduleUpdatePK id;
-	
-	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
-	@Column(name="UPDATE_TIME")
-	private DateTime updateTime;
-	
+
+	@Column(name="`COMMENT`", nullable=false, length=254)
+	private String comment;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="UPDATE_TIME", nullable=false)
+	private Date updateTime;
+
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "SCHEDULE_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-	private Schedule schedule;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-	private User user;
+	@JoinColumn(name="USER_ID", nullable=false, insertable=false, updatable=false)
+	private ScheduleSysUser scheduleSysUser;
 
 }

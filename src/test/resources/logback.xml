@@ -7,6 +7,11 @@
 		</encoder>
 	</appender>
 	
+	<logger name="org.hibernate" level="WARN"/>
+	<logger name="org.springframework.jdbc" level="WARN"/>
+	<logger name="org.springframework.aop" level="WARN"/>
+	<logger name="org.dozer" level="WARN"/>
+	
 	<root level="info" >
 		<appender-ref ref="STDOUT" />
 	</root>

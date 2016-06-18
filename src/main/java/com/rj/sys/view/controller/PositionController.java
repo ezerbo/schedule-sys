@@ -2,8 +2,6 @@ package com.rj.sys.view.controller;
 
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.rj.sys.domain.PositionType;
 import com.rj.sys.service.PositionService;
-import com.rj.sys.service.PositionTypeService;
 import com.rj.sys.view.model.PositionViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
@@ -26,7 +24,6 @@ import com.rj.sys.view.model.PositionViewModel;
 public class PositionController {
 	
 	private @Autowired PositionService positionService;
-	private @Autowired PositionTypeService positionTypeService;
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public  @ResponseBody ResponseEntity<?> findPositions(){
@@ -45,8 +42,8 @@ public class PositionController {
 	
 	@RequestMapping(value = "/nurses", method = RequestMethod.GET, produces = "application/json")
 	public  @ResponseBody ResponseEntity<?> findNursePositions(){
-		log.info("Finding nurse positions");
-		List<PositionViewModel> viewModels = positionService.findAllPositions(PositionType.NURSE_POSITION);
+		log.info("Finding nurse positions");//TODO UPDATE THIS
+		List<PositionViewModel> viewModels = positionService.findAllPositions("");
 		
 		if(viewModels.isEmpty()){
 			log.info("No position was found");
@@ -60,8 +57,8 @@ public class PositionController {
 	
 	@RequestMapping(value = "/caregivers", method = RequestMethod.GET, produces = "application/json")
 	public  @ResponseBody ResponseEntity<?> findCaregiverPositions(){
-		log.info("Finding caregiver positions");
-		List<PositionViewModel> viewModels = positionService.findAllPositions(PositionType.CAREGIVER_POSITION);
+		log.info("Finding caregiver positions");//TODO UPDATE THIS
+		List<PositionViewModel> viewModels = positionService.findAllPositions("");
 		
 		if(viewModels.isEmpty()){
 			log.info("No position was found");
@@ -100,9 +97,9 @@ public class PositionController {
 	public @ResponseBody ResponseEntity<String> createPosition(@RequestBody PositionViewModel viewModel){
 		
 		log.info("Create position request received : {}", viewModel);
-		
-		if(!StringUtils.endsWithIgnoreCase(viewModel.getPositionType(), PositionType.CAREGIVER_POSITION)
-				&& !StringUtils.endsWithIgnoreCase(viewModel.getPositionType(), PositionType.NURSE_POSITION)){
+		//TODO UPDATE THIS
+		if(!StringUtils.endsWithIgnoreCase(viewModel.getPositionType(), "")
+				&& !StringUtils.endsWithIgnoreCase(viewModel.getPositionType(), "")){
 			
 			log.info("No such position type : {}", viewModel.getPositionType());
 			
@@ -134,10 +131,10 @@ public class PositionController {
 			return new ResponseEntity<String>("No position found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
-		if(positionTypeService.findByType(viewModel.getPositionType()) == null){
-			log.info("No such position type : {}", viewModel.getPositionType());
-			return new ResponseEntity<String>("No such position type " + viewModel.getPositionType(), HttpStatus.NOT_FOUND);
-		}
+//		if(positionTypeService.findByType(viewModel.getPositionType()) == null){
+//			log.info("No such position type : {}", viewModel.getPositionType());
+//			return new ResponseEntity<String>("No such position type " + viewModel.getPositionType(), HttpStatus.NOT_FOUND);
+//		}
 		
 		if(positionService.findByName(viewModel.getPositionName()) != null){
 			log.info("A position with name '{}' already exist", viewModel.getPositionName());
@@ -153,19 +150,19 @@ public class PositionController {
 		return new ResponseEntity<String>("Position was successfully updated", HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public @ResponseBody ResponseEntity<String> deletePosition(@PathVariable Long id){
-		log.info("Delete request received for posistion with id : {}", id);
-		
-		if(positionService.findById(id) == null){
-			log.info("No position found with id : {}", id);
-			return new ResponseEntity<String>("No position found with id : " + id, HttpStatus.NOT_FOUND);
-		}
-		
-		PositionViewModel viewModel = positionService.deletePosition(id);
-		
-		log.info("Successfully deleted position : {}", viewModel);
-		return new ResponseEntity<String>("Position was successfully deleted", HttpStatus.OK);
-	}
+//	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+//	public @ResponseBody ResponseEntity<String> deletePosition(@PathVariable Long id){
+//		log.info("Delete request received for posistion with id : {}", id);
+//		
+//		if(positionService.findById(id) == null){
+//			log.info("No position found with id : {}", id);
+//			return new ResponseEntity<String>("No position found with id : " + id, HttpStatus.NOT_FOUND);
+//		}
+//		
+//		PositionViewModel viewModel = positionService.deletePosition(id);
+//		
+//		log.info("Successfully deleted position : {}", viewModel);
+//		return new ResponseEntity<String>("Position was successfully deleted", HttpStatus.OK);
+//	}
 	
 }

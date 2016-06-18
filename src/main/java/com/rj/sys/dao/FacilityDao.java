@@ -62,9 +62,4 @@ public class FacilityDao extends GenericDao<Facility> {
 		return facilities;
 	}
 	
-	public Facility delete(Long id){
-		Facility facility = findOne(id);
-		facility.setIsDeleted(true);
-		return facility;
-	}
 }

@@ -1,33 +1,18 @@
 package com.rj.sys.domain;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+
+import java.util.Date;
 
 
 /**
- * The persistent class for the schedule database table.
+ * The persistent class for the SCHEDULE database table.
  * 
  */
 @Data
@@ -35,90 +20,56 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "SCHEDULE")
-@ToString(exclude = {"assignee","facility"
-		,"schedulePostStatus","scheduleStatus"
-		,"shift","scheduleUpdates"})
+@Table(name="SCHEDULE")
 public class Schedule implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="ID", unique=true, nullable=false)
 	private Long id;
-	
-	@Column(name="CREATE_DATE")
-	private Date createDate;
-	
-	@Column(name="IS_DELETED")
-	private boolean isDeleted;
-	
-	@Column(name="HOURS")
-	private Double hours;
-	
-	@Column(name="OVERTIME")
-	private Double overtime;
-	
-	@Column(name="SCHEDULE_COMMENT")
-	private String scheduleComment;
-	
+
 	@Temporal(TemporalType.DATE)
-	@Column(name="SCHEDULE_DATE")
+	@Column(name="CREATE_DATE", nullable=false)
+	private Date createDate;
+
+	@Column(name="HOURS")
+	private int hours;
+
+	@Column(name="OVERTIME")
+	private int overtime;
+
+	@Column(name="POST_STATUS_ID")
+	private int postStatusId;
+
+	@Column(name="SCHEDULE_COMMENT", length=254)
+	private String scheduleComment;
+
+	@Temporal(TemporalType.DATE)
+	@Column(name="SCHEDULE_DATE", nullable=false)
 	private Date scheduleDate;
-	
+
+	@Column(name="STATUS_ID", nullable=false)
+	private int statusId;
+
 	@Column(name="TIMESHEET_RECEIVED")
-	private Boolean timesheetReceived;
-	
+	private byte timesheetReceived;
+
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="ASSIGNEE_ID")
-	private User assignee;
-	
+	@JoinColumn(name="EMPLOYEE_ID")
+	private Employee employee;
+
 	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="FACILITY_ID", nullable=false)
 	private Facility facility;
-	
+
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="POST_STATUS_ID")
-	private SchedulePostStatus schedulePostStatus;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="SHIFT_ID", nullable=false)
 	private Shift shift;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="STATUS_ID")
-	private ScheduleStatus scheduleStatus;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="USER_ID")
-	private User assigner;
-	
-	@OneToMany(mappedBy="schedule")
-	private List<ScheduleUpdate> scheduleUpdates;
-	
-	@PrePersist
-	public void onCreate(){
-		setCreateDate(new Date());
-		setTimesheetReceived(false);
-	}
-	
-	@PreUpdate
-	public void onUpdate(){
-		if(getTimesheetReceived() == null){
-			setTimesheetReceived(false);
-		}
-	}
-	
-	public ScheduleUpdate addScheduleUpdate(ScheduleUpdate scheduleUpdate) {
-		getScheduleUpdates().add(scheduleUpdate);
-		scheduleUpdate.setSchedule(this);
 
-		return scheduleUpdate;
-	}
-	
-	public ScheduleUpdate removeScheduleUpdate(ScheduleUpdate scheduleUpdate) {
-		getScheduleUpdates().remove(scheduleUpdate);
-		scheduleUpdate.setSchedule(null);
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="USER_ID", nullable=false)
+	private ScheduleSysUser scheduleSysUser;
 
-		return scheduleUpdate;
-	}
-	
 }

@@ -3,35 +3,35 @@ package com.rj.sys.service;
 import java.util.LinkedList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
-
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rj.sys.dao.LicenseDao;
-import com.rj.sys.dao.UserDao;
+import com.rj.sys.dao.ScheduleSysUserDao;
 import com.rj.sys.domain.License;
-import com.rj.sys.domain.User;
+import com.rj.sys.domain.ScheduleSysUser;
 import com.rj.sys.view.model.LicenseViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 @Transactional
 public class LicenseService {
 	
-	private @Autowired UserDao userDao;
+	private @Autowired ScheduleSysUserDao userDao;
 	private @Autowired LicenseDao licenseDao;
 	private @Autowired DozerBeanMapper dozerMapper;
 	
 	public LicenseViewModel createOrUpdateLicense(LicenseViewModel viewModel){
 		log.info("Creating or updating license : {}", viewModel);
-		User user = userDao.findOne(viewModel.getUserId());
+		ScheduleSysUser user = userDao.findOne(viewModel.getUserId());
 		License license = License.builder()
 				.id(viewModel.getId())
-				.user(user)
-				.licenseNumber(viewModel.getLicenseNumber())
+				//.user(user)
+				//.licenseNumber(viewModel.getLicenseNumber())
 				.expirationDate(viewModel.getExpirationDate())
 				.build();
 		license = licenseDao.merge(license);

@@ -1,97 +1,103 @@
-//package com.rj.sys.service;
-//
-//import static org.junit.Assert.assertEquals;
-//
-//import java.util.List;
-//
-//import javax.persistence.EntityManager;
-//import javax.persistence.PersistenceContext;
-//
-//import org.junit.Ignore;
-//import org.junit.Test;
-//import org.junit.runner.RunWith;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-//import org.springframework.transaction.annotation.Transactional;
-//
-//import com.rj.sys.dao.PositionDao;
-//import com.rj.sys.dao.UserDao;
-//import com.rj.sys.dao.UserTypeDao;
-//import com.rj.sys.domain.Position;
-//import com.rj.sys.domain.User;
-//import com.rj.sys.domain.UserType;
-//import com.rj.sys.dto.UserTO;
-//
-//@Ignore
-//@RunWith(SpringJUnit4ClassRunner.class)
-////@ContextConfiguration(classes = {TestConfiguration.class})
-//public class UserServiceTest {
-//	
-//	private @PersistenceContext EntityManager entityManager;
-//	
-//	private @Autowired UserService userService;
-//	
-//	private @Autowired UserDao userDao;
-//	private @Autowired PositionDao positionDao;
-//	private @Autowired UserTypeDao userTypeDao;
-//	
-//	@Test
-//	@Transactional
-//	public void createNewUser(){
-//		
-//		Position position = buildPostion();
-//		position = positionDao.merge(position);
-//		
-//		UserType userType = buildUserType();
-//		userType = userTypeDao.merge(userType);
-//		entityManager.flush();
-//		
-//		UserTO userToBeSaved = buildUser();
-//		//userToBeSaved.setPositionType(position);
-//		userToBeSaved.setType(userType.getType());
-//		//userService.createUser(userToBeSaved);
-//		entityManager.flush();
-//		User savedUser = userDao.findOneByEmailAddress(userToBeSaved.getEmailAddress());
-//		
-//		assertEquals(savedUser.getUsername(), userToBeSaved.getUsername());
-//	}
-//	
-//	@Transactional
-//	public void findAllActiveUsers(){
-//		@SuppressWarnings("unused")
-//		List<User> activeUsers = userDao.findAllActiveUsers();
-//	}
-//	
-//	private UserTO buildUser(){
-//		UserTO employee = UserTO.builder()
-//				.emailAddress("itenmitsurigui@kenshin.com")
-//				.username("himura")
-//				.password("secret")
-//				.firstName("myFirstname")
-//				.lastName("myLastname")
-//				.primaryPhoneNumber("+1-718-790-9836")
-//				.ebc(true)
-//				.cpr("mycpr")
-//				.build()
-//		;
-//		return employee;
-//	}
-//	
-//	
-//	private Position buildPostion(){
-//		Position position = Position.builder()
-//				.name("RN")
-//				//.positionType(Position.N_POSITION)
-//				.build()
-//		;
-//		return position;
-//	}
-//	
-//	private UserType buildUserType(){
-//		UserType userType = UserType.builder()
-//				.type(User.SIMPLE_USER)
-//				.build()
-//		;
-//		return userType;
-//	}
-//}
+package com.rj.sys.service;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.rj.sys.config.TestConfiguration;
+import com.rj.sys.data.UserRole;
+import com.rj.sys.view.model.ScheduleSysUserViewModel;
+
+@Transactional
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(TestConfiguration.class)
+public class UserServiceTest {
+	
+	public @Autowired UserService userService;
+	
+	@Test
+	public void test_findByUsername_WithExistingUser(){
+		ScheduleSysUserViewModel viewModel = userService.findByUsername("ezerbo");
+		assertEquals(viewModel.getUserRole(), UserRole.ADMIN_ROLE);
+	}
+	
+	@Test
+	public void test_findByUsername_WithNonExistingUser(){
+		ScheduleSysUserViewModel viewModel = userService.findByUsername("This user does not exist");
+		assertNull(viewModel);
+	}
+	
+	@Test
+	public void test_findAllByRole_WithADMIN_Role_Returns_03_Users(){
+		List<ScheduleSysUserViewModel> users = userService.findAllByRole(UserRole.ADMIN_ROLE);
+		assertEquals(users.size(), 3);
+	}
+	
+	@Test
+	public void test_findAllbyRole_WithSUPERVISOR_Role_Returns_07_Users(){
+		List<ScheduleSysUserViewModel> users = userService.findAllByRole(UserRole.SUPERVISOR_ROLE);
+		assertEquals(users.size() , 7);
+	}
+	
+	@Test
+	public void test_findAll_Returns_10_Users(){
+		List<ScheduleSysUserViewModel> users = userService.findAll();
+		assertEquals(users.size(), 10);
+	}
+	
+	@Test
+	public void test_findOne_WithExistingId(){
+		ScheduleSysUserViewModel viewModel = userService.findOne(1L);
+		assertEquals(viewModel.getUsername(), "ezerbo");
+	}
+	
+	@Test
+	public void test_findOne_WithNonExistingId(){
+		ScheduleSysUserViewModel viewModel = userService.findOne(0L);
+		assertNull(viewModel);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void test_createOrUpdate_WithExistingRole_ThrowsException(){
+		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
+				.username("ezerbo-test")
+				.userRole("This role does not exist")
+				.password("random password")
+				.build();
+		userService.createOrUpdate(viewModel);
+	}
+	
+	@Test(expected = RuntimeException.class)
+	public void test_createOrUpdate_WithNonExistingUser_ThrowsException(){
+		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
+				.username("ezerbo")
+				.userRole(UserRole.ADMIN_ROLE)
+				.build();
+		userService.createOrUpdate(viewModel);
+	}
+	
+	@Test
+	public void test_createOrUpdate_WithExistingUserAndRole_Adds_One_User(){
+		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
+				.username("new-user")
+				.userRole(UserRole.ADMIN_ROLE)
+				.password("secured-password")
+				.build();
+		userService.createOrUpdate(viewModel);
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void test_createOrUpdate_WithNull_ThrowsException(){
+		userService.createOrUpdate(null);
+	}
+	
+}
