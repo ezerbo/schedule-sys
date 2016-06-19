@@ -32,13 +32,13 @@ public class ObjectValidator<T> {
 			Set<ConstraintViolation<T>> constraintViolations = validator.validate(objectToBeValidated);
 			if(!constraintViolations.isEmpty()){
 				for (ConstraintViolation<T> constraintViolation : constraintViolations) {
-					message.append("'")
-							.append(constraintViolation.getPropertyPath().toString()+" : "+constraintViolation.getInvalidValue())
-							.append("'")
-							.append(constraintViolation.getMessage()+",")
-					;
+					message.append(constraintViolation.getPropertyPath())
+							.append(" ")
+							.append(constraintViolation.getMessage());
 				}
+				
 				log.debug("{} is not valid due to {} ", objectToBeValidated, message);
+				
 				throw new RuntimeException(message.toString());
 			}
 		}catch(ValidationException e){

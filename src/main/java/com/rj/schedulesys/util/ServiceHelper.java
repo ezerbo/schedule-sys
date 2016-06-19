@@ -2,6 +2,9 @@ package com.rj.schedulesys.util;
 
 import com.rj.schedulesys.domain.Employee;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ServiceHelper {
 	
 	private ServiceHelper(){
@@ -22,5 +25,10 @@ public class ServiceHelper {
 							.append(user.getLastName())
 							.toString();
 		return filledBy;
+	}
+	
+	public static void logAndThrowException(String message){
+		log.error(message);
+		throw new RuntimeException(message);
 	}
 }

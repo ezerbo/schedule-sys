@@ -23,13 +23,19 @@ public class UserController {
 	
 	private @Autowired UserService userService;
 	
+	/**
+	 * @param viewModel
+	 * @return message
+	 */
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> create(@RequestBody ScheduleSysUserViewModel viewModel){
 		
 		log.info("Creating new user : {}", viewModel);
 		
+		viewModel.setId(null);
+		
 		try{
-			viewModel = userService.createOrUpdate(viewModel);
+			viewModel = userService.create(viewModel);
 		}catch(Exception e){
 			log.error("{} occurred while creating a user", e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -40,6 +46,11 @@ public class UserController {
 		return new ResponseEntity<String>("User successfully created", HttpStatus.CREATED);
 	}
 	
+	/**
+	 * @param id
+	 * @param viewModel
+	 * @return message
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<String> update(@PathVariable Long id, @RequestBody ScheduleSysUserViewModel viewModel){
 		
@@ -57,7 +68,7 @@ public class UserController {
 		viewModel.setId(id);//Override the id
 		
 		try{
-			viewModel = userService.createOrUpdate(viewModel);	
+			viewModel = userService.update(viewModel);	
 		}catch(Exception e){
 			log.error("{} occurred while updating a user ", e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -65,9 +76,13 @@ public class UserController {
 		
 		log.info("Successfully updated user : {}", viewModel);
 		
-		return new ResponseEntity<String>("User successfully updated", HttpStatus.CREATED);
+		return new ResponseEntity<String>("User successfully updated", HttpStatus.OK);
 	}
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> finById(@PathVariable Long id){
 		
@@ -85,6 +100,9 @@ public class UserController {
 		return new ResponseEntity<ScheduleSysUserViewModel>(viewModel, HttpStatus.OK);
 	}
 	
+	/**
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAll(){
 		
@@ -102,19 +120,29 @@ public class UserController {
 		return new ResponseEntity<List<ScheduleSysUserViewModel>>(viewModels, HttpStatus.OK);
 	}
 	
-//	@RequestMapping(value = "/employees/{id}", method = RequestMethod.DELETE)
-//	public ResponseEntity<String> deleteEmployee(@PathVariable Long id){
-//		log.info("Deleting user with id : {}", id);
-//		
-//		if(userService.findEmployeeById(id) == null){
-//			log.info("No employee found by id : {}", id);
-//			return new ResponseEntity<String>("No employee found by id : " + id, HttpStatus.NOT_FOUND);
-//		}
-//		
-//		userService.deleteUser(id);
-//		log.info("Employee with id : {} successfully deleted", id);
-//		
-//		return new ResponseEntity<String>("Employee successfully deleted", HttpStatus.NOT_FOUND);
-//	}
+	/**
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<String> delete(@PathVariable Long id){
+	
+		log.info("Deleting user with id : {}", id);
+		
+		if(userService.findOne(id) == null){
+			log.info("No user found with id : {}", id);
+			return new ResponseEntity<String>("No user found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		try{
+			userService.delete(id);
+		}catch(Exception e){
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		log.info("User with id : {} successfully deleted", id);
+		
+		return new ResponseEntity<String>("User successfully deleted", HttpStatus.OK);
+	}
 	
 }

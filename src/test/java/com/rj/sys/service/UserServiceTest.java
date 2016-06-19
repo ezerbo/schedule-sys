@@ -1,13 +1,16 @@
 package com.rj.sys.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
@@ -17,6 +20,7 @@ import com.rj.schedulesys.data.UserRole;
 import com.rj.schedulesys.service.UserService;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 import com.rj.sys.config.TestConfiguration;
+import com.rj.sys.util.TestUtil;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -24,6 +28,9 @@ import com.rj.sys.config.TestConfiguration;
 public class UserServiceTest {
 	
 	public @Autowired UserService userService;
+	
+	@Rule
+	public ExpectedException expectedException = ExpectedException.none();
 	
 	@Test
 	public void test_findByUsername_WithExistingUser(){
@@ -68,37 +75,115 @@ public class UserServiceTest {
 	}
 	
 	@Test(expected = RuntimeException.class)
-	public void test_createOrUpdate_WithExistingRole_ThrowsException(){
+	public void test_create_WithNonExistingRole_ThrowsException(){
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.username("ezerbo-test")
 				.userRole("This role does not exist")
 				.password("random password")
 				.build();
-		userService.createOrUpdate(viewModel);
+		userService.create(viewModel);
 	}
 	
 	@Test(expected = RuntimeException.class)
-	public void test_createOrUpdate_WithNonExistingUser_ThrowsException(){
+	public void test_create_WithNonExistingUser_ThrowsException(){
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.username("ezerbo")
 				.userRole(UserRole.ADMIN_ROLE)
 				.build();
-		userService.createOrUpdate(viewModel);
+		userService.create(viewModel);
 	}
 	
 	@Test
-	public void test_createOrUpdate_WithExistingUserAndRole_Adds_One_User(){
+	public void test_create_WithExistingUserAndRole_Adds_One_User(){
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.username("new-user")
 				.userRole(UserRole.ADMIN_ROLE)
 				.password("secured-password")
 				.build();
-		userService.createOrUpdate(viewModel);
+		viewModel = userService.create(viewModel);
+		assertNotNull(viewModel.getId());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void test_createOrUpdate_WithNull_ThrowsException(){
-		userService.createOrUpdate(null);
+	public void test_create_WithNull_ThrowsException(){
+		userService.create(null);
+	}
+	
+	@Test
+	public void test_create_WithUsernameLength_LessThan_06(){
+		
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("username size must be between 6 and 50");
+		
+		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
+				null, "test", "secured-password", UserRole.ADMIN_ROLE
+				);
+		
+		userService.create(viewModel);
+		
+	}
+	
+	@Test
+	public void test_create_WithUsernameLength_GreaterThan_50(){
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("username size must be between 6 and 50");
+		
+		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
+				null, "This is a username which length must be greater than 50 characters for"
+				, "secured-password", UserRole.ADMIN_ROLE
+				);
+		
+		userService.create(viewModel);
+	}
+	
+	@Test
+	public void test_create_WithPasswordLengthLessThan_03(){
+		
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("password size must be between 3 and 50");
+		
+		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
+				null, "username"
+				, "12", UserRole.ADMIN_ROLE
+				);
+		
+		userService.create(viewModel);
+		
+	}
+	
+	@Test
+	public void test_create_WithPasswordLengthGreaterThan_50(){
+		
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("password size must be between 3 and 50");
+		
+		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
+				null, "This is a password which length must be greater than 50 characters"
+				, "12", UserRole.ADMIN_ROLE
+				);
+		
+		userService.create(viewModel);
+		
+	}
+	
+	@Test
+	public void test_delete_WithNonExistingId(){
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("No user found with id : 0");
+		userService.delete(0L);
+	}
+	
+	@Test
+	public void test_delete_WithUserThatHasCreatedSchedules(){
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("User with id : 1 can not be deleted");
+		userService.delete(1L);
+	}
+	
+	@Test
+	public void test_delete_WithUserThatHasCreatedAndUpdatedNoSchedules(){
+		userService.delete(7L);
+		assertNull(userService.findOne(7L));
 	}
 	
 }

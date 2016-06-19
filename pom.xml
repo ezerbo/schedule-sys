@@ -115,7 +115,6 @@
 		<dependency>
 			<groupId>com.jayway.jsonpath</groupId>
 			<artifactId>json-path</artifactId>
-			<version>${com.jayway.jsonpath-version}</version>
 			<scope>test</scope>
 		</dependency>
 
