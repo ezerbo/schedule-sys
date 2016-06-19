@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.rj.sys.view.model.ScheduleSysUserViewModel;
+import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 
 public class TestUtil {
 	

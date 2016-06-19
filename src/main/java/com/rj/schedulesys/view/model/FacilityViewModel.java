@@ -1,0 +1,33 @@
+package com.rj.schedulesys.view.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+import com.rj.schedulesys.annotation.PhoneNumber;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class FacilityViewModel {
+	
+	private Long id;
+	
+	@NotBlank
+	private String address;
+	
+	@NotBlank
+	private String fax;
+	
+	@NotBlank
+	private String name;
+	
+	@PhoneNumber
+	private String phoneNumber;
+	
+}

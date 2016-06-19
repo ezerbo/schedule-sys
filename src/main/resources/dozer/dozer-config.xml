@@ -5,8 +5,8 @@
 	
 	
 	<mapping>
-		<class-a>com.rj.sys.domain.ScheduleSysUser</class-a>
-		<class-b>com.rj.sys.view.model.ScheduleSysUserViewModel</class-b>
+		<class-a>com.rj.schedulesys.domain.ScheduleSysUser</class-a>
+		<class-b>com.rj.schedulesys.view.model.ScheduleSysUserViewModel</class-b>
 		<field>
 			<a>userRole.userRole</a>
 			<b>userRole</b>

@@ -30,7 +30,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
 @ImportResource("classpath:init-db.xml")
-@ComponentScan(basePackages = {"com.rj.sys"})
+@ComponentScan(basePackages = {"com.rj.schedulesys"})
 public class TestConfiguration {
 	
 	@Value("${schedule-sys.db.username}")
@@ -93,7 +93,7 @@ public class TestConfiguration {
 		emf.setDataSource(dataSource());
 		emf.setJpaPropertyMap(jpaProperties());
 		emf.setJpaVendorAdapter(jpaVendorAdapter());
-		emf.setPackagesToScan("com.rj.sys.domain");
+		emf.setPackagesToScan("com.rj.schedulesys.domain");
 		return emf;
 	}
 	

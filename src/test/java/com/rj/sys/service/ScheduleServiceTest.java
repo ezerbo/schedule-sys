@@ -12,9 +12,10 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rj.schedulesys.dao.ScheduleDao;
+import com.rj.schedulesys.service.ScheduleService;
+import com.rj.schedulesys.view.model.ScheduleViewModel;
 import com.rj.sys.config.TestConfiguration;
-import com.rj.sys.dao.ScheduleDao;
-import com.rj.sys.view.model.ScheduleViewModel;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestConfiguration.class)

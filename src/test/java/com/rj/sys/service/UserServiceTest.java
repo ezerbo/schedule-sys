@@ -13,9 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.rj.schedulesys.data.UserRole;
+import com.rj.schedulesys.service.UserService;
+import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 import com.rj.sys.config.TestConfiguration;
-import com.rj.sys.data.UserRole;
-import com.rj.sys.view.model.ScheduleSysUserViewModel;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
