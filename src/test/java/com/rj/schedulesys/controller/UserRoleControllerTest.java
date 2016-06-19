@@ -1,4 +1,4 @@
-package com.rj.sys.controller;
+package com.rj.schedulesys.controller;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

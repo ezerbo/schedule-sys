@@ -1,4 +1,4 @@
-package com.rj.sys.service;
+package com.rj.schedulesys.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,8 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.rj.schedulesys.dao.ScheduleSysUserDao;
 import com.rj.schedulesys.data.UserRole;
 import com.rj.schedulesys.service.UserService;
+import com.rj.schedulesys.util.PasswordHashUtil;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 import com.rj.sys.config.TestConfiguration;
 import com.rj.sys.util.TestUtil;
@@ -27,6 +29,7 @@ import com.rj.sys.util.TestUtil;
 @SpringApplicationConfiguration(TestConfiguration.class)
 public class UserServiceTest {
 	
+	private @Autowired ScheduleSysUserDao userDao;
 	public @Autowired UserService userService;
 	
 	@Rule
@@ -92,9 +95,9 @@ public class UserServiceTest {
 				.build();
 		userService.create(viewModel);
 	}
-	
+
 	@Test
-	public void test_create_WithExistingUserAndRole_Adds_One_User(){
+	public void test_create_WithExistingUserAndRole_Adds_One_User() throws Exception{
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.username("new-user")
 				.userRole(UserRole.ADMIN_ROLE)
@@ -102,6 +105,7 @@ public class UserServiceTest {
 				.build();
 		viewModel = userService.create(viewModel);
 		assertNotNull(viewModel.getId());
+		PasswordHashUtil.validatePassword("secured-password", userDao.findOne(viewModel.getId()).getPasswordhash());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

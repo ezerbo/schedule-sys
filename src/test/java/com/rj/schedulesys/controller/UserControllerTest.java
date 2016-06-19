@@ -1,4 +1,4 @@
-package com.rj.sys.controller;
+package com.rj.schedulesys.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;

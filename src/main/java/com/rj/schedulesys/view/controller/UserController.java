@@ -84,7 +84,7 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> finById(@PathVariable Long id){
+	public ResponseEntity<?> finOne(@PathVariable Long id){
 		
 		log.info("Finding user by id : {}", id);
 		

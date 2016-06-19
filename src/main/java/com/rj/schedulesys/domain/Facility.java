@@ -29,25 +29,25 @@ public class Facility implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="ADDRESS", nullable=false, length=50)
+	@Column(name = "ADDRESS", nullable = false, length = 50)
 	private String address;
 
-	@Column(name="FAX", nullable=false, length=50)
+	@Column(name = "FAX", nullable = false, length = 50)
 	private String fax;
 
-	@Column(name="NAME", nullable=false, length=50)
+	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;
 
-	@Column(name="PHONE_NUMBER", nullable=false, length=50)
+	@Column(name = "PHONE_NUMBER", nullable = false, length = 50)
 	private String phoneNumber;
 
-	@OneToMany(mappedBy="facility")
+	@OneToMany(mappedBy = "facility")
 	private List<Schedule> schedules;
 
-	@OneToMany(mappedBy="facility")
+	@OneToMany(mappedBy = "facility")
 	private List<StaffMember> staffMembers;
 
 	public StaffMember addStaffMember(StaffMember staffMember) {

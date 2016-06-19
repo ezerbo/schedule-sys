@@ -1,4 +1,4 @@
-package com.rj.sys.service;
+package com.rj.schedulesys.service;
 
 import static org.junit.Assert.*;
 

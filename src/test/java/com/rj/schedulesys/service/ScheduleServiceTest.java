@@ -1,3 +1,4 @@
+package com.rj.schedulesys.service;
 //package com.rj.sys.service;
 //
 //import static org.junit.Assert.assertEquals;

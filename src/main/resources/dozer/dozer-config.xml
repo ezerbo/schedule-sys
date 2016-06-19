@@ -13,18 +13,14 @@
 		</field>
 	</mapping>
 	
-<!-- 	<mapping> -->
-<!-- 		<class-a>com.rj.sys.domain.Position</class-a> -->
-<!-- 		<class-b>com.rj.sys.view.model.PositionViewModel</class-b> -->
-<!-- 		<field> -->
-<!-- 			<a>name</a> -->
-<!-- 			<b>positionName</b> -->
-<!-- 		</field> -->
-<!-- 		<field type="one-way"> -->
-<!-- 			<a>positionType.type</a> -->
-<!-- 			<b>positionType</b> -->
-<!-- 		</field> -->
-<!-- 	</mapping> -->
+	<mapping>
+		<class-a>com.rj.schedulesys.domain.StaffMember</class-a>
+		<class-b>com.rj.schedulesys.view.model.StaffMemberViewModel</class-b>
+		<field>
+			<a>facility.name</a>
+			<b>facilityName</b>
+		</field>
+	</mapping>
 	
 	
 <!-- 	<mapping> -->

@@ -23,23 +23,23 @@ import lombok.NoArgsConstructor;
 public class StaffMember implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="FIRST_NAME", nullable=false, length=50)
+	@Column(name = "FIRST_NAME", nullable = false, length = 50)
 	private String firstName;
-
-	@Column(name="LAST_NAME", nullable=false, length=50)
+	
+	@Column(name = "LAST_NAME", nullable = false, length = 50)
 	private String lastName;
-
-	@Column(name="TITLE", nullable=false, length=50)
+	
+	@Column(name = "TITLE", nullable = false, length = 50)
 	private String title;
-
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="FACILITY_ID", nullable=false)
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FACILITY_ID", nullable = false)
 	private Facility facility;
-
+	
 }

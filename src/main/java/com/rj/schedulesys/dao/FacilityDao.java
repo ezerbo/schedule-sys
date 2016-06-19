@@ -1,11 +1,14 @@
 package com.rj.schedulesys.dao;
 
-import java.util.List;
+import javax.persistence.NoResultException;
 
 import org.springframework.stereotype.Repository;
 
 import com.rj.schedulesys.domain.Facility;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class FacilityDao extends GenericDao<Facility> {
 	
@@ -13,53 +16,45 @@ public class FacilityDao extends GenericDao<Facility> {
 		setClazz(Facility.class);
 	}
 	
-	public Facility findActiveByName(String name){
-		Facility facility = entityManager.createQuery(
-				"from Facility f where f.name =:name and isDeleted = 0", Facility.class)
-				.setParameter("name", name)
-				.getSingleResult();
-		return facility;
-	}
-	
+	/**
+	 * @param name
+	 * @return
+	 */
 	public Facility findByName(String name){
-		Facility facility = entityManager.createQuery(
-				"from Facility f where f.name =:name", Facility.class)
-				.setParameter("name", name)
-				.getSingleResult();
+		
+		Facility facility = null;
+		
+		try{
+			facility = entityManager.createQuery(
+					"from Facility f where f.name =:name", Facility.class)
+					.setParameter("name", name)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No facility found with name {}", name);
+		}
+		
 		return facility;
+		
 	}
 	
-	public Facility findActiveByPhoneNumber(String phoneNumber){
-		Facility facility = entityManager.createQuery(
-				"from Facility f where f.phoneNumber =:phoneNumber and isDeleted = 0", Facility.class)
-				.setParameter("phoneNumber", phoneNumber)
-				.getSingleResult();
-		return facility;
-	}
-	
+	/**
+	 * @param phoneNumber
+	 * @return
+	 */
 	public Facility findByPhoneNumber(String phoneNumber){
-		Facility facility = entityManager.createQuery(
+		
+		Facility facility = null;
+		
+		try{
+			facility = entityManager.createQuery(
 				"from Facility f where f.phoneNumber =:phoneNumber", Facility.class)
 				.setParameter("phoneNumber", phoneNumber)
 				.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No facility found with phone number : {}", phoneNumber);
+		}
+		
 		return facility;
-	}
-	
-	public Facility findActiveById(Long id){
-		Facility facility = entityManager.createQuery(
-				"from Facility f where f.id =:id and isDeleted = 0", Facility.class)
-				.setParameter("id", id)
-				.getSingleResult();
-		return facility;
-	}
-	
-	
-	
-	public List<Facility> findAll(){
-		List<Facility> facilities = entityManager.createQuery(
-				"from Facility f where isDeleted = 0", Facility.class)
-				.getResultList();
-		return facilities;
 	}
 	
 }

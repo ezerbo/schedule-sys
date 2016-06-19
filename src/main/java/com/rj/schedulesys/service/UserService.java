@@ -228,7 +228,7 @@ public class UserService {
 		
 		if(userRole == null){
 			log.error("No such user role : {}", roleName);
-			throw new RuntimeException("No such user role : " + userRole);
+			throw new RuntimeException("No such user role : " + roleName);
 		}
 		
 		return userRole;
