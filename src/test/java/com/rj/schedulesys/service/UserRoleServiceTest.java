@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.rj.schedulesys.config.TestConfiguration;
 import com.rj.schedulesys.data.UserRole;
 import com.rj.schedulesys.service.UserRoleService;
 import com.rj.schedulesys.view.model.UserRoleViewModel;
-import com.rj.sys.config.TestConfiguration;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = TestConfiguration.class)

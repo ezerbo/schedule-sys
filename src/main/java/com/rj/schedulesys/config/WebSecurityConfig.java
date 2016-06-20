@@ -59,9 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		 return bm;
 	 }
 	 
-		@Bean
-		public ValidatorFactory validatorFactory(){
-			return Validation.buildDefaultValidatorFactory();
-		}
+	 @Bean
+	 public ValidatorFactory validatorFactory(){
+		 return Validation.buildDefaultValidatorFactory();
+	 }
+	 
 
 }

@@ -1,11 +1,13 @@
-package com.rj.sys.util;
+package com.rj.schedulesys.util;
 
 import java.io.IOException;
+import java.time.LocalTime;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.rj.schedulesys.view.model.FacilityViewModel;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
+import com.rj.schedulesys.view.model.ShiftViewModel;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
 
 public class TestUtil {
@@ -54,6 +56,16 @@ public class TestUtil {
 				.title(title)
 				.facilityName(facilityName)
 				.build();
+		return viewModel;
+	}
+	
+	public static ShiftViewModel aNewShiftViewModel(Long id, String name, LocalTime startTime, LocalTime endTime){
+		ShiftViewModel viewModel = ShiftViewModel.builder()
+				.id(id)
+				.name(name)
+				.startTime(startTime)
+				.endTime(endTime)
+				.build(); 
 		return viewModel;
 	}
 

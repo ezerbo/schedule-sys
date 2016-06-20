@@ -1,4 +1,4 @@
-package com.rj.sys.config;
+package com.rj.schedulesys.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;

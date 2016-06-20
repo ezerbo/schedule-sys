@@ -20,6 +20,7 @@
 		<jdbc:script location="classpath:test-data/shift.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-status.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-post-status.sql"/>
+		<jdbc:script location="classpath:test-data/schedule.sql"/>
 		<jdbc:script location="classpath:test-data/staff-member.sql"/>
 		<jdbc:script location="classpath:test-data/test.sql"/>
 		<jdbc:script location="classpath:test-data/test-sub-category.sql"/>

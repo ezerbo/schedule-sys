@@ -1,6 +1,10 @@
 package com.rj.schedulesys.view.model;
 
-import java.util.Date;
+import java.time.LocalTime;
+
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +16,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShiftViewModel {
+	
 	private Long id;
-	private Date endTime;
-	private String shiftName;
-	private Date startTime;
+	
+	private LocalTime startTime;
+	
+	@NotBlank
+	@Size(min = 3, max = 30)
+	private String name;
+	
+	private LocalTime endTime;
+	
 }

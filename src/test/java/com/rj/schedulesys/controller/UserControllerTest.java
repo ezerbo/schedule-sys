@@ -23,10 +23,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.rj.schedulesys.config.TestConfiguration;
 import com.rj.schedulesys.data.UserRole;
+import com.rj.schedulesys.util.TestUtil;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
-import com.rj.sys.config.TestConfiguration;
-import com.rj.sys.util.TestUtil;
 
 @Transactional
 @WebAppConfiguration

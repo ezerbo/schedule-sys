@@ -21,9 +21,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.rj.schedulesys.config.TestConfiguration;
+import com.rj.schedulesys.util.TestUtil;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
-import com.rj.sys.config.TestConfiguration;
-import com.rj.sys.util.TestUtil;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)

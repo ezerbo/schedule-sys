@@ -27,20 +27,20 @@ public class Shift implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
-
-	@Column(name="END_TIME", nullable=false)
+	
+	@Column(name = "END_TIME", nullable = false)
 	private Time endTime;
 
-	@Column(name="NAME", nullable=false, length=30)
+	@Column(name = "NAME", nullable = false, length = 30)
 	private String name;
 
-	@Column(name="START_TIME", nullable=false)
+	@Column(name = "START_TIME", nullable = false)
 	private Time startTime;
 
-	@OneToMany(mappedBy="shift")
+	@OneToMany(mappedBy = "shift")
 	private List<Schedule> schedules;
 
 	public Schedule addSchedule(Schedule schedule) {
