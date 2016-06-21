@@ -1,24 +1,32 @@
 package com.rj.schedulesys.converter;
 
-import java.sql.Time;
-import java.time.LocalTime;
+import org.dozer.DozerConverter;
+import org.joda.time.LocalTime;
 
-import org.dozer.CustomConverter;
+public class LocalTimeConverter extends DozerConverter<LocalTime, LocalTime> {
 
-public class LocalTimeConverter implements CustomConverter {
+	public LocalTimeConverter() {
+		super(LocalTime.class, LocalTime.class);
+	}
 
 	@Override
-	public Object convert(Object destination, Object source
-			, Class<?> destClass, Class<?> sourceClass) {
-		
-		if(destClass == LocalTime.class){
-			return ((Time)source).toLocalTime();
-		}else if(destClass == Time.class){
-			return Time.valueOf((LocalTime)source);
-		}
-		
-		return null;
-		
+	public LocalTime convertFrom(LocalTime source, LocalTime destination) {
+		 
+		if (source == null) {
+	            return null;
+		 }
+		return new LocalTime(source);
 	}
+
+	@Override
+	public LocalTime convertTo(LocalTime source, LocalTime destination) {
+		
+		if (source == null) {
+            return null;
+		}
+		return new LocalTime(source);
+	}
+	
+	
 
 }

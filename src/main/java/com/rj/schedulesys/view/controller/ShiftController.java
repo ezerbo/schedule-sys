@@ -96,6 +96,8 @@ public class ShiftController {
 			return new ResponseEntity<String>("No shift found", HttpStatus.NOT_FOUND);
 		}
 		
+		log.info("Shifts found : {}", shifts);
+		
 		return new ResponseEntity<List<ShiftViewModel>>(shifts, HttpStatus.OK);
 	}
 	

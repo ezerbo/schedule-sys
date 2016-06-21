@@ -1,11 +1,12 @@
 package com.rj.schedulesys.service;
 
-import static org.junit.Assert.*;
-
-import java.time.LocalTime;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.transaction.Transactional;
 
+import org.joda.time.LocalTime;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -32,7 +33,7 @@ public class ShiftServiceTest {
 	@Test
 	@DirtiesContext
 	public void test_findAll(){
-		assertEquals(3, shiftService.findAll().size());
+		assertEquals(4, shiftService.findAll().size());
 	}
 	
 	@Test
@@ -57,6 +58,12 @@ public class ShiftServiceTest {
 	public void test_findByName_WithExistingShift(){
 		ShiftViewModel viewModel = shiftService.findByName("DAY");
 		assertEquals(Long.valueOf(2), viewModel.getId());
+	}
+	
+	
+	@Test
+	public void test_findByStartAndEndTime_WithExistingStartAndEndTime(){
+		//shiftService.fi
 	}
 	
 	@Test
@@ -86,7 +93,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("A shift with name : DAY alredy exists");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				null, "DAY", LocalTime.now(), LocalTime.NOON
+				null, "DAY", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		shiftService.create(viewModel);
@@ -100,7 +107,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("Shifts start and end time must be different");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				null, "Same random name", LocalTime.NOON, LocalTime.NOON
+				null, "Same random name", LocalTime.MIDNIGHT, LocalTime.MIDNIGHT
 				);
 		
 		shiftService.create(viewModel);
@@ -113,7 +120,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("name size must be between 3 and 30");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				null, "Sa", LocalTime.now(), LocalTime.NOON
+				null, "Sa", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		shiftService.create(viewModel);
@@ -126,7 +133,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("name size must be between 3 and 30");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				null, "This name is really long, its over 30 characters", LocalTime.now(), LocalTime.NOON
+				null, "This name is really long, its over 30 characters", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		shiftService.create(viewModel);
@@ -136,7 +143,7 @@ public class ShiftServiceTest {
 	public void test_create_WithValidData(){
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				null, "Same random name", LocalTime.now(), LocalTime.NOON
+				null, "Same random name", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		viewModel = shiftService.create(viewModel);
@@ -151,7 +158,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("No shift found with id : 0");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				0L, "Same random name", LocalTime.now(), LocalTime.NOON
+				0L, "Same random name", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		viewModel = shiftService.update(viewModel);
@@ -164,7 +171,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("A shift with name : DAY already exists");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				1L, "DAY", LocalTime.now(), LocalTime.NOON
+				1L, "DAY", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		viewModel = shiftService.update(viewModel);
@@ -177,7 +184,7 @@ public class ShiftServiceTest {
 		expectedException.expectMessage("Shifts start and end time must be different");
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				1L, "NIGHT", LocalTime.NOON, LocalTime.NOON
+				1L, "NIGHT", LocalTime.MIDNIGHT, LocalTime.MIDNIGHT
 				);
 		
 		viewModel = shiftService.update(viewModel);
@@ -187,7 +194,7 @@ public class ShiftServiceTest {
 	public void test_update_WithValidData(){
 		
 		ShiftViewModel viewModel = TestUtil.aNewShiftViewModel(
-				3L, "SOMETHING", LocalTime.now(), LocalTime.NOON
+				3L, "SOMETHING", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
 		viewModel = shiftService.update(viewModel);

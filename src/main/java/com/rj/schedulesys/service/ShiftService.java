@@ -1,10 +1,7 @@
 package com.rj.schedulesys.service;
 
-import java.sql.Time;
 import java.util.LinkedList;
 import java.util.List;
-
-import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
@@ -16,7 +13,10 @@ import org.springframework.util.Assert;
 import com.rj.schedulesys.dao.ShiftDao;
 import com.rj.schedulesys.domain.Shift;
 import com.rj.schedulesys.util.ObjectValidator;
+import com.rj.schedulesys.util.ServiceHelper;
 import com.rj.schedulesys.view.model.ShiftViewModel;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -45,12 +45,12 @@ public class ShiftService {
 		
 		//TODO Move to a validation method
 		if(shiftDao.findByStartAndEndTime(
-				Time.valueOf(viewModel.getStartTime()), Time.valueOf(viewModel.getEndTime())
+				viewModel.getStartTime(), viewModel.getEndTime()
 				) != null){
 			log.error("A shift with start time : {} and end time : {} already exists"
 					, viewModel.getStartTime(), viewModel.getEndTime());
-			throw new RuntimeException("A shift with start time : " + viewModel.getStartTime() 
-			+ " and end time : " + viewModel.getEndTime() + " already exists");
+			throw new RuntimeException("A shift with start time : " + ServiceHelper.formatLocalTime(viewModel.getStartTime()) 
+			+ " and end time : " + ServiceHelper.formatLocalTime(viewModel.getEndTime()) + " already exists");
 		}
 		
 		viewModel = this.createOrUpdate(viewModel);
@@ -84,14 +84,14 @@ public class ShiftService {
 			}
 		}
 		
-		if((shift.getStartTime().toLocalTime() != viewModel.getEndTime())
-				||(shift.getEndTime().toLocalTime() != viewModel.getEndTime())){
+		if((shift.getStartTime() != viewModel.getEndTime())
+				||(shift.getEndTime() != viewModel.getEndTime())){
 			log.warn("Either start or end time of both have changed, checking combiantion(startTime, endTime)'s uniqueness ");
 			if(shiftDao.findByStartAndEndTime(
-					Time.valueOf(viewModel.getStartTime()), Time.valueOf(viewModel.getEndTime())
+					viewModel.getStartTime(), viewModel.getEndTime()
 					) != null){
 				log.error("A shift with start time : {} and end time : {} already exists"
-						, viewModel.getStartTime(), viewModel.getEndTime());
+						, ServiceHelper.formatLocalTime(viewModel.getStartTime()), ServiceHelper.formatLocalTime(viewModel.getEndTime()));
 				throw new RuntimeException("A shift with start time : " + viewModel.getStartTime() 
 				+ " and end time : " + viewModel.getEndTime() + " already exists");
 			}
@@ -109,7 +109,7 @@ public class ShiftService {
 		
 		validator.validate(viewModel);
 		
-		if(viewModel.getStartTime() == viewModel.getEndTime()){
+		if(viewModel.getStartTime().isEqual(viewModel.getEndTime())){
 			log.error("Shift start and end time should not be the same");
 			throw new RuntimeException("Shifts start and end time must be different");
 		}
@@ -130,6 +130,8 @@ public class ShiftService {
 		log.debug("Fetching all shifts");
 		
 		List<Shift> shifts = shiftDao.findAll();
+		
+		log.info("Shifts found : {}", shifts);
 		List<ShiftViewModel> viewModels = new LinkedList<ShiftViewModel>();
 		
 		for(Shift shift : shifts){

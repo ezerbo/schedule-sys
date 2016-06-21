@@ -1,7 +1,6 @@
 package com.rj.schedulesys.dao;
 
-import java.sql.Time;
-
+import org.joda.time.LocalTime;
 import org.springframework.stereotype.Repository;
 
 import com.rj.schedulesys.domain.Shift;
@@ -41,13 +40,13 @@ public class ShiftDao extends GenericDao<Shift> {
 	 * @param endTime
 	 * @return
 	 */
-	public Shift findByStartAndEndTime(Time startTime, Time endTime){
+	public Shift findByStartAndEndTime(LocalTime startTime, LocalTime endTime){
 		
 		Shift shift = null;
 		
 		try{
 			shift = entityManager.createQuery(
-					"from Shift s where s.startTime =:startTime and s.ednTime =:endTime", Shift.class)
+					"from Shift s where s.startTime =:startTime and s.endTime =:endTime", Shift.class)
 					.setParameter("startTime", startTime)
 					.setParameter("endTime", endTime)
 					.getSingleResult();

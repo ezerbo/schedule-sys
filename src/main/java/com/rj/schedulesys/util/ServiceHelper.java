@@ -1,5 +1,10 @@
 package com.rj.schedulesys.util;
 
+import org.joda.time.LocalTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.springframework.util.Assert;
+
 import com.rj.schedulesys.domain.Employee;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,5 +35,11 @@ public class ServiceHelper {
 	public static void logAndThrowException(String message){
 		log.error(message);
 		throw new RuntimeException(message);
+	}
+	
+	public static String formatLocalTime(LocalTime localTime){
+		Assert.notNull(localTime, "No time provided");
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm");
+		return localTime.toString(formatter);
 	}
 }
