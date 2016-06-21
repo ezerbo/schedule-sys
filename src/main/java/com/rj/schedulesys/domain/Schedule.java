@@ -50,8 +50,9 @@ public class Schedule implements Serializable {
 	@Column(name="SCHEDULE_DATE", nullable=false)
 	private Date scheduleDate;
 
-	@Column(name="STATUS_ID", nullable=false)
-	private int statusId;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="STATUS_ID")
+	private ScheduleStatus scheduleStatus;
 
 	@Column(name="TIMESHEET_RECEIVED")
 	private byte timesheetReceived;

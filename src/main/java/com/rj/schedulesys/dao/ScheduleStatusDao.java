@@ -4,6 +4,9 @@ import org.springframework.stereotype.Repository;
 
 import com.rj.schedulesys.domain.ScheduleStatus;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class ScheduleStatusDao extends GenericDao<ScheduleStatus> {
 	
@@ -11,13 +14,23 @@ public class ScheduleStatusDao extends GenericDao<ScheduleStatus> {
 		setClazz(ScheduleStatus.class);
 	}
 	
+	/**
+	 * @param status
+	 * @return
+	 */
 	public ScheduleStatus findByStatus(String status){
 		
-		ScheduleStatus statusSchedule = entityManager.createQuery(
-				"from ScheduleStatus ss where ss.status =:status", ScheduleStatus.class)
-				.setParameter("status", status)
-				.getSingleResult();
+		ScheduleStatus scheduleStatus = null;
 		
-		return statusSchedule;
+		try{
+			scheduleStatus = entityManager.createQuery(
+					"from ScheduleStatus ss where ss.status =:status", ScheduleStatus.class)
+			.setParameter("status", status)
+			.getSingleResult();
+		}catch(Exception e){
+			log.warn("No schedule status found with status : {}", status);
+		}
+		
+		return scheduleStatus;
 	}
 }

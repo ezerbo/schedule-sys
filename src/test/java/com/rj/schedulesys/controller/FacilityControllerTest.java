@@ -31,7 +31,7 @@ import com.rj.schedulesys.view.model.FacilityViewModel;
 public class FacilityControllerTest {
 
 	
-private @Autowired WebApplicationContext context;
+	private @Autowired WebApplicationContext context;
 	
 	private MockMvc mockMvc;
 	

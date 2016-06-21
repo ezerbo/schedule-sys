@@ -6,6 +6,7 @@ import org.joda.time.LocalTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rj.schedulesys.view.model.FacilityViewModel;
+import com.rj.schedulesys.view.model.ScheduleStatusViewModel;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 import com.rj.schedulesys.view.model.ShiftViewModel;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
@@ -66,6 +67,15 @@ public class TestUtil {
 				.startTime(startTime)
 				.endTime(endTime)
 				.build(); 
+		return viewModel;
+	}
+	
+	
+	public static ScheduleStatusViewModel aNewScheduleStatusViewModel(Long id, String status){
+		ScheduleStatusViewModel viewModel = ScheduleStatusViewModel.builder()
+				.id(id)
+				.status(status)
+				.build();
 		return viewModel;
 	}
 
