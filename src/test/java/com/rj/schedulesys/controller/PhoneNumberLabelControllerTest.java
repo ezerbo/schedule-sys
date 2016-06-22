@@ -24,7 +24,7 @@ import com.rj.schedulesys.config.TestConfiguration;
 @SpringApplicationConfiguration(TestConfiguration.class)
 public class PhoneNumberLabelControllerTest {
 
-private @Autowired WebApplicationContext context;
+	private @Autowired WebApplicationContext context;
 	
 	private MockMvc mockMvc;
 	

@@ -27,26 +27,24 @@ public class PhoneNumberType implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@Column(name= "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="NAME", nullable=false, length=50)
+	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;
 
-	@OneToMany(mappedBy="phoneNumberType")
+	@OneToMany(mappedBy = "phoneNumberType")
 	private List<PhoneNumber> phoneNumbers;
 
 	public PhoneNumber addPhoneNumber(PhoneNumber phoneNumber) {
 		getPhoneNumbers().add(phoneNumber);
 		phoneNumber.setPhoneNumberType(this);
-
 		return phoneNumber;
 	}
 
 	public PhoneNumber removePhoneNumber(PhoneNumber phoneNumber) {
 		getPhoneNumbers().remove(phoneNumber);
 		phoneNumber.setPhoneNumberType(null);
-
 		return phoneNumber;
 	}
 
