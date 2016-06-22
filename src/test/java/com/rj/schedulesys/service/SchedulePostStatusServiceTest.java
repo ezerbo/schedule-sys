@@ -1,6 +1,8 @@
 package com.rj.schedulesys.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.transaction.Transactional;
 
@@ -14,27 +16,27 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.rj.schedulesys.config.TestConfiguration;
 import com.rj.schedulesys.util.TestUtil;
-import com.rj.schedulesys.view.model.ScheduleStatusViewModel;
+import com.rj.schedulesys.view.model.SchedulePostStatusViewModel;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(TestConfiguration.class)
-public class ScheduleStatusServiceTest {
+public class SchedulePostStatusServiceTest {
 
-	private @Autowired ScheduleStatusService scheduleStatusService;
+	private @Autowired SchedulePostStatusService schedulePostStatusService;
 	
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 	
 	@Test
 	public void test_findByStatus_WithNonExistingStatus(){
-		ScheduleStatusViewModel viewModel = scheduleStatusService.findByStatus("This status does not exists");
+		SchedulePostStatusViewModel viewModel = schedulePostStatusService.findByStatus("This status does not exists");
 		assertNull(viewModel);
 	}
 	
 	@Test
 	public void test_findByStatus_WithExistingStatus(){
-		ScheduleStatusViewModel viewModel = scheduleStatusService.findByStatus("CONFIRMED");
+		SchedulePostStatusViewModel viewModel = schedulePostStatusService.findByStatus("ATTENDED");
 		assertEquals(Long.valueOf(1), viewModel.getId());
 	}
 	
@@ -42,11 +44,11 @@ public class ScheduleStatusServiceTest {
 	public void test_create_WithExistingStatus(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("A schedule status with status : CONFIRMED already exists");
+		expectedException.expectMessage("A schedule post status with status : ATTENDED already exists");
 		
-		ScheduleStatusViewModel viewModel = TestUtil.aNewScheduleStatusViewModel(null, "CONFIRMED");
+		SchedulePostStatusViewModel viewModel = TestUtil.aNewSchedulePostStatusViewModel(null, "ATTENDED");
 		
-		scheduleStatusService.create(viewModel);
+		schedulePostStatusService.create(viewModel);
 	}
 	
 	@Test
@@ -55,9 +57,9 @@ public class ScheduleStatusServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("status size must be between 3 and 20");
 		
-		ScheduleStatusViewModel viewModel = TestUtil.aNewScheduleStatusViewModel(null, "CO");
+		SchedulePostStatusViewModel viewModel = TestUtil.aNewSchedulePostStatusViewModel(null, "AT");
 		
-		scheduleStatusService.create(viewModel);
+		schedulePostStatusService.create(viewModel);
 	}
 	
 	@Test
@@ -66,17 +68,17 @@ public class ScheduleStatusServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("status size must be between 3 and 20");
 		
-		ScheduleStatusViewModel viewModel = TestUtil.aNewScheduleStatusViewModel(null, "THIS SHOULD BE LONGER THAN 20 CHARACTERS");
+		SchedulePostStatusViewModel viewModel = TestUtil.aNewSchedulePostStatusViewModel(null, "THIS SHOULD BE LONGER THAN 20 CHARACTERS");
 		
-		scheduleStatusService.create(viewModel);
+		schedulePostStatusService.create(viewModel);
 	}
 	
 	@Test
 	public void test_create_WithNonExistingStatus(){
 		
-		ScheduleStatusViewModel viewModel = TestUtil.aNewScheduleStatusViewModel(null, "NEW-STATUS");
+		SchedulePostStatusViewModel viewModel = TestUtil.aNewSchedulePostStatusViewModel(null, "NEW-STATUS");
 		
-		viewModel = scheduleStatusService.create(viewModel);
+		viewModel = schedulePostStatusService.create(viewModel);
 		
 		assertNotNull(viewModel.getId());
 	}
@@ -85,46 +87,45 @@ public class ScheduleStatusServiceTest {
 	public void test_update_WithNonExistingScheduleStatusId(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("No schedule status found with id : 0");
+		expectedException.expectMessage("No schedule post status found with id : 0");
 		
-		ScheduleStatusViewModel viewModel = TestUtil.aNewScheduleStatusViewModel(0L, "NEW-STATUS");
+		SchedulePostStatusViewModel viewModel = TestUtil.aNewSchedulePostStatusViewModel(0L, "NEW-STATUS");
 		
-		scheduleStatusService.update(viewModel);
+		schedulePostStatusService.update(viewModel);
 	}
 	
 	@Test
 	public void test_update_WithExistingScheduleStatusButExistingStatus(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("A schedule status with status : NOT CONFIRMED already exists");
+		expectedException.expectMessage("A schedule post status with status : LATE already exists");
 		
-		ScheduleStatusViewModel viewModel = TestUtil.aNewScheduleStatusViewModel(1L, "NOT CONFIRMED");
+		SchedulePostStatusViewModel viewModel = TestUtil.aNewSchedulePostStatusViewModel(1L, "LATE");
 		
-		scheduleStatusService.update(viewModel);
+		schedulePostStatusService.update(viewModel);
 	}
 	
 	@Test
 	public void test_delete_WithNonExistingSheduleStatusId(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("No schedule status found with id : 0");
+		expectedException.expectMessage("No schedule post status found with id : 0");
 		
-		scheduleStatusService.delete(0L);
+		schedulePostStatusService.delete(0L);
 	}
 	
 	@Test
 	public void test_delete_WithExistingScheduleStatusThatHasSchedules(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("No schedule status found with id : 0");
+		expectedException.expectMessage("No schedule post status found with id : 0");
 		
-		scheduleStatusService.delete(0L);
+		schedulePostStatusService.delete(0L);
 	}
 	
 	@Test
 	public void test_delete_WithExistingScheduleStatusThatHasNoSchedules(){
-		scheduleStatusService.delete(2L);
-		assertNull(scheduleStatusService.findOne(2L));
+		schedulePostStatusService.delete(2L);
+		assertNull(schedulePostStatusService.findOne(2L));
 	}
-	
 }

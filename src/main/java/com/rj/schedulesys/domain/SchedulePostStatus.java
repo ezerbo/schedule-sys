@@ -1,6 +1,8 @@
 package com.rj.schedulesys.domain;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
@@ -21,14 +23,30 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name="SCHEDULE_POST_STATUS")
 public class SchedulePostStatus implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="STATUS", nullable=false, length=20)
+	@Column(name = "STATUS", nullable = false, length = 20)
 	private String status;
+	
+	@OneToMany(mappedBy="schedulePostStatus")
+	private List<Schedule> schedules;
+	
+	public Schedule addSchedule(Schedule schedule) {
+		getSchedules().add(schedule);
+		schedule.setSchedulePostStatus(this);
+		return schedule;
+	}
+
+	public Schedule removeSchedule(Schedule schedule) {
+		getSchedules().remove(schedule);
+		schedule.setSchedulePostStatus(null);
+		return schedule;
+	}
 
 }

@@ -40,8 +40,9 @@ public class Schedule implements Serializable {
 	@Column(name="OVERTIME")
 	private int overtime;
 
-	@Column(name="POST_STATUS_ID")
-	private int postStatusId;
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="POST_STATUS_ID")
+	private SchedulePostStatus schedulePostStatus;
 
 	@Column(name="SCHEDULE_COMMENT", length=254)
 	private String scheduleComment;

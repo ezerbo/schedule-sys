@@ -46,7 +46,7 @@ public class ScheduleStatusController {
 		
 		log.info("Updating schedule status with id : {}", id);
 		
-		if(scheduleStatusService.findById(id) == null){
+		if(scheduleStatusService.findOne(id) == null){
 			log.error("No schedule status found with id : {}", id);
 			return new ResponseEntity<String>("No schedule status found with id : " + id, HttpStatus.NOT_FOUND);
 		}
@@ -69,7 +69,7 @@ public class ScheduleStatusController {
 		
 		log.info("Deleting schedule status with id : {}", id);
 		
-		if(scheduleStatusService.findById(id) == null){
+		if(scheduleStatusService.findOne(id) == null){
 			log.error("No schedule status found with id : {}", id);
 			return new ResponseEntity<String>("No schedule status found with id : " + id, HttpStatus.NOT_FOUND);
 		}
@@ -110,7 +110,7 @@ public class ScheduleStatusController {
 		
 		if(StringUtils.isNumeric(idOrStatus)){
 			log.info("Finding schedule status with id : {}", idOrStatus);
-			viewModel = scheduleStatusService.findById(Long.valueOf(idOrStatus));
+			viewModel = scheduleStatusService.findOne(Long.valueOf(idOrStatus));
 		}else{
 			log.info("Finding schedule status with status : {}", idOrStatus);
 			viewModel = scheduleStatusService.findByStatus(idOrStatus);

@@ -136,6 +136,14 @@
 			<artifactId>neo4j-cypher-compiler-2.1</artifactId>
 			<version>2.1.8</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-social-linkedin</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-social-linkedin</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

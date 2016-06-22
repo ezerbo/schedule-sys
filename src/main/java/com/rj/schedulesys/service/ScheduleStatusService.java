@@ -33,7 +33,7 @@ public class ScheduleStatusService {
 		
 		log.debug("Creating new schedule status : {}", viewModel);
 		
-		Assert.notNull(viewModel, "No shedule status provided");
+		Assert.notNull(viewModel, "No schedule status provided");
 		
 		ScheduleStatus scheduleStatus = scheduleStatusDao.findByStatus(viewModel.getStatus());
 		
@@ -59,7 +59,7 @@ public class ScheduleStatusService {
 		
 		log.debug("Updating schedule : {}", viewModel);
 		
-		Assert.notNull(viewModel, "No schedule provided");
+		Assert.notNull(viewModel, "No schedule post provided");
 		
 		ScheduleStatus scheduleStatus = scheduleStatusDao.findOne(viewModel.getId());
 		
@@ -89,6 +89,7 @@ public class ScheduleStatusService {
 		validator.validate(viewModel);
 		
 		ScheduleStatus scheduleStatus = dozerMapper.map(viewModel, ScheduleStatus.class);
+		scheduleStatus.setStatus(StringUtils.upperCase(scheduleStatus.getStatus()));
 		scheduleStatus = scheduleStatusDao.merge(scheduleStatus);
 		
 		return dozerMapper.map(scheduleStatus, ScheduleStatusViewModel.class);
@@ -145,7 +146,7 @@ public class ScheduleStatusService {
 	 * @return
 	 */
 	@Transactional
-	public ScheduleStatusViewModel findById(Long id){
+	public ScheduleStatusViewModel findOne(Long id){
 		
 		log.debug("Fetching status by id : {}", id);
 		
