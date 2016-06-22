@@ -21,10 +21,10 @@ public class NurseTestPK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="TEST_ID", insertable=false, updatable=false, unique=true, nullable=false)
+	@Column(name="TEST_ID", insertable=false, updatable=false, nullable=false)
 	private int testId;
 
-	@Column(name="NURSE_ID", insertable=false, updatable=false, unique=true, nullable=false)
+	@Column(name="NURSE_ID", insertable=false, updatable=false, nullable=false)
 	private int nurseId;
 	
 

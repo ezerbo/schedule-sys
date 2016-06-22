@@ -27,25 +27,25 @@ public class Test implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@Column(name= "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="ALLOW_NOT_APPLICABLE", nullable=false)
-	private byte allowNotApplicable;
+	@Column(name = "ALLOW_NOT_APPLICABLE", nullable = false)
+	private Boolean allowNotApplicable;
 
-	@Column(name="HAS_COMPLETED_DATE", nullable=false)
-	private byte hasCompletedDate;
+	@Column(name = "HAS_COMPLETED_DATE", nullable = false)
+	private Boolean hasCompletedDate;
 
-	@Column(name="HAS_EXPIRATION_DATE", nullable=false)
-	private byte hasExpirationDate;
+	@Column(name = "HAS_EXPIRATION_DATE", nullable = false)
+	private Boolean hasExpirationDate;
 
-	@Column(name="NAME", nullable=false, length=50)
+	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;
 
-	@OneToMany(mappedBy="test")
+	@OneToMany(mappedBy = "test")
 	private List<NurseTest> nurseTests;
 
-	@OneToMany(mappedBy="test")
+	@OneToMany(mappedBy = "test")
 	private List<TestSubCategory> testSubCategories;
 
 

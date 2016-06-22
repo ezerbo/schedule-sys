@@ -11,6 +11,7 @@ import com.rj.schedulesys.view.model.ScheduleStatusViewModel;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 import com.rj.schedulesys.view.model.ShiftViewModel;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
+import com.rj.schedulesys.view.model.TestViewModel;
 
 public class TestUtil {
 	
@@ -84,6 +85,18 @@ public class TestUtil {
 		SchedulePostStatusViewModel viewModel = SchedulePostStatusViewModel.builder()
 				.id(id)
 				.status(status)
+				.build();
+		return viewModel;
+	}
+	
+	public static TestViewModel aNewTestViewModel(Long id, String name, Boolean allowNotApplicable
+			, Boolean hasCompletedDate, Boolean hasExpirationDate){
+		TestViewModel viewModel = TestViewModel.builder()
+				.id(id)
+				.name(name)
+				.allowNotApplicable(allowNotApplicable)
+				.hasCompletedDate(hasCompletedDate)
+				.hasExpirationDate(hasExpirationDate)
 				.build();
 		return viewModel;
 	}
