@@ -2,17 +2,12 @@ package com.rj.schedulesys.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +30,7 @@ import com.rj.schedulesys.view.model.TestViewModel;
 @SpringApplicationConfiguration(TestConfiguration.class)
 public class TestControllerTest {
 
-private @Autowired WebApplicationContext context;
+	private @Autowired WebApplicationContext context;
 	
 	private MockMvc mockMvc;
 	
@@ -62,8 +57,22 @@ private @Autowired WebApplicationContext context;
 	@Test
 	public void test_findOne_WithExistingTestId() throws Exception{
 		mockMvc.perform(get("/tests/{id}", 1))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.name", is("DRUG TEST")));
+	}
+	
+	@Test
+	public void test_findSubCategories_WithNonExistingTest() throws Exception{
+		mockMvc.perform(get("/tests/{id}/sub-categories", 0))
+			.andExpect(status().isNotFound())
+			.andExpect(jsonPath("$", is("No test found with id : 0")));
+	}
+	
+	@Test
+	public void test_findSubCategories_WithExistingTest() throws Exception{
+		mockMvc.perform(get("/tests/{id}/sub-categories", 1))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.name", is("DRUG TEST")));
+		.andExpect(jsonPath("$", hasSize(2)));
 	}
 	
 	@Test

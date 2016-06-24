@@ -27,16 +27,16 @@ public class TestSubCategory implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name="NAME", nullable=false, length=50)
+	@Column(name = "NAME", nullable = false, length = 50)
 	private String name;
 
-	@OneToMany(mappedBy="testSubCategory")
+	@OneToMany(mappedBy = "testSubCategory")
 	private List<NurseTest> nurseTests;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="TEST_ID", nullable=false)
 	private Test test;
 

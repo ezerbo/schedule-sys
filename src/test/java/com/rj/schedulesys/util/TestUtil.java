@@ -11,6 +11,7 @@ import com.rj.schedulesys.view.model.ScheduleStatusViewModel;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
 import com.rj.schedulesys.view.model.ShiftViewModel;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
+import com.rj.schedulesys.view.model.TestSubCategoryViewModel;
 import com.rj.schedulesys.view.model.TestViewModel;
 
 public class TestUtil {
@@ -97,6 +98,15 @@ public class TestUtil {
 				.allowNotApplicable(allowNotApplicable)
 				.hasCompletedDate(hasCompletedDate)
 				.hasExpirationDate(hasExpirationDate)
+				.build();
+		return viewModel;
+	}
+	
+	public static TestSubCategoryViewModel aNewTestSubCategoryViewModel(Long id, String name, String testName){
+		TestSubCategoryViewModel viewModel = TestSubCategoryViewModel.builder()
+				.id(id)
+				.name(name)
+				.testName(testName)
 				.build();
 		return viewModel;
 	}
