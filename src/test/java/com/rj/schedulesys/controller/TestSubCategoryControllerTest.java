@@ -52,7 +52,8 @@ private @Autowired WebApplicationContext context;
 	public void test_findAllByTest_WithExistingTest() throws Exception{
 		mockMvc.perform(get("/test-sub-categories/{id}", 3))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.name", is("QUANTIFERON GOLD")));
+		.andExpect(jsonPath("$.name", is("QUANTIFERON GOLD")))
+		.andExpect(jsonPath("$.testName", is("TB TEST")));
 		
 	}
 	

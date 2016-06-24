@@ -154,6 +154,8 @@ public class TestSubCategoryService {
 			viewModel = dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class);
 		}
 		
+		viewModel.setTestName(testSubCategory.getTest().getName());
+		
 		log.debug("Test sub category found : {}", viewModel);
 		
 		return viewModel;
@@ -175,6 +177,7 @@ public class TestSubCategoryService {
 			log.warn("No test sub category found with id : {}", id);
 		}else{
 			viewModel = dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class);
+			viewModel.setTestName(testSubCategory.getTest().getName());
 		}
 		
 		return viewModel;
@@ -198,7 +201,13 @@ public class TestSubCategoryService {
 		List<TestSubCategoryViewModel> viewModels = new LinkedList<>();
 		
 		for(TestSubCategory testSubCategory : testSubCategories){
-			viewModels.add(dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class));
+			
+			TestSubCategoryViewModel viewModel = dozerMapper.map(
+					testSubCategory, TestSubCategoryViewModel.class);
+			
+			viewModel.setTestName(testSubCategory.getTest().getName());
+			
+			viewModels.add(viewModel);
 		}
 		
 		return viewModels;
