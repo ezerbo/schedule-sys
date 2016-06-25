@@ -8,6 +8,7 @@
 	<jdbc:initialize-database data-source="dataSource">
 		<jdbc:script location="classpath:test-data/user-role.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-sys-user.sql"/>
+		<jdbc:script location="classpath:test-data/position-type.sql"/>
 		<jdbc:script location="classpath:test-data/position.sql"/>
 		<jdbc:script location="classpath:test-data/employee.sql"/>
 		<jdbc:script location="classpath:test-data/nurse.sql"/>

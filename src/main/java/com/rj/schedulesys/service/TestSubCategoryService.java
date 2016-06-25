@@ -152,9 +152,8 @@ public class TestSubCategoryService {
 		
 		if(testSubCategory != null){
 			viewModel = dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class);
+			viewModel.setTestName(testSubCategory.getTest().getName());
 		}
-		
-		viewModel.setTestName(testSubCategory.getTest().getName());
 		
 		log.debug("Test sub category found : {}", viewModel);
 		

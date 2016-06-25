@@ -98,13 +98,30 @@ public class UserService {
 	 */
 	public ScheduleSysUserViewModel createOrUpdate(ScheduleSysUserViewModel viewModel){
 		
-		validator.validate(viewModel);//throws RuntimException in case of validation error
+		String passwordHash = null;
+		
+		if(!StringUtils.isBlank(viewModel.getPassword())){
+			passwordHash = UserService.createPasswordHash(viewModel.getPassword());
+		}
 		
 		UserRole userRole = validateUserRole(viewModel.getUserRole());
 		
-		ScheduleSysUser user = dozerMapper.map(viewModel, ScheduleSysUser.class);
-
-		user.setPasswordhash(UserService.createPasswordHash(viewModel.getPassword()));
+		ScheduleSysUser user = null; 
+				
+		if(viewModel.getId() != null){
+			user = userDao.findOne(viewModel.getId());
+			validateUsername(viewModel.getUsername());
+			user.setUsername(viewModel.getUsername());
+			if(passwordHash != null){
+				user.setPasswordhash(passwordHash);
+			}
+		}else{
+			validator.validate(viewModel);//Password is validated here, and should not be empty
+			user = ScheduleSysUser.builder()
+					.username(viewModel.getUsername())
+					.passwordhash(passwordHash)
+					.build();
+		}
 		
 		user.setUserRole(userRole);
 		
@@ -166,6 +183,16 @@ public class UserService {
 			viewModel = dozerMapper.map(user, ScheduleSysUserViewModel.class);
 		}
 		return viewModel;
+	}
+	
+	
+	/**
+	 * @param usermame
+	 * @return
+	 */
+	public ScheduleSysUser loadByUsername(String username){
+		log.debug("Loading user by username : {}", username);
+		return userDao.findByUsername(username);
 	}
 	
 	
@@ -232,6 +259,12 @@ public class UserService {
 		}
 		
 		return userRole;
+	}
+	
+	private void validateUsername (String username){
+		if(StringUtils.isBlank(username) || username.length() < 3 || username.length() > 50){
+			throw new RuntimeException("username size must be between 3 and 50");
+		}
 	}
 
 }

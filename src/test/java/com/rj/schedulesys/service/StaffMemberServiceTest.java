@@ -28,7 +28,7 @@ public class StaffMemberServiceTest {
 	
 	@Test
 	public void test_findAll_ForSpecificFacility(){
-		assertEquals(2, staffMemberService.findAllByFacility(1L).size());
+		assertEquals(2, staffMemberService.findAllByFacility(4L).size());
 	}
 	
 	@Test
@@ -186,11 +186,11 @@ public class StaffMemberServiceTest {
 	public void test_update_WithExistingFirstNameLastNameAndTitle(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("A staff member with first name 'STAFF-MEMBER-2-FN'"
-				+ ", last name 'STAFF-MEMBER-2-LN' and title 'STAFF-MEMBER-2-TITLE' already exists for facility with name 'Sunnyside'");
+		expectedException.expectMessage("A staff member with first name 'STAFF-MEMBER-7-FN'"
+				+ ", last name 'STAFF-MEMBER-7-LN' and title 'STAFF-MEMBER-7-TITLE' already exists for facility with name 'Burnside'");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				1L, "STAFF-MEMBER-2-FN", "STAFF-MEMBER-2-LN", "STAFF-MEMBER-2-TITLE", "Sunnyside"
+				8L, "STAFF-MEMBER-7-FN", "STAFF-MEMBER-7-LN", "STAFF-MEMBER-7-TITLE", "Burnside"
 				);
 		
 		staffMemberService.update(viewModel);

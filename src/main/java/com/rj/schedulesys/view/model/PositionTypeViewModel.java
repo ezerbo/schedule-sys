@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class PositionTypeViewModel {
 	
 	private Long id;
-	private String type;
+	
+	private String name;
 	
 }

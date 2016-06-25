@@ -162,12 +162,23 @@ public class UserServiceTest {
 		expectedException.expectMessage("password size must be between 3 and 50");
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				null, "This is a password which length must be greater than 50 characters"
+				null, "somebody"
 				, "12", UserRole.ADMIN_ROLE
 				);
 		
 		userService.create(viewModel);
 		
+	}
+	
+	@Test
+	public void test_update_WithNullPassWord(){
+		
+		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
+				1L, "username"
+				, null, UserRole.ADMIN_ROLE
+				);
+		
+		userService.update(viewModel);
 	}
 	
 	@Test

@@ -1,5 +1,9 @@
 package com.rj.schedulesys.view.model;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +16,11 @@ import lombok.NoArgsConstructor;
 public class PositionViewModel {
 	
 	private Long id;
-	private String positionName;
-	private String positionType;
+	
+	@NotBlank
+	@Size(min = 2, max = 50)
+	private String name;
+	
+	private String positionTypeName;
 	
 }

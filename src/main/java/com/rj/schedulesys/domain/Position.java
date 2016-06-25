@@ -1,14 +1,23 @@
 package com.rj.schedulesys.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 
 /**
@@ -29,13 +38,17 @@ public class Position implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID", unique=true, nullable=false)
 	private Long id;
-
+	
 	@Column(name="NAME", nullable=false, length=50)
 	private String name;
-
+	
 	@OneToMany(mappedBy="position")
 	private List<Employee> employees;
-
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="POSITION_TYPE_ID", nullable=false)
+	private PositionType positionType;
+	
 	public Employee addEmployee(Employee employee) {
 		getEmployees().add(employee);
 		employee.setPosition(this);

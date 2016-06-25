@@ -4,6 +4,9 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +26,7 @@ public class ScheduleSysUserViewModel {
 	
 	@NotBlank
 	@Size(min = 3, max = 50)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	
 	@NotBlank

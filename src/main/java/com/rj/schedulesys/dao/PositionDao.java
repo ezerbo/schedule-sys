@@ -2,10 +2,15 @@ package com.rj.schedulesys.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.stereotype.Repository;
 
 import com.rj.schedulesys.domain.Position;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class PositionDao extends GenericDao<Position>{
 	
@@ -14,15 +19,21 @@ public class PositionDao extends GenericDao<Position>{
 	}
 	
 	/**
-	 * @param positionName
+	 * @param name
 	 * @return
 	 */
-	public Position findByName(String positionName){
+	public Position findByName(String name){
 		
-		Position position = entityManager.createQuery(
-				"from Position p where p.name = :name and p.isDeleted = 0", Position.class)
-				.setParameter("name", positionName)
-		.getSingleResult();
+		Position position = null;
+		
+		try{
+			position = entityManager.createQuery(
+					"from Position p where p.name = :name", Position.class)
+					.setParameter("name", name)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No position found with name : {}", name);
+		}
 		
 		return position;
 	}
@@ -33,10 +44,16 @@ public class PositionDao extends GenericDao<Position>{
 	 */
 	public Position findOne(Long id){
 		
-		Position position = entityManager.createQuery(
-				"from Position p where p.id =:id and p.isDeleted = 0", Position.class)
-				.setParameter("id", id)
-				.getSingleResult();
+		Position position = null; 
+		
+		try{
+			position = entityManager.createQuery(
+					"from Position p where p.id =:id", Position.class)
+					.setParameter("id", id)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No position found with id : {}", id);
+		}
 		
 		return position;
 	}
@@ -45,14 +62,36 @@ public class PositionDao extends GenericDao<Position>{
 	 * @param positionType
 	 * @return
 	 */
-	public List<Position> findAllByType(String positionType){
+	public List<Position> findAllByType(Long typeId){
 		
 		List<Position> positions = entityManager.createQuery(
-				"from Position p where p.positionType.type =:positionType where isDeleted = 0", Position.class)
-				.setParameter("positionType", positionType)
-				.getResultList();
+					"from Position p where p.positionType.id =:typeId", Position.class)
+					.setParameter("typeId", typeId)
+					.getResultList();
 		
 		return positions;
+	}
+	
+	/**
+	 * @param name
+	 * @param typeName
+	 * @return
+	 */
+	public Position findByNameAndType(String name, String typeName){
+		
+		Position position = null;
+		
+		try{
+			position = entityManager.createQuery(
+					"from Position p where p.name =:name and p.positionType.name =:typeName", Position.class)
+					.setParameter("name", name)
+					.setParameter("typeName", typeName)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No position find with name : {} and type : {}", name, typeName);
+		}
+		
+		return position;
 	}
 	
 }

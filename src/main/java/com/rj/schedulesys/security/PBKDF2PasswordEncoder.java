@@ -1,4 +1,4 @@
-package com.rj.schedulesys.auth;
+package com.rj.schedulesys.security;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
