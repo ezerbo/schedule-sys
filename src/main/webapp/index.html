@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html data-ng-app="userApp">
+<head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/"/>
+    <title>RJ-HealthCare Services</title>
+    <link rel="stylesheet" type="text/css" href="user-app/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="user-app/css/app.css"/>
+    <link rel="stylesheet" type="text/css" href="user-app/css/date-bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
+
+   
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="user-app/css/style.css">
+   </head>
+<body>
+    <nav class="navbar navbar-inverse" role="navigation" ng-controller="Main as main">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" ui-sref="users" ng-show="main.isAuthed()">RJ-HealthCare Services</a>
+                <a class="navbar-brand"  ng-hide="main.isAuthed()">RJ-HealthCare Services</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a ui-sref="users" ng-show="main.isAuthed()">Users</a></li>
+                    <li><a ui-sref="facilities" ng-show="main.isAuthed()">Facilities</a></li>
+                    <li><a ui-sref="supervisors" ng-show="main.isAuthed()">Supervisors</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+     
+      <li><button class="glyphicon glyphicon-log-out btn btn-primary btn-lg" ng-click="main.logout()" ng-show="main.isAuthed()"><b> Logout</b></button></li>
+    </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <!--<div class="jumbotron">
+            <h1>Welcome to RJ-HealthCare Services!</h1>
+            <p>App for Employee- Management</p>
+        </div>-->
+        <div class="row top-buffer">
+            <div class="col-xs-8 col-xs-offset-2">
+                <div ui-view></div>
+            </div>
+        </div>
+    </div>
+     <script type="text/javascript" src="user-app/lib/angular.min.js"></script>
+    <script type="text/javascript" src="user-app/js/app.js"></script>
+    <script type="text/javascript" src="user-app/js/controllers.js"></script>
+    <script type="text/javascript" src="user-app/js/services.js"></script>
+    <script type="text/javascript" src="user-app/js/directives.js"></script>
+    <script type="text/javascript" src="user-app/js/filters.js"></script>
+    <script type="text/javascript" src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.12.0.js"></script>
+    <script type="text/javascript" src="user-app/lib/jquery.min.js"></script>
+    <script type="text/javascript" src="user-app/lib/bootstrap.min.js"></script>
+   
+
+<script type="text/javascript" src="user-app/lib/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="user-app/lib/angular-resource.min.js"></script>
+   
+
+
+
+
+</body>
+</html>

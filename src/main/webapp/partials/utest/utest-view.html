@@ -1,0 +1,20 @@
+<table class="table usertable">
+  <tr>
+    <td><h3>Details for {{user.firstName}} {{user.lastName}} </h3></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>License-Number</td>
+    <td>{{license.licenseNumber}}</td>
+  </tr>
+  <tr>
+    <td>Expiration-Date</td>
+    <td>{{license.expirationDate}}</td>
+  </tr>
+</table>
+<div>
+  <a class="btn btn-success btn-lg" ui-sref="editLicense({id:license.id,userid:userid})">Edit</a>
+</div>
+
+<br/>
+<div ng-include="'user-app/partials/utest/utests.html'"></div>

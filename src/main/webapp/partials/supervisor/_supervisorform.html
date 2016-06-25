@@ -1,0 +1,36 @@
+<div class="form-group">
+  <label for="firstName" class="col-sm-2 control-label">First-Name</label>
+  <div class="col-sm-6">
+    <input type="text" ng-model="supervisor.firstName" class="form-control" id="firstName" placeholder="First Name of the Supervisor"/>
+  </div>
+</div>
+<div class="form-group">
+  <label for="lastName" class="col-sm-2 control-label">Last-Name</label>
+  <div class="col-sm-6">
+    <input type="text" ng-model="supervisor.lastName" class="form-control" id="lastName" placeholder="Last Name of the Supervisor"/>
+  </div>
+</div>
+<div class="form-group" ng-controller="MyCtrl">
+  <label for="phone" class="col-sm-2 control-label">Phone-Number</label>
+  <div class="col-sm-6">
+    <input type="text" phone-input ng-model="supervisor.phoneNumber" class="form-control" id="phone" placeholder="(xxx) xxx-xxxx"/>
+  </div>
+</div>
+<div class="form-group">
+  <label for="email" class="col-sm-2 control-label">Email-Address</label>
+  <div class="col-sm-6">
+    <input type="text" ng-model="supervisor.emailAddress" class="form-control" id="email" placeholder="Email Address of the Supervisor"/>
+  </div>
+</div>
+<div class="form-inline">
+<div class="form-group">
+  <div class="col-sm-offset-12 col-sm-10">
+    <input type="submit" class="btn btn-success btn-lg" value="Save"/>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-12 col-sm-10">
+    <button class="btn btn-danger btn-lg" ng-click="stateRefresh()" ng-show="isShow()">Clear</button>
+  </div>
+</div>
+</div>

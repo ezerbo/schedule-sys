@@ -1,0 +1,23 @@
+<a ui-sref="newSupervisor" class="btn-success btn-lg nodecoration">Add New Supervisor</a>
+<br/>
+<br/>
+
+<h3><span style="color: white">All Supervisors</span></h3>
+<table class="table usertable">
+  
+  <tr><td><b>First-Name</b></td>
+    <td><b>Last-Name</b></td>
+    <td><b>Email</b></td>
+    <td><b>Phone-Number</b></td>
+  </tr>
+  <tr ng-repeat="supervisor in supervisors">
+    <td>{{supervisor.firstName}}</td>
+    <td>{{supervisor.lastName}}</td>
+    <td>{{supervisor.emailAddress}}</td>
+    <td>{{supervisor.phoneNumber}}</td>
+    <td>
+      <a class="btn btn-success" ui-sref="viewSupervisor({id:supervisor.id})">View</a>
+      <a class="btn btn-danger"  ng-click="deleteSupervisor(supervisor)">Delete</a>
+    </td>
+  </tr>
+</table>

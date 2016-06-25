@@ -1,0 +1,25 @@
+<tr>
+    <td><h3>Details for {{supervisor.firstName}} {{supervisor.lastName}}</h3></td>
+    <td></td>
+  </tr>
+<table class="table usertable">
+  <tr>
+    <td>First Name</td>
+    <td>{{supervisor.firstName}}</td>
+  </tr>
+  <tr>
+    <td>Last Name</td>
+    <td>{{supervisor.lastName}}</td>
+  </tr>
+  <tr>
+    <td>Phone-Number</td>
+    <td>{{supervisor.phoneNumber}}</td>
+  </tr>
+  <tr>
+    <td>Email-Address</td>
+    <td>{{supervisor.emailAddress}}</td>
+  </tr>
+</table>
+<div>
+  <a class="btn btn-success btn-lg" ui-sref="editSupervisor({id:supervisor.id})">Edit</a>
+</div>

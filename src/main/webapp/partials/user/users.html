@@ -1,0 +1,25 @@
+<a ui-sref="newUser" class="btn-success btn-lg nodecoration">Add New User</a>
+
+<br/>
+<br/>
+<h3><span style="color: white">All Users</span></h3>
+<table class="table usertable">
+
+  
+  <tr><td><b>First-Name</b></td>
+    <td><b>Last-Name</b></td>
+    <td><b>Position</b></td>
+    <td><b>Phone-Number</b></td>
+</tr>
+  
+  <tr ng-repeat="user in users">
+    <td>{{user.firstName}}</td>
+    <td>{{user.lastName}}</td>
+    <td>{{user.position}}</td>
+    <td>{{user.primaryPhoneNumber}}</td>
+    <td>
+      <a class="btn btn-success" ui-sref="viewUser({id:user.id})">View</a>
+      <a class="btn btn-danger"  ng-click="deleteUser(user)">Delete</a>
+    </td>
+  </tr>
+</table>

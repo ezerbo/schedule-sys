@@ -1,0 +1,38 @@
+<div class="form-group">
+  <label for="licenseNumber" class="col-sm-2 control-label">License-Number</label>
+  <div class="col-sm-6">
+    <input type="text" ng-model="license.licenseNumber" class="form-control" id="licenseNumber" placeholder="LicenseNumber of User"/>
+  </div>
+</div>
+<div class="form-group">
+  <label for="expirationDate" class="col-sm-2 control-label">Expiration-Date</label>
+  <div class="col-sm-10">
+    
+   
+
+    <div class="row">
+        <div class="col-md-6">
+            <p class="input-group">
+              <input type="date" class="form-control" ng-model="license.expirationDate" ng-required="true" />
+              <input type="hidden" datepicker-popup="yyyy-MM-dd" ng-model="license.expirationDate" is-open="opened" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+    
+</div>
+  </div>
+</div>
+<div class="form-inline">
+<div class="form-group">
+  <div class="col-sm-offset-12 col-sm-10">
+    <input type="submit" class="btn btn-success btn-lg" value="Save"/>
+  </div>
+</div>
+<div class="form-group">
+  <div class="col-sm-offset-12 col-sm-10">
+    <button class="btn btn-danger btn-lg" ng-click="stateRefresh()" ng-show="isShow()">Clear</button>
+  </div>
+</div>
+</div>

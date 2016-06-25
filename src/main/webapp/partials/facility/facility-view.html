@@ -1,0 +1,33 @@
+<tr>
+    <td><h3>Details for {{facility.name}}</h3></td>
+    <td></td>
+  </tr>
+<table class="table usertable">
+  <tr>
+    <td>Facility-Name</td>
+    <td>{{facility.name}}</td>
+  </tr>
+  <tr>
+    <td>Facility-Address</td>
+    <td>{{facility.address}}</td>
+  </tr>
+  <tr>
+    <td>Facility-Phone</td>
+    <td>{{facility.phoneNumber}}</td>
+  </tr>
+  <tr>
+    <td>Facility-Fax</td>
+    <td>{{facility.fax}}</td>
+  </tr>
+</table>
+<div>
+  <a class="btn btn-success btn-lg" ui-sref="editFacility({id:facility.id})">Edit</a>
+
+</div><br/>
+<br/>
+<div ng-include="'user-app/partials/staff-member/staff-members.html'"></div>
+<br/>
+<div ng-include="'user-app/partials/schedule/schedules.html'"></div>
+
+
+

@@ -1,0 +1,33 @@
+.top-buffer{
+    margin-top:10px;
+    color: white;
+}
+
+
+.usertable table, th, td {
+    border: 1px solid white;
+    background: #009999;
+}
+
+.usertable tr td:nth-child(2){
+    width: 150px;
+    color: white;
+}
+
+.usertable tr:nth-child(1) td{
+    
+    color: white;
+}
+a.nodecoration{
+    text-decoration:none;
+    color: white;
+}
+
+.check-box{
+width: 20px; height: 20px;
+
+}
+
+.selected {
+  background-color: red;
+}
