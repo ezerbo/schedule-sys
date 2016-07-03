@@ -150,9 +150,9 @@ public class PositionControllerTest {
 	@Test
 	public void test_delete_WithExistingPositionButAssignedToEmployees() throws IOException, Exception{
 		
-		mockMvc.perform(delete("/positions/{id}", 4L))
+		mockMvc.perform(delete("/positions/{id}", 11L))
 			.andExpect(status().is5xxServerError())
-			.andExpect(jsonPath("$", is("Position with id : 4 can not be deleted")));
+			.andExpect(jsonPath("$", is("Position with id : 11 can not be deleted")));
 	}
 	
 	@Test

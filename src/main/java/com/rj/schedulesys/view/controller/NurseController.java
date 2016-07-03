@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/nurses")
 public class NurseController {
-
+	
 	@Autowired
 	private TestService testService;
 	
@@ -62,6 +62,13 @@ public class NurseController {
 		
 		log.info("Creating nurse : {}", viewModel);
 		
+		try {
+			nurseService.validatePosition(viewModel.getPositionName());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+		}
+		
 		viewModel.setId(null);
 		
 		try{
@@ -87,6 +94,13 @@ public class NurseController {
 		if(nurseService.findOne(id) == null){
 			log.error("No nurse found with id : {}", id);
 			return new ResponseEntity<String>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		try {
+			nurseService.validatePosition(viewModel.getPositionName());
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
 		
 		viewModel.setId(id);

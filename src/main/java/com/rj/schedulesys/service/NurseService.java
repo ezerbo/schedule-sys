@@ -3,6 +3,7 @@ package com.rj.schedulesys.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.util.Assert;
 import com.rj.schedulesys.dao.EmployeeDao;
 import com.rj.schedulesys.dao.NurseDao;
 import com.rj.schedulesys.dao.PositionDao;
+import com.rj.schedulesys.data.PositionTypeConstants;
 import com.rj.schedulesys.domain.Employee;
 import com.rj.schedulesys.domain.Nurse;
 import com.rj.schedulesys.domain.Position;
@@ -192,6 +194,12 @@ public class NurseService {
 		if(position == null){
 			log.error("No position found with name : {}", positionName);
 			throw new RuntimeException("No position found with name : " + positionName);
+		}
+		
+		if(!StringUtils.equalsIgnoreCase(position.getPositionType().getName()
+				, PositionTypeConstants.NURSE_POSITION)){
+			log.error("No such position : {} for nurses", positionName);
+			throw new RuntimeException("No such position : " + positionName + " for nurses");
 		}
 		
 		return position;

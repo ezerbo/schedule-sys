@@ -79,7 +79,7 @@ private @Autowired WebApplicationContext context;
 		mockMvc.perform(post("/nurses")
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewNurseViewModel)))
-		.andExpect(status().is5xxServerError())
+		.andExpect(status().is4xxClientError())
 		.andExpect(jsonPath("$", is("No position found with name : This position does not exist")));
 	}
 	
