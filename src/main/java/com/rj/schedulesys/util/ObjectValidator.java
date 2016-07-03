@@ -34,7 +34,8 @@ public class ObjectValidator<T> {
 				for (ConstraintViolation<T> constraintViolation : constraintViolations) {
 					message.append(constraintViolation.getPropertyPath())
 							.append(" ")
-							.append(constraintViolation.getMessage());
+							.append(constraintViolation.getMessage())
+							.append(",");
 				}
 				
 				log.debug("{} is not valid due to {} ", objectToBeValidated, message);

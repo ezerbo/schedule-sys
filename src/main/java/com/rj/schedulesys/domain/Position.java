@@ -33,7 +33,7 @@ import lombok.NoArgsConstructor;
 public class Position implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID", unique=true, nullable=false)
@@ -54,11 +54,11 @@ public class Position implements Serializable {
 		employee.setPosition(this);
 		return employee;
 	}
-
+	
 	public Employee removeEmployee(Employee employee) {
 		getEmployees().remove(employee);
 		employee.setPosition(null);
 		return employee;
 	}
-
+	
 }

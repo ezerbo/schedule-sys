@@ -3,15 +3,17 @@ package com.rj.schedulesys.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rj.schedulesys.dao.LicenseDao;
-import com.rj.schedulesys.dao.ScheduleSysUserDao;
+import com.rj.schedulesys.dao.NurseDao;
 import com.rj.schedulesys.domain.License;
-import com.rj.schedulesys.domain.ScheduleSysUser;
+import com.rj.schedulesys.domain.Nurse;
+import com.rj.schedulesys.util.ObjectValidator;
 import com.rj.schedulesys.view.model.LicenseViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,77 +23,171 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class LicenseService {
 	
-	private @Autowired ScheduleSysUserDao userDao;
-	private @Autowired LicenseDao licenseDao;
-	private @Autowired DozerBeanMapper dozerMapper;
+	@Autowired
+	private NurseDao nurseDao;
 	
-	public LicenseViewModel createOrUpdateLicense(LicenseViewModel viewModel){
-		log.info("Creating or updating license : {}", viewModel);
-		ScheduleSysUser user = userDao.findOne(viewModel.getUserId());
+	@Autowired
+	private LicenseDao licenseDao;
+	
+	@Autowired
+	private DozerBeanMapper dozerMapper;
+	
+	@Autowired
+	private ObjectValidator<LicenseViewModel> validator;
+	
+	/**
+	 * @param viewModel
+	 * @return
+	 */
+	public LicenseViewModel create(LicenseViewModel viewModel){
+		
+		log.debug("Creating new license : {}", viewModel);
+		
+		Nurse nurse = nurseDao.findOne(viewModel.getNurseId());
+		
+		if(nurse == null){
+			log.error("No nurse found with id : {}", viewModel.getId());
+			throw new RuntimeException("No nurse found with id : " + viewModel.getNurseId());
+		}
+		
+		if(licenseDao.findByNumber(viewModel.getNumber()) != null){
+			log.error("License number : {} is already in use", viewModel.getNumber());
+			throw new RuntimeException("License number " + viewModel.getNumber() + " is already in use");
+		}
+		
+		viewModel = this.createOrUpdate(viewModel);
+		
+		log.debug("Created license : {}", viewModel);
+		
+		return viewModel;
+		
+	}
+	
+	/**
+	 * @param viewModel
+	 * @return
+	 */
+	public LicenseViewModel update(LicenseViewModel viewModel){
+		
+		log.debug("Updating license : {}", viewModel);
+		
+		Nurse nurse = nurseDao.findOne(viewModel.getNurseId());
+		
+		if(nurse == null){
+			log.error("No nurse found with id : {}", viewModel.getId());
+			throw new RuntimeException("No nurse found with id : " + viewModel.getNurseId());
+		}
+		
+		License license = licenseDao.findOne(viewModel.getId());
+		
+		if(license == null){
+			log.error("No license found with id : {}", viewModel.getId());
+			throw new RuntimeException("No license found with id : " + viewModel.getId());
+		}
+		
+		if(!StringUtils.equals(license.getNumber(), viewModel.getNumber())){
+			
+			log.warn("License number updated, checking its uniqueness");
+			
+			if(licenseDao.findByNumber(viewModel.getNumber()) != null){
+				log.error("License number : {} is already in use", viewModel.getNumber());
+				throw new RuntimeException("License number " + viewModel.getNumber() + " is already in use");
+			}
+			
+		}
+		
+		viewModel = this.createOrUpdate(viewModel);
+		
+		log.debug("Updated license : {}", viewModel);
+		
+		return viewModel;
+		
+	}
+	
+	/**
+	 * @param viewModel
+	 * @return
+	 */
+	private LicenseViewModel createOrUpdate(LicenseViewModel viewModel){
+		
+		validator.validate(viewModel);
+		
+		Nurse user = nurseDao.findOne(viewModel.getNurseId());
+		
 		License license = License.builder()
 				.id(viewModel.getId())
-				//.user(user)
-				//.licenseNumber(viewModel.getLicenseNumber())
+				.nurse(user)
+				.number(viewModel.getNumber())
 				.expirationDate(viewModel.getExpirationDate())
 				.build();
+		
 		license = licenseDao.merge(license);
+		
 		return dozerMapper.map(license, LicenseViewModel.class);
 	}
 	
-	public void remove(Long id){
+	/**
+	 * @param id
+	 */
+	public void delete(Long id){
+		
 		log.info("Deleting License with id : {}", id);
-		licenseDao.delete(licenseDao.findOne(id));
-	}
-	
-	public LicenseViewModel findBydIdAndUserId(Long id, Long userId){
-		log.info("Finding license with id : {} for user with id : {}", id, userId);
-		LicenseViewModel viewModel = null;
-		try{
-			viewModel = dozerMapper.map(
-					licenseDao.findByIdAndUserId(id, userId), LicenseViewModel.class
-					);
-		}catch(Exception e){
-			log.info("No license with id : {} for user with id : {}", id, userId);
+		
+		License license = licenseDao.findOne(id);
+		
+		if(license == null){
+			log.error("No license found with id : {}", id);
+			throw new RuntimeException("No license found with id : " + id);
 		}
-		log.info("Found license : {}", viewModel);
-		return viewModel;
+		
+		licenseDao.delete(license);
 	}
 	
-	public LicenseViewModel findById(Long id){
+	/**
+	 * @param id
+	 * @return
+	 */
+	public LicenseViewModel findOne(Long id){
 		
 		log.info("Finding License by id : {}", id);
+		
 		License license = licenseDao.findOne(id);
+		
 		LicenseViewModel viewModel = null;
-		if(license != null){
+		
+		if(license == null){
+			log.warn("No license found with id : {}", id);
+		}else{
 			viewModel = dozerMapper.map(license, LicenseViewModel.class);
 		}
-		log.info("License found : {}", viewModel);
-		return viewModel;
-	}
-	
-	public LicenseViewModel findByLicenseNumber(String number){
-		log.info("Finding License by number : {}", number);
-		LicenseViewModel viewModel = null;
-		try{
-			viewModel = dozerMapper.map(
-					licenseDao.findByNumber(number), LicenseViewModel.class
-					);
-		}catch(Exception e){
-			log.info("No license found by number : {}", number);
-		}
-		return viewModel;
-	}
-	
-	public List<LicenseViewModel> findAllByUserId(Long userId){
 		
-		log.info("Finding all licenses for user with id : {}", userId);
-		List<License> licenses = licenseDao.findAllByUserId(userId);
+		log.info("License found : {}", viewModel);
+		
+		return viewModel;
+	}
+	
+	/**
+	 * @param userId
+	 * @return
+	 */
+	public List<LicenseViewModel> findAllByNurse(Long nurseId){
+		
+		log.debug("Finding all licenses for nurse with id : {}", nurseId);
+		
+		if(nurseDao.findOne(nurseId) == null){
+			log.error("No nurse found with id : {}", nurseId);
+			throw new RuntimeException("No nurse found with id : " + nurseId);
+		}
+		
+		List<License> licenses = licenseDao.findAllByNurse(nurseId);
+		
 		List<LicenseViewModel> viewModels = new LinkedList<>(); 
+		
 		for(License license : licenses){
 			viewModels.add(dozerMapper.map(license, LicenseViewModel.class));
 		}
 		
-		log.info("Licenses : {} found for user with id : {}", viewModels, userId);
+		log.debug("Licenses : {} found for nurse with id : {}", viewModels, nurseId);
 		
 		return viewModels;
 	}

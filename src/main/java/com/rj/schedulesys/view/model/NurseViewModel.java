@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rj.schedulesys.util.JsonDateSerializer;
 
@@ -21,7 +21,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeViewModel {
+@JsonAutoDetect
+public class NurseViewModel {
 	
 	private Long id;
 	
@@ -38,8 +39,9 @@ public class EmployeeViewModel {
 	
 	private Boolean ebc;
 	
+	private Boolean cpr;
+	
 	@NotNull
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/New_York")
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date dateOfHire;
 	
@@ -52,4 +54,5 @@ public class EmployeeViewModel {
 	private String comment;
 	
 	private List<PhoneNumberViewModel> phoneNumbers;
+	
 }

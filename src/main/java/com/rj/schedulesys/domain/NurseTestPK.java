@@ -22,10 +22,10 @@ public class NurseTestPK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="TEST_ID", insertable=false, updatable=false, nullable=false)
-	private int testId;
+	private Long testId;
 
 	@Column(name="NURSE_ID", insertable=false, updatable=false, nullable=false)
-	private int nurseId;
+	private Long nurseId;
 	
 
 	public boolean equals(Object other) {
@@ -44,8 +44,8 @@ public class NurseTestPK implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.testId;
-		hash = hash * prime + this.nurseId;
+		hash = hash * prime + this.testId.intValue();
+		hash = hash * prime + this.nurseId.intValue();
 		
 		return hash;
 	}

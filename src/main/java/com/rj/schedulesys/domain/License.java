@@ -22,18 +22,19 @@ import java.util.Date;
 @AllArgsConstructor
 @Table(name="LICENSE")
 public class License implements Serializable {
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="EXPIRATION_DATE", nullable=false)
+	@Column(name = "EXPIRATION_DATE", nullable = false)
 	private Date expirationDate;
 
-	@Column(name="NUMBER", nullable=false, length=254)
+	@Column(name = "NUMBER", nullable = false, length = 254)
 	private String number;
 
 	@ManyToOne(fetch = FetchType.LAZY)

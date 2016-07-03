@@ -27,25 +27,28 @@ public class NurseTest implements Serializable {
 
 	@EmbeddedId
 	private NurseTestPK id;
+	
+	@Column(name = "STATUS")
+	private String status;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="COMPLETED_DATE")
+	@Column(name = "COMPLETED_DATE")
 	private Date completedDate;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="EXPIRATION_DATE")
+	@Column(name = "EXPIRATION_DATE")
 	private Date expirationDate;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="NURSE_ID", nullable=false, insertable=false, updatable=false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "NURSE_ID", nullable = false, insertable = false, updatable = false)
 	private Nurse nurse;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="TEST_SUB_CATEGORY_ID", nullable=false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "TEST_SUB_CATEGORY_ID")
 	private TestSubCategory testSubCategory;
 
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="TEST_ID", nullable=false, insertable=false, updatable=false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "TEST_ID", nullable = false, insertable = false, updatable = false)
 	private Test test;
 
 }

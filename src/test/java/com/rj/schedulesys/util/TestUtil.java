@@ -1,11 +1,17 @@
 package com.rj.schedulesys.util;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.joda.time.LocalTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.FacilityViewModel;
+import com.rj.schedulesys.view.model.LicenseViewModel;
+import com.rj.schedulesys.view.model.NurseTestViewModel;
+import com.rj.schedulesys.view.model.NurseViewModel;
+import com.rj.schedulesys.view.model.PhoneNumberViewModel;
 import com.rj.schedulesys.view.model.PositionViewModel;
 import com.rj.schedulesys.view.model.SchedulePostStatusViewModel;
 import com.rj.schedulesys.view.model.ScheduleStatusViewModel;
@@ -120,5 +126,74 @@ public class TestUtil {
 				.build();
 		return viewModel;
 	}
-
+	
+	
+	public static NurseViewModel aNewNurseViewModel(Long id, String firstName, String lastName, String positionName
+			,Boolean ebc, Boolean cpr, Date dateOfHire, Date rehireDate, Date lastDayOfWork, String comment){
+		NurseViewModel viewModel = NurseViewModel.builder()
+				.id(id)
+				.firstName(firstName)
+				.lastName(lastName)
+				.positionName(positionName)
+				.ebc(ebc)
+				.cpr(cpr)
+				.dateOfHire(dateOfHire)
+				.rehireDate(rehireDate)
+				.lastDayOfWork(lastDayOfWork)
+				.comment(comment)
+				.build();
+		return viewModel;
+	}
+	
+	public static EmployeeViewModel aNewEmployeeViewModel(Long id, String firstName, String lastName, String positionName
+			,Boolean ebc, Boolean cpr, Date dateOfHire, Date rehireDate, Date lastDayOfWork, String comment){
+		EmployeeViewModel viewModel = EmployeeViewModel.builder()
+				.id(id)
+				.firstName(firstName)
+				.lastName(lastName)
+				.positionName(positionName)
+				.ebc(ebc)
+				.dateOfHire(dateOfHire)
+				.rehireDate(rehireDate)
+				.lastDayOfWork(lastDayOfWork)
+				.comment(comment)
+				.build();
+		return viewModel;
+		
+	}
+	
+	
+	public static PhoneNumberViewModel aNewPhoneNumberViewModel(Long id, String number, String numberLabel, String numberType){
+		PhoneNumberViewModel viewModel = PhoneNumberViewModel.builder()
+				.id(id)
+				.number(number)
+				.numberLabel(numberLabel)
+				.numberType(numberType)
+				.build();
+		return viewModel;
+	}
+	
+	public static LicenseViewModel aNewLicenseViewModel(Long id, Long nurseId, String number, Date expirationDate){
+		LicenseViewModel viewModel = LicenseViewModel.builder()
+				.id(id)
+				.nurseId(nurseId)
+				.number(number)
+				.expirationDate(expirationDate)
+				.build();
+		return viewModel;
+	}
+	
+	public static NurseTestViewModel aNewNurseTestViewModel(Long testId, Long nurseId, Long testSubCategoryId, String status
+			, Date completedDate, Date expirationDate){
+		NurseTestViewModel viewModel = NurseTestViewModel.builder()
+				.nurseId(nurseId)
+				.testId(testId)
+				.testSubCategoryId(testSubCategoryId)
+				.status(status)
+				.completedDate(completedDate)
+				.expirationDate(expirationDate)
+				.build();
+		return viewModel;
+	}
+	
 }

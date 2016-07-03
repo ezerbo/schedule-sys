@@ -2,6 +2,11 @@ package com.rj.schedulesys.view.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rj.schedulesys.util.JsonDateSerializer;
 
@@ -17,9 +22,15 @@ import lombok.NoArgsConstructor;
 public class LicenseViewModel {
 	
 	private Long id;
-	private Long userId;
+	
+	@NotNull
+	private Long nurseId;
+	
+	@Future
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date expirationDate;
-	private String licenseNumber;
+	
+	@NotBlank
+	private String number;
 	
 }
