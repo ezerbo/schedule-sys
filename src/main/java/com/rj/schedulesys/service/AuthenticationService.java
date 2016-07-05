@@ -3,8 +3,10 @@ package com.rj.schedulesys.service;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.rj.schedulesys.dao.ScheduleSysUserDao;
@@ -20,14 +22,32 @@ public class AuthenticationService {
 	
 	@Transactional
 	public ScheduleSysUser getAuthenticatedUser(){
+		
 		log.info("Getting authenticated user");
 		
-		OAuth2Authentication user = 
-				(OAuth2Authentication) SecurityContextHolder.getContext()
-									.getAuthentication();
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        
+        String userName = null;
+        
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
+                userName = springSecurityUser.getUsername();
+            } else if (authentication.getPrincipal() instanceof String) {
+                userName = (String) authentication.getPrincipal();
+            }
+        }
+        
+		ScheduleSysUser authenticatedUser = userDao.findByUsername(userName);
 		
-		ScheduleSysUser authenticatedUser = userDao.findByUsername(user.getName());
-		log.info("Authenticated user : {} with authorities : {}", authenticatedUser, user.getAuthorities());
+		if(authenticatedUser == null){
+			log.error("No user found");
+			throw new RuntimeException("Something unexpected happened");
+		}
+		
+		log.info("User found : {}, roles : {}", authenticatedUser.getUsername(), authenticatedUser.getUserRole().getUserRole());
+		
 		return authenticatedUser;
 	}
 }

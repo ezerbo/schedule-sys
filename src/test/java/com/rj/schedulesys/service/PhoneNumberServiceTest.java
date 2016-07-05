@@ -27,6 +27,28 @@ public class PhoneNumberServiceTest {
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();
 	
+	
+	@Test
+	public void test_delete_WithNonExisitngPhoneNumberId(){
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("No phone number found with id : 0 for employee with id : 0");
+		phoneNumberService.delete(0L, 0L);
+	}
+	
+	@Test
+	public void test_delete_WithPrimaryPhoneNumber(){
+		expectedException.expect(RuntimeException.class);
+		expectedException.expectMessage("Primary phone number can not be deleted");
+		phoneNumberService.delete(1L, 1L);
+	}
+	
+	@Test
+	public void test_delete_WithSecondaryPhoneNumber(){
+		assertNotNull(phoneNumberService.findByNurseAndNumberId(1L, 2L));
+		phoneNumberService.delete(1L, 2L);
+		assertNull(phoneNumberService.findByNurseAndNumberId(1L, 2L));
+	}
+	
 	@Test
 	public void test_create_WithMalFormatted_PhoneNumber(){
 		expectedException.expect(RuntimeException.class);

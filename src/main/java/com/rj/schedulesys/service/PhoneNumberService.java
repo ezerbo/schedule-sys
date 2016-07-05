@@ -10,6 +10,7 @@ import com.rj.schedulesys.dao.EmployeeDao;
 import com.rj.schedulesys.dao.PhoneNumberDao;
 import com.rj.schedulesys.dao.PhoneNumberLabelDao;
 import com.rj.schedulesys.dao.PhoneNumberTypeDao;
+import com.rj.schedulesys.data.PhoneNumberLabelConstants;
 import com.rj.schedulesys.domain.Employee;
 import com.rj.schedulesys.domain.PhoneNumber;
 import com.rj.schedulesys.domain.PhoneNumberLabel;
@@ -142,22 +143,65 @@ public class PhoneNumberService {
 		
 		return viewModel;
 	}
+
+	@Transactional
+	public void delete(Long employeeId, Long phoneNumberId){
+		
+		log.debug("Deleting phone number with id : {} belonging to employee with id : {}", phoneNumberId, employeeId);
+		
+		PhoneNumber phoneNumber = phoneNumberDao.findByEmployeeIdAndNumberId(employeeId, phoneNumberId);
+		if(phoneNumber == null){
+			log.error("No phone number found with id : {} for employee with id : {}", phoneNumber, employeeId);
+			throw new RuntimeException("No phone number found with id : " 
+					+ phoneNumberId + " for employee with id : " + employeeId);
+		}
+		
+		if(StringUtils.equalsIgnoreCase(phoneNumber.getPhoneNumberLabel().getName()
+				, PhoneNumberLabelConstants.PRIMARY_LABEL)){
+			log.error("Primary phone number can not be deleted");
+			throw new RuntimeException("Primary phone number can not be deleted");
+		}
+		
+		phoneNumberDao.delete(phoneNumber);
+	}
 	
 	/**
-	 * @param employeeId
+	 * @param nurseId
 	 * @param numberId
 	 * @return
 	 */
-	public PhoneNumberViewModel findByEmployeeAndNumberId(Long employeeId, Long numberId){
+	public PhoneNumberViewModel findByNurseAndNumberId(Long nurseId, Long numberId){
 		
-		log.debug("Fetching phone number with id : {} for employee with id : {}", numberId, employeeId);
+		log.debug("Fetching phone number with id : {} for nurse with id : {}", numberId, nurseId);
 		
-		PhoneNumber phoneNumber = phoneNumberDao.findByEmployeeIdAndNumberId(employeeId, numberId);
+		PhoneNumber phoneNumber = phoneNumberDao.findByNurseIdAndNumberId(nurseId, numberId);
 		
 		PhoneNumberViewModel viewModel = null;
 		
 		if(phoneNumber == null){
-			log.warn("No phoneNumber found with id : {} for employee with id : {}", numberId, employeeId);
+			log.warn("No phoneNumber found with id : {} for nurse with id : {}", numberId, nurseId);
+		}else{
+			viewModel = dozerMapper.map(phoneNumber, PhoneNumberViewModel.class);
+		}
+		
+		return viewModel;
+	}
+	
+	/**
+	 * @param careGiverId
+	 * @param numberId
+	 * @return
+	 */
+	public PhoneNumberViewModel findByCareGiverAndNumberId(Long careGiverId, Long numberId){
+		
+		log.debug("Fetching phone number with id : {} for care giver with id : {}", numberId, careGiverId);
+		
+		PhoneNumber phoneNumber = phoneNumberDao.findByCareGiverIdAndNumberId(careGiverId, numberId);
+		
+		PhoneNumberViewModel viewModel = null;
+		
+		if(phoneNumber == null){
+			log.warn("No phoneNumber found with id : {} for care giver with id : {}", numberId, careGiverId);
 		}else{
 			viewModel = dozerMapper.map(phoneNumber, PhoneNumberViewModel.class);
 		}

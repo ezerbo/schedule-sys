@@ -22,7 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class FacilityService {
 	
-	private @Autowired FacilityDao facilityDao;
+	@Autowired
+	private  FacilityDao facilityDao;
 	
 	private @Autowired ObjectValidator<FacilityViewModel> validator;
 	

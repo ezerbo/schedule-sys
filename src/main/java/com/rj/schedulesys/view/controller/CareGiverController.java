@@ -181,7 +181,7 @@ public class CareGiverController {
 		
 		log.info("Adding new phone number : {} for care giver with id : {}", viewModel, id);
 		
-		if(phoneNumberService.findByEmployeeAndNumberId(id, phoneNumberId) == null){
+		if(phoneNumberService.findByCareGiverAndNumberId(id, phoneNumberId) == null){
 			log.warn("No phone number with id : {} found for employee with id : {}", id);
 			return new ResponseEntity<>("No phone number found with id : " + id
 					+ " for care giver with id " + phoneNumberId, HttpStatus.NOT_FOUND);
@@ -197,6 +197,29 @@ public class CareGiverController {
 		log.info("Added phone number : {}", viewModel);
 		
 		return new ResponseEntity<>("Phone number added successfully", HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/{id}/phone-numbers/{phoneNumberId}", method = RequestMethod.DELETE)
+	public @ResponseBody ResponseEntity<?> deletePhoneNumber(@PathVariable Long id, @PathVariable Long phoneNumberId){
+		
+		log.info("Deleting phone number with id : {} for care giver with id : {}", phoneNumberId, id);
+		
+		if(phoneNumberService.findByCareGiverAndNumberId(id, phoneNumberId) == null){
+			log.warn("No nurse found with id : {}", id);
+			return new ResponseEntity<>("No phone number found with id : " + id
+					+ " for care giver with id " + phoneNumberId, HttpStatus.NOT_FOUND);
+		}
+		
+		try{
+			phoneNumberService.delete(id, phoneNumberId);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+		
+		log.info("Phone number successfully deleted");
+		
+		return new ResponseEntity<>("Phone number successfully deleted", HttpStatus.OK);
 	}
 	
 }

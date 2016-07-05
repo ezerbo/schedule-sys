@@ -41,12 +41,13 @@ public class Shift implements Serializable {
 	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 	
+	@Column(name = "NAME", nullable = false, length = 30)
+	private String name;
+	
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
 	@Column(name = "END_TIME", nullable = false)
 	private LocalTime endTime;
 
-	@Column(name = "NAME", nullable = false, length = 30)
-	private String name;
 	
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentLocalTime")
 	@Column(name = "START_TIME", nullable = false)

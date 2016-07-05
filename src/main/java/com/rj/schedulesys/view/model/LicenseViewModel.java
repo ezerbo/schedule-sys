@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rj.schedulesys.util.JsonDateSerializer;
 
@@ -27,6 +28,7 @@ public class LicenseViewModel {
 	private Long nurseId;
 	
 	@Future
+	@JsonFormat(timezone = "America/New_York")
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date expirationDate;
 	

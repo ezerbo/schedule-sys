@@ -24,15 +24,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="POSITION_TYPE")
+@Table(name = "POSITION_TYPE")
 public class PositionType {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="ID", unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 	
-	@Column(name="NAME", unique=true, nullable=false)
+	@Column(name = "NAME", unique = true, nullable = false)
 	private String name;
 	
 	@OneToMany(mappedBy = "positionType")

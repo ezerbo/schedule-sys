@@ -27,11 +27,11 @@ public class LicenseDao extends GenericDao<License> {
 		License license = null;
 		
 		try{
-		license = entityManager.createQuery(
-				"from License l where l.number =:number"
-				, License.class)
-				.setParameter("number", number)
-				.getSingleResult();
+			license = entityManager.createQuery(
+					"from License l where l.number =:number"
+					, License.class)
+					.setParameter("number", number)
+					.getSingleResult();
 		}catch(NoResultException e){
 			log.error("No license found with number : {}", number);
 		}

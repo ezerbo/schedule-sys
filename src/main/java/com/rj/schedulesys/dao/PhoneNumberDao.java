@@ -75,7 +75,8 @@ public class PhoneNumberDao extends GenericDao<PhoneNumber> {
 	public PhoneNumber findByEmployeeIdAndNumberId(Long employeeId, Long numberId){
 		PhoneNumber phoneNumber = null;
 		try{
-			phoneNumber = entityManager.createQuery("from PhoneNumber pn where pn.id =:numberId and pn.employee.id =:employeeId"
+			phoneNumber = entityManager.createQuery(
+					"from PhoneNumber pn where pn.id =:numberId and pn.employee.id =:employeeId"
 					, PhoneNumber.class)
 					.setParameter("numberId", numberId)
 					.setParameter("employeeId", employeeId)
@@ -86,4 +87,43 @@ public class PhoneNumberDao extends GenericDao<PhoneNumber> {
 		return phoneNumber;
 	}
 	
+	/**
+	 * @param nurseId
+	 * @param numberId
+	 * @return
+	 */
+	public PhoneNumber findByNurseIdAndNumberId(Long nurseId, Long numberId){
+		PhoneNumber phoneNumber = null;
+		try{
+			phoneNumber = entityManager.createQuery(
+					"from PhoneNumber pn where pn.id =:numberId and pn.employee.id =:nurseId"
+					, PhoneNumber.class)
+					.setParameter("numberId", numberId)
+					.setParameter("nurseId", nurseId)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No phone number found with id : {} for employee with id : {}", numberId, nurseId);
+		}
+		return phoneNumber;
+	}
+	
+	/**
+	 * @param employeeId
+	 * @param numberId
+	 * @return
+	 */
+	public PhoneNumber findByCareGiverIdAndNumberId(Long careGiverId, Long numberId){
+		PhoneNumber phoneNumber = null;
+		try{
+			phoneNumber = entityManager.createQuery(
+					"from PhoneNumber pn where pn.id =:numberId and pn.employee.careGiver.id =:careGiverId"
+					, PhoneNumber.class)
+					.setParameter("numberId", numberId)
+					.setParameter("careGiverId", careGiverId)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No phone number found with id : {} for employee with id : {}", numberId, careGiverId);
+		}
+		return phoneNumber;
+	}
 }

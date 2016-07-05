@@ -18,19 +18,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScheduleViewModel {
+public class GetScheduleViewModel {
 	
 	private Long id;
 	
-	private String employeeName;
+	private EmployeeViewModel employee;
 	
-	private String job;
+	private PositionViewModel job;
 	
-	private String filledBy;
+	private ScheduleSysUserViewModel filledBy;
 	
-	private String lastModifiedBy;
+	private ScheduleSysUserViewModel lastModifiedBy;
 	
-	@Size(max = 100)
+	@Size(max = 254)
 	private String scheduleComment;
 	
 	@Future
@@ -38,13 +38,13 @@ public class ScheduleViewModel {
 	@JsonFormat(timezone = "America/New_York")
 	private Date scheduleDate;
 	
-	private String facility;
+	private FacilityViewModel facility;
 	
-	private String shift;
+	private ShiftViewModel shift;
 	
-	private String scheduleStatus;
+	private ScheduleStatusViewModel scheduleStatus;
 	
-	private String schedulePostStatus;
+	private SchedulePostStatusViewModel schedulePostStatus;
 	
 	private Boolean timesheetReceived;
 	
@@ -52,5 +52,4 @@ public class ScheduleViewModel {
 	
 	private Double overtime;
 	
-	private TimeViewModel time;
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 import org.joda.time.LocalTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rj.schedulesys.view.model.CreateScheduleViewModel;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.FacilityViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
@@ -20,6 +21,7 @@ import com.rj.schedulesys.view.model.ShiftViewModel;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
 import com.rj.schedulesys.view.model.TestSubCategoryViewModel;
 import com.rj.schedulesys.view.model.TestViewModel;
+import com.rj.schedulesys.view.model.UpdateScheduleViewModel;
 
 public class TestUtil {
 	
@@ -194,6 +196,39 @@ public class TestUtil {
 				.expirationDate(expirationDate)
 				.build();
 		return viewModel;
+	}
+	
+	public static CreateScheduleViewModel aNewCreateScheduleViewModel(Long employeeId, Long facilityId, Long shiftId
+			, Long scheduleStatusId, Date scheduleDate, String comment){
+		CreateScheduleViewModel viewModel = CreateScheduleViewModel.builder()
+				.employeeId(employeeId)
+				.facilityId(facilityId)
+				.shiftId(shiftId)
+				.scheduleStatusId(scheduleStatusId)
+				.scheduleDate(scheduleDate)
+				.comment(comment)
+				.build();
+		return viewModel;
+	}
+	
+	public static UpdateScheduleViewModel aNewUpdateScheduleViewModel(Long id, Long employeeId, Long facilityId
+			, Long shiftId, Long scheduleStatusId, Long schedulePostStatusId, Double hours
+			, Double overtime, Boolean timesheetReceived, Date scheduleDate, String comment){
+		UpdateScheduleViewModel viewModel = UpdateScheduleViewModel.builder()
+				.id(id)
+				.employeeId(employeeId)
+				.facilityId(facilityId)
+				.shiftId(shiftId)
+				.scheduleStatusId(scheduleStatusId)
+				.schedulePostStatusId(schedulePostStatusId)
+				.hours(hours)
+				.overtime(overtime)
+				.timesheetReceived(timesheetReceived)
+				.scheduleDate(scheduleDate)
+				.comment(comment)
+				.build();
+		return viewModel;
+				
 	}
 	
 }

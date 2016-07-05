@@ -20,10 +20,10 @@ public class ScheduleUpdatePK implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="SCHEDULE_ID", unique=true, nullable=false)
-	private int scheduleId;
+	private Long scheduleId;
 
 	@Column(name="USER_ID", insertable=false, updatable=false, unique=true, nullable=false)
-	private int userId;
+	private Long userId;
 
 
 	public boolean equals(Object other) {
@@ -42,8 +42,8 @@ public class ScheduleUpdatePK implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int hash = 17;
-		hash = hash * prime + this.scheduleId;
-		hash = hash * prime + this.userId;
+		hash = hash * prime + this.scheduleId.intValue();
+		hash = hash * prime + this.userId.intValue();
 		
 		return hash;
 	}

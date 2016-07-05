@@ -18,7 +18,7 @@ import com.rj.schedulesys.service.FacilityService;
 import com.rj.schedulesys.service.ScheduleService;
 import com.rj.schedulesys.service.StaffMemberService;
 import com.rj.schedulesys.view.model.FacilityViewModel;
-import com.rj.schedulesys.view.model.ScheduleViewModel;
+import com.rj.schedulesys.view.model.GetScheduleViewModel;
 import com.rj.schedulesys.view.model.StaffMemberViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -133,7 +133,8 @@ public class FacilityController {
 	}
 	
 	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> findSchedules(@PathVariable Long id, @RequestParam Date startDate, @RequestParam Date endDate){
+	public ResponseEntity<?> findSchedules(@PathVariable Long id, @RequestParam(required = false) Date startDate
+			, @RequestParam(required = false) Date endDate){
 		log.info("Finding schedules between startDate : {} and endDate : {} for facility with id : {}", startDate, endDate);
 		
 		if(facilityService.findOne(id) == null){
@@ -141,7 +142,14 @@ public class FacilityController {
 			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
-		List<ScheduleViewModel> viewModels = scheduleService.findAllBetweenDatesByFacilityId(startDate, endDate, id);
+		List<GetScheduleViewModel> viewModels = null;
+		
+		if(startDate == null || endDate == null){
+			viewModels = scheduleService.findAllByFacility(id);
+		}else{
+			viewModels = scheduleService.findAllBetweenDatesByFacility(startDate, endDate, id);
+		}
+		
 		if(viewModels.isEmpty()){
 			log.info("No schedules found between : {} and : {} for facility with id : {}", startDate, endDate, id);
 			return new ResponseEntity<>(

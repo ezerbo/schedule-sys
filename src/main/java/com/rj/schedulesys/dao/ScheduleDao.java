@@ -3,10 +3,15 @@ package com.rj.schedulesys.dao;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.stereotype.Repository;
 
 import com.rj.schedulesys.domain.Schedule;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Repository
 public class ScheduleDao extends GenericDao<Schedule> {
 	
@@ -14,39 +19,32 @@ public class ScheduleDao extends GenericDao<Schedule> {
 		setClazz(Schedule.class);
 	}
 	
-	public List<Schedule> findByAssigneeId(Long id, Date scheduleDate){
-		List<Schedule> schedules = entityManager.createQuery(
-				"from Schedule s where s.assignee.id =:id and s.scheduleDate =:scheduleDate", Schedule.class)
-				.setParameter("id", id)
-				.setParameter("scheduleDate", scheduleDate)
-				.getResultList();
-		return schedules;
-	}
-	
-	public Schedule findByIdAndAssigneeId(Long id, Long assigneeId){
-		Schedule schedule = entityManager.createQuery(
-				"from Schedule s where s.id =:id and s.assignee.id =:assigneeId", Schedule.class)
-				.setParameter("id", id)
-				.setParameter("assigneeId", assigneeId)
-				.getSingleResult();
+	/**
+	 * @param employeeId
+	 * @param shiftId
+	 * @param date
+	 * @return
+	 */
+	public Schedule findByEmployeeAndShiftAndDate(Long employeeId, Long shiftId, Date date){
+		Schedule schedule = null; 
+
+		try {
+			schedule = entityManager.createQuery(
+					"from Schedule s where s.employee.id =:employeeId "
+							+ "and s.shift.id =:shiftId "
+							+ "and s.scheduleDate =:scheduleDate", Schedule.class)
+					.setParameter("employeeId", employeeId)
+					.setParameter("shiftId", shiftId)
+					.setParameter("scheduleDate", date)
+					.getSingleResult();
+		} catch (NoResultException e) {
+			log.warn("No schedule found with employeeId : {}, shiftId : {} and date : {}", employeeId, shiftId, date);
+		}
+		
 		return schedule;
 	}
 	
-	public Schedule findByAssigneeNameAndShiftNameAndScheduleDate(String firstname, String lastname, String shiftName, Date scheduleDate){
-		Schedule schedule = entityManager.createQuery(
-				"from Schedule s where s.assignee.firstName =:firstname "
-				+ "and s.assignee.lastName =:lastname "
-				+ "and s.shift.shiftName =:shiftName "
-				+ "and s.scheduleDate =:scheduleDate", Schedule.class)
-				.setParameter("firstname", firstname)
-				.setParameter("lastname", lastname)
-				.setParameter("shiftName", shiftName)
-				.setParameter("scheduleDate", scheduleDate)
-				.getSingleResult();
-		return schedule;
-	}
-	
-	public List<Schedule> findAllBetweenDatesByFacilityId(Date startDate, Date endDate, Long facilityId){
+	public List<Schedule> findAllBetweenDatesByFacility(Date startDate, Date endDate, Long facilityId){
 		List<Schedule> schedules = entityManager.createQuery(
 				"from Schedule s where s.facility.id =:facilityId and s.scheduleDate between :startDate and :endDate"
 				, Schedule.class)
@@ -57,21 +55,13 @@ public class ScheduleDao extends GenericDao<Schedule> {
 		return schedules;
 	}
 	
-	public Schedule findByIdAndFacilityId(Long id, Long facilityId){
-		Schedule schedule = entityManager.createQuery(
-				"from Schedule s where s.id =:id and s.facility.id =:facilityId"
-				, Schedule.class)
-				.setParameter("id", id)
-				.setParameter("facilityId", facilityId)
-				.getSingleResult();
-		return schedule;
-	}
-	
-	public List<Schedule> findByAssigneerId(Long id){
+	public List<Schedule> findAllByFacility(Long facilityId){
 		List<Schedule> schedules = entityManager.createQuery(
-				"from Schedule s where s.assigneer.id =:id", Schedule.class)
-				.setParameter("id", id)
+				"from Schedule s where s.facility.id =:facilityId"
+				, Schedule.class)
+				.setParameter("facilityId", facilityId)
 				.getResultList();
 		return schedules;
 	}
+	
 }

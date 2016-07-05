@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Date;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -173,5 +175,24 @@ public class FacilityControllerTest {
 					.andExpect(status().isOk())
 					.andExpect(jsonPath("$", hasSize(2)));
 	}
+	
+	@Test
+	public void test_findAllSchedule_WithoutDates() throws Exception{
+		mockMvc.perform(get("/facilities/{id}/schedules", 9))
+					.andExpect(status().isOk())
+					.andExpect(jsonPath("$", hasSize(2)));
+	}
+	
+	@Test
+	public void test_findAllSchedule_WithDates() throws Exception{
+		mockMvc.perform(get("/facilities/{id}/schedules", 9)
+				.param("startDate", new Date().toString())
+				.param("endDate", new Date().toString())
+				)
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", hasSize(2)));
+	}
+	
+	
 	
 }

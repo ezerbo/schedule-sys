@@ -205,7 +205,7 @@ public class NurseController {
 		
 		log.info("Adding new phone number : {} for user with id : {}", viewModel, id);
 		
-		if(phoneNumberService.findByEmployeeAndNumberId(id, phoneNumberId) == null){
+		if(phoneNumberService.findByNurseAndNumberId(id, phoneNumberId) == null){
 			log.warn("No nurse found with id : {}", id);
 			return new ResponseEntity<>("No phone number found with id : " + id
 					+ " for employee with id " + phoneNumberId, HttpStatus.NOT_FOUND);
@@ -221,6 +221,29 @@ public class NurseController {
 		log.info("Added phone number : {}", viewModel);
 		
 		return new ResponseEntity<>("Phone number added successfully", HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/{id}/phone-numbers/{phoneNumberId}", method = RequestMethod.DELETE)
+	public @ResponseBody ResponseEntity<?> deletePhoneNumber(@PathVariable Long id, @PathVariable Long phoneNumberId){
+		
+		log.info("Deleting phone number with id : {} for nurse with id : {}", phoneNumberId, id);
+		
+		if(phoneNumberService.findByNurseAndNumberId(id, phoneNumberId) == null){
+			log.warn("No nurse found with id : {}", id);
+			return new ResponseEntity<>("No phone number found with id : " + id
+					+ " for nurse with id " + phoneNumberId, HttpStatus.NOT_FOUND);
+		}
+		
+		try{
+			phoneNumberService.delete(id, phoneNumberId);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}	
+		
+		log.info("Phone number successfully deleted");
+		
+		return new ResponseEntity<>("Phone number successfully deleted", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}/licenses", method = RequestMethod.GET, produces = "application/json")
@@ -270,7 +293,7 @@ public class NurseController {
 	}
 	
 	@RequestMapping(value = "/{id}/tests", method = RequestMethod.GET)
-	public ResponseEntity<?> findAllTest(@PathVariable Long id){
+	public ResponseEntity<?> findAllTests(@PathVariable Long id){
 		
 		log.info("Fetching all test for nurse with id", id);
 		

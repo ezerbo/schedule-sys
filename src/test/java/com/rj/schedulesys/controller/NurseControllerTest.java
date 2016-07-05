@@ -246,4 +246,18 @@ private @Autowired WebApplicationContext context;
 		.andExpect(jsonPath("$", hasSize(2)));
 	}
 	
+	@Test
+	public void test_deletePhoneNumber_WithPrimaryPhoneNumber() throws Exception{
+		mockMvc.perform(delete("/nurses/{id}/phone-numbers/{phomeNumberId}", 1, 1))
+			.andExpect(status().is5xxServerError())
+			.andExpect(jsonPath("$", is("Primary phone number can not be deleted")));
+	}
+	
+	@Test
+	public void test_deletePhoneNumber_WithSecondaryPhoneNumber() throws Exception{
+		mockMvc.perform(delete("/nurses/{id}/phone-numbers/{phomeNumberId}", 1, 2))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$", is("Phone number successfully deleted")));
+	}
+	
 }
