@@ -1,0 +1,28 @@
+body {
+  background: #e2e1e0;
+  text-align: center;
+  margin: 0px;
+}
+.main-container {
+	margin-top: 0px; 
+	margin-left: 20%;
+	margin-right: 20%;
+}
+
+.div-login {
+	padding-top: 100px;
+}
+.login-button {
+	margin-left: 1%;
+	margin-right: 1%;
+}
+
+.login-main-div {
+	margin-top : 0px;
+	margin-left: 25%;
+	margin-right: 25%;
+}
+
+.home-div {
+	margin-top: -9px;
+}

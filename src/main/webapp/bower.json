@@ -1,0 +1,21 @@
+{
+  "name": "schedulesys",
+  "homepage": "https://github.com/edouardo/schedule-sys",
+  "authors": [
+    "ezerbo <zerboedouard@gmail.com>"
+  ],
+  "description": "RJ Healthcare employees scheduling system",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material-data-table": "^0.10.9"
+  }
+}

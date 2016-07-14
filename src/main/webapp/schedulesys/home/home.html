@@ -1,0 +1,27 @@
+<div class="home-div">
+	<md-card>
+	<md-fab-toolbar md-open="demo.isOpen" count="demo.count" md-direction="right">
+	    <md-fab-trigger class="align-with-text">
+	      <md-button aria-label="menu" class="md-fab md-primary">
+	        <md-icon md-svg-src="schedulesys/img/ic_menu_white_48px.svg"></md-icon>
+	      </md-button>
+	    </md-fab-trigger>
+    <md-toolbar>
+      <md-fab-actions class="md-toolbar-tools">
+        <md-button aria-label="home" ui-sref="home.facilities">Home</md-button>
+        <md-button aria-label="facilities" ui-sref="home.facilities">Facilities</md-button>
+        <md-button aria-label="schedules" ui-sref="home.schedules">Schedules</md-button>
+        <md-button aria-label="nurses" ui-sref="home.nurses">Nurses</md-button>
+        <md-button aria-label="care givers" ui-sref="home.caregivers">Care givers</md-button>
+      </md-fab-actions>
+    </md-toolbar>
+  </md-fab-toolbar>
+		<div ui-view></div>
+	</md-card>
+	<md-card>
+		<div>
+			<span>Copyright © 2016 RJ Healthcare Services, LLC</span><br>
+			<span>1017 Main Street | Asbury Park | NJ 07712 | 732-775-4880</span>
+		</div>
+	</md-card>
+</div>
