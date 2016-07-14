@@ -52,67 +52,61 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 			.passwordEncoder(passwordEncoder());
 	}
 	
-	 @Override
-	 protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		 auth.inMemoryAuthentication().withUser("user").password("secret").roles("USER");
-	 }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser("user").password("secret").roles("USER");
+	}
 	 
-	 @Override
-	 public void configure(WebSecurity web) throws Exception {
-		 web.ignoring()
-		 .antMatchers(HttpMethod.OPTIONS, "/**")
-		 .antMatchers("/**/*.{js,html}")
-		 .antMatchers("/bower_components/**")
-		 // .antMatchers("/i18n/**")
-		 // .antMatchers("/content/**")
-		 //.antMatchers("/swagger-ui/index.html")
-		 // .antMatchers("/test/**")
-		 // .antMatchers("/h2-console/**")
-		 ;
-	 }
-	 
-	 @Override
-	 protected void configure(HttpSecurity http) throws Exception {
-		 http
-		 .exceptionHandling()
-		 .authenticationEntryPoint(authenticationEntryPoint)
-		 .and()
-		 .csrf()
-		 .disable()
-		 .headers()
-		 .frameOptions()
-		 .disable()
-		 .and()
-		 .sessionManagement()
-		 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		 .and()
-		 .authorizeRequests()
-		 .antMatchers("/authenticate").permitAll()
-		 //.antMatchers("/api/account/reset_password/init").permitAll()
-		// .antMatchers("/api/account/reset_password/finish").permitAll()
-		 .antMatchers("/**").authenticated()
-		 .antMatchers("/users/**").hasAuthority(AuthoritiesConstants.ADMIN)
-		 //.antMatchers("/configuration/ui").permitAll()
-		 .and()
-		 	.apply(securityConfigurerAdapter());
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring()
+		.antMatchers(HttpMethod.OPTIONS, "/**")
+		.antMatchers("/schedulesys/**/*.{js,html}")
+		.antMatchers("/bower_components/**");
+	}
 
-	 }
-	 
-	 @Bean
-		public DozerBeanMapper dozerBeanMapper(){
-		 List<String> mappingFiles = new ArrayList<String>();
-		 mappingFiles.add("dozer/dozer-config.xml");
-		 DozerBeanMapper bm = new DozerBeanMapper(mappingFiles);
-		 return bm;
-	 }
-	 
-	 @Bean
-	 public ValidatorFactory validatorFactory(){
-		 return Validation.buildDefaultValidatorFactory();
-	 }
-	 
-	 private JWTConfigurer securityConfigurerAdapter() {
-		 return new JWTConfigurer(tokenProvider);
-	 }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+		.exceptionHandling()
+		.authenticationEntryPoint(authenticationEntryPoint)
+		.and()
+		.csrf()
+		.disable()
+		.headers()
+		.frameOptions()
+		.disable()
+		.and()
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.authorizeRequests()
+		.antMatchers("/authenticate").permitAll()
+		//	.antMatchers("/api/account/reset_password/init").permitAll()
+		// 	.antMatchers("/api/account/reset_password/finish").permitAll()
+		//.antMatchers("/**").authenticated()
+		.antMatchers("/users/**").hasAuthority(AuthoritiesConstants.ADMIN)
+		//.antMatchers("/configuration/ui").permitAll()
+		.and()
+		.apply(securityConfigurerAdapter());
+
+	}
+
+	@Bean
+	public DozerBeanMapper dozerBeanMapper(){
+		List<String> mappingFiles = new ArrayList<String>();
+		mappingFiles.add("dozer/dozer-config.xml");
+		DozerBeanMapper bm = new DozerBeanMapper(mappingFiles);
+		return bm;
+	}
+
+	@Bean
+	public ValidatorFactory validatorFactory(){
+		return Validation.buildDefaultValidatorFactory();
+	}
+
+	private JWTConfigurer securityConfigurerAdapter() {
+		return new JWTConfigurer(tokenProvider);
+	}
 
 }
