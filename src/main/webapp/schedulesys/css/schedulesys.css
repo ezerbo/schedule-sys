@@ -5,8 +5,6 @@ body {
 }
 .main-container {
 	margin-top: 0px; 
-	margin-left: 20%;
-	margin-right: 20%;
 }
 
 .div-login {
@@ -25,4 +23,8 @@ body {
 
 .home-div {
 	margin-top: -9px;
+}
+
+md-checkbox.ng-scope.md-checked{
+	color: #0000FF;
 }

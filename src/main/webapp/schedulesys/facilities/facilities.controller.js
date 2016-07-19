@@ -6,16 +6,23 @@
 		.module('scheduleSys')
 		.controller('FacilitiesController', FacilitiesController);
 	
-	FacilitiesController.$Inject = ['$scope', '$state','$mdDialog' ,'FacilitiesService'];
+	FacilitiesController.$Inject = ['$scope', '$state', '$mdToast', '$mdDialog' ,'FacilitiesService'];
 	
-	function FacilitiesController($scope, $state, $mdDialog, FacilitiesService){
+	function FacilitiesController($scope, $state, $mdToast, $mdDialog, FacilitiesService){
 		var vm = this;
+		
+		vm.allFacilities = null;
+		vm.facilitiesOnCurrentPage = null;
 		
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.selected = [];
 		vm.editOrDelete = true;
-		vm.transition = transition;
+		vm.showToast = showToast;
+		vm.onPaginate = onPaginate;
+		vm.sliceFacilitiesArray = sliceFacilitiesArray;
+		vm.showFacilityDialog = showFacilityDialog;
+		
 		vm.query = {
 				order: 'name',
 				limit: 5,
@@ -39,36 +46,74 @@
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				var selectedFacility = vm.selected[0];
-				FacilitiesService.remove({id:selectedFacility.id});
-				vm.facilities.splice(vm.facilities.indexOf(selectedFacility), 1);
-				console.log('Deleting faclitity ... : ' + selectedFacility.id);
+				FacilitiesService.remove(
+						{id:vm.selected[0].id},
+						onDeleteSuccess,
+						onDeleteFailure
+						);
 			}, function() {
 				console.log('Keep this one ...');
 			});
 		};
 		
 		function loadAll(){
-			FacilitiesService.query({}
-			, onSuccess
-			, onError);
+			FacilitiesService.query({}, onLoadAllSuccess, onLoadAllError);
 		}
 		
-		function onSuccess(data){
-			vm.facilities = data;
+		function onLoadAllSuccess(data){
+			vm.allFacilities = data;
+			vm.facilitiesOnCurrentPage = vm.sliceFacilitiesArray();
 		}
 		
-		function onError(status){
+		function onLoadAllError(status){
 			console.log('Error status : ' + status);
 		}
 		
-		function transition () {
-            $state.transitionTo($state.$current, {
-            	reload: true,
-                inherit: false,
-                notify: true
-            });
-        }
+		function onDeleteSuccess (){
+			vm.facilitiesOnCurrentPage.splice(vm.facilitiesOnCurrentPage.indexOf(vm.selected[0]), 1);
+			vm.allFacilities.splice(vm.allFacilities.indexOf(vm.selected[0]), 1);
+			vm.editOrDelete = true;
+			vm.showToast('Facility ' + vm.selected[0].name + ' successfully deleted', 5000);
+		}	
+		
+		function onDeleteFailure (){
+			vm.showToast('Facility ' + vm.selected[0].name 
+					+ ' could not be deleted, please make sure it has no staff members and past schedules', 5000);
+		}
+		
+		function showToast(textContent, delay){
+			$mdToast.show(
+					$mdToast.simple()
+					.textContent(textContent)
+					.position('top right')
+					.hideDelay(delay)
+					);
+		}
+		
+		function onPaginate(){
+			vm.facilitiesOnCurrentPage = vm.sliceFacilitiesArray();
+		}
+		
+		function sliceFacilitiesArray(){
+			var slicedArray = vm.allFacilities.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
+			console.log('Sliced array : ' + angular.toJson(slicedArray));
+			return slicedArray;
+		}
+		
+		function showFacilityDialog(ev) {
+			$mdDialog.show({
+				templateUrl: 'schedulesys/facilities/facility-dialog.html',
+				parent: angular.element(document.body),
+				targetEvent: ev,
+				clickOutsideToClose:true
+			})
+			.then(function() {
+				//$scope.status = 'You said the information was "' + answer + '".';
+			}, function() {
+				//$scope.status = 'You cancelled the dialog.';
+			});
+		};
+	
 	}
 	
 })();
