@@ -7,7 +7,7 @@
 	  <div layout="left left">
 	  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
       <md-button class="md-raised md-primary" ng-click="vm.showFacilityDialog()">New facility</md-button>
-      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete">Edit</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ng-click="vm.showFacilityDialog()">Edit</md-button>
       <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
     </section>
 	  </div>

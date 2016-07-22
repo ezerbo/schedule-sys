@@ -87,6 +87,7 @@ public class NurseServiceTest {
 	@Test
 	public void test_delete_WithExistinNurseThatHasNoSchedulesAndHasTakenNoTest(){
 		nurseService.delete(3L);
+		assertNull(nurseService.findOne(3L));
 	}
 	
 	@Test

@@ -45,12 +45,12 @@
 					.targetEvent(ev)
 					.ok('Delete')
 					.cancel('Cancel');
+			
 			$mdDialog.show(confirm).then(function() {
 				FacilitiesService.remove(
 						{id:vm.selected[0].id},
 						onDeleteSuccess,
-						onDeleteFailure
-						);
+						onDeleteFailure);
 			}, function() {
 				console.log('Keep this one ...');
 			});
@@ -86,8 +86,7 @@
 					$mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
-					.hideDelay(delay)
-					);
+					.hideDelay(delay));
 		}
 		
 		function onPaginate(){
@@ -106,11 +105,6 @@
 				parent: angular.element(document.body),
 				targetEvent: ev,
 				clickOutsideToClose:true
-			})
-			.then(function() {
-				//$scope.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				//$scope.status = 'You cancelled the dialog.';
 			});
 		};
 	

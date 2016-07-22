@@ -12,28 +12,28 @@
     <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
 	<div layout-gt-sm="column">
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Name</label> <input md-maxlength="50" required name="name" ng-model="vm.name" />
+			<label>Name</label> <input md-maxlength="50" required name="name" ng-model="vm.facility.name" />
 			<div ng-messages="facilityForm.name.$error">
 				<div ng-message="required">Name is required.</div>
 				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Address</label> <input md-maxlength="50" required name="address" ng-model="vm.address" />
+			<label>Address</label> <input md-maxlength="50" required name="address" ng-model="vm.facility.address" />
 			<div ng-messages="facilityForm.address.$error">
 				<div ng-message="required">Address is required.</div>
 				<div ng-message="md-maxlength">The address has to be less than 50 characters long.</div>
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone number</label> <input md-maxlength="30" required name="phoneNumber" ng-model="vm.phoneNumber" />
+			<label>Phone number</label> <input md-maxlength="30" required name="phoneNumber" ng-model="vm.facility.phoneNumber" />
 			<div ng-messages="facilityForm.phoneNumber.$error">
 				<div ng-message="required">Phone number is required.</div>
 				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Fax</label> <input md-maxlength="30" required name="name" ng-model="vm.fax" />
+			<label>Fax</label> <input md-maxlength="30" required name="name" ng-model="vm.facility.fax" />
 			<div ng-messages="facilityForm.fax.$error">
 				<div ng-message="required">Fax is required.</div>
 				<div ng-message="md-maxlength">The fax number has to be less than 30 characters long.</div>

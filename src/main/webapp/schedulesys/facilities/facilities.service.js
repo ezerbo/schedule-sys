@@ -32,6 +32,16 @@
                     return data;
                 }
             },
+            'save': {
+                method: 'POST',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.toJson(data);
+                    }
+                    return data;
+                }
+            
+            }
         });
 		
 	}
