@@ -13,18 +13,13 @@
 		vm.createOrUpdatefacility = createOrUpdatefacility;
 		vm.showToast = showToast;
 		
-		if(angular.isUndefined(facility)){
-			vm.facility = {
-					id: null,
-					name: null,
-					address: null,
-					phoneNumber: null,
-					fax: null
-			};
-		}else{
-			vm.facility = facility;
-		}
-		
+		vm.facility = {
+				id: null,
+				name: null,
+				address: null,
+				phoneNumber: null,
+				fax: null
+		};
 		
 		function cancel() {
 			$mdDialog.cancel();
