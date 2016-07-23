@@ -9,6 +9,7 @@
 		    'ngResource',
 		    'angular-jwt',
 		    'ngStorage',
-		    'md.data.table'
+		    'md.data.table',
+		    'material.svgAssetsCache'
 		]);
 })();

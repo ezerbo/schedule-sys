@@ -1,4 +1,5 @@
 body {
+  background: #e2e1e0;
   text-align: center;
   margin: 0px;
 }
@@ -27,3 +28,24 @@ body {
 md-checkbox.ng-scope.md-checked{
 	color: #0000FF;
 }
+
+.datepickerdemoBasicUsage {
+  /** Demo styles for mdCalendar. */ }
+  .datepickerdemoBasicUsage md-content {
+    padding-bottom: 200px; }
+  .datepickerdemoBasicUsage .validation-messages {
+    font-size: 12px;
+    color: #dd2c00;
+    margin: 10px 0 0 25px; }
+    
+    
+    .checkboxdemoBasicUsage div.flex-xs {
+  min-height: 40px; }
+
+.checkboxdemoBasicUsage .checkboxDemo1 div {
+  clear: both; }
+
+
+.checkboxdemoBasicUsage .ipsum {
+  color: saddlebrown; }
+    

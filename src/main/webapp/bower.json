@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular-material-data-table": "^0.10.9"
+    "angular-material-data-table": "^0.10.9",
+    "svg-assets-cache.js": "svg-assets-cache#*"
   }
 }

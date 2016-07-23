@@ -1,0 +1,45 @@
+<div ng-controller="NursesController as vm">
+	
+	<md-toolbar class="md-table-toolbar md-default">
+	  <div class="md-toolbar-tools">
+	    <span>Nurses</span>
+	  </div>
+	  <div layout="left left">
+	  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button class="md-raised md-primary" ng-click="vm.showNurseDialog()">New Nurse</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete">Edit</md-button>
+      <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+    </section>
+	  </div>
+	</md-toolbar>
+
+	<md-table-container>
+	  <table md-table md-table md-row-select ng-model="vm.selected" >
+	    <thead md-head md-order="vm.query.order">
+	      <tr md-row>
+	        <th md-column md-order-by="name">
+	        	<span>First-Name</span>
+	        </th>
+	        <th md-column>Last-Name</th>
+	        <th md-column>Position-Name</th>
+	        <th md-column>Primary-Ph.No</th>
+	        <th md-column>Primary-Ph-Type</th>
+	         
+	        
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row md-select="nurse" md-select-id="name"  md-auto-select ng-repeat="nurse in vm.nursesOnCurrentPage track by nurse.id">
+	        <td md-cell>{{nurse.firstName}}</td>
+	        <td md-cell>{{nurse.lastName}}</td>
+	        <td md-cell>{{nurse.positionName}}</td>
+	        <td md-cell>{{nurse.phoneNumbers[0].number}}</td>
+	         <td md-cell>{{nurse.phoneNumbers[0].numberType}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allNurses.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+
+</div>

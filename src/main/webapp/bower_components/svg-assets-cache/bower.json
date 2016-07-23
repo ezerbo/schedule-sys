@@ -1,0 +1,14 @@
+
+{
+  "name": "svg-assets-cache.js",
+  "version": "1.0",
+  "homepage": "https://github.com/Floig/svg-assets-cache.js",
+  "authors": [
+    "Floig <floig@protonmail.com>"
+  ],
+  "description": "",
+  "keywords": [
+    "font"
+  ],
+  "license": "MIT"
+}
