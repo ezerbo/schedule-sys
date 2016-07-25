@@ -21,6 +21,7 @@
 		console.log(vm.options2);
 		console.log(vm.options3);
 		console.log(vm.options4);
+		vm.myModel = {};
 		vm.nurse = {
 				firstName: null,
 				lastName: null,

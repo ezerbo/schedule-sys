@@ -61,7 +61,7 @@ Date of Hire
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number</label> <input md-maxlength="10" required name="PhoneNumber1" ng-model="vm.nurse.phoneNumbers[0].number" />
+			<label>Phone-Number</label> <phonenumber-directive md-minlength="10" md-maxlength="10" ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" required name="PhoneNumber1"  ng-model="vm.nurse.phoneNumbers[0].number"></phonenumber-directive>
 			<div ng-messages="nurseForm.PhoneNumber1.$error">
 				<div ng-message="required">Phone Number is required.</div>
 				<div ng-message="md-maxlength">The Phone Number has to be 10 characters long.</div>
