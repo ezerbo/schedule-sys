@@ -24,6 +24,32 @@ Date of Hire
 				
 			</div>
 		</div>
+		<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
+			 <md-content>
+Rehire Date  
+  
+    <md-datepicker ng-model="vm.nurse.rehireDate" name="rehireDate" md-placeholder="Enter date"></md-datepicker>
+
+   
+  </md-content>
+			<div ng-messages="nurseForm.rehireDate.$error">
+				<div ng-message="required">Rehire Date is required.</div>
+				
+			</div>
+		</div>
+		<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
+			 <md-content>
+Last Day of Work 
+  
+    <md-datepicker ng-model="vm.nurse.lastDayOfWork" name="lastDayOfWork" md-placeholder="Enter date"></md-datepicker>
+
+   
+  </md-content>
+			<div ng-messages="nurseForm.lastDayOfWork.$error">
+				<div ng-message="required">Last Day of Work is required.</div>
+				
+			</div>
+		</div>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>First-Name</label> <input md-maxlength="50" required name="firstName" ng-model="vm.nurse.firstName" />
 			<div ng-messages="nurseForm.firstName.$error">
@@ -61,7 +87,22 @@ Date of Hire
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number</label> <phonenumber-directive md-minlength="10" md-maxlength="10" ng-pattern="/^[(][0-9]{3}[)] [0-9]{3}-[0-9]{4}$/" required name="PhoneNumber1"  ng-model="vm.nurse.phoneNumbers[0].number"></phonenumber-directive>
+		<div layout="column" layout-gt-sm="row">
+	        <div flex-xs="" flex="50">
+	          <md-checkbox ng-model="vm.nurse.cpr" name="cpr" aria-label="Checkbox 1">
+	          	CPR
+	          </md-checkbox>
+	        </div>
+      </div>
+			<div ng-messages="nurseForm.cpr.$error">
+				<div ng-message="required">CPR is required.</div>
+				
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number#1</label>
+              <input md-maxlength="10" md-minlength="10"  required name="PhoneNumber1" phone-input ng-model="vm.nurse.phoneNumbers[0].number" />			
+			 
 			<div ng-messages="nurseForm.PhoneNumber1.$error">
 				<div ng-message="required">Phone Number is required.</div>
 				<div ng-message="md-maxlength">The Phone Number has to be 10 characters long.</div>
@@ -83,6 +124,69 @@ Date of Hire
 			<div ng-messages="nurseForm.PhoneType1.$error">
 				<div ng-message="required">Phone Type is required.</div>
 				
+			</div>
+			
+		</md-input-container>
+		<div ng-show="vm.displayPhone">
+			<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number#2</label> 
+			<input md-maxlength="10" md-minlength="10"   name="PhoneNumber2" phone-input ng-model="vm.nurse.phoneNumbers[1].number" />			
+			<div ng-messages="nurseForm.PhoneNumber2.$error">
+				
+				<div ng-message="md-maxlength">The Phone Number has to be 10 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number-Label</label> <md-select ng-model="vm.nurse.phoneNumbers[1].numberLabel">
+          <md-option ng-repeat="options in vm.options4" name="PhoneLabel2" value="{{options.name}}">{{options.name}}</md-option>
+        </md-select>
+			<div ng-messages="nurseForm.PhoneLabel2.$error">
+				
+				
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number-Type </label> <md-select ng-model="vm.nurse.phoneNumbers[1].numberType">
+          <md-option ng-repeat="options in vm.options3" name="PhoneType2" value="{{options.name}}">{{options.name}}</md-option>
+        </md-select>
+			<div ng-messages="nurseForm.PhoneType2.$error">
+				
+				
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number#3</label> 
+			<input md-maxlength="10" md-minlength="10"  name="PhoneNumber3" phone-input ng-model="vm.nurse.phoneNumbers[2].number" />			
+			<div ng-messages="nurseForm.PhoneNumber3.$error">
+				
+				<div ng-message="md-maxlength">The Phone Number has to be 10 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number-Label</label> <md-select ng-model="vm.nurse.phoneNumbers[2].numberLabel">
+          <md-option ng-repeat="options in vm.options4" name="PhoneLabel3" value="{{options.name}}">{{options.name}}</md-option>
+        </md-select>
+			<div ng-messages="nurseForm.PhoneLabel3.$error">
+				
+				
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number-Type </label> <md-select ng-model="vm.nurse.phoneNumbers[2].numberType">
+          <md-option ng-repeat="options in vm.options3" name="PhoneType3" value="{{options.name}}">{{options.name}}</md-option>
+        </md-select>
+			<div ng-messages="nurseForm.PhoneType3.$error">
+				
+				
+			</div>
+		</md-input-container>
+	</div>
+	<md-button class="md-raised md-primary" style="length:20px; align:right" ng-click="vm.showPhone()">Add-Phone-Numbers</md-button>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Comment</label> <input md-maxlength="200"  name="comment" ng-model="vm.nurse.comment" />
+			<div ng-messages="nurseForm.comment.$error">
+				
+				<div ng-message="md-maxlength">The comment has to be less than 200 characters</div>
 			</div>
 		</md-input-container>
 		

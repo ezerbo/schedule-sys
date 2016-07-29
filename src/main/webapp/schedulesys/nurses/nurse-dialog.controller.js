@@ -21,14 +21,19 @@
 		console.log(vm.options2);
 		console.log(vm.options3);
 		console.log(vm.options4);
+		vm.showPhone = function(){
+			
+			vm.displayPhone = ! vm.displayPhone;
+		}
 		vm.myModel = {};
 		vm.nurse = {
+				id: null,
 				firstName: null,
 				lastName: null,
 				positionName: null,
 				ebc: null,
 				cpr: null,
-				dateOfHire: new Date(),
+				dateOfHire: null,
 				rehireDate: null,
 				lastDayOfWork: null,
 				comment: null,
@@ -36,18 +41,6 @@
 			      {
 			        
 			        number: null ,
-			        numberLabel: null,
-			        numberType: null
-			      },
-			      {
-			       
-			        number: null,
-			        numberLabel: null,
-			        numberType: null
-			      },
-			      {
-			        
-			        number: null,
 			        numberLabel: null,
 			        numberType: null
 			      }
