@@ -85,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		//	.antMatchers("/api/account/reset_password/init").permitAll()
 		// 	.antMatchers("/api/account/reset_password/finish").permitAll()
 		//.antMatchers("/**").authenticated()
-		.antMatchers("/users/**").hasAuthority(AuthoritiesConstants.ADMIN)
+		//.antMatchers("/users/**").hasAuthority(AuthoritiesConstants.ADMIN)
 		//.antMatchers("/configuration/ui").permitAll()
 		.and()
 		.apply(securityConfigurerAdapter());
