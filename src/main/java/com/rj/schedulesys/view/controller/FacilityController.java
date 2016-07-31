@@ -89,7 +89,7 @@ public class FacilityController {
 		return new ResponseEntity<String>("Facility successfully created", HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json", produces = "application/json")
 	public @ResponseBody ResponseEntity<?> update(@PathVariable Long id, @RequestBody FacilityViewModel viewModel){
 		
 		log.info("Updating facility with id: {}", id);

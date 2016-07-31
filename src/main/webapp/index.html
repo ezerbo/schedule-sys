@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui" />
-    <title>RJ employees' shifts scheduling system</title>
+    <title>RJ shifts scheduling system</title>
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
     <link rel="stylesheet" href="bower_components/angular-material-data-table/dist/md-data-table.min.css">
     <link rel="stylesheet" href="/schedulesys/css/schedulesys.css">
@@ -14,9 +14,7 @@
 <body ng-app="scheduleSys">
 
 	 <div class="main-container">
-        <div ui-view>
-        </div>
-  
+        <div ui-view></div>
     </div>
 
     <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
@@ -40,19 +38,22 @@
 	<script type="text/javascript" src="schedulesys/login/login.interceptor.js"></script>
 	<script type="text/javascript" src="schedulesys/home/home.controller.js"></script>
 	<script type="text/javascript" src="schedulesys/home/home.state.js"></script>
-	<script type="text/javascript" src="schedulesys/facilities/facilities.service.js"></script>
-	<script type="text/javascript" src="schedulesys/facilities/facility-dialog.controller.js"></script>
-	<script type="text/javascript" src="schedulesys/facilities/facilities.controller.js"></script>
-	<script type="text/javascript" src="schedulesys/facilities/facilities.state.js"></script>
 	<script type="text/javascript" src="schedulesys/nurses/nurses.service.js"></script>
 	<script type="text/javascript" src="schedulesys/nurses/nurse-dialog.controller.js"></script>
 	<script type="text/javascript" src="schedulesys/nurses/nurses.controller.js"></script>
 	<script type="text/javascript" src="schedulesys/nurses/nurses.state.js"></script>
-	<script type="text/javascript" src="schedulesys/nurses/nurse-dialog.js"></script>
 	<script type="text/javascript" src="schedulesys/positionType/nurses.positiontype.service.js"></script>
 	<script type="text/javascript" src="schedulesys/phoneNumber/phonelabels.service.js"></script>
 	<script type="text/javascript" src="schedulesys/phoneNumber/phonetype.service.js"></script>
 	<script type="text/javascript" src="schedulesys/phoneNumber/phonenumber.format.directive.js"></script>
+	<script type="text/javascript" src="schedulesys/facilities/facilities.service.js"></script>
+	<script type="text/javascript" src="schedulesys/facilities/facility-dialog.controller.js"></script>
+	<script type="text/javascript" src="schedulesys/facilities/facilities.controller.js"></script>
+	<script type="text/javascript" src="schedulesys/facilities/facilities-details.controller.js"></script>
+	<script type="text/javascript" src="schedulesys/facilities/facilities.state.js"></script>
+	<script type="text/javascript" src="schedulesys/staff-members/staff-members.service.js"></script>
+	<script type="text/javascript" src="schedulesys/schedules/facility.scheduling.service.js"></script>
+	<script type="text/javascript" src="schedulesys/schedules/facilities.scheduling.controller.js"></script>
 	
 </body>
 </html>

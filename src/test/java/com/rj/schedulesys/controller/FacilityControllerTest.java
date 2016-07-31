@@ -62,16 +62,15 @@ public class FacilityControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.name", is("Sunnyside")))
 			.andExpect(jsonPath("$.address", is("7080 Samuel Morse Dr")))
-			.andExpect(jsonPath("$.phoneNumber", is("(908)-189-9371")))
-			.andExpect(jsonPath("$.fax", is("(983)-983-8888")));
+			.andExpect(jsonPath("$.phoneNumber", is("9081899371")))
+			.andExpect(jsonPath("$.fax", is("9839838888")));
 	}
 	
 	@Test
 	public void test_create_WithExistingFacilityName() throws Exception{
 		
 		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				null, "Sunnyside", "Somewhere", "147-986-8754", "210-874-9865"
-				);
+				null, "Sunnyside", "Somewhere", "1479868754", "2108749865");
 		
 		mockMvc.perform(post("/facilities")
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -84,21 +83,21 @@ public class FacilityControllerTest {
 	public void test_create_WithExistingFacilityPhoneNumber() throws Exception{
 		
 		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				null, "new-name ", "Somewhere", "(908)-189-9371", "(210)-874-9865"
+				null, "new-name ", "Somewhere", "9081899371", "2108749865"
 				);
 		
 		mockMvc.perform(post("/facilities")
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 			.andExpect(status().is5xxServerError())
-			.andExpect(jsonPath("$", is("A facility with phone number '(908)-189-9371' already exists")));
+			.andExpect(jsonPath("$", is("A facility with phone number '9081899371' already exists")));
 	}
 	
 	@Test
 	public void test_create_WithNonExistingFacilityNameAndPhoneNumber() throws Exception{
 		
 		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				null, "new-name-1", "Somewhere", "(908)-002-9321", "(210)-874-9865"
+				null, "new-name-1", "Somewhere", "9080029321", "2108749865"
 				);
 		
 		mockMvc.perform(post("/facilities")
@@ -112,7 +111,7 @@ public class FacilityControllerTest {
 	public void test_update_WithNonExistingFacilityId() throws Exception{
 		
 		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				0L, "new name", "Somewhere", "908-002-9371", "210-874-9865"
+				0L, "new name", "Somewhere", "9080029371", "2108749865"
 				);
 		
 		mockMvc.perform(put("/facilities/{id}", 0L)
@@ -126,7 +125,7 @@ public class FacilityControllerTest {
 	public void test_update_WithNonExistingFacilityNameAndPhoneNumber() throws Exception{
 		
 		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				10L, "new name", "Somewhere", "(908)-002-9371", "(210)-874-9865"
+				10L, "new name", "Somewhere", "9080029371", "2108749865"
 				);
 		
 		mockMvc.perform(put("/facilities/{id}", 10L)

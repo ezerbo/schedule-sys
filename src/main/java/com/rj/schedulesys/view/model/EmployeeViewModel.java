@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -51,5 +52,6 @@ public class EmployeeViewModel {
 	
 	private String comment;
 	
+	@NotEmpty
 	private List<PhoneNumberViewModel> phoneNumbers;
 }

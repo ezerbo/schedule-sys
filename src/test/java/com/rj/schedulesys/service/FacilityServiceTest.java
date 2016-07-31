@@ -45,7 +45,7 @@ public class FacilityServiceTest {
 	
 	@Test
 	public void test_findByPhoneNumber_WithExistingPhoneNumber(){
-		FacilityViewModel viewModel = facilityService.findByPhoneNumber("(908)-189-9322");
+		FacilityViewModel viewModel = facilityService.findByPhoneNumber("9081899322");
 		assertEquals("Brandywine", viewModel.getName());
 	}
 	
@@ -122,31 +122,6 @@ public class FacilityServiceTest {
 	}
 	
 	@Test
-	public void test_create_WithInvalidFacilityPhoneNumber(){
-		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("phoneNumber 719.147.2563 is not a valid phone number");
-		
-		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				null, "facility-name", "Somewhere", "719.147.2563", "(748)-987-6587"
-				);
-		
-		facilityService.create(viewModel);
-	}
-	
-	@Test
-	public void test_create_WithInvalidFaxNumber(){
-		
-		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("fax (748)--987-6587 is not a valid fax number");
-		
-		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				null, "facility-name", "Somewhere", "(719)-147-2563", "(748)--987-6587"
-				);
-		
-		facilityService.create(viewModel);
-	}
-	
-	@Test
 	public void test_create_WithExistingFacilityName(){
 		
 		expectedException.expect(RuntimeException.class);
@@ -163,10 +138,10 @@ public class FacilityServiceTest {
 	public void test_create_WithExistingFacilityPhoneNumber(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("A facility with phone number '(908)-189-9377' already exists");
+		expectedException.expectMessage("A facility with phone number '9081899377' already exists");
 		
 		FacilityViewModel viewModel = TestUtil.aNewFacilityViewModel(
-				null, "New name", "Somewhere", "(908)-189-9377", "(748)-987-6587"
+				null, "New name", "Somewhere", "9081899377", "748987-6587"
 				);
 		
 		facilityService.create(viewModel);

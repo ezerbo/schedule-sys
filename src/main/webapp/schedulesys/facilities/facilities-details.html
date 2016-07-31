@@ -1,0 +1,41 @@
+<div ng-controller="FacilityDetailsController as vm">
+	<md-toolbar class="md-table-toolbar md-default" layout-padding>
+		  <div layout="column" class="md-toolbar-tools">
+		   <span>Facility {{vm.facility.name}}'s profile</span>
+		  </div>
+	</md-toolbar>
+		<div style="text-align: left" layout-padding layout="column" layout-align="left start">
+			<span>Address : {{vm.facility.address}}</span>
+			<span>Phone number : {{vm.facility.phoneNumber}}</span>
+			<span>Fax : {{vm.facility.fax}}</span>
+		</div>
+		<div style="text-align: center" layout-padding>
+			<span>Staff members ({{vm.allStaffMembers.length}})</span>
+		</div>
+	<section layout="left" layout-align="left start" >
+      <md-button class="md-raised md-primary" ui-sref="home.facilities-scheduling({id:vm.facility.id})">Schedules</md-button>
+    </section>
+	<md-table-container>
+		 <table md-table md-table md-row-select ng-model="vm.selected" >
+		    <thead md-head md-order="vm.query.order">
+		      <tr md-row>
+		        <th md-column md-order-by="name">
+		        	<span>Staff (Name)</span>
+		        </th>
+		        <th md-column>Title</th>
+		        <th md-column>Phone #</th>
+		        <th md-column>Fax #</th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row   md-auto-select ng-repeat="staffMember in vm.allStaffMembers track by staffMember.id">
+		        <td md-cell>{{staffMember.firstName}} {{staffMember.lastName}}</td>
+		        <td md-cell>{{staffMember.title}}</td>
+		        <td md-cell>{{staffMember.phoneNumber}}</td>
+		        <td md-cell>{{staffMember.fax}}</td>
+		      </tr>
+		    </tbody>
+		  </table>
+	</md-table-container>
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allStaffMembers.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+</div>

@@ -38,6 +38,12 @@ public class StaffMember implements Serializable {
 	@Column(name = "TITLE", nullable = false, length = 50)
 	private String title;
 	
+	@Column(name = "PHONENUMBER", nullable = false, length = 10)
+	private String phoneNumber;
+	
+	@Column(name = "FAX", nullable = false, length = 10)
+	private String fax;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FACILITY_ID", nullable = false)
 	private Facility facility;

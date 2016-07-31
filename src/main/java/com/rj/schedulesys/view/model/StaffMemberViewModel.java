@@ -30,6 +30,14 @@ public class StaffMemberViewModel {
 	private String title;
 	
 	@NotBlank
+	@Size(max = 10)
+	private String phoneNumber;
+	
+	@NotBlank
+	@Size(max = 10)
+	private String fax;
+	
+	@NotBlank
 	private String facilityName;
 	
 }

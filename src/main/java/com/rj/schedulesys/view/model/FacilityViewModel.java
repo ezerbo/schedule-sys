@@ -1,6 +1,5 @@
 package com.rj.schedulesys.view.model;
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -28,17 +27,9 @@ public class FacilityViewModel {
 	private String address;
 	
 	@NotBlank
-	@Pattern(
-			regexp = "\\(\\d{3}\\)-\\d{3}-\\d{4}"
-			,message = "${validatedValue} is not a valid fax number"
-			)
 	private String fax;
 	
 	@NotBlank
-	@Pattern(
-			regexp = "\\(\\d{3}\\)-\\d{3}-\\d{4}"
-			, message = "${validatedValue} is not a valid phone number"
-			)
 	private String phoneNumber;
 	
 }

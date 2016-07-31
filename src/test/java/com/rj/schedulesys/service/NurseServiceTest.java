@@ -97,7 +97,7 @@ public class NurseServiceTest {
 		
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-720-9836", "PRIMARY", "MOBILE");
 		EmployeeViewModel aNewEmployeeViewModel = TestUtil.aNewEmployeeViewModel(0L, "firstName", "lastName", "This position does not exist"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		aNewEmployeeViewModel.setPhoneNumbers(Arrays.asList(aNewPhoneNumberViewModel));
 		employeeService.create(aNewEmployeeViewModel);
 	}
@@ -110,7 +110,7 @@ public class NurseServiceTest {
 		
 		
 		EmployeeViewModel aNewEmployeeViewModel = TestUtil.aNewEmployeeViewModel(null, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-720-9836", "PRIMARY", "MOBILE");
 		
@@ -130,7 +130,7 @@ public class NurseServiceTest {
 		expectedException.expectMessage("Duplicate phone number label : PRIMARY");
 		
 		EmployeeViewModel aNewEmployeeViewModel = TestUtil.aNewEmployeeViewModel(0L, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-720-9836", "PRIMARY", "MOBILE");
 		PhoneNumberViewModel aNewPhoneNumberViewModel2 = TestUtil.aNewPhoneNumberViewModel(null, "(717)-720-9836", "PRIMARY", "MOBILE");

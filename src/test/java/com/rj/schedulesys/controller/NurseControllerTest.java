@@ -36,7 +36,7 @@ import com.rj.schedulesys.view.model.PhoneNumberViewModel;
 @SpringApplicationConfiguration(TestConfiguration.class)
 public class NurseControllerTest {
 
-private @Autowired WebApplicationContext context;
+	private @Autowired WebApplicationContext context;
 	
 	private MockMvc mockMvc;
 	
@@ -64,7 +64,7 @@ private @Autowired WebApplicationContext context;
 	}
 	
 	@Test
-	public void test_findAllNurse() throws Exception{
+	public void test_findAllLicense() throws Exception{
 		mockMvc.perform(get("/nurses/{id}/licenses", 2))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$", hasSize(2)));

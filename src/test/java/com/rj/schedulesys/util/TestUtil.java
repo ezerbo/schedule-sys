@@ -61,12 +61,14 @@ public class TestUtil {
 	}
 	
 	public static StaffMemberViewModel aNewStaffMemberViewModel(Long id, String firstName
-			, String lastName, String title, String facilityName){
+			, String lastName, String title, String phoneNumber, String fax, String facilityName){
 		StaffMemberViewModel viewModel = StaffMemberViewModel.builder()
 				.id(id)
 				.firstName(firstName)
 				.lastName(lastName)
 				.title(title)
+				.phoneNumber(phoneNumber)
+				.fax(fax)
 				.facilityName(facilityName)
 				.build();
 		return viewModel;
@@ -148,7 +150,7 @@ public class TestUtil {
 	}
 	
 	public static EmployeeViewModel aNewEmployeeViewModel(Long id, String firstName, String lastName, String positionName
-			,Boolean ebc, Boolean cpr, Date dateOfHire, Date rehireDate, Date lastDayOfWork, String comment){
+			,Boolean ebc, Date dateOfHire, Date rehireDate, Date lastDayOfWork, String comment){
 		EmployeeViewModel viewModel = EmployeeViewModel.builder()
 				.id(id)
 				.firstName(firstName)

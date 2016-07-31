@@ -1,4 +1,4 @@
-<md-dialog aria-label="Create or update a facility" style="width:600px;" ng-controller="FacilityDialogController as vm">
+<md-dialog  style="width:600px;" ng-controller="FacilityDialogController as vm">
   <form name="facilityForm" ng-submit="vm.createOrUpdatefacility()">
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -26,20 +26,25 @@
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone number</label> <input md-maxlength="30" required name="phoneNumber" ng-model="vm.facility.phoneNumber" />
+			<label>Phone number</label> 
+			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="phoneNumber"  model="vm.facility.phoneNumber"/>
 			<div ng-messages="facilityForm.phoneNumber.$error">
+				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Phone number is required.</div>
 				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Fax</label> <input md-maxlength="30" required name="name" ng-model="vm.facility.fax" />
+			<label>Fax</label>
+			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="fax"  model="vm.facility.fax"/>
 			<div ng-messages="facilityForm.fax.$error">
+			<div ng-message="pattern">(###)-###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Fax is required.</div>
 				<div ng-message="md-maxlength">The fax number has to be less than 30 characters long.</div>
 			</div>
 		</md-input-container>
 	</div>
+	
 	</md-dialog-content>
     <md-dialog-actions layout="row">
       <span flex></span>

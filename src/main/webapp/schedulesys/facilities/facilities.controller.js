@@ -25,7 +25,7 @@
 		
 		vm.query = {
 				order: 'name',
-				limit: 5,
+				limit: 10,
 				page: 1
 		};
 		
@@ -47,10 +47,7 @@
 					.cancel('Cancel');
 			
 			$mdDialog.show(confirm).then(function() {
-				FacilitiesService.remove(
-						{id:vm.selected[0].id},
-						onDeleteSuccess,
-						onDeleteFailure);
+				FacilitiesService.remove({id:vm.selected[0].id},onDeleteSuccess,onDeleteFailure);
 			}, function() {
 				console.log('Keep this one ...');
 			});

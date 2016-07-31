@@ -61,7 +61,7 @@ public class StaffMemberServiceTest {
 				+ ", last name 'STAFF-MEMBER-1-LN' and title 'STAFF-MEMBER-1-TITLE' already exists for facility with name 'Sunnyside'");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				1L, "STAFF-MEMBER-1-FN", "STAFF-MEMBER-1-LN", "STAFF-MEMBER-1-TITLE", "Sunnyside"
+				1L, "STAFF-MEMBER-1-FN", "STAFF-MEMBER-1-LN", "STAFF-MEMBER-1-TITLE", "7475841470", "7475841471", "Sunnyside"
 				);
 		
 		staffMemberService.create(viewModel);
@@ -74,7 +74,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("No such facility : 'Non existing facility'");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				1L, "NEW-FIRST-NAME", "NEW-LAST-NAME", "NEW-TITLE", "Non existing facility"
+				1L, "NEW-FIRST-NAME", "NEW-LAST-NAME", "NEW-TITLE","7475841472", "7478841471", "Non existing facility"
 				);
 		
 		staffMemberService.create(viewModel);
@@ -88,7 +88,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("firstName size must be between 3 and 50");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "NE", "NEW-LAST-NAME", "NEW-TITLE", "Sunnyside"
+				null, "NE", "NEW-LAST-NAME", "NEW-TITLE","7475841070", "7475841451", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -101,7 +101,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("firstName size must be between 3 and 50");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "THIS IS A REALLY LONG FIRST NAME WHOSE NAME IS THIS ?", "NEW-LAST-NAME", "NEW-TITLE", "Sunnyside"
+				null, "THIS IS A REALLY LONG FIRST NAME WHOSE NAME IS THIS ?", "NEW-LAST-NAME", "NEW-TITLE","2475841470", "1475841471", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -114,7 +114,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("lastName size must be between 3 and 50");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "NEW-FIRST-NAME-TEST", "NE", "NEW-TITLE", "Sunnyside"
+				null, "NEW-FIRST-NAME-TEST", "NE", "NEW-TITLE","7475941470", "7475941471", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -127,7 +127,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("lastName size must be between 3 and 50");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "NEW-FIRST-NAME-TEST", "THIS IS A REALLY LONG LAST NAME WHOSE NAME IS THIS ?", "NEW-TITLE", "Sunnyside"
+				null, "NEW-FIRST-NAME-TEST", "THIS IS A REALLY LONG LAST NAME WHOSE NAME IS THIS ?","7475741470", "7475841471", "NEW-TITLE", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -140,7 +140,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("title size must be between 3 and 50");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "NEW-FIRST-NAME-TEST", "NEW-LAST-NAME-TEST", "NE", "Sunnyside"
+				null, "NEW-FIRST-NAME-TEST", "NEW-LAST-NAME-TEST", "NE", "6475841470", "3475841471", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -153,7 +153,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("title size must be between 3 and 50");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "NEW-FIRST-NAME-TEST", "NEW-LAST-NAME-TEST", "THIS A REALLY LONG STAFF MEMBER TITLE, WHO DOES IT BELONG TO ?", "Sunnyside"
+				null, "NEW-FIRST-NAME-TEST", "NEW-LAST-NAME-TEST", "THIS A REALLY LONG STAFF MEMBER TITLE, WHO DOES IT BELONG TO ?", "7475847470", "7435841471", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -163,7 +163,7 @@ public class StaffMemberServiceTest {
 	public void test_create_WithNewStaffMember(){
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				null, "NEW-FIRST-NAME", "NEW-LAST-NAME", "NEW-TITLE", "Sunnyside"
+				null, "NEW-FIRST-NAME", "NEW-LAST-NAME", "NEW-TITLE","7475341470", "7475881471", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.create(viewModel);
@@ -178,7 +178,7 @@ public class StaffMemberServiceTest {
 		expectedException.expectMessage("No facility found with name 'This facility does not exist'");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				1L, "NEW-FIRST-NAME", "NEW-LAST-NAME", "NEW-TITLE", "This facility does not exist"
+				1L, "NEW-FIRST-NAME", "NEW-LAST-NAME", "NEW-TITLE","7475841479", "7475841473", "This facility does not exist"
 				);
 		
 		viewModel = staffMemberService.update(viewModel);
@@ -192,7 +192,7 @@ public class StaffMemberServiceTest {
 				+ ", last name 'STAFF-MEMBER-7-LN' and title 'STAFF-MEMBER-7-TITLE' already exists for facility with name 'Burnside'");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				8L, "STAFF-MEMBER-7-FN", "STAFF-MEMBER-7-LN", "STAFF-MEMBER-7-TITLE", "Burnside"
+				8L, "STAFF-MEMBER-7-FN", "STAFF-MEMBER-7-LN", "STAFF-MEMBER-7-TITLE","2475841470", "7475801471", "Burnside"
 				);
 		
 		staffMemberService.update(viewModel);
@@ -202,7 +202,7 @@ public class StaffMemberServiceTest {
 	public void test_update_WithNewFirstNameNewLastNameAndNewTitle(){
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
-				1L, "NEW-STAFF-MEMBER-FN", "NEW-STAFF-MEMBER-LN", "NEW-STAFF-MEMBER-TITLE", "Sunnyside"
+				1L, "NEW-STAFF-MEMBER-FN", "NEW-STAFF-MEMBER-LN", "NEW-STAFF-MEMBER-TITLE", "7465841470", "7475849471", "Sunnyside"
 				);
 		
 		viewModel = staffMemberService.update(viewModel);

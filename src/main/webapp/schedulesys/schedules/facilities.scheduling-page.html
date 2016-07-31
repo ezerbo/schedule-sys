@@ -1,0 +1,61 @@
+<div ng-controller="FacilitySchedulingController as vm">
+	<md-toolbar class="md-table-toolbar md-default" layout-padding>
+		  <div layout="column" class="md-toolbar-tools">
+		   <span>Scheduling page</span>
+		  </div>
+	</md-toolbar>
+		
+		<div style="text-align: center" layout-padding>
+			<span>Facility : {{vm.facility.name}}</span>
+		</div>
+		<div>
+		<md-button>
+			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_left_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
+		</md-button>
+		<span>Week : placeholder for the </span>
+		<md-button>
+			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_right_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
+		</md-button>
+		</div>
+	<md-table-container>
+		 <table md-table md-table md-row-select ng-model="vm.selected" >
+		    <thead md-head md-order="vm.query.order">
+		      <tr md-row>
+		        <th md-column md-order-by="name">
+		        	<span>Date</span>
+		        </th>
+		        <th md-column>Shift</th>
+		        <th md-column>Time</th>
+		        <th md-column>Job</th>
+		        <th md-column>Name</th>
+		        <th md-column>Hours</th>
+		        <th md-column>OT</th>
+		        <th md-column>Status</th>
+		        <th md-column>Post status</th>
+		        <th md-column>Time sheet received</th>
+		        <th md-column>Comments</th>
+		        <th md-column>Filled by</th>
+		        <th md-column>Last modified by</th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row  md-auto-select ng-repeat="schedule in vm.allSchedules track by schedule.id" >
+		      	<td md-cell>{{schedule.scheduleDate}}</td>
+		      	<td md-cell>{{schedule.shift.name}}</td>
+		      	<td md-cell>{{schedule.shift.startTime}} {{schedule.shift.endTime}}</td>
+		      	<td md-cell>{{schedule.job.name}}</td>
+		        <td md-cell>{{schedule.employee.firstName}} {{schedule.employee.lastName}}</td>
+		      	<td md-cell>{{schedule.hours}}</td>
+		      	<td md-cell>{{schedule.overtime}}</td>
+		      	<td md-cell>{{schedule.scheduleStatus.status}}</td>
+		      	<td md-cell>{{schedule.schedulePostStatus.status}}</td>
+		      	<td md-cell>{{schedule.timesheetReceived}}</td>
+		        <td md-cell>{{schedule.scheduleComment}}</td>
+		        <td md-cell>{{schedule.filledBy.username}}</td>
+		        <td md-cell>{{schedule.lastModifiedBy.username}}</td>
+		      </tr>
+		    </tbody>
+		  </table>
+	</md-table-container>
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allSchedules.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+</div>
