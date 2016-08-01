@@ -49,7 +49,6 @@ public class NurseService {
 	@Transactional
 	public NurseViewModel create(NurseViewModel viewModel){
 		Employee employee = employeeDao.findOne(viewModel.getId());
-		log.info("Employee id : {}", viewModel.getId());
 		Nurse nurse = Nurse.builder()
 				.cpr(viewModel.getCpr())
 				.employee(employee)

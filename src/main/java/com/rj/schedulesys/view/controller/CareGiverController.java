@@ -53,9 +53,11 @@ public class CareGiverController {
 		
 		try{
 			viewModel = employeeService.create(viewModel);
+			log.info("EMPLOYEE ID : {}", viewModel.getId());
 			careGiverService.create(viewModel);
 		}catch(Exception e){
 			log.error(e.getMessage());
+			e.printStackTrace();
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

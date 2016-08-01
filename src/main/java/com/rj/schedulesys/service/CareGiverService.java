@@ -40,20 +40,13 @@ public class CareGiverService {
 	
 	@Transactional
 	public EmployeeViewModel create(EmployeeViewModel viewModel){
-		
 		Assert.notNull(viewModel, "No caregiver provided");
-		
 		Employee employee = employeeDao.findOne(viewModel.getId());
-		
 		Assert.notNull(employee, "No employee found with id : " + viewModel.getId());
-		
-		log.info("Employee id : {}", viewModel.getId());
-		
 		CareGiver careGiver = CareGiver.builder()
 				.employee(employee)
 				.build();
 		careGiverDao.merge(careGiver);
-		
 		return dozerMapper.map(employee, EmployeeViewModel.class);
 	}
 	
