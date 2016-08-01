@@ -1,0 +1,46 @@
+<md-dialog aria-label="Create or update a User" style="width:800px;" ng-controller="userDialogController as vm">
+  <form name="userForm" ng-submit="vm.createOrUpdateuser()">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create or edit a User</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
+	<div layout-gt-sm="column">
+	
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>User-Name</label> <input md-maxlength="100" required name="username" ng-model="vm.user.username" />
+			<div ng-messages="userForm.username.$error">
+				<div ng-message="required">User Name is required.</div>
+				<div ng-message="md-maxlength">The User Name has to be less than 100 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Password</label> <input md-maxlength="100" required name="password" ng-model="vm.user.password" />
+			<div ng-messages="userForm.password.$error">
+				<div ng-message="required">Password is required.</div>
+				<div ng-message="md-maxlength">The password has to be less than 100 characters long.</div>
+			</div>
+		</md-input-container>	
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>User-Role</label> <md-select ng-model="vm.user.userRole">
+          <md-option ng-repeat="options in vm.options6" value="{{options.userRole}}">{{options.userRole}}</md-option>
+        </md-select>
+			<div ng-messages="userForm.userRole.$error">
+				<div ng-message="required">User-Role is required.</div>
+				<div ng-message="md-maxlength">The User Role has to be less than 100 characters long.</div>
+			</div>
+		</md-input-container>
+	</div>
+	</md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

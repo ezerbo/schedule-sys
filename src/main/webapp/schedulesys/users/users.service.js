@@ -3,13 +3,13 @@
 	
 	angular
 		.module('scheduleSys')
-		.factory('careGiversPositionTypeService', careGiversPositionTypeService);
+		.factory('usersService', usersService);
 	
-	careGiversPositionTypeService.$Inject = ['$resource'];
+	usersService.$Inject = ['$resource'];
 	
-	function careGiversPositionTypeService($resource) {
-		console.log('calling Care-Givers position service');
-		var resourceUrl = '/position-types/2/positions/:id';
+	function usersService($resource) {
+		console.log('calling users service');
+		var resourceUrl = '/users/:id';
 		
 		return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

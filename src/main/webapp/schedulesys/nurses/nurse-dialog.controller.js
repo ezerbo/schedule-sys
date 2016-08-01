@@ -64,7 +64,7 @@
 		function onCreateOrUpdateSucess(result){
 			$state.go('home.nurses',{}, {reload: true});
 			$mdDialog.cancel();
-			vm.showToast('Nurse ' + vm.nurse.name + ' successfully created', 5000);
+			vm.showToast('Nurse ' + vm.nurse.firstName + ' successfully created', 5000);
 		}
 		
 		function onCreateOrUpdateFailure(result){

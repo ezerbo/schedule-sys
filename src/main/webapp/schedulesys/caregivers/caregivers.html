@@ -1,0 +1,45 @@
+<div ng-controller="careGiversController as vm">
+	
+	<md-toolbar class="md-table-toolbar md-default">
+	  <div class="md-toolbar-tools">
+	    <span>Care-Givers</span>
+	  </div>
+	  <div layout="left left">
+	  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      <md-button class="md-raised md-primary" ng-click="vm.showcareGiversDialog()">New Care-Giver</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete">Edit</md-button>
+      <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+    </section>
+	  </div>
+	</md-toolbar>
+
+	<md-table-container>
+	  <table md-table md-table md-row-select ng-model="vm.selected" >
+	    <thead md-head md-order="vm.query.order">
+	      <tr md-row>
+	        <th md-column md-order-by="name">
+	        	<span>First-Name</span>
+	        </th>
+	        <th md-column>Last-Name</th>
+	        <th md-column>Position-Name</th>
+	        <th md-column>Primary-Ph.No</th>
+	        <th md-column>Primary-Ph-Type</th>
+	         
+	        
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row md-select="caregiver" md-select-id="name"  md-auto-select ng-repeat="caregiver in vm.careGiversOnCurrentPage track by caregiver.id">
+	        <td md-cell>{{caregiver.firstName}}</td>
+	        <td md-cell>{{caregiver.lastName}}</td>
+	        <td md-cell>{{caregiver.positionName}}</td>
+	        <td md-cell>{{caregiver.phoneNumbers[0].number}}</td>
+	         <td md-cell>{{caregiver.phoneNumbers[0].numberType}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allcareGivers.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+
+</div>
