@@ -12,14 +12,16 @@
     <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
 	<div layout-gt-sm="column">
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Name</label> <input md-maxlength="50" required name="name" ng-model="vm.facility.name" />
+			<label>Name</label>
+			<input md-maxlength="50" required name="name" ng-model="vm.facility.name" />
 			<div ng-messages="facilityForm.name.$error">
 				<div ng-message="required">Name is required.</div>
 				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Address</label> <input md-maxlength="50" required name="address" ng-model="vm.facility.address" />
+			<label>Address</label>
+			<input md-maxlength="50" required name="address" ng-model="vm.facility.address" />
 			<div ng-messages="facilityForm.address.$error">
 				<div ng-message="required">Address is required.</div>
 				<div ng-message="md-maxlength">The address has to be less than 50 characters long.</div>
@@ -27,7 +29,7 @@
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Phone number</label> 
-			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="phoneNumber"  model="vm.facility.phoneNumber"/>
+			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="phoneNumber" model="vm.facility.phoneNumber"/>
 			<div ng-messages="facilityForm.phoneNumber.$error">
 				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Phone number is required.</div>
@@ -36,7 +38,7 @@
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Fax</label>
-			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="fax"  model="vm.facility.fax"/>
+			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="fax" model="vm.facility.fax"/>
 			<div ng-messages="facilityForm.fax.$error">
 			<div ng-message="pattern">(###)-###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Fax is required.</div>

@@ -16,7 +16,7 @@
 			function link(scope, element, attributes) {
 				// scope.inputValue is the value of input element used in template
 				scope.inputValue = scope.phonenumberModel;
-	 
+				
 				scope.$watch('inputValue', function(value, oldValue) {
 					
 					value = String(value);

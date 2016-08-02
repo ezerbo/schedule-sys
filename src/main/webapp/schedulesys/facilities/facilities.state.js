@@ -39,7 +39,6 @@
 					clickOutsideToClose:true
 				}).then(function() {
 					console.log('Clicked on save');
-					
 				}, function() {
 					$state.go('^');
 				});
@@ -59,6 +58,21 @@
 			url: '/{id}/schedules',
 			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
 			controller: 'FacilitySchedulingController'
+		})
+		.state('home.facilities-scheduling.add', {
+			url: '/{id}/schedules/add',
+			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/schedules/schedule-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'FacilitySchedulingDialogController',
+					clickOutsideToClose:true
+				}).then(function() {
+					console.log('Clicked on save');
+				}, function() {
+					$state.go('^');
+				});
+			}]
 		})
 	}
 })();
