@@ -30,7 +30,7 @@
 			}]
 		})
 		.state('home.facilities.edit', {
-			url:'/{id}/edit',
+			url:'/{id}/facility/edit',
 			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
 				$mdDialog.show({
 					templateUrl: 'schedulesys/facilities/facility-dialog.html',
@@ -51,7 +51,7 @@
 			
 		})
 		.state('home.facilities-details', {
-			url: '/{id}/details',
+			url: '/{id}/facility/details',
 			templateUrl: 'schedulesys/facilities/facilities-details.html',
 			controller: 'FacilityDetailsController'
 		})

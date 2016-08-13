@@ -15,7 +15,7 @@
 			 <md-content>
 Date of Hire  
   
-    <md-datepicker ng-model="vm.nurse.dateOfHire" name="dateOfHire" md-placeholder="Enter date"></md-datepicker>
+    <md-datepicker type="date" ng-model="vm.nurse.dateOfHire" name="dateOfHire" md-placeholder="Enter date"></md-datepicker>
 
    
   </md-content>
@@ -28,7 +28,7 @@ Date of Hire
 			 <md-content>
 Rehire Date  
   
-    <md-datepicker ng-model="vm.nurse.rehireDate" name="rehireDate" md-placeholder="Enter date"></md-datepicker>
+    <md-datepicker type="date" ng-model="vm.nurse.rehireDate" name="rehireDate" md-placeholder="Enter date"></md-datepicker>
 
    
   </md-content>
@@ -41,7 +41,7 @@ Rehire Date
 			 <md-content>
 Last Day of Work 
   
-    <md-datepicker ng-model="vm.nurse.lastDayOfWork" name="lastDayOfWork" md-placeholder="Enter date"></md-datepicker>
+    <md-datepicker type="date" ng-model="vm.nurse.lastDayOfWork" name="lastDayOfWork" md-placeholder="Enter date"></md-datepicker>
 
    
   </md-content>
@@ -101,7 +101,7 @@ Last Day of Work
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Phone-Number#1</label>
-			<phonenumber-directive ng-pattern="/^[(][0-9]{3}[)]-[0-9]{3}-[0-9]{4}$/" required name="PhoneNumber1"  model="vm.nurse.phoneNumbers[0].number"/>
+			<input type='text' required name="PhoneNumber1" phone-input ng-model="vm.nurse.phoneNumbers[0].number"/>
 			<div ng-messages="nurseForm.PhoneNumber1.$error">
 				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Phone number is required.</div>

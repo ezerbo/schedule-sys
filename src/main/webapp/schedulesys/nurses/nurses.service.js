@@ -3,7 +3,10 @@
 	
 	angular
 		.module('scheduleSys')
-		.factory('NursesService', NursesService);
+		.factory('NursesService', NursesService)
+		.factory('NurseLicenseService', NurseLicenseService);
+	
+	
 	
 	NursesService.$Inject = ['$resource'];
 	
@@ -44,6 +47,15 @@
             }
         });
 		
+	}
+	
+NurseLicenseService.$Inject = ['$resource'];
+	
+	function NurseLicenseService($resource){
+		var resourceUrl = '/nurses/:id/licenses';
+		return $resource(resourceUrl, {},{
+			'query': { method: 'GET', isArray: true}
+		});
 	}
 	
 })();

@@ -4,9 +4,9 @@
 		.module('scheduleSys')
 		.controller('NurseDialogController', NurseDialogController);
 	
-	NurseDialogController.$Inject = ['$state', '$mdDialog', '$mdToast', 'NursesService','NursesPositionTypeService','PhoneLabelService','PhoneTypeService'];
+	NurseDialogController.$Inject = ['$state','$scope','$stateParams', '$mdDialog', '$mdToast', 'NursesService','NursesPositionTypeService','PhoneLabelService','PhoneTypeService'];
 	
-	function NurseDialogController($state, $mdDialog, $mdToast, NursesService,NursesPositionTypeService,PhoneLabelService,PhoneTypeService){
+	function NurseDialogController($state,$scope,$stateParams, $mdDialog, $mdToast, NursesService,NursesPositionTypeService,PhoneLabelService,PhoneTypeService){
 		var vm = this;
 		
 		vm.cancel = cancel;
@@ -21,6 +21,7 @@
 		console.log(vm.options2);
 		console.log(vm.options3);
 		console.log(vm.options4);
+		vm.getSelectedNurse = getSelectedNurse;
 		vm.showPhone = function(){
 			
 			vm.displayPhone = ! vm.displayPhone;
@@ -47,6 +48,39 @@
 			    ]
 			
 		};
+		
+		
+		
+		if(angular.isDefined($stateParams.id)){
+			vm.getSelectedNurse();
+		}
+		
+		console.log(vm.nurse.dateOfHire);
+		
+		function getSelectedNurse(){
+			NursesService.get({id : $stateParams.id},function(result){
+				vm.nurse = result;
+				
+				var x = vm.nurse.dateOfHire.split("-");
+				var y = (x[1] + '/' + x[2] + '/' + x[0]);
+				vm.nurse.dateOfHire = new Date(y);
+				
+					
+					var a = vm.nurse.rehireDate.split("-");
+					var b = (a[1] + '/' + a[2] + '/' + a[0]);
+					vm.nurse.rehireDate = new Date(b);
+					
+				
+      
+					
+					var c = vm.nurse.lastDayOfWork.split("-");
+					var d = (c[1] + '/' + c[2] + '/' + c[0]);
+					vm.nurse.lastDayOfWork = new Date(d);
+					
+				
+				
+			});
+		}
 		
 		function cancel() {
 			$mdDialog.cancel();

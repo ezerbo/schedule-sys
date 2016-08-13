@@ -1,0 +1,40 @@
+<div ng-controller="NurseDetailsController as vm">
+	<md-toolbar class="md-table-toolbar md-default" layout-padding>
+		  <div layout="column" class="md-toolbar-tools">
+		   <span>Nurse {{vm.nurse.firstName}} {{vm.nurse.lastName}}'s profile</span>
+		  </div>
+	</md-toolbar>
+		<div style="text-align: left" layout-padding layout="column" layout-align="left start">
+			<span>Position-Name : {{vm.nurse.positionName}}</span>
+			<span> EBC : {{vm.nurse.ebc}}</span>
+			<span> CPR : {{vm.nurse.cpr}}</span>
+			<span> Date-Of-Hire : {{vm.nurse.dateOfHire}}</span>
+			<span> Rehire-Date : {{vm.nurse.rehireDate}}</span>
+			<span> Last-Day-of-Work : {{vm.nurse.lastDayOfWork}}</span>
+			<span> Primary Phone Number : {{vm.nurse.phoneNumbers[0].number}}</span> 
+		    <span> Primary Phone Type : {{vm.nurse.phoneNumbers[0].numberType}}</span>
+			<span> Comment : {{vm.nurse.comment}}</span>
+		</div>
+		<div style="text-align: center" layout-padding>
+			<span><h4>Licenses ({{vm.allLicenses.length}})</h4></span>
+		</div>
+	<md-table-container>
+		 <table md-table md-table md-row-select ng-model="vm.selected" >
+		    <thead md-head md-order="vm.query.order">
+		      <tr md-row>
+		        <th md-column md-order-by="name">
+		        	<span>License-Number</span>
+		        </th>
+		        <th md-column>Expiration-Date</th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row   md-auto-select ng-repeat="license in vm.allLicenses track by license.id">
+		        <td md-cell>{{license.number}}</td>
+		        <td md-cell>{{license.expirationDate}}</td>
+		      </tr>
+		    </tbody>
+		  </table>
+	</md-table-container>
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allLicenses.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+</div>

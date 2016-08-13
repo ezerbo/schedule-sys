@@ -18,7 +18,7 @@
 				page: 1	
 		};
 		
-		getStaffMembers()
+		getStaffMembers();
 		getSelectedFacility();
 		
 		function getSelectedFacility(){

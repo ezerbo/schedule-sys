@@ -6,8 +6,9 @@
 	  </div>
 	  <div layout="left left">
 	  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-      <md-button class="md-raised md-primary" ng-click="vm.showNurseDialog()">New Nurse</md-button>
-      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete">Edit</md-button>
+      <md-button class="md-raised md-primary" ui-sref="home.nurses.new">Add</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurses.edit({id:vm.selected[0].id})">Edit</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details({id:vm.selected[0].id})">Details</md-button>
       <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
     </section>
 	  </div>
