@@ -17,6 +17,14 @@
 			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_right_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
 		</md-button>
 		</div>
+		<div layout="left" layout-paffing>
+			<md-button class="md-primary md-raised" ui-sref="home.facilities-scheduling.add">
+				ADD
+			</md-button>
+			<md-button class="md-warn md-raised">
+				DELETE
+			</md-button>
+		</div>
 	<md-table-container>
 		 <table md-table md-table md-row-select ng-model="vm.selected" >
 		    <thead md-head md-order="vm.query.order">
@@ -39,7 +47,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row  md-auto-select ng-repeat="schedule in vm.allSchedules track by schedule.id" >
+		      <tr md-row  md-select="schedule" md-auto-select ng-repeat="schedule in vm.allSchedules track by schedule.id" >
 		      	<td md-cell>{{schedule.scheduleDate}}</td>
 		      	<td md-cell>{{schedule.shift.name}}</td>
 		      	<td md-cell>{{schedule.shift.startTime}} {{schedule.shift.endTime}}</td>

@@ -4,9 +4,9 @@
 		.module('scheduleSys')
 		.controller('FacilityDialogController', FacilityDialogController);
 	
-	FacilityDialogController.$Inject = ['$state', '$stateParams', '$mdDialog', '$mdToast', 'FacilitiesService'];
+	FacilityDialogController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog', '$mdToast', 'FacilitiesService'];
 	
-	function FacilityDialogController($state, $stateParams, $mdDialog, $mdToast, FacilitiesService){
+	function FacilityDialogController($state, $scope, $stateParams, $mdDialog, $mdToast, FacilitiesService){
 		var vm = this;
 		
 		vm.cancel = cancel;
@@ -18,16 +18,16 @@
 				name: null,
 				phoneNumber: null,
 				fax: null
-		}
+		};
 		
-		if(angular.isDefined($stateParams.id)){
-			vm.getSelectedFacility();
-		}
+		getSelectedFacility();
 		
 		function getSelectedFacility(){
-			FacilitiesService.get({id : $stateParams.id},function(result){
-				vm.facility = result;
-			});
+			if(angular.isDefined($stateParams.id)){
+				FacilitiesService.get({id : $stateParams.id}, function(result){
+					vm.facility = result;
+				});
+			}
 		}
 		
 		function cancel() {
@@ -35,13 +35,9 @@
 		}
 		
 		function createOrUpdatefacility(){
-			console.log('user to be created : ' + angular.toJson(vm.facility));
-			console.log('Facility id : ' + vm.facility.id);
 			if(vm.facility.id === null){
-				console.log('saving facility');
 				FacilitiesService.save(vm.facility, onCreateSucess, onCreateFailure);
 			}else{
-				console.log('updating facility');
 				FacilitiesService.update({id : $stateParams.id}, vm.facility, onUpdateSucess, onUpdateFailure);
 			}
 		}

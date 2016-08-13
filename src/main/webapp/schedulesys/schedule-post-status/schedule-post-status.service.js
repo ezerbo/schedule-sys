@@ -3,26 +3,25 @@
 	
 	angular
 		.module('scheduleSys')
-		.factory('FacilitiesService', FacilitiesService)
-		.factory('FacilitiesStaffMemberService', FacilitiesStaffMemberService);
+		.factory('SchedulePostStatusService', SchedulePostStatusService);
 	
-	FacilitiesService.$Inject = ['$resource'];
+	SchedulePostStatusService.$Inject = ['$resource'];
 	
-	function FacilitiesService($resource) {
-		var resourceUrl = '/facilities/:id';
+	function SchedulePostStatusService($resource) {
+		var resourceUrl = '/schedule-post-status/:id';
 		
 		return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
-            'get': {method: 'GET'},
-            'update':{
-                method: 'PUT',
+            'get': {
+                method: 'GET',
                 transformResponse: function (data) {
                     if (data) {
-                        data = angular.toJson(data);
+                        data = angular.fromJson(data);
                     }
                     return data;
                 }
             },
+            'update': { method:'PUT' },
             'remove':  {
                 method: 'DELETE',
                 transformResponse: function (data) {
@@ -43,16 +42,6 @@
             
             }
         });
-		
-	}
-	
-	FacilitiesStaffMemberService.$Inject = ['$resource'];
-	
-	function FacilitiesStaffMemberService($resource){
-		var resourceUrl = '/facilities/:id/staff-members';
-		return $resource(resourceUrl, {},{
-			'query': { method: 'GET', isArray: true}
-		});
 	}
 	
 })();

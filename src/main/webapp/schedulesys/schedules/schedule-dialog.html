@@ -1,0 +1,76 @@
+<md-dialog aria-label="Create or edit a schedule"  style="width:1000px;" ng-controller="FacilitySchedulingDialogController as vm">
+  <form name="facilityForm" ng-submit="vm.createOrUpdateSchedule()">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create or edit a schedule</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+  <md-dialog-content class="md-padding" layout="column">
+   		<div layout="left left">
+  			<md-datepicker ng-model="vm.schedule.scheduleDate" md-placeholder="Schedule date"></md-datepicker>
+  		</div>
+     <div layout-gt-sm="row">
+      <md-input-container class="md-block" flex-gt-sm>
+      	<label>Facility</label>
+			<md-select ng-model="vm.schedule.facilityId" required>
+	          <md-option ng-repeat="facility in vm.facilities" value="{{facility.id}}">{{facility.name}}</md-option>
+        	</md-select>
+			<div ng-messages="facilityForm.name.$error">
+				<div ng-message="required">Name is required.</div>
+				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+			</div>
+      </md-input-container>
+      <md-input-container flex-gt-sm>
+      	<label>Shift</label>
+			<md-select ng-model="vm.schedule.shiftId" required>
+	          <md-option ng-repeat="shift in vm.shifts" value="{{shift.id}}">{{shift.name}}</md-option>
+        	</md-select>
+			<div ng-messages="facilityForm.name.$error">
+				<div ng-message="required">Name is required.</div>
+				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+			</div>
+      </md-input-container>
+       <md-input-container flex-gt-sm>
+      	<label>Status</label>
+			<md-select ng-model="vm.schedule.scheduleStatusId" required>
+	          <md-option ng-repeat="status in vm.statuses" value="{{status.id}}">{{status.status}}</md-option>
+        	</md-select>
+			<div ng-messages="facilityForm.name.$error">
+				<div ng-message="required">Name is required.</div>
+				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+			</div>
+      </md-input-container>
+      </div>
+      <md-autocomplete md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+          md-search-text="ctrl.searchText"
+          md-selected-item-change="ctrl.selectedItemChange(item)"
+          md-items="item in ctrl.querySearch(ctrl.searchText)"
+          md-item-text="item.display"
+          md-min-length="0"
+          md-floating-label="Employee name">
+        <md-item-template>
+          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+        </md-item-template>
+        <md-not-found>No employee matching "place holder" were found.</md-not-found>
+      </md-autocomplete>
+      
+      <md-input-container>
+      	<label>Comment</label>
+			<textarea ng-model="vm.schedule.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+			<div ng-messages="facilityForm.name.$error">
+				<div ng-message="required">Name is required.</div>
+				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+			</div>
+      </md-input-container>
+  </md-dialog-content>
+  <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+ </form>
+</md-dialog>
