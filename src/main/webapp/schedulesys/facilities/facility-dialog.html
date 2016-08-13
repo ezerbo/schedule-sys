@@ -1,0 +1,55 @@
+<md-dialog  style="width:600px;" ng-controller="FacilityDialogController as vm">
+  <form name="facilityForm" ng-submit="vm.createOrUpdatefacility()">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create or edit a facility</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
+	<div layout-gt-sm="column">
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Name</label> <input md-maxlength="50" required name="name" ng-model="vm.facility.name" />
+			<div ng-messages="facilityForm.name.$error">
+				<div ng-message="required">Name is required.</div>
+				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Address</label> <input md-maxlength="50" required name="address" ng-model="vm.facility.address" />
+			<div ng-messages="facilityForm.address.$error">
+				<div ng-message="required">Address is required.</div>
+				<div ng-message="md-maxlength">The address has to be less than 50 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone number</label> 
+			<input type='text' required name="phoneNumber" phone-input ng-model="vm.facility.phoneNumber"/>
+			<div ng-messages="facilityForm.phoneNumber.$error">
+				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
+				<div ng-message="required">Phone number is required.</div>
+				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Fax</label>
+			<input type='text' required name="fax" phone-input ng-model="vm.facility.fax"/>
+			<div ng-messages="facilityForm.fax.$error">
+			<div ng-message="pattern">(###)-###-#### - Please enter a valid phone number.</div>
+				<div ng-message="required">Fax is required.</div>
+				<div ng-message="md-maxlength">The fax number has to be less than 30 characters long.</div>
+			</div>
+		</md-input-container>
+	</div>
+	
+	</md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
