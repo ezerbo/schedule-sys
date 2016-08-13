@@ -45,17 +45,17 @@
 			</div>
       </md-input-container>
       </div>
-      <md-autocomplete md-no-cache="ctrl.noCache" md-selected-item="ctrl.selectedItem" md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
-          md-search-text="ctrl.searchText"
-          md-selected-item-change="ctrl.selectedItemChange(item)"
-          md-items="item in ctrl.querySearch(ctrl.searchText)"
-          md-item-text="item.display"
-          md-min-length="0"
+      <md-autocomplete md-no-cache="ctrl.noCache" md-selected-item="vm.selectedItem" md-search-text-change="vm.searchTextChange(vm.searchText)"
+          md-search-text="vm.searchText"
+          md-selected-item-change="vm.selectedItemChange(employee)"
+          md-items="employee in vm.querySearch(vm.searchText)"
+          md-item-text="employee.employeeName"
+          md-input-minlength="2"
           md-floating-label="Employee name">
-        <md-item-template>
-          <span md-highlight-text="ctrl.searchText" md-highlight-flags="^i">{{item.display}}</span>
+        <md-item-template flex-gt-sm>
+          <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{employee.employeeName}}</span>
         </md-item-template>
-        <md-not-found>No employee matching "place holder" were found.</md-not-found>
+        <md-not-found>No employee matching "{{vm.searchText}}" were found.</md-not-found>
       </md-autocomplete>
       
       <md-input-container>

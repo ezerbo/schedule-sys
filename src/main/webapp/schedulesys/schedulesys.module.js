@@ -11,5 +11,15 @@
 		    'ngStorage',
 		    'md.data.table',
 		    'material.svgAssetsCache'
-		]);
+		]).run(run);
+	
+	run.$inject = ['$rootScope'];
+	
+	function run ($rootScope){
+		 $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
+			 $rootScope.previousState = from;
+			 $rootScope.previousStateParams = fromParams;
+			 
+			});
+	}
 })();
