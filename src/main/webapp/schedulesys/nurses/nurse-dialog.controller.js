@@ -55,7 +55,7 @@
 			vm.getSelectedNurse();
 		}
 		
-		console.log(vm.nurse.dateOfHire);
+		
 		
 		function getSelectedNurse(){
 			NursesService.get({id : $stateParams.id},function(result){
@@ -89,22 +89,31 @@
 		function createOrUpdatenurse(){
 			console.log('nurse to be created : ' + angular.toJson(vm.nurse));
 			if(vm.nurse.id === null){
-				NursesService.save(vm.nurse, onCreateOrUpdateSucess, onCreateOrUpdateFailure);
+				NursesService.save(vm.nurse, onCreateSucess, onCreateFailure);
 			}else{
-				NursesService.update(vm.nurse, onCreateOrUpdateSucess, onCreateOrUpdateFailure);
+				NursesService.update({id:$stateParams.id},vm.nurse, onUpdateSucess, onUpdateFailure);
 			}
 		}
 		
-		function onCreateOrUpdateSucess(result){
-			$state.go('home.nurses',{}, {reload: true});
+		function onCreateSucess(result){
 			$mdDialog.cancel();
+			$state.go('home.nurses',{}, {reload: true});
 			vm.showToast('Nurse ' + vm.nurse.firstName + ' successfully created', 5000);
 		}
 		
-		function onCreateOrUpdateFailure(result){
+		function onCreateFailure(result){
 			vm.showToast(result.data, 5000);
 		}
 		
+		function onUpdateSucess(result){
+			$mdDialog.cancel();
+			$state.go('home.nurses',{}, {reload: true});
+			vm.showToast('Nurse ' + vm.nurse.firstName + ' successfully updated', 5000);
+		}
+		
+		function onUpdateFailure(result){
+			vm.showToast(result.data, 5000);
+		}
 		function showToast(textContent, delay){
 			$mdToast.show(
 					$mdToast.simple()

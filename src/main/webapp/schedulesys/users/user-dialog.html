@@ -19,10 +19,10 @@
 				<div ng-message="md-maxlength">The User Name has to be less than 100 characters long.</div>
 			</div>
 		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Password</label> <input md-maxlength="100" required name="password" ng-model="vm.user.password" />
+		<md-input-container class="md-block" flex-gt-sm ng-show="vm.showPassword()">
+			<label>Password</label> <input md-maxlength="100"  name="password" ng-model="vm.user.password" />
 			<div ng-messages="userForm.password.$error">
-				<div ng-message="required">Password is required.</div>
+				
 				<div ng-message="md-maxlength">The password has to be less than 100 characters long.</div>
 			</div>
 		</md-input-container>	

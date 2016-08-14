@@ -4,9 +4,9 @@
 		.module('scheduleSys')
 		.controller('userDialogController', userDialogController);
 	
-	userDialogController.$Inject = ['$state', '$mdDialog', '$mdToast', 'usersService','userRoleService'];
+	userDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast', 'usersService','userRoleService'];
 	
-	function userDialogController($state, $mdDialog, $mdToast, usersService,userRoleService){
+	function userDialogController($state,$stateParams, $mdDialog, $mdToast, usersService,userRoleService){
 		var vm = this;
 		
 		vm.cancel = cancel;
@@ -14,6 +14,18 @@
 		vm.showToast = showToast;
 		vm.userRole = userRoleService.query();
 		vm.options6 = vm.userRole;
+		vm.getSelectedUser = getSelectedUser;
+		vm.showPassword = showPassword;
+		
+		function showPassword(){
+			
+			console.log($state.current.name);
+			if($state.current.name === "home.users.edit"){
+			return false;
+			}
+			
+			return true;
+		}
 		
 		vm.myModel = {};
 		vm.user = {
@@ -27,22 +39,44 @@
 			$mdDialog.cancel();
 		}
 		
+		if(angular.isDefined($stateParams.id)){
+			vm.getSelectedUser();
+		}
+		
+		
+		
+		function getSelectedUser(){
+			usersService.get({id : $stateParams.id},function(result){
+				vm.user = result;
+				
+			});
+		}
 		function createOrUpdateuser(){
 			console.log('User to be created : ' + angular.toJson(vm.user));
 			if(vm.user.id === null){
-				usersService.save(vm.user, onCreateOrUpdateSucess, onCreateOrUpdateFailure);
+				usersService.save(vm.user, onCreateSucess, onCreateFailure);
 			}else{
-				usersService.update(vm.user, onCreateOrUpdateSucess, onCreateOrUpdateFailure);
+				usersService.update({id:$stateParams.id},vm.user, onUpdateSucess, onUpdateFailure);
 			}
 		}
 		
-		function onCreateOrUpdateSucess(result){
-			$state.go('home.users',{}, {reload: true});
+		function onCreateSucess(result){
 			$mdDialog.cancel();
+			$state.go('home.users',{}, {reload: true});
 			vm.showToast('User ' + vm.user.username + ' successfully created', 5000);
 		}
 		
-		function onCreateOrUpdateFailure(result){
+		function onCreateFailure(result){
+			vm.showToast(result.data, 5000);
+		}
+		
+		function onUpdateSucess(result){
+			$mdDialog.cancel();
+			$state.go('home.users',{}, {reload: true});
+			vm.showToast('User ' + vm.user.username + ' successfully updated', 5000);
+		}
+		
+		function onUpdateFailure(result){
 			vm.showToast(result.data, 5000);
 		}
 		

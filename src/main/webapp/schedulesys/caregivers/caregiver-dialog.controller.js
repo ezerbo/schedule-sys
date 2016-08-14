@@ -86,19 +86,32 @@
 		function createOrUpdatecareGiver(){
 			console.log('Care-Giver to be created : ' + angular.toJson(vm.careGiver));
 			if(vm.careGiver.id === null){
-				careGiversService.save(vm.careGiver, onCreateOrUpdateSucess, onCreateOrUpdateFailure);
+				careGiversService.save(vm.careGiver, onCreateSucess, onCreateFailure);
+				
 			}else{
-				careGiversService.update(vm.careGiver, onCreateOrUpdateSucess, onCreateOrUpdateFailure);
+				careGiversService.update({id: $stateParams.id},vm.careGiver, onUpdateSucess, onUpdateFailure);
+				console.log("Caregiver-ID : " + $stateParams.id);
 			}
+			
 		}
 		
-		function onCreateOrUpdateSucess(result){
-			$state.go('home.caregivers',{}, {reload: true});
+		function onCreateSucess(result){
 			$mdDialog.cancel();
+			$state.go('home.caregivers',{}, {reload: true});
 			vm.showToast('Care-Giver ' + vm.careGiver.firstName + ' successfully created', 5000);
 		}
 		
-		function onCreateOrUpdateFailure(result){
+		function onCreateFailure(result){
+			vm.showToast(result.data, 5000);
+		}
+		
+		function onUpdateSucess(result){
+			$mdDialog.cancel();
+			$state.go('home.caregivers',{}, {reload: true});
+			vm.showToast('Care-Giver ' + vm.careGiver.firstName + ' successfully updated', 5000);
+		}
+		
+		function onUpdateFailure(result){
 			vm.showToast(result.data, 5000);
 		}
 		

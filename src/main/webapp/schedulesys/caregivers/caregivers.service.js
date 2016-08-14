@@ -22,7 +22,15 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' },
+            'update': { method:'PUT',
+            	transformResponse: function (data) {
+                    if (data) {
+                        data = angular.toJson(data);
+                    }
+                    return data;
+                }
+            },
+            
             'remove':  {
                 method: 'DELETE',
                 transformResponse: function (data) {

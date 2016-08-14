@@ -8,6 +8,7 @@
 	
 	function stateConfig($stateProvider) {
 		$stateProvider.state('home.nurses', {
+			url: '/nurses',
 			templateUrl: 'schedulesys/nurses/nurses.html',
 			controller: 'NursesController'
 		}).state('home.nurses.new', {
