@@ -51,6 +51,41 @@
 			url: '/{id}/nurse/details',
 			templateUrl: 'schedulesys/nurses/nurse-details.html',
 			controller: 'NurseDetailsController'
+		}).state('home.licenses-new', {
+			url: 'nurse/{nurseId}/new',
+			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+				$mdDialog.show({
+					title: 'New Nurse',
+					templateUrl: 'schedulesys/licenses/license-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'LicenseDialogController',
+					clickOutsideToClose:true
+				}).then(function() {
+					$state.go($state.parent, {}, { reload: true });
+				}, function() {
+					$state.go('^');
+				});
+			}]
+		}).state('home.licenses-edit', {
+			url:'/nurse/{nurseId}/licenses/{id}/edit',
+			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/licenses/license-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'LicenseDialogController',
+					clickOutsideToClose:true
+				}).then(function() {
+					console.log('Clicked on save');
+					
+				}, function() {
+					$state.go('^');
+				});
+			}]
+//		,
+//			onExit: ['$state', function($state){
+//				$state.go($state.current, {}, { reload: true });
+//			}]
+			
 		})
 	}
 	
