@@ -1,0 +1,41 @@
+<md-dialog aria-label="Create or update a License" style="width:800px;" ng-controller="LicenseDialogController as vm">
+  <form name="licenseForm" ng-submit="vm.createOrUpdateLicense()">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create or edit a License</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
+	<div layout-gt-sm="column">
+	<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
+			 <md-content>
+Expiration-Date 
+  
+    <md-datepicker type="date" ng-model="vm.license.expirationDate" name="expirationDate" md-placeholder="Enter date"></md-datepicker>
+
+   
+  </md-content>
+			<div ng-messages="licenseForm.expirationDate.$error">
+				<div ng-message="required">Expiration Date is required.</div>
+				
+			</div>
+		</div>
+	
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>License-Number</label> <input md-maxlength="100" required name="number"  ng-model="vm.license.number" />
+			<div ng-messages="licenseForm.number.$error">
+				<div ng-message="required">License Number is required.</div>
+				<div ng-message="md-maxlength">The License Number has to be less than 100 digits long.</div>
+			</div>
+		</md-input-container>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>
