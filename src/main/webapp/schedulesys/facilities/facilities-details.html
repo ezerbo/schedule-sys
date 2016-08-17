@@ -12,9 +12,14 @@
 		<div style="text-align: center" layout-padding>
 			<span> <h4>Staff members ({{vm.allStaffMembers.length}})</h4></span>
 		</div>
-	<section layout="left" layout-align="left start" >
+	<section layout="left" layout-align="center center" >
       <md-button class="md-raised md-primary" ui-sref="home.facilities-scheduling({id:vm.facility.id})">Schedules</md-button>
     </section>
+    <section layout="left" layout-align="left start" >
+    <md-button class="md-raised md-primary" ui-sref="home.staffmembers-new({facId:vm.facility.id})">Add</md-button>
+		<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.staffmembers-edit({id:vm.selected[0].id,facId:vm.facility.id})">Edit</md-button>
+      <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+	</section>
 	<md-table-container>
 		 <table md-table md-table md-row-select ng-model="vm.selected" >
 		    <thead md-head md-order="vm.query.order">
@@ -28,7 +33,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row   md-auto-select ng-repeat="staffMember in vm.allStaffMembers track by staffMember.id">
+		      <tr md-row md-select="staffMember" md-select-id="name"  md-auto-select ng-repeat="staffMember in vm.allStaffMembers track by staffMember.id">
 		        <td md-cell>{{staffMember.firstName}} {{staffMember.lastName}}</td>
 		        <td md-cell>{{staffMember.title}}</td>
 		        <td md-cell>{{staffMember.phoneNumber}}</td>

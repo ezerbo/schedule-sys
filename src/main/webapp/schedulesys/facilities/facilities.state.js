@@ -65,6 +65,41 @@
 					}
 				});
 			}]
+		}).state('home.staffmembers-new', {
+			url: 'facility/{facId}/new',
+			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+				$mdDialog.show({
+					title: 'New Staff-Member',
+					templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'StaffMemberDialogController',
+					clickOutsideToClose:true
+				}).then(function() {
+					$state.go($state.parent, {}, { reload: true });
+				}, function() {
+					$state.go('^');
+				});
+			}]
+		}).state('home.staffmembers-edit', {
+			url:'/facility/{facId}/stafmembers/{id}/edit',
+			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'StaffMemberDialogController',
+					clickOutsideToClose:true
+				}).then(function() {
+					console.log('Clicked on save');
+					
+				}, function() {
+					$state.go('^');
+				});
+			}]
+//		,
+//			onExit: ['$state', function($state){
+//				$state.go($state.current, {}, { reload: true });
+//			}]
+			
 		})
 	}
 })();
