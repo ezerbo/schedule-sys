@@ -34,7 +34,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row md-select="staffMember" md-select-id="name"  md-auto-select ng-repeat="staffMember in vm.allStaffMembers track by staffMember.id">
+		      <tr md-row md-select="staffMember" md-select-id="name"  md-auto-select ng-repeat="staffMember in vm.staffMembersOnCurrentPage track by staffMember.id">
 		        <td md-cell>{{staffMember.firstName}} {{staffMember.lastName}}</td>
 		        <td md-cell>{{staffMember.title}}</td>
 		        <td md-cell>{{staffMember.phoneNumber}}</td>

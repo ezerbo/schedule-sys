@@ -24,7 +24,7 @@
 		vm.query = {
 				limit: 5,
 				page: 1	
-		};
+				};
 		
 		loadAll();
 		getSelectedNurse();
@@ -32,8 +32,6 @@
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
-			console.log('Selected items : ' + angular.toJson(vm.selected));
-			console.log('Edit or delete : ' + vm.editOrDelete);
 		});
 		
 		function showConfirm(ev) {
@@ -93,9 +91,8 @@
 		}
 		
 		function sliceLicenseArray(){
-			var slicedArray = vm.allLicenses.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
-			console.log('Sliced array : ' + angular.toJson(slicedArray));
-			return slicedArray;
+			return vm.allLicenses.slice(
+					5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
 		}
 		
 		function getSelectedNurse(){

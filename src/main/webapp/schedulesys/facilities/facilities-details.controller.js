@@ -9,8 +9,8 @@
 	
 	function FacilityDetailsController($state,$scope, $stateParams, $mdDialog, $mdToast, FacilitiesService, FacilitiesStaffMemberService,StaffMemberService){
 		var vm = this;
-		vm.allStaffMembers = null;
-		vm.StaffMembersOnCurrentPage = null;
+		vm.allStaffMembers = [];
+		vm.staffMembersOnCurrentPage = [];
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.getStaffMembers = getStaffMembers;
@@ -32,8 +32,6 @@
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
-			console.log('Selected items : ' + angular.toJson(vm.selected));
-			console.log('Edit or delete : ' + vm.editOrDelete);
 		});
 		
 		function showConfirm(ev) {
@@ -62,7 +60,7 @@
 		
 		function onLoadAllSuccess(data){
 			vm.allStaffMembers = data;
-			vm.StaffMembersOnCurrentPage = vm.sliceStaffMemberArray();
+			vm.staffMembersOnCurrentPage = vm.sliceStaffMemberArray();
 		}
 		
 		function onLoadAllError(status){
@@ -70,7 +68,7 @@
 		}
 
 		function onDeleteSuccess (){
-			vm.StaffMembersOnCurrentPage.splice(vm.StaffMembersOnCurrentPage.indexOf(vm.selected[0]), 1);
+			vm.staffMembersOnCurrentPage.splice(vm.staffMembersOnCurrentPage.indexOf(vm.selected[0]), 1);
 			vm.allStaffMembers.splice(vm.allStaffMembers.indexOf(vm.selected[0]), 1);
 			vm.editOrDelete = true;
 			vm.showToast('Staff-Member ' + vm.selected[0].firstName + ' successfully deleted', 5000);
@@ -91,25 +89,24 @@
 		}
 		
 		function onPaginate(){
-			vm.StaffMembersOnCurrentPage = vm.sliceStaffMemberArray();
+			vm.staffMembersOnCurrentPage = vm.sliceStaffMemberArray();
 		}
 		
 		function sliceStaffMemberArray(){
-			var slicedArray = vm.allStaffMembers.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
-			console.log('Sliced array : ' + angular.toJson(slicedArray));
-			return slicedArray;
+			return vm.allStaffMembers.slice(
+					5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
 		}
 		
 		function getSelectedFacility(){
 			FacilitiesService.get({id:$stateParams.id}, function(result) {
 				vm.facility = result;
-			})
+			});
 		}
 		
 		function getStaffMembers(){
 			FacilitiesStaffMemberService.query({id:$stateParams.id}, function(result) {
 				vm.allStaffMembers = result;
-			})
+			});
 		}
 	}
 })();
