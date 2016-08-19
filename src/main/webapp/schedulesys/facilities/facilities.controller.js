@@ -33,8 +33,6 @@
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
-			console.log('Selected items : ' + angular.toJson(vm.selected));
-			console.log('Edit or delete : ' + vm.editOrDelete);
 		});
 		
 		function showConfirm(ev) {
@@ -91,7 +89,7 @@
 		}
 		
 		function sliceFacilitiesArray(){
-			var slicedArray = vm.allFacilities.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
+			var slicedArray = vm.allFacilities.slice(10 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
 			console.log('Sliced array : ' + angular.toJson(slicedArray));
 			return slicedArray;
 		}

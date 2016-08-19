@@ -21,7 +21,6 @@
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.sliceLicenseArray = sliceLicenseArray;
-		vm.showLicenseDialog = showLicenseDialog;
 		vm.query = {
 				limit: 5,
 				page: 1	
@@ -99,19 +98,6 @@
 			return slicedArray;
 		}
 		
-		function showLicenseDialog(ev) {
-			$mdDialog.show({
-				templateUrl: 'schedulesys/licenses/license-dialog.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true
-			})
-			.then(function() {
-				//$scope.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				//$scope.status = 'You cancelled the dialog.';
-			});
-		};
 		function getSelectedNurse(){
 			NursesService.get({id:$stateParams.id}, function(result) {
 				vm.nurse = result;

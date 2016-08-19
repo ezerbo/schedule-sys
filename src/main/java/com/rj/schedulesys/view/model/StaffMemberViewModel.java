@@ -1,5 +1,6 @@
 package com.rj.schedulesys.view.model;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -37,7 +38,7 @@ public class StaffMemberViewModel {
 	@Size(max = 10)
 	private String fax;
 	
-	@NotBlank
-	private String facilityName;
+	@NotNull
+	private Long facilityId;
 	
 }

@@ -248,24 +248,68 @@ public class NurseController {
 	
 	@RequestMapping(value = "/{id}/licenses", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAllLicenses(@PathVariable Long id){
-		
 		log.info("Finding all licenses for user with id : {}", id);
-		
 		if(nurseService.findOne(id) == null){
 			log.info("No nurse found with id : {}", id);
 			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		List<LicenseViewModel> viewModels = licenseService.findAllByNurse(id);
-		
 		if(viewModels.isEmpty()){
 			log.info("No licenses found for nurse with id : ", id);
 			return new ResponseEntity<>("No licenses found for nurse with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		log.info("Licenses : {} found for nurse with id : {}", viewModels, id);
-		
 		return new ResponseEntity<>(viewModels, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/licenses", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<?> create(@PathVariable("id") Long nurseId, @RequestBody LicenseViewModel viewModel){
+		if(nurseService.findOne(nurseId) == null){
+			log.info("No nurse found with id : {}", nurseId);
+			return new ResponseEntity<>("No nurse found with id : " + nurseId, HttpStatus.NOT_FOUND);
+		}
+		log.info("Creating license : {}", viewModel);
+		viewModel.setId(null);
+		viewModel.setNurseId(nurseId);
+		try{
+			viewModel = licenseService.create(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("License {} created successfully", viewModel);
+		return new ResponseEntity<>("License successfully created", HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/{id}/licenses/{licenseId}", method = RequestMethod.PUT, consumes = "application/json")
+	public ResponseEntity<?> update(@PathVariable Long id, @PathVariable Long licenseId,
+			@RequestBody LicenseViewModel viewModel){
+		log.info("Updating license : {}", viewModel);
+		NurseViewModel nurse = nurseService.findOne(id);
+		if(nurse == null){
+			log.info("No nurse found with id : {}", id);
+			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		LicenseViewModel license = licenseService.findOne(licenseId);
+		if(license == null){
+			log.info("No license with id : {}", licenseId);
+			return new ResponseEntity<>("No license found with id : " + licenseId, HttpStatus.NOT_FOUND);
+		}
+		if(license.getNurseId() != nurse.getId()){
+			log.error("No license with id : {} found for nurse with id : {}", license.getId(), nurse.getId());
+			return new ResponseEntity<>("No license with id : " 
+					+ license.getNurseId() + " found for nurse with id : {}" + nurse.getId(), HttpStatus.NOT_FOUND);
+		}
+		viewModel.setNurseId(id);
+		viewModel.setId(licenseId);
+		try{
+			viewModel = licenseService.update(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("License : {} successfully updated", viewModel);
+		return new ResponseEntity<>("License successfully updated", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}/tests", method = RequestMethod.POST, consumes = "application/json")

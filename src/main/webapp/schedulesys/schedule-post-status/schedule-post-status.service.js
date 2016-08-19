@@ -8,7 +8,7 @@
 	SchedulePostStatusService.$Inject = ['$resource'];
 	
 	function SchedulePostStatusService($resource) {
-		var resourceUrl = '/schedule-post-status/:id';
+		var resourceUrl = '/schedule-post-statuses/:id';
 		
 		return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

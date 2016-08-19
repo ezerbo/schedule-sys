@@ -43,7 +43,7 @@
 			}]
 		})
 		.state('home.facilities-details', {
-			url: '/{id}/facility/details',
+			url: '/facilities/{id}/details',
 			templateUrl: 'schedulesys/facilities/facilities-details.html',
 			controller: 'FacilityDetailsController'
 		})
@@ -65,41 +65,48 @@
 					}
 				});
 			}]
-		}).state('home.staffmembers-new', {
-			url: 'facility/{facId}/new',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+		})
+		.state('home.facilities-scheduling.edit', {
+			url: '/{scheduleId}/edit',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/schedules/schedule-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'FacilitySchedulingDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
+		})
+		.state('home.facilities-details.add-staffmembers', {
+			url: '/staff-members/new',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					title: 'New Staff-Member',
 					templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'StaffMemberDialogController',
-					clickOutsideToClose:true
-				}).then(function() {
-					$state.go($state.parent, {}, { reload: true });
-				}, function() {
-					$state.go('^');
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
 				});
 			}]
-		}).state('home.staffmembers-edit', {
-			url:'/facility/{facId}/stafmembers/{id}/edit',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+		}).state('home.facilities-details.edit-staffmembers', {
+			url:'/staff-members/{staffMemberId}/edit',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'StaffMemberDialogController',
-					clickOutsideToClose:true
-				}).then(function() {
-					console.log('Clicked on save');
-					
-				}, function() {
-					$state.go('^');
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
 				});
 			}]
-//		,
-//			onExit: ['$state', function($state){
-//				$state.go($state.current, {}, { reload: true });
-//			}]
-			
 		})
 	}
 })();

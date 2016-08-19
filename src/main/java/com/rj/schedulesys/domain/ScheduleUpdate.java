@@ -40,9 +40,6 @@ public class ScheduleUpdate implements Serializable {
 	@EmbeddedId
 	private ScheduleUpdatePK id;
 
-	@Column(name = "`COMMENT`", nullable = false, length = 254)
-	private String comment;
-
 	@Column(name = "UPDATE_TIME", nullable = false)
 	@Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	private DateTime updateTime;

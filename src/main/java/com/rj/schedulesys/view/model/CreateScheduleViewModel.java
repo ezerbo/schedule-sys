@@ -31,5 +31,8 @@ public class CreateScheduleViewModel {
 	private Long scheduleStatusId;
 	
 	@NotNull
+	private Long schedulePostStatusId;
+	
+	@NotNull
 	private Date scheduleDate;
 }

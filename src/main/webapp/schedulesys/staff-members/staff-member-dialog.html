@@ -50,15 +50,6 @@
 				<div ng-message="md-maxlength">The fax has to be less than 30 characters long.</div>
 			</div>
 		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Facility-Name</label> <md-select ng-model="vm.staffmember.facilityName">
-          <md-option ng-repeat="options in vm.options2" name="facilityName" value="{{options.name}}">{{options.name}}</md-option>
-        </md-select>
-			<div ng-messages="staffmemberForm.facilityName.$error">
-				<div ng-message="required">Facility Name is required.</div>
-				
-			</div>
-		</md-input-container>
     <md-dialog-actions layout="row">
       <span flex></span>
       <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>

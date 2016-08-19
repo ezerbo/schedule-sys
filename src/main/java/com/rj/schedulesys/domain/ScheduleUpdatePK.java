@@ -19,10 +19,10 @@ public class ScheduleUpdatePK implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Column(name="SCHEDULE_ID", unique=true, nullable=false)
+	@Column(name="SCHEDULE_ID", nullable=false)
 	private Long scheduleId;
 
-	@Column(name="USER_ID", insertable=false, updatable=false, unique=true, nullable=false)
+	@Column(name="USER_ID", nullable=false)
 	private Long userId;
 
 

@@ -28,6 +28,18 @@ public class ScheduleController {
 	@Autowired
 	private AuthenticationService authenticationService;
 	
+	@RequestMapping(value ="/{id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getSchedule(@PathVariable Long id){
+		log.info("Fetching schedule with id : {}", id);
+		GetScheduleViewModel viewModel = scheduleService.findOne(id);
+		if(viewModel == null){
+			log.warn("No schedule found with id : {}", id);
+			return new ResponseEntity<>("No schedule found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		log.info("Schedule found : {}", viewModel);
+		return new ResponseEntity<>(viewModel, HttpStatus.OK);
+	}
+	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<?> saveSchedule(@RequestBody CreateScheduleViewModel viewModel){
 		
@@ -66,6 +78,7 @@ public class ScheduleController {
 			scheduleService.update(viewModel, authenticationService.getAuthenticatedUser().getId());
 		}catch(Exception e){
 			log.error(e.getMessage());
+			e.printStackTrace();
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		

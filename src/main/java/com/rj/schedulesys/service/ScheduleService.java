@@ -89,6 +89,7 @@ public class ScheduleService {
 		Facility facility = validateFacility(viewModel.getFacilityId());
 		
 		ScheduleStatus scheduleStatus = validateScheduleStatus(viewModel.getScheduleStatusId());
+		SchedulePostStatus schedulePostStatus = validateSchedulePostStatus(viewModel.getSchedulePostStatusId());
 		
 		Shift shift = validateShift(viewModel.getShiftId());
 		
@@ -113,8 +114,12 @@ public class ScheduleService {
 				.employee(employee)
 				.facility(facility)
 				.shift(shift)
+				.hours(0.0)
+				.overtime(0.0)
+				.timesheetReceived(false)
 				.scheduleComment(viewModel.getComment())
 				.scheduleStatus(scheduleStatus)
+				.schedulePostStatus(schedulePostStatus)
 				.createDate(new Date())
 				.scheduleDate(viewModel.getScheduleDate())
 				.scheduleSysUser(scheduleSysUser)
@@ -167,21 +172,21 @@ public class ScheduleService {
 			schedulePostStatus = validateSchedulePostStatus(viewModel.getSchedulePostStatusId());
 		}
 		
-		Employee employee = null;
+		Employee employee = validateEmployee(viewModel.getEmployeeId());
 		
-		if(viewModel.getEmployeeId() != null){
-			employee = validateEmployee(viewModel.getEmployeeId());
+		if(viewModel.getEmployeeId() != null && schedule.getEmployee() != null){
 			if(viewModel.getEmployeeId() != schedule.getEmployee().getId()){
 				//Make sure the employee does not already have a shift on the schedule date received
 				assertUniqueShiftPerDay(employee.getId(), shift.getId(), viewModel.getScheduleDate());
 			}
-		}else{
-			if(viewModel.getSchedulePostStatusId() != null){
-				log.error("Schedule post status '{}' submitted but the schedule is not assigned to any employee", schedulePostStatus.getStatus());
-				throw new RuntimeException("Schedule post status '" + schedulePostStatus.getStatus() 
-					+ "' submitted but the schedule is not assigned to any employee");
-			}
 		}
+//		}else{
+//			if(viewModel.getSchedulePostStatusId() != null){
+//				log.error("Schedule post status '{}' submitted but the schedule is not assigned to any employee", schedulePostStatus.getStatus());
+//				throw new RuntimeException("Schedule post status '" + schedulePostStatus.getStatus() 
+//					+ "' submitted but the schedule is not assigned to any employee");
+//			}
+//		}
 		
 		if(viewModel.isTimesheetReceived() 
 				&& (viewModel.getEmployeeId() == null 
@@ -203,18 +208,15 @@ public class ScheduleService {
 		schedule.setEmployee(employee);
 		schedule.setFacility(facility);
 		schedule.setShift(shift);
+		schedule.setTimesheetReceived(viewModel.isTimesheetReceived());
 		schedule.setHours(viewModel.getHours());
 		schedule.setOvertime(viewModel.getOvertime());
 		schedule.setScheduleComment(viewModel.getComment());
 		schedule.setScheduleStatus(scheduleStatus);
 		schedule.setSchedulePostStatus(schedulePostStatus);
-		
 		log.info("Updating schedule : {}", schedule);
-		
 		schedule = scheduleDao.merge(schedule);
-		
-		createScheduleUpdate(schedule, scheduleSysUserId, viewModel.getComment());
-		
+		createScheduleUpdate(schedule, scheduleSysUserId);
 		return dozerMapper.map(schedule, UpdateScheduleViewModel.class);
 	}
 	
@@ -223,23 +225,17 @@ public class ScheduleService {
 	 * @param scheduleSysUserId
 	 * @param comment
 	 */
-	public void createScheduleUpdate(Schedule schedule , Long scheduleSysUserId, String comment){
-
+	public void createScheduleUpdate(Schedule schedule , Long scheduleSysUserId){
 		ScheduleUpdatePK pk = ScheduleUpdatePK.builder()
 				.scheduleId(schedule.getId())
 				.userId(scheduleSysUserId)
 				.build();
-		
 		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder()
 				.id(pk)
-				.comment(comment)
 				.scheduleSysUser(scheduleSysUserDao.findOne(scheduleSysUserId))
 				.build();
-		
 		scheduleUpdate = scheduleUpdateDao.merge(scheduleUpdate);
-		
 		log.info("ScheduleUpdate : {}", scheduleUpdate);
-		
 	}
 	
 	/**
@@ -278,7 +274,6 @@ public class ScheduleService {
 		if(schedule != null){
 			viewModel = this.buildGetScheduleViewModel(schedule);
 		}
-		
 		log.info("Schedule found : {}", viewModel);
 		return viewModel;
 	}
@@ -291,18 +286,13 @@ public class ScheduleService {
 	 */
 	@Transactional
 	public List<GetScheduleViewModel> findAllBetweenDatesByFacility(Date startDate, Date endDate, Long facilityId){
-		
 		log.info("Fetching schedules between startDate : {} and endDate : {} for facility with id : {}", startDate, endDate, facilityId);
-		
 		List<GetScheduleViewModel> viewModels = new LinkedList<>();
 		List<Schedule> schedules = scheduleDao.findAllBetweenDatesByFacility(startDate, endDate, facilityId);
-		
 		for(Schedule schedule : schedules){
 			viewModels.add(this.buildGetScheduleViewModel(schedule));
 		}
-		
 		log.info("Schedule found : {}", viewModels);
-		
 		return viewModels;
 	}
 	
@@ -311,16 +301,12 @@ public class ScheduleService {
 	 * @return
 	 */
 	public List<GetScheduleViewModel> findAllByFacility(Long facilityId){
-		
 		log.debug("Fetching schedules for faclity with id : {}", facilityId);
-		
 		List<Schedule> schedules = scheduleDao.findAllByFacility(facilityId);
 		List<GetScheduleViewModel> viewModels = new LinkedList<>();
-		
 		for(Schedule schedule : schedules){
 			viewModels.add(this.buildGetScheduleViewModel(schedule));
 		}
-		
 		return viewModels;
 	}
 	
@@ -377,6 +363,9 @@ public class ScheduleService {
 	}
 	
 	public Employee validateEmployee(Long employeeId){
+		if(employeeId == null){
+			return null;
+		}
 		Employee employee = employeeDao.findOne(employeeId);
 		if(employee == null){
 			log.error("No employee found with id : {}", employeeId);

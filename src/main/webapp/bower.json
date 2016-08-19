@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "angular-material-data-table": "^0.10.9",
-    "svg-assets-cache.js": "svg-assets-cache#*"
+    "svg-assets-cache.js": "svg-assets-cache#*",
+    "moment": "^2.14.1"
   }
 }

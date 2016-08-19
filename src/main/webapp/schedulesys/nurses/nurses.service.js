@@ -60,10 +60,26 @@
 NurseLicenseService.$Inject = ['$resource'];
 	
 	function NurseLicenseService($resource){
-		var resourceUrl = '/nurses/:id/licenses';
+		var resourceUrl = '/nurses/:id/licenses/:licenseId';
 		return $resource(resourceUrl, {},{
-			'query': { method: 'GET', isArray: true}
+			'query': { method: 'GET', isArray: true},
+			'save': {
+				method: "POST", 
+				 transformResponse: function (data) {
+	                    if (data) {
+	                        data = angular.toJson(data);
+	                    }
+	                    return data;
+	                }
+			},
+			'update': { method:'PUT',
+            	transformResponse: function (data) {
+                    if (data) {
+                        data = angular.toJson(data);
+                    }
+                    return data;
+                }
+            }
 		});
 	}
-	
 })();

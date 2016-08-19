@@ -4,61 +4,54 @@
 		.module('scheduleSys')
 		.controller('StaffMemberDialogController', StaffMemberDialogController);
 	
-	StaffMemberDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast','StaffMemberService','FacilitiesService'];
+	StaffMemberDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast',
+	                                       'StaffMemberService','FacilitiesService', 'FacilitiesStaffMemberService'];
 	
-	function StaffMemberDialogController($state,$stateParams, $mdDialog, $mdToast, StaffMemberService,FacilitiesService){
+	function StaffMemberDialogController($state,$stateParams, $mdDialog, $mdToast,
+			StaffMemberService, FacilitiesService, FacilitiesStaffMemberService){
 		var vm = this;
 		
 		vm.cancel = cancel;
-		vm.createOrUpdateStaffMember = createOrUpdateStaffMember;
 		vm.showToast = showToast;
 		vm.getSelectedStaffMember = getSelectedStaffMember;
-		vm.facilityName = FacilitiesService.query();
-		vm.options2 = vm.facilityName;
+		vm.createOrUpdateStaffMember = createOrUpdateStaffMember;
 		
-		
-		
-		
-		vm.myModel = {};
 		vm.staffmember = {
 				id: null,
 				firstName: null,
 				lastName: null,
 				title: null,
 				phoneNumber: null,
-				fax: null,
-				facilityName: null
-			
-		};
+				fax: null
+				};
 		
 		function cancel() {
 			$mdDialog.cancel();
 		}
 		
-		if(angular.isDefined($stateParams.id)){
+		if(angular.isDefined($stateParams.staffMemberId)){
 			vm.getSelectedStaffMember();
 		}
 		
-		
-		
 		function getSelectedStaffMember(){
-			StaffMemberService.get({id : $stateParams.id},function(result){
+			StaffMemberService.get({id : $stateParams.staffMemberId},function(result){
 				vm.staffmember = result;
 				
 			});
 		}
+		
 		function createOrUpdateStaffMember(){
-			console.log('Staff-Member to be created : ' + angular.toJson(vm.staffmember));
 			if(vm.staffmember.id === null){
-				StaffMemberService.save({facId: $stateParams.facId},vm.staffmember, onCreateSucess, onCreateFailure);
+				FacilitiesStaffMemberService.save({id: $stateParams.id}
+				, vm.staffmember, onCreateSucess, onCreateFailure);
 			}else{
-				StaffMemberService.update({id:$stateParams.id,facId: $stateParams.facId},vm.staffmember, onUpdateSucess, onUpdateFailure);
+				FacilitiesStaffMemberService.update({id:$stateParams.id,staffMemberId: $stateParams.staffMemberId},
+						vm.staffmember, onUpdateSucess, onUpdateFailure);
 			}
 		}
 		
 		function onCreateSucess(result){
 			$mdDialog.cancel();
-			$state.go('home.facilities',{}, {reload: true});
 			vm.showToast('Staff-Member ' + vm.staffmember.firstName + ' successfully created', 5000);
 		}
 		
@@ -77,8 +70,7 @@
 		}
 		
 		function showToast(textContent, delay){
-			$mdToast.show(
-					$mdToast.simple()
+			$mdToast.show($mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
 					.hideDelay(delay));

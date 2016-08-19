@@ -30,6 +30,7 @@ public class LicenseViewModel {
 	@Future
 	@JsonFormat(timezone = "America/New_York")
 	@JsonSerialize(using = JsonDateSerializer.class)
+	@NotNull(message = "was not provided")
 	private Date expirationDate;
 	
 	@NotBlank

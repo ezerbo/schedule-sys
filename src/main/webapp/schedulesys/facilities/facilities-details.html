@@ -4,20 +4,21 @@
 		   <span>Facility {{vm.facility.name}}'s profile</span>
 		  </div>
 	</md-toolbar>
-		<div style="text-align: left" layout-padding layout="column" layout-align="left start">
-			<span>Address : {{vm.facility.address}}</span>
-			<span>Phone number : {{vm.facility.phoneNumber}}</span>
+		<div style="text-align: left" layout-padding layout-align="left start">
+			<span>Address : {{vm.facility.address}}</span><br>
+			<span>Phone number : {{vm.facility.phoneNumber}}</span><br>
 			<span>Fax : {{vm.facility.fax}}</span>
 		</div>
-		<div style="text-align: center" layout-padding>
-			<span> <h4>Staff members ({{vm.allStaffMembers.length}})</h4></span>
-		</div>
-	<section layout="left" layout-align="center center" >
+	<section layout="left" layout-align="left start" >
       <md-button class="md-raised md-primary" ui-sref="home.facilities-scheduling({id:vm.facility.id})">Schedules</md-button>
     </section>
+	<div style="text-align: center" layout-padding>
+		<span> <h4>Staff members ({{vm.allStaffMembers.length}})</h4></span>
+	</div>
+	
     <section layout="left" layout-align="left start" >
-    <md-button class="md-raised md-primary" ui-sref="home.staffmembers-new({facId:vm.facility.id})">Add</md-button>
-		<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.staffmembers-edit({id:vm.selected[0].id,facId:vm.facility.id})">Edit</md-button>
+    <md-button class="md-raised md-primary" ui-sref="home.facilities-details.add-staffmembers({id:vm.facility.id})">Add</md-button>
+		<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.facilities-details.edit-staffmembers({id:vm.facility.id, staffMemberId:vm.selected[0].id})">Edit</md-button>
       <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
 	</section>
 	<md-table-container>

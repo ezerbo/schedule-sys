@@ -26,8 +26,8 @@
 		<class-a>com.rj.schedulesys.domain.StaffMember</class-a>
 		<class-b>com.rj.schedulesys.view.model.StaffMemberViewModel</class-b>
 		<field>
-			<a>facility.name</a>
-			<b>facilityName</b>
+			<a>facility.id</a>
+			<b>facilityId</b>
 		</field>
 	</mapping>
 	

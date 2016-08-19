@@ -10,60 +10,62 @@
       </div>
     </md-toolbar>
   <md-dialog-content class="md-padding" layout="column">
-   		<div layout="left left">
-  			<md-datepicker ng-model="vm.schedule.scheduleDate" md-placeholder="Schedule date"></md-datepicker>
+   		<div layout-gt-xs="row">
+	   		<md-autocomplete class="md-block" flex-gt-xs md-no-cache="ctrl.noCache" md-selected-item="vm.selectedItem" md-search-text-change="vm.searchTextChange(vm.searchText)"
+	          md-search-text="vm.searchText"
+	          md-selected-item-change="vm.selectedItemChange(employee)"
+	          md-items="employee in vm.querySearch(vm.searchText)"
+	          md-item-text="employee.employeeName"
+	          md-input-minlength="2"
+	          md-floating-label="Employee name">
+		        <md-item-template flex-gt-sm>
+		          <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{employee.employeeName}}</span>
+		        </md-item-template>
+	        	<md-not-found>No employee matching "{{vm.searchText}}" were found.</md-not-found>
+	        </md-autocomplete>
+	        <div>
+	  			<md-datepicker ng-model="vm.schedule.scheduleDate" md-placeholder="Schedule date" ></md-datepicker>
+	        </div>
   		</div>
      <div layout-gt-sm="row">
-      <md-input-container class="md-block" flex-gt-sm>
-      	<label>Facility</label>
-			<md-select ng-model="vm.schedule.facilityId" required>
-	          <md-option ng-repeat="facility in vm.facilities" value="{{facility.id}}">{{facility.name}}</md-option>
-        	</md-select>
-			<div ng-messages="facilityForm.name.$error">
-				<div ng-message="required">Name is required.</div>
-				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
-			</div>
-      </md-input-container>
-      <md-input-container flex-gt-sm>
+      <md-input-container flex-gt-sm >
       	<label>Shift</label>
 			<md-select ng-model="vm.schedule.shiftId" required>
 	          <md-option ng-repeat="shift in vm.shifts" value="{{shift.id}}">{{shift.name}}</md-option>
         	</md-select>
-			<div ng-messages="facilityForm.name.$error">
-				<div ng-message="required">Name is required.</div>
-				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
-			</div>
       </md-input-container>
        <md-input-container flex-gt-sm>
       	<label>Status</label>
 			<md-select ng-model="vm.schedule.scheduleStatusId" required>
 	          <md-option ng-repeat="status in vm.statuses" value="{{status.id}}">{{status.status}}</md-option>
         	</md-select>
-			<div ng-messages="facilityForm.name.$error">
-				<div ng-message="required">Name is required.</div>
-				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
-			</div>
+      </md-input-container>
+      <md-input-container flex-gt-sm>
+      	<label>Post status</label>
+			<md-select ng-model="vm.schedule.schedulePostStatusId" required>
+	          <md-option ng-repeat="postStatus in vm.postStatuses" value="{{postStatus.id}}">{{postStatus.status}}</md-option>
+        	</md-select>
       </md-input-container>
       </div>
-      <md-autocomplete md-no-cache="ctrl.noCache" md-selected-item="vm.selectedItem" md-search-text-change="vm.searchTextChange(vm.searchText)"
-          md-search-text="vm.searchText"
-          md-selected-item-change="vm.selectedItemChange(employee)"
-          md-items="employee in vm.querySearch(vm.searchText)"
-          md-item-text="employee.employeeName"
-          md-input-minlength="2"
-          md-floating-label="Employee name">
-        <md-item-template flex-gt-sm>
-          <span md-highlight-text="vm.searchText" md-highlight-flags="^i">{{employee.employeeName}}</span>
-        </md-item-template>
-        <md-not-found>No employee matching "{{vm.searchText}}" were found.</md-not-found>
-      </md-autocomplete>
-      
+      <md-switch class="md-primary" md-no-ink aria-label="timesheet received"  ng-show="vm.isEditing" ng-model="vm.schedule.timesheetReceived">
+    		Timesheet received ({{vm.schedule.timesheetReceived ? 'YES' : 'NO'}})
+  		</md-switch>
+      <div layout-gt-sm="row"  ng-show="vm.isEditing">
+  		 <md-input-container flex-gt-sm>
+      		<label>Hours</label>
+            <input type="number" ng-model="vm.schedule.hours">
+      </md-input-container>
+  		 <md-input-container flex-gt-sm>
+      	<label>Overtime</label>
+		 <input type="number" ng-model="vm.schedule.overtime">
+      </md-input-container>
+      </div>
       <md-input-container>
       	<label>Comment</label>
 			<textarea ng-model="vm.schedule.comment" md-maxlength="150" rows="5" md-select-on-focus></textarea>
 			<div ng-messages="facilityForm.name.$error">
 				<div ng-message="required">Name is required.</div>
-				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+				<div ng-message="md-maxlength">The name has to be less than 150 characters long.</div>
 			</div>
       </md-input-container>
   </md-dialog-content>

@@ -13,21 +13,26 @@
 			,careGiversService, NursesService){
 		var vm = this;
 		
-		vm.cancel = cancel;
+		vm.nurses = [];
 		vm.shifts = [];
 		vm.statuses = [];
-		vm.facilities = [];
+		vm.postStatuses = [];
 		vm.employees = [];
+		vm.facilities = [];
 		vm.careGivers = [];
-		vm.nurses = [];
-		vm.selectedItem  = null;
-		vm.searchText    = null;
-		vm.querySearch   = querySearch;
+		vm.isEditing = false;
+		vm.searchText = null;
+		vm.selectedItem = null;
+		vm.selectedSchedule = null;
+		vm.cancel = cancel;
+		vm.querySearch = querySearch;
 		vm.getAllShifts = getAllShifts;
+		vm.buildSchedule = buildSchedule;
 		vm.getAllFaclities = getAllFaclities;
 		vm.getAllEmployees = getAllEmployees;
-		vm.getAllScheduleStatuses = getAllScheduleStatuses;
 		vm.createOrUpdateSchedule = createOrUpdateSchedule;
+		vm.getAllScheduleStatuses = getAllScheduleStatuses;
+		vm.getAllSchedulePostStatuses = getAllSchedulePostStatuses;
 		
 		vm.schedule = {
 			id: null,
@@ -36,6 +41,7 @@
 			shiftId: null,
 			comment: null,
 			scheduleStatusId: null,
+			schedulePostStatusId: null,
 			scheduleDate: null
 		};
 		
@@ -43,6 +49,22 @@
 		getAllFaclities();
 		getAllEmployees();
 		getAllScheduleStatuses();
+		getAllSchedulePostStatuses();
+		getSelectedSchedule();
+		
+		function getSelectedSchedule(){
+			if(angular.isDefined($stateParams.scheduleId)){
+				vm.isEditing = true;
+				ScheduleService.get({id: $stateParams.scheduleId}, function(result){
+					vm.selectedSchedule = result;
+					vm.schedule = vm.buildSchedule(vm.selectedSchedule);
+					vm.selectedItem = (vm.selectedSchedule.employee === null) ? null : {
+									employeeId: vm.selectedSchedule.employee.id,
+									employeeName: vm.selectedSchedule.employee.firstName + ' ' + vm.selectedSchedule.employee.lastName
+								}
+				});
+			}
+		}
 		
 		function getAllFaclities() {
 			FacilitiesService.query({}, function(result) {
@@ -56,6 +78,12 @@
 			});
 		}
 		
+		function getAllSchedulePostStatuses(){
+			SchedulePostStatusService.query({}, function(result){
+				vm.postStatuses = result;
+			});
+		}
+		
 		function getAllShifts() {
 			ShiftService.query({}, function(result) {
 				vm.shifts = result;
@@ -63,11 +91,20 @@
 		}
 		
 		function createOrUpdateSchedule(){
-			vm.schedule.employeeId = vm.selectedItem.employeeId;
+			vm.schedule.facilityId = $stateParams.id;
 			if(vm.schedule.id === null){
-				console.log("New Schedule");
+				vm.schedule.employeeId = (vm.selectedItem === null) ? null : vm.selectedItem.employeeId;
 				ScheduleService.save(vm.schedule, onScheduleSaveSuccess, onScheduleSaveFailure);
-				
+			}else{
+				vm.schedule.employeeId = (vm.selectedItem === null) 
+						? null : vm.selectedItem.employeeId;
+				ScheduleService.update({id:$stateParams.scheduleId}, vm.schedule,
+						function() {
+							vm.cancel();
+						},
+						function(){
+							console.log('Error occured while updating schedule');
+						});
 			}
 		}
 		
@@ -113,8 +150,23 @@
 			return query ? vm.employees.filter( createFilterFor(query) ) : vm.employees;
 		}
 		
+		function buildSchedule(selectedSchedule){
+			return {
+				id:selectedSchedule.id,
+				employeeId: (selectedSchedule.employee === null) ? null : selectedSchedule.employee.id,
+				facilityId: selectedSchedule.facility.id,
+				shiftId: selectedSchedule.shift.id,
+				comment: selectedSchedule.scheduleComment,
+				scheduleStatusId: selectedSchedule.scheduleStatus.id,
+				schedulePostStatusId: selectedSchedule.schedulePostStatus.id,
+				scheduleDate: new Date(moment(selectedSchedule.scheduleDate).format('MM/DD/YYYY')),
+				timesheetReceived: selectedSchedule.timesheetReceived,
+				hours: selectedSchedule.hours,
+				overtime: selectedSchedule.overtime
+			}
+		}
+		
 		function onScheduleSaveSuccess(){
-			
 			vm.cancel();
 			$state.go('home.facilities-scheduling', {}, {reload:true});
 		}

@@ -179,7 +179,7 @@ public class FacilityControllerTest {
 	public void test_findAllSchedule_WithoutDates() throws Exception{
 		mockMvc.perform(get("/facilities/{id}/schedules", 9))
 					.andExpect(status().isOk())
-					.andExpect(jsonPath("$", hasSize(2)));
+					.andExpect(jsonPath("$", hasSize(3)));
 	}
 	
 	@Test
@@ -189,7 +189,7 @@ public class FacilityControllerTest {
 				.param("endDate", new Date().toString())
 				)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(2)));
+			.andExpect(jsonPath("$", hasSize(3)));
 	}
 	
 	

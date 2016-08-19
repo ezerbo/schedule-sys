@@ -49,7 +49,7 @@ public class ScheduleControllerTest {
 	@Test
 	public void test_create_WithCONFIRMEDStatusButNoEmployee() throws Exception{
 		CreateScheduleViewModel aNewCreateScheduleViewModel = TestUtil.aNewCreateScheduleViewModel(
-				null, 1L, 2L, 1L, new Date(), "Comment on schedule");
+				null, 1L, 2L, 1L,1L, new Date(), "Comment on schedule");
 		mockMvc.perform(post("/schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewCreateScheduleViewModel)))
 		.andExpect(status().is5xxServerError())
@@ -59,7 +59,7 @@ public class ScheduleControllerTest {
 	@Test
 	public void test_create_WithDuplicateShift() throws IOException, Exception{
 		CreateScheduleViewModel viewModel = TestUtil.aNewCreateScheduleViewModel(
-				1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
+				1L, 1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
 		mockMvc.perform(post("/schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
@@ -70,7 +70,7 @@ public class ScheduleControllerTest {
 	@Test
 	public void test_create_WithValidData() throws IOException, Exception{
 		CreateScheduleViewModel viewModel = TestUtil.aNewCreateScheduleViewModel(
-				10L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
+				10L, 1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
 		
 		mockMvc.perform(post("/schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))

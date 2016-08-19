@@ -184,4 +184,54 @@ public class FacilityController {
 		return new ResponseEntity<List<StaffMemberViewModel>>(viewModels, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value ="/{id}/staff-members", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> addStaffMember(@PathVariable Long id, @RequestBody StaffMemberViewModel viewModel){
+		log.info("Creating staff member : {} ", viewModel);
+		if(facilityService.findOne(id) == null){
+			log.warn("No ficility found with id : {}", id);
+			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		viewModel.setFacilityId(id);
+		try{
+			staffMemberService.create(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("Staff member successfully created");
+		return new ResponseEntity<>("Staff member successfully created", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/{id}/staff-members/{staffMemberId}", method = RequestMethod.PUT, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> updateStaffMember(@PathVariable Long id, @PathVariable Long staffMemberId,
+			@RequestBody StaffMemberViewModel viewModel){
+		log.info("Updating staff member : {}", viewModel);
+		FacilityViewModel facility = facilityService.findOne(id);
+		if(facility == null){
+			log.warn("No ficility found with id : {}", id);
+			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		StaffMemberViewModel staffMember = staffMemberService.findOne(staffMemberId);
+		if(staffMember == null){
+			log.error("No staff member found with id : {}", staffMemberId);
+			return new ResponseEntity<String>("No staff member found with id : " + staffMemberId, HttpStatus.NOT_FOUND);
+		}
+		
+		if(facility.getId() != staffMember.getFacilityId()){
+			log.warn("No staff member with id : {} found for facility with id : {}", staffMemberId, id);
+			return new ResponseEntity<String>("No staff member with id : " + staffMemberId 
+					+ " found for facility with id : " + id, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		viewModel.setFacilityId(id);
+		viewModel.setId(staffMemberId);
+		try{
+			staffMemberService.update(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("Staff member successfully created");
+		return new ResponseEntity<>("Staff member successfully created", HttpStatus.OK);
+	}
 }

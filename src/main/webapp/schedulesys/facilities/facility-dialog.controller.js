@@ -44,7 +44,6 @@
 		
 		function onCreateSucess(result){
 			$mdDialog.cancel();
-			$state.go('home.facilities',{}, {reload: true});
 			vm.showToast('Facility ' + vm.facility.name + ' successfully created', 5000);
 		}
 		

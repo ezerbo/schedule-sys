@@ -61,7 +61,7 @@ public class TestUtil {
 	}
 	
 	public static StaffMemberViewModel aNewStaffMemberViewModel(Long id, String firstName
-			, String lastName, String title, String phoneNumber, String fax, String facilityName){
+			, String lastName, String title, String phoneNumber, String fax, Long facilityId){
 		StaffMemberViewModel viewModel = StaffMemberViewModel.builder()
 				.id(id)
 				.firstName(firstName)
@@ -69,7 +69,7 @@ public class TestUtil {
 				.title(title)
 				.phoneNumber(phoneNumber)
 				.fax(fax)
-				.facilityName(facilityName)
+				.facilityId(facilityId)
 				.build();
 		return viewModel;
 	}
@@ -201,12 +201,13 @@ public class TestUtil {
 	}
 	
 	public static CreateScheduleViewModel aNewCreateScheduleViewModel(Long employeeId, Long facilityId, Long shiftId
-			, Long scheduleStatusId, Date scheduleDate, String comment){
+			, Long scheduleStatusId, Long schedulePostStatusId, Date scheduleDate, String comment){
 		CreateScheduleViewModel viewModel = CreateScheduleViewModel.builder()
 				.employeeId(employeeId)
 				.facilityId(facilityId)
 				.shiftId(shiftId)
 				.scheduleStatusId(scheduleStatusId)
+				.schedulePostStatusId(schedulePostStatusId)
 				.scheduleDate(scheduleDate)
 				.comment(comment)
 				.build();

@@ -24,18 +24,18 @@ public class StaffMemberDao extends GenericDao<StaffMember> {
 	 * @param title
 	 * @return
 	 */
-	public StaffMember find(String firstName, String lastName, String title, String facilityName){
+	public StaffMember find(String firstName, String lastName, String title, Long facilityId){
 		StaffMember staffMember = null;
 		try{
 			staffMember = entityManager.createQuery(
 					"from StaffMember sm where sm.firstName =:firstName "
 							+ "and sm.lastName =:lastName "
 							+ "and sm.title =:title "
-							+ "and sm.facility.name =:facilityName", StaffMember.class)
+							+ "and sm.facility.id =:facilityId", StaffMember.class)
 			.setParameter("firstName", firstName)
 			.setParameter("lastName", lastName)
 			.setParameter("title", title)
-			.setParameter("facilityName", facilityName)
+			.setParameter("facilityId", facilityId)
 			.getSingleResult();
 		}catch(NoResultException e){
 			log.warn("No staff member found with first name : {}, last name : {} and title : {}"

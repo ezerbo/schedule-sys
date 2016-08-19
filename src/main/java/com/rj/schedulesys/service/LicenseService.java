@@ -40,27 +40,19 @@ public class LicenseService {
 	 * @return
 	 */
 	public LicenseViewModel create(LicenseViewModel viewModel){
-		
 		log.debug("Creating new license : {}", viewModel);
-		
 		Nurse nurse = nurseDao.findOne(viewModel.getNurseId());
-		
 		if(nurse == null){
 			log.error("No nurse found with id : {}", viewModel.getId());
 			throw new RuntimeException("No nurse found with id : " + viewModel.getNurseId());
 		}
-		
 		if(licenseDao.findByNumber(viewModel.getNumber()) != null){
 			log.error("License number : {} is already in use", viewModel.getNumber());
 			throw new RuntimeException("License number " + viewModel.getNumber() + " is already in use");
 		}
-		
 		viewModel = this.createOrUpdate(viewModel);
-		
 		log.debug("Created license : {}", viewModel);
-		
 		return viewModel;
-		
 	}
 	
 	/**

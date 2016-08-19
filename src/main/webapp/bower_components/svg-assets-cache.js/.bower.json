@@ -1,0 +1,21 @@
+{
+  "name": "svg-assets-cache.js",
+  "homepage": "https://github.com/Floig/svg-assets-cache.js",
+  "authors": [
+    "Floig <floig@protonmail.com>"
+  ],
+  "description": "",
+  "keywords": [
+    "font"
+  ],
+  "license": "MIT",
+  "_release": "252b97e1a1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "252b97e1a1b5ce760598cabe54c4c1415fa94fa0"
+  },
+  "_source": "https://github.com/Floig/svg-assets-cache.js.git",
+  "_target": "*",
+  "_originalSource": "svg-assets-cache"
+}

@@ -9,11 +9,11 @@
 			<span>Facility : {{vm.facility.name}}</span>
 		</div>
 		<div>
-		<md-button>
+		<md-button ng-click="vm.onLeftArrowClick()">
 			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_left_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
 		</md-button>
-		<span>Week : placeholder for the </span>
-		<md-button>
+		<span>Week: {{vm.scheduleWeek.startDate}} - {{vm.scheduleWeek.endDate}}</span>
+		<md-button ng-click="vm.onRightArrowClick()">
 			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_right_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
 		</md-button>
 		</div>
@@ -21,7 +21,10 @@
 			<md-button class="md-primary md-raised" ui-sref="home.facilities-scheduling.add">
 				ADD
 			</md-button>
-			<md-button class="md-warn md-raised">
+			<md-button class="md-primary md-raised" ui-sref="home.facilities-scheduling.edit({scheduleId:vm.selected[0].id})" ng-disabled="vm.editOrDelete">
+				EDIT
+			</md-button>
+			<md-button class="md-warn md-raised" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">
 				DELETE
 			</md-button>
 		</div>
@@ -47,7 +50,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row  md-select="schedule" md-auto-select ng-repeat="schedule in vm.allSchedules track by schedule.id" >
+		      <tr md-row  md-select="schedule" md-auto-select ng-repeat="schedule in vm.schedulesOnCurrentPage track by schedule.id" >
 		      	<td md-cell>{{schedule.scheduleDate}}</td>
 		      	<td md-cell>{{schedule.shift.name}}</td>
 		      	<td md-cell>{{schedule.shift.startTime}} {{schedule.shift.endTime}}</td>
@@ -57,7 +60,7 @@
 		      	<td md-cell>{{schedule.overtime}}</td>
 		      	<td md-cell>{{schedule.scheduleStatus.status}}</td>
 		      	<td md-cell>{{schedule.schedulePostStatus.status}}</td>
-		      	<td md-cell>{{schedule.timesheetReceived}}</td>
+		      	<td md-cell>{{schedule.timesheetReceived ? 'YES' : 'NO'}}</td>
 		        <td md-cell>{{schedule.scheduleComment}}</td>
 		        <td md-cell>{{schedule.filledBy.username}}</td>
 		        <td md-cell>{{schedule.lastModifiedBy.username}}</td>
@@ -65,5 +68,5 @@
 		    </tbody>
 		  </table>
 	</md-table-container>
-	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allSchedules.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[10, 20, 30]" md-page="vm.query.page" md-total="{{vm.allSchedules.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
 </div>

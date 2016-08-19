@@ -39,14 +39,13 @@ public class StaffMemberService {
 		
 		Assert.notNull(viewModel, "No staff member provided");
 		
-		Facility facility = facilityDao.findByName(viewModel.getFacilityName());
+		Facility facility = facilityDao.findOne(viewModel.getFacilityId());
 		
 		String errorMessage;
 		
 		if(facility == null){
-			errorMessage = new StringBuilder().append("No such facility : '")
-					.append(viewModel.getFacilityName())
-					.append("'")
+			errorMessage = new StringBuilder().append("No facility found with id : ")
+					.append(viewModel.getFacilityId())
 					.toString();
 			ServiceHelper.logAndThrowException(errorMessage);
 		}
@@ -54,16 +53,15 @@ public class StaffMemberService {
 		//Staff members titles are always all caps
 		StaffMember staffMember = staffMemberDao.find(
 				viewModel.getFirstName(), viewModel.getLastName()
-				, StringUtils.upperCase(viewModel.getTitle()), viewModel.getFacilityName()
+				, StringUtils.upperCase(viewModel.getTitle()), viewModel.getFacilityId()
 				);
 		
 		if(staffMember != null){
 			errorMessage = new StringBuilder().append("A staff member with first name '")
 					.append(viewModel.getFirstName()).append("', last name '")
 					.append(viewModel.getLastName()).append("' and title '")
-					.append(viewModel.getTitle()).append("' already exists for facility with name '")
-					.append(viewModel.getFacilityName())
-					.append("'")
+					.append(viewModel.getTitle()).append("' already exists for facility with id : ")
+					.append(viewModel.getFacilityId())
 					.toString();
 			ServiceHelper.logAndThrowException(errorMessage);
 		}
@@ -103,25 +101,23 @@ public class StaffMemberService {
 			log.warn("staff member's first name and/or last name and/or title updated, checking combination(firstName, lastName, title, facility)'s uniqueness");
 			
 			if(staffMemberDao.find(viewModel.getFirstName(), viewModel.getLastName()
-					, StringUtils.upperCase(viewModel.getTitle()), viewModel.getFacilityName()) != null){
+					, StringUtils.upperCase(viewModel.getTitle()), viewModel.getFacilityId()) != null){
 				
 				errorMessage = new StringBuilder().append("A staff member with first name '")
 						.append(viewModel.getFirstName()).append("', last name '")
 						.append(viewModel.getLastName()).append("' and title '")
-						.append(viewModel.getTitle()).append("' already exists for facility with name '")
-						.append(viewModel.getFacilityName())
-						.append("'")
+						.append(viewModel.getTitle()).append("' already exists for facility with id : ")
+						.append(viewModel.getFacilityId())
 						.toString();
 				ServiceHelper.logAndThrowException(errorMessage);
 			}
 		}
 		//When the facility has been updated, check that the new one exists
-		if(!StringUtils.equalsIgnoreCase(staffMember.getFacility().getName(), viewModel.getFacilityName())){
-			log.warn("Facility updated, checking : {} existance", viewModel.getFacilityName());
-			if(facilityDao.findByName(viewModel.getFacilityName()) == null){
-				errorMessage = new StringBuilder().append("No facility found with name '")
-						.append(viewModel.getFacilityName())
-						.append("'")
+		if(staffMember.getFacility().getId() != viewModel.getFacilityId()){
+			log.warn("Facility updated, checking : {} existance", viewModel.getFacilityId());
+			if(facilityDao.findOne(viewModel.getFacilityId()) == null){
+				errorMessage = new StringBuilder().append("No facility found with id : ")
+						.append(viewModel.getFacilityId())
 						.toString();
 				ServiceHelper.logAndThrowException(errorMessage);
 						
@@ -140,7 +136,7 @@ public class StaffMemberService {
 		
 		validator.validate(viewModel);
 		
-		Facility facility = facilityDao.findByName(viewModel.getFacilityName());
+		Facility facility = facilityDao.findOne(viewModel.getFacilityId());
 		StaffMember staffMember = dozerMapper.map(viewModel, StaffMember.class);
 		staffMember.setFacility(facility);
 		staffMember.setTitle(StringUtils.upperCase(staffMember.getTitle()));//Title are always all caps

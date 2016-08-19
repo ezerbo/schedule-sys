@@ -21,7 +21,6 @@
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.sliceStaffMemberArray = sliceStaffMemberArray;
-		vm.showStaffMemberDialog = showStaffMemberDialog;
 		vm.query = {
 				limit: 5,
 				page: 1	
@@ -55,8 +54,10 @@
 				console.log('Keep this one ...');
 			});
 		};
+		
 		function loadAll(){
-			FacilitiesStaffMemberService.query({id: $stateParams.id}, onLoadAllSuccess, onLoadAllError);
+			FacilitiesStaffMemberService.query({id: $stateParams.id},
+					onLoadAllSuccess, onLoadAllError);
 		}
 		
 		function onLoadAllSuccess(data){
@@ -98,20 +99,6 @@
 			console.log('Sliced array : ' + angular.toJson(slicedArray));
 			return slicedArray;
 		}
-		
-		function showStaffMemberDialog(ev) {
-			$mdDialog.show({
-				templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true
-			})
-			.then(function() {
-				//$scope.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				//$scope.status = 'You cancelled the dialog.';
-			});
-		};
 		
 		function getSelectedFacility(){
 			FacilitiesService.get({id:$stateParams.id}, function(result) {
