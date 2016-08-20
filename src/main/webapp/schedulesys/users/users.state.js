@@ -19,11 +19,10 @@
 					templateUrl: 'schedulesys/users/user-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'userDialogController',
-					clickOutsideToClose:true
-				}).then(function() {
-					$state.go($state.parent, {}, { reload: true });
-				}, function() {
-					$state.go('^');
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
 				});
 			}]
 		}).state('home.users.edit', {
@@ -33,18 +32,12 @@
 					templateUrl: 'schedulesys/users/user-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'userDialogController',
-					clickOutsideToClose:true
-				}).then(function() {
-					console.log('Clicked on save');
-					
-				}, function() {
-					$state.go('^');
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
 				});
 			}]
-//		,
-//			onExit: ['$state', function($state){
-//				$state.go($state.current, {}, { reload: true });
-//			}]
 			
 		})
 		.state('home.user-details', {
