@@ -192,6 +192,4 @@ public class FacilityControllerTest {
 			.andExpect(jsonPath("$", hasSize(3)));
 	}
 	
-	
-	
 }

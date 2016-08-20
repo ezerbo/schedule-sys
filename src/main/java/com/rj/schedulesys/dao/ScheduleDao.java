@@ -27,7 +27,6 @@ public class ScheduleDao extends GenericDao<Schedule> {
 	 */
 	public Schedule findByEmployeeAndShiftAndDate(Long employeeId, Long shiftId, Date date){
 		Schedule schedule = null; 
-
 		try {
 			schedule = entityManager.createQuery(
 					"from Schedule s where s.employee.id =:employeeId "
@@ -40,7 +39,6 @@ public class ScheduleDao extends GenericDao<Schedule> {
 		} catch (NoResultException e) {
 			log.warn("No schedule found with employeeId : {}, shiftId : {} and date : {}", employeeId, shiftId, date);
 		}
-		
 		return schedule;
 	}
 	
@@ -63,5 +61,27 @@ public class ScheduleDao extends GenericDao<Schedule> {
 				.getResultList();
 		return schedules;
 	}
+	
+	public List<Schedule> findAllBetweenDatesByEmployee(Date startDate, Date endDate, Long employeeId){
+		List<Schedule> schedules = entityManager.createQuery(
+				"from Schedule s where s.employee.id =:employeeId and s.scheduleDate between :startDate and :endDate"
+				, Schedule.class)
+				.setParameter("employeeId", employeeId)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
+				.getResultList();
+		return schedules;
+	}
+	
+	public List<Schedule> findAllByEmployee(Long employeeId){
+		List<Schedule> schedules = entityManager.createQuery(
+				"from Schedule s where s.employee.id =:employeeId"
+				, Schedule.class)
+				.setParameter("employeeId", employeeId)
+				.getResultList();
+		return schedules;
+	}
+	
+	
 	
 }

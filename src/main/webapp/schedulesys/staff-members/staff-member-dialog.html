@@ -11,6 +11,8 @@
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
 	<div layout-gt-sm="column">
+		<div layout-gt-sm="row">
+	
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>First-Name</label> <input md-maxlength="100" required name="firstName"  ng-model="vm.staffmember.firstName" />
 			<div ng-messages="staffmemberForm.firstName.$error">
@@ -25,6 +27,8 @@
 				<div ng-message="md-maxlength">The Last Name has to be less than 100 digits long.</div>
 			</div>
 		</md-input-container>
+		</div>
+		
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Title</label> <input md-maxlength="100" required name="title"  ng-model="vm.staffmember.title" />
 			<div ng-messages="staffmemberForm.title.$error">
@@ -32,6 +36,8 @@
 				<div ng-message="md-maxlength">The Title has to be less than 100 digits long.</div>
 			</div>
 		</md-input-container>
+		
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Phone-Number</label>
 			<input type='text' required name="phoneNumber" phone-input ng-model="vm.staffmember.phoneNumber"/>
@@ -50,6 +56,8 @@
 				<div ng-message="md-maxlength">The fax has to be less than 30 characters long.</div>
 			</div>
 		</md-input-container>
+		</div>
+		
     <md-dialog-actions layout="row">
       <span flex></span>
       <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>

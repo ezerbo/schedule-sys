@@ -60,8 +60,7 @@ public class StaffMemberService {
 			errorMessage = new StringBuilder().append("A staff member with first name '")
 					.append(viewModel.getFirstName()).append("', last name '")
 					.append(viewModel.getLastName()).append("' and title '")
-					.append(viewModel.getTitle()).append("' already exists for facility with id : ")
-					.append(viewModel.getFacilityId())
+					.append(viewModel.getTitle()).append("' already exists")
 					.toString();
 			ServiceHelper.logAndThrowException(errorMessage);
 		}

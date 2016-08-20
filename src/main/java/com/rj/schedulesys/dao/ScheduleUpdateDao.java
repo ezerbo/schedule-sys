@@ -24,7 +24,7 @@ public class ScheduleUpdateDao extends GenericDao<ScheduleUpdate> {
 		ScheduleUpdate scheduleUpdate = null;
 		try {
 			scheduleUpdate = entityManager.createQuery("from ScheduleUpdate su where su.schedule.id =:scheduleId "
-					+ "and su.updateTime in (select max(updateTime) from ScheduleUpdate)", ScheduleUpdate.class)
+					+ " and su.updateTime = (select max(updateTime) from ScheduleUpdate su where su.schedule.id =:scheduleId)", ScheduleUpdate.class)
 					.setParameter("scheduleId", scheduleId)
 					.getSingleResult();
 		} catch (NoResultException e) {

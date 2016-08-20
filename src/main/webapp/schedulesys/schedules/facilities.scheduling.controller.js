@@ -5,18 +5,22 @@
 		.controller('FacilitySchedulingController', FacilitySchedulingController);
 	
 	FacilitySchedulingController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog', '$mdToast',
-	                                        'FacilitiesSchedulingService', 'FacilitiesService', 'ScheduleService', 'Commons'];
+	                                        'FacilitiesSchedulingService', 'FacilitiesService', 'ScheduleService',
+	                                        'EmployeesScheduleService', 'EmployeesService', 'Commons'];
 	
 	function FacilitySchedulingController($state, $scope,$stateParams, $mdDialog, $mdToast,
-			FacilitiesSchedulingService, FacilitiesService, ScheduleService, Commons){
+			FacilitiesSchedulingService, FacilitiesService, ScheduleService,
+			EmployeesScheduleService, EmployeesService, Commons){
 		var vm = this;
 		
 		vm.editOrDelete = true;
 		vm.selected = [];
 		vm.allSchedules = [];
 		vm.schedulesOnCurrentPage = [];
-		vm.getAllSchedules = getAllSchedules;
 		vm.getCurrentfacility = getCurrentfacility;
+		vm.getCurrentEmployee = getCurrentEmployee;
+		vm.getAllSchedulesForCurrentFacility = getAllSchedulesForCurrentFacility;
+		vm.getAllSchedulesForCurrentEmployee = getAllSchedulesForCurrentEmployee;
 		vm.showConfirm = showConfirm;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
@@ -25,6 +29,7 @@
 		vm.onRightArrowClick = onRightArrowClick;
 		vm.initScheduleWeek = initScheduleWeek;
 		vm.formatDate = formatDate;
+		vm.schedulingType = $state.$current.data.schedulingType;
 		
 		vm.query = {
 				limit: 10,
@@ -37,20 +42,25 @@
 		}
 		
 		initScheduleWeek();
-		getAllSchedules();
-		getCurrentfacility();
+		
+		if(vm.schedulingType === 'facility'){
+			getCurrentfacility();
+			getAllSchedulesForCurrentFacility();
+		}else{
+			getCurrentEmployee();
+			getAllSchedulesForCurrentEmployee();
+		}
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
 		});
 		
-		function getAllSchedules(){
-			FacilitiesSchedulingService.query({
-				id:$stateParams.id, startDate:vm.scheduleWeek.startDate,
-				endDate:vm.scheduleWeek.endDate
+		function getAllSchedulesForCurrentFacility(){
+			FacilitiesSchedulingService.query({id:$stateParams.id, startDate:vm.scheduleWeek.startDate,
+					endDate:vm.scheduleWeek.endDate
 				}, function(result) {
-				vm.allSchedules = result;
-				vm.schedulesOnCurrentPage = vm.sliceArray();
+					vm.allSchedules = result;
+					vm.schedulesOnCurrentPage = vm.sliceArray();
 			}, function() {
 				vm.allSchedules = [];
 				vm.schedulesOnCurrentPage = [];
@@ -63,6 +73,24 @@
 			})
 		}
 		
+		function getAllSchedulesForCurrentEmployee(){
+			EmployeesScheduleService.query({id:$stateParams.id,startDate:vm.scheduleWeek.startDate,
+					endDate:vm.scheduleWeek.endDate 
+					}, function(result) {
+						vm.allSchedules = result;
+						vm.schedulesOnCurrentPage = vm.sliceArray();
+			}, function() {
+				vm.allSchedules = [];
+				vm.schedulesOnCurrentPage = [];
+			})
+		}
+		
+		function getCurrentEmployee(){
+			EmployeesService.get({id:$stateParams.id}, function(result) {
+				vm.employee = result;
+			})
+		}
+		
 		function showConfirm(ev) {
 			var confirm = $mdDialog.confirm()
 					.title('Delete a schedule')
@@ -71,7 +99,6 @@
 					.targetEvent(ev)
 					.ok('Delete')
 					.cancel('Cancel');
-			
 			$mdDialog.show(confirm).then(function() {
 				ScheduleService.remove({id:vm.selected[0].id},onDeleteSuccess,onDeleteFailure);
 			}, function() {
@@ -91,8 +118,7 @@
 		}
 		
 		function showToast(textContent, delay){
-			$mdToast.show(
-					$mdToast.simple()
+			$mdToast.show($mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
 					.hideDelay(delay));
@@ -114,7 +140,7 @@
 					moment(vm.scheduleWeek.startDate, 'YYYY/MM/DD').subtract(7, 'day'));
 			vm.scheduleWeek.endDate = vm.formatDate(
 					moment(vm.scheduleWeek.endDate, 'YYYY/MM/DD').subtract(7, 'day'));
-			vm.getAllSchedules();
+			vm.schedulingType === 'facility' ? vm.getAllSchedulesForCurrentFacility() : vm.getAllSchedulesForCurrentEmployee();
 		}
 		
 		function onRightArrowClick(){
@@ -122,7 +148,7 @@
 					moment(vm.scheduleWeek.startDate, 'YYYY/MM/DD').add(7, 'day'));
 			vm.scheduleWeek.endDate = vm.formatDate(
 					moment(vm.scheduleWeek.endDate, 'YYYY/MM/DD').add(7, 'day'));
-			vm.getAllSchedules();
+			vm.schedulingType === 'facility' ? vm.getAllSchedulesForCurrentFacility() : vm.getAllSchedulesForCurrentEmployee();
 		}
 		
 		function initScheduleWeek(){

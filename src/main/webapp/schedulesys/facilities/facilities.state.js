@@ -15,7 +15,7 @@
 		})
 		.state('home.facilities.new', {
 			url: '/new',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					title: 'New facility',
 					templateUrl: 'schedulesys/facilities/facility-dialog.html',
@@ -30,7 +30,7 @@
 		})
 		.state('home.facilities.edit', {
 			url:'/{id}/facility/edit',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					templateUrl: 'schedulesys/facilities/facility-dialog.html',
 					parent: angular.element(document.body),
@@ -48,12 +48,15 @@
 			controller: 'FacilityDetailsController'
 		})
 		.state('home.facilities-scheduling', {
-			url: '/{id}/schedules',
+			url: '/facilities/{id}/schedules',
+			 data: {
+	                schedulingType: 'facility'
+	            },
 			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
 			controller: 'FacilitySchedulingController'
 		})
 		.state('home.facilities-scheduling.add', {
-			url: '/{id}/schedules/add',
+			url: '/add',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					templateUrl: 'schedulesys/schedules/schedule-dialog.html',

@@ -14,5 +14,7 @@
 		    <span> Primary phone type : {{vm.careGiver.phoneNumbers[0].numberType}}</span><br>
 			<span> Comment : {{vm.careGiver.comment}}</span>
 		</div>
-		
+		<section layout="left" layout-align="left start" >
+      		<md-button class="md-raised md-primary" ui-sref="home.caregivers-scheduling({id:vm.careGiver.id})">Schedules</md-button>
+    	</section>
 </div>

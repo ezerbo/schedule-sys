@@ -18,7 +18,6 @@
 				page: 1	
 		};
 		
-		
 		getSelectedcareGiver();
 		
 		function getSelectedcareGiver(){
@@ -27,4 +26,5 @@
 			})
 		}
 	}
+	
 })();

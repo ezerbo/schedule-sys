@@ -4,20 +4,22 @@
 		   <span>Scheduling page</span>
 		  </div>
 	</md-toolbar>
-		
-		<div style="text-align: center" layout-padding>
+		<div style="text-align: center" layout-padding ng-show="{{vm.schedulingType == 'facility'}}">
 			<span>Facility : {{vm.facility.name}}</span>
 		</div>
+		<div style="text-align: center" layout-padding ng-show="{{vm.schedulingType !== 'facility'}}">
+			<span>Employee : {{vm.employee.firstName}} {{vm.employee.lastName}}, {{vm.employee.positionName}}</span>
+		</div>
 		<div>
-		<md-button ng-click="vm.onLeftArrowClick()">
-			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_left_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
+		<md-button ng-click="vm.onLeftArrowClick()" class="md-raised md-primary">
+			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_left_white_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
 		</md-button>
 		<span>Week: {{vm.scheduleWeek.startDate}} - {{vm.scheduleWeek.endDate}}</span>
-		<md-button ng-click="vm.onRightArrowClick()">
-			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_right_black_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
+		<md-button ng-click="vm.onRightArrowClick()" class="md-raised md-primary">
+			<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_right_white_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
 		</md-button>
 		</div>
-		<div layout="left" layout-paffing>
+		<div layout="left" layout-paffing ng-show="{{vm.schedulingType == 'facility'}}">
 			<md-button class="md-primary md-raised" ui-sref="home.facilities-scheduling.add">
 				ADD
 			</md-button>
@@ -36,34 +38,36 @@
 		        	<span>Date</span>
 		        </th>
 		        <th md-column>Shift</th>
+		        <th md-column ng-show="{{vm.schedulingType !== 'facility'}}">Facility</th>
 		        <th md-column>Time</th>
-		        <th md-column>Job</th>
-		        <th md-column>Name</th>
+		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">Job</th>
+		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">Name</th>
 		        <th md-column>Hours</th>
-		        <th md-column>OT</th>
+		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">OT</th>
 		        <th md-column>Status</th>
 		        <th md-column>Post status</th>
 		        <th md-column>Time sheet received</th>
 		        <th md-column>Comments</th>
-		        <th md-column>Filled by</th>
-		        <th md-column>Last modified by</th>
+		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">Filled by</th>
+		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">Last modified by</th>
 		      </tr>
 		    </thead>
 		    <tbody md-body>
 		      <tr md-row  md-select="schedule" md-auto-select ng-repeat="schedule in vm.schedulesOnCurrentPage track by schedule.id" >
 		      	<td md-cell>{{schedule.scheduleDate}}</td>
 		      	<td md-cell>{{schedule.shift.name}}</td>
+		      	<td md-cell>{{schedule.facility.name}}</td>
 		      	<td md-cell>{{schedule.shift.startTime}} {{schedule.shift.endTime}}</td>
-		      	<td md-cell>{{schedule.job.name}}</td>
-		        <td md-cell>{{schedule.employee.firstName}} {{schedule.employee.lastName}}</td>
+		      	<td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.job.name}}</td>
+		        <td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.employee.firstName}} {{schedule.employee.lastName}}</td>
 		      	<td md-cell>{{schedule.hours}}</td>
-		      	<td md-cell>{{schedule.overtime}}</td>
+		      	<td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.overtime}}</td>
 		      	<td md-cell>{{schedule.scheduleStatus.status}}</td>
 		      	<td md-cell>{{schedule.schedulePostStatus.status}}</td>
 		      	<td md-cell>{{schedule.timesheetReceived ? 'YES' : 'NO'}}</td>
 		        <td md-cell>{{schedule.scheduleComment}}</td>
-		        <td md-cell>{{schedule.filledBy.username}}</td>
-		        <td md-cell>{{schedule.lastModifiedBy.username}}</td>
+		        <td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.filledBy.username}}</td>
+		        <td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.lastModifiedBy.username}}</td>
 		      </tr>
 		    </tbody>
 		  </table>

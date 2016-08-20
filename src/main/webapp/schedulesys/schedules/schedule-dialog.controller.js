@@ -25,6 +25,7 @@
 		vm.selectedItem = null;
 		vm.selectedSchedule = null;
 		vm.cancel = cancel;
+		vm.showToast = showToast;
 		vm.querySearch = querySearch;
 		vm.getAllShifts = getAllShifts;
 		vm.buildSchedule = buildSchedule;
@@ -94,16 +95,22 @@
 			vm.schedule.facilityId = $stateParams.id;
 			if(vm.schedule.id === null){
 				vm.schedule.employeeId = (vm.selectedItem === null) ? null : vm.selectedItem.employeeId;
-				ScheduleService.save(vm.schedule, onScheduleSaveSuccess, onScheduleSaveFailure);
+				ScheduleService.save(vm.schedule, function() {
+					vm.showToast("Schedule successfully created", 5000);
+					vm.cancel();
+				}, function(result) {
+					vm.showToast(result.data, 5000);
+				});
 			}else{
 				vm.schedule.employeeId = (vm.selectedItem === null) 
 						? null : vm.selectedItem.employeeId;
 				ScheduleService.update({id:$stateParams.scheduleId}, vm.schedule,
 						function() {
+							vm.showToast("Schedule successfully updated", 5000);
 							vm.cancel();
 						},
-						function(){
-							console.log('Error occured while updating schedule');
+						function(result){
+							vm.showToast(result.data, 5000);
 						});
 			}
 		}
@@ -177,6 +184,14 @@
 		
 		function onScheduleSaveFailure(){
 			console.log('Error while creating new Schedule');
+		}
+		
+		function showToast(textContent, delay){
+			$mdToast.show(
+					$mdToast.simple()
+					.textContent(textContent)
+					.position('top right')
+					.hideDelay(delay));
 		}
 	}
 	

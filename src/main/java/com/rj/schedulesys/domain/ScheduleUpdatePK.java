@@ -5,12 +5,14 @@ import javax.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * The primary key class for the SCHEDULE_UPDATE database table.
  * @author ezerbo
  */
+@Data
 @Builder
 @Embeddable
 @NoArgsConstructor

@@ -21,6 +21,7 @@ import javax.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -37,6 +38,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Table(name="EMPLOYEE")
 @ToString(exclude = {"phoneNumbers", "schedules"})
+@EqualsAndHashCode(exclude = {"careGiver", "nurse"})
 public class Employee implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

@@ -15,6 +15,9 @@
 		    <span> Primary phone type : {{vm.nurse.phoneNumbers[0].numberType}}</span><br> 
 			<span> Comment : {{vm.nurse.comment}}</span>
 		</div>
+		<section layout="left" layout-align="left start" >
+      		<md-button class="md-raised md-primary" ui-sref="home.nurses-scheduling({id:vm.nurse.id})">Schedules</md-button>
+    	</section>
 		<div style="text-align: center" layout-padding>
 			<span><h4>Licenses ({{vm.allLicenses.length}})</h4></span>
 		</div>

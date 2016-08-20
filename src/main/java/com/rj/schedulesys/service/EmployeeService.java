@@ -111,24 +111,16 @@ public class EmployeeService {
 	
 	@Transactional
 	public EmployeeViewModel update(EmployeeViewModel viewModel){
-		
 		Assert.notNull(viewModel, "No nurse provided");
-		
 		Assert.notNull(viewModel.getId(), "No nurse Id provided");
-		
 		validator.validate(viewModel);
-		
 		log.debug("Creating/Updating nurse : {}", viewModel);
-		
 		Employee employee = employeeDao.findOne(viewModel.getId());
-		
 		if(employee == null){
 			log.error("No nurse found with id : " + viewModel.getId());
 			throw new RuntimeException("No nurse found with id : " + viewModel.getId());
 		}
-		
 		Position position = this.validatePosition(viewModel.getPositionName());
-		
 		employee.setComment(viewModel.getComment());
 		employee.setDateOfHire(viewModel.getDateOfHire());
 		employee.setEbc(viewModel.getEbc());
@@ -136,24 +128,26 @@ public class EmployeeService {
 		employee.setLastName(viewModel.getLastName());
 		employee.setLastDayOfWork(viewModel.getLastDayOfWork());
 		employee.setRehireDate(viewModel.getRehireDate());
-		
 		log.info("Phone numbers : {}", employee.getPhoneNumbers());
 		employee.setPosition(position);
 		employee = employeeDao.merge(employee);
-		
 		return dozerMapper.map(employee, EmployeeViewModel.class);
 	}
 	
 
 	public Position validatePosition(String positionName){
-
 		Position position = positionDao.findByName(positionName);
-
 		if(position == null){
 			log.error("No position found with name : {}", positionName);
 			throw new RuntimeException("No position found with name : " + positionName);
 		}
-
 		return position;
+	}
+	
+	public EmployeeViewModel findOne(Long id){
+		log.debug("Fetching employee with id : {}", id);
+		Employee employee  = employeeDao.findOne(id);
+		log.debug("Employee found : {}", employee);
+		return dozerMapper.map(employee, EmployeeViewModel.class);
 	}
 }

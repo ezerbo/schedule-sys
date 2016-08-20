@@ -137,16 +137,12 @@ public class ScheduleService {
 	
 	@Transactional
 	public UpdateScheduleViewModel update(UpdateScheduleViewModel viewModel, Long scheduleSysUserId){
-
 		Schedule schedule = scheduleDao.findOne(viewModel.getId());
-		
 		if(schedule == null){
 			log.error("No schedule found with id : {}", viewModel.getId());
 			throw new RuntimeException("No schedule found with id : " + viewModel.getId());
 		}
-		
 		Facility facility = schedule.getFacility();
-		
 		if(facility.getId() != viewModel.getId()){
 			log.warn("Schedule's facility updated, validating new facility");
 			facility = validateFacility(viewModel.getFacilityId());
@@ -160,14 +156,12 @@ public class ScheduleService {
 		}
 		
 		ScheduleStatus scheduleStatus = schedule.getScheduleStatus();
-		
 		if(scheduleStatus.getId() != viewModel.getId()){
 			log.warn("Schedule's status updated, validating new status");
 			scheduleStatus = validateScheduleStatus(viewModel.getScheduleStatusId());
 		}
 		
 		SchedulePostStatus schedulePostStatus = null; 
-				
 		if(viewModel.getSchedulePostStatusId() != null){
 			schedulePostStatus = validateSchedulePostStatus(viewModel.getSchedulePostStatusId());
 		}
@@ -296,6 +290,29 @@ public class ScheduleService {
 		return viewModels;
 	}
 	
+	@Transactional
+	public List<GetScheduleViewModel> findAllBetweenDatesByEmployee(Date startDate, Date endDate, Long employeeId){
+		log.info("Fetching schedules between startDate : {} and endDate : {} for employee with id : {}", startDate, endDate, employeeId);
+		List<GetScheduleViewModel> viewModels = new LinkedList<>();
+		List<Schedule> schedules = scheduleDao.findAllBetweenDatesByEmployee(startDate, endDate, employeeId);
+		for(Schedule schedule : schedules){
+			viewModels.add(this.buildGetScheduleViewModel(schedule));
+		}
+		log.info("Schedule found : {}", viewModels);
+		return viewModels;
+	}
+	
+	public List<GetScheduleViewModel> findAllByEmployee(Long employeeId){
+		log.debug("Fetching schedules for employee with id : {}", employeeId);
+		List<Schedule> schedules = scheduleDao.findAllByEmployee(employeeId);
+		List<GetScheduleViewModel> viewModels = new LinkedList<>();
+		for(Schedule schedule : schedules){
+			viewModels.add(this.buildGetScheduleViewModel(schedule));
+		}
+		return viewModels;
+	}
+	
+	
 	/**
 	 * @param facilityId
 	 * @return
@@ -400,7 +417,7 @@ public class ScheduleService {
 		}
 		
 		ScheduleSysUserViewModel lastModifiedBy = null;
-		
+		log.info("Schedule ID : {}", schedule.getId());
 		ScheduleUpdate scheduleUpdate = scheduleUpdateDao.findLatestByScheduleId(schedule.getId());
 		
 		if(scheduleUpdate != null){

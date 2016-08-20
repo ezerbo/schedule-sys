@@ -10,17 +10,18 @@
       </div>
     </md-toolbar>
     <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
-	<div layout-gt-xs="row">
+	<div layout-gt-xs="column">
+		<div layout="left start">
+			<md-datepicker type="date" ng-model="vm.license.expirationDate" name="expirationDate" md-placeholder="Expiration date" required></md-datepicker>
+		</div>
+		<div>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>License #</label> <input md-maxlength="100" required name="number"  ng-model="vm.license.number" />
 			<div ng-messages="licenseForm.number.$error">
-				<div ng-message="required">License Number is required.</div>
-				<div ng-message="md-maxlength">The License Number has to be less than 100 digits long.</div>
+				<div ng-message="required">License number is required.</div>
+				<div ng-message="md-maxlength">The License number has to be less than 100 characters long.</div>
 			</div>
 		</md-input-container>
-		<div class="md-padding">
-			<md-datepicker type="date" ng-model="vm.license.expirationDate" name="expirationDate"
-					md-placeholder="Expiration date" required></md-datepicker>
 		</div>
 	</div>
     <md-dialog-actions layout="row">

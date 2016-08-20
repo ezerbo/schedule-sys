@@ -46,10 +46,11 @@
 			
 		})
 		.state('home.nurse-details', {
-			url: '/nurses/{id}',
+			url: '/nurses/{id}/details',
 			templateUrl: 'schedulesys/nurses/nurse-details.html',
 			controller: 'NurseDetailsController'
-		}).state('home.licenses-new', {
+		})
+		.state('home.licenses-new', {
 			url: 'nurse/{nurseId}/new',
 			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
 				$mdDialog.show({
@@ -88,6 +89,14 @@
 					}
 				});
 			}]
+		})
+		.state('home.nurses-scheduling', {
+			url:'/nurses/{id}/schedules',
+			data: {
+				schedulingType: 'employee'
+	        },
+			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
+			controller: 'FacilitySchedulingController'
 		})
 	}
 })();
