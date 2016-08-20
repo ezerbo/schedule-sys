@@ -58,7 +58,7 @@ public class StaffMemberServiceTest {
 		
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("A staff member with first name 'STAFF-MEMBER-1-FN'"
-				+ ", last name 'STAFF-MEMBER-1-LN' and title 'STAFF-MEMBER-1-TITLE' already exists for facility with id : 1");
+				+ ", last name 'STAFF-MEMBER-1-LN' and title 'STAFF-MEMBER-1-TITLE' already exists");
 		
 		StaffMemberViewModel viewModel = TestUtil.aNewStaffMemberViewModel(
 				1L, "STAFF-MEMBER-1-FN", "STAFF-MEMBER-1-LN", "STAFF-MEMBER-1-TITLE", "7475841470", "7475841471", 1L

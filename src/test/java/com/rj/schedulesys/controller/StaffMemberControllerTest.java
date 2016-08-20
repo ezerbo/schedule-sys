@@ -85,7 +85,7 @@ public class StaffMemberControllerTest {
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 			.andExpect(status().is5xxServerError())
 			.andExpect(jsonPath("$", is("A staff member with first name 'STAFF-MEMBER-1-FN'"
-				+ ", last name 'STAFF-MEMBER-1-LN' and title 'STAFF-MEMBER-1-TITLE' already exists for facility with id : 1")));
+				+ ", last name 'STAFF-MEMBER-1-LN' and title 'STAFF-MEMBER-1-TITLE' already exists")));
 	}
 	
 	@Test
