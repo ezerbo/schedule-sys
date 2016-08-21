@@ -15,17 +15,9 @@
 		vm.userRole = userRoleService.query();
 		vm.options6 = vm.userRole;
 		vm.getSelectedUser = getSelectedUser;
-		vm.showPassword = showPassword;
+		vm.repassword = null;
 		
-		function showPassword(){
-			
-			console.log($state.current.name);
-			if($state.current.name === "home.users.edit"){
-			return false;
-			}
-			
-			return true;
-		}
+		
 		
 		vm.myModel = {};
 		vm.user = {
@@ -89,4 +81,5 @@
 		}
 	}
 	
+
 })();

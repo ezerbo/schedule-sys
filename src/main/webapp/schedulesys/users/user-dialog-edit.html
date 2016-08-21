@@ -20,24 +20,6 @@
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Password</label> <input md-maxlength="100"  name="password" type="password" required ng-model="vm.user.password" />
-			<div ng-messages="userForm.password.$error">
-				<div ng-message="required">Password is required.</div>
-				<div ng-message="md-maxlength">The password has to be less than 100 characters long.</div>
-			</div>
-		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>ReType-Password</label> <input md-maxlength="100"  name="repassword" type="password" data-password-verify="vm.user.password" required ng-model="repassword" />
-			 <div ng-show="userForm.repassword.$error.passwordVerify">
-            <span style="color:red;"><b>Must match the Password field</b></span></div>
-			<div ng-messages="userForm.repassword.$error">
-				<div ng-message="required">Re-Entering Password is required.</div>
-				
-				<div ng-message="md-maxlength">The Re typed password has to be less than 100 characters long.</div>
-			</div>
-		</md-input-container>
-			
-		<md-input-container class="md-block" flex-gt-sm>
 			<label>User-Role</label> <md-select ng-model="vm.user.userRole">
           <md-option ng-repeat="options in vm.options6" value="{{options.userRole}}">{{options.userRole}}</md-option>
         </md-select>
@@ -50,7 +32,7 @@
 	</md-dialog-content>
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button class="md-raised md-primary" md-autofocus type="submit" ng-disabled="userForm.repassword.$error.passwordVerify">Save</md-button>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
       <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
     </md-dialog-actions>
   </form>

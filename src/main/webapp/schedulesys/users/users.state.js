@@ -13,7 +13,7 @@
 			controller: 'usersController'
 		}).state('home.users.new', {
 			url: '/new',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					title: 'New User',
 					templateUrl: 'schedulesys/users/user-dialog.html',
@@ -27,9 +27,9 @@
 			}]
 		}).state('home.users.edit', {
 			url:'/{id}/user/edit',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/users/user-dialog.html',
+					templateUrl: 'schedulesys/users/user-dialog-edit.html',
 					parent: angular.element(document.body),
 					controller: 'userDialogController',
 					clickOutsideToClose:true,

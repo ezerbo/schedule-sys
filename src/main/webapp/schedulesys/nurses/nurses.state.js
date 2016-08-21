@@ -15,7 +15,7 @@
 		})
 		.state('home.nurses.new', {
 			url: '/new',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					title: 'New Nurse',
 					templateUrl: 'schedulesys/nurses/nurse-dialog.html',
