@@ -22,10 +22,8 @@
 		console.log(vm.options3);
 		console.log(vm.options4);
 		vm.getSelectedcareGiver = getSelectedcareGiver;
-		vm.showPhone = function(){
-			
-			vm.displayPhone = ! vm.displayPhone;
-		}
+		vm.showPhoneNum = showPhoneNum;
+		vm.showOtherPhoneNum = showOtherPhoneNum;
 		vm.myModel = {};
 		vm.careGiver = {
 				id: null,
@@ -47,6 +45,75 @@
 			    ]
 			
 		};
+		
+		vm.careGiver.phoneNumbers[0].numberLabel = "PRIMARY";
+		
+
+		
+        function showPhoneNum(){
+			
+			vm.displayPhone = ! vm.displayPhone;
+			console.log(vm.displayPhone);
+			if(vm.displayPhone){
+				
+				vm.q =  { 
+			           number: null,
+			           numberLabel: "SECONDARY",
+			           numberType: null
+			         };
+				
+			vm.careGiver['phoneNumbers'].push(vm.q);
+		
+				
+		
+						
+				console.log(vm.careGiver);
+				
+				
+				
+				
+				
+			}else if(!vm.displayPhone){
+				
+				vm.careGiver['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.careGiver);
+		}
+		
+ function showOtherPhoneNum(){
+			
+			vm.displayOtherPhone = ! vm.displayOtherPhone;
+			console.log(vm.displayOtherPhone);
+			if(vm.displayOtherPhone){
+				
+				vm.u =  { 
+			           number: null,
+			           numberLabel: "OTHER",
+			           numberType: null
+			         };
+				
+			vm.careGiver['phoneNumbers'].push(vm.u);
+		
+				
+		
+						
+				console.log(vm.careGiver);
+				
+				
+				
+				
+				
+			}else if(!vm.displayOtherPhone){
+				
+				vm.careGiver['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.careGiver);
+		}
+		
 		
 		if(angular.isDefined($stateParams.id)){
 			vm.getSelectedcareGiver();

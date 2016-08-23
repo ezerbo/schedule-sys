@@ -22,10 +22,10 @@
 		console.log(vm.options3);
 		console.log(vm.options4);
 		vm.getSelectedNurse = getSelectedNurse;
-		vm.showPhone = function(){
-			
-			vm.displayPhone = ! vm.displayPhone;
-		}
+		vm.showPhoneNum = showPhoneNum;
+		vm.showOtherPhoneNum = showOtherPhoneNum;
+		
+		
 		vm.myModel = {};
 		vm.nurse = {
 				id: null,
@@ -45,9 +45,77 @@
 			        numberLabel: null,
 			        numberType: null
 			      }
+			      
+				 
+			 
 			    ]
 			
 		};
+		vm.nurse.phoneNumbers[0].numberLabel = "PRIMARY";
+		
+        function showPhoneNum(){
+			
+			vm.displayPhone = ! vm.displayPhone;
+			console.log(vm.displayPhone);
+			if(vm.displayPhone){
+				
+				vm.q =  { 
+			           number: null,
+			           numberLabel: "SECONDARY",
+			           numberType: null
+			         };
+				
+			vm.nurse['phoneNumbers'].push(vm.q);
+		
+				
+		
+						
+				console.log(vm.nurse);
+				
+				
+				
+				
+				
+			}else if(!vm.displayPhone){
+				
+				vm.nurse['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.nurse);
+		}
+		
+ function showOtherPhoneNum(){
+			
+			vm.displayOtherPhone = ! vm.displayOtherPhone;
+			console.log(vm.displayOtherPhone);
+			if(vm.displayOtherPhone){
+				
+				vm.u =  { 
+			           number: null,
+			           numberLabel: "OTHER",
+			           numberType: null
+			         };
+				
+			vm.nurse['phoneNumbers'].push(vm.u);
+		
+				
+		
+						
+				console.log(vm.nurse);
+				
+				
+				
+				
+				
+			}else if(!vm.displayOtherPhone){
+				
+				vm.nurse['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.nurse);
+		}
 		
 		
 		
@@ -92,6 +160,7 @@
 				NursesService.save(vm.nurse, onCreateSucess, onCreateFailure);
 			}else{
 				NursesService.update({id:$stateParams.id},vm.nurse, onUpdateSucess, onUpdateFailure);
+				console.log(vm.nurse);
 			}
 		}
 		

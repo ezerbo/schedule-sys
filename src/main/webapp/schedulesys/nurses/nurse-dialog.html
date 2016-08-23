@@ -1,4 +1,4 @@
-<md-dialog aria-label="Create or update a nurse" style="width:800px;" ng-controller="NurseDialogController as vm">
+<md-dialog aria-label="Create or update a nurse" style="width:1000px;" ng-controller="NurseDialogController as vm">
   <form name="nurseForm" ng-submit="vm.createOrUpdatenurse()">
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -9,8 +9,9 @@
         </md-button>
       </div>
     </md-toolbar>
-    <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
+    <md-dialog-content style="max-width:1000px;max-height:810px;" class="md-padding">
 	<div layout-gt-sm="column">
+	<div layout-gt-sm="row">
 	<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
 			 <md-content>
 Date of Hire  
@@ -50,6 +51,8 @@ Last Day of Work
 				
 			</div>
 		</div>
+		</div>
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>First-Name</label> <input md-maxlength="50" required name="firstName" ng-model="vm.nurse.firstName" />
 			<div ng-messages="nurseForm.firstName.$error">
@@ -64,6 +67,7 @@ Last Day of Work
 				<div ng-message="md-maxlength">The Last-Name has to be less than 50 characters long.</div>
 			</div>
 		</md-input-container>	
+		</div>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Position-Name</label> <md-select ng-model="vm.nurse.positionName">
           <md-option ng-repeat="options in vm.options2" value="{{options.name}}">{{options.name}}</md-option>
@@ -73,6 +77,7 @@ Last Day of Work
 				<div ng-message="md-maxlength">The position name has to be less than 100 characters long.</div>
 			</div>
 		</md-input-container>
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 		<div layout="column" layout-gt-sm="row">
 	        <div flex-xs="" flex="50">
@@ -99,22 +104,15 @@ Last Day of Work
 				
 			</div>
 		</md-input-container>
+		</div>
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number#1</label>
+			<label>Primary-Phone-Number</label>
 			<input type='text' required name="PhoneNumber1" phone-input ng-model="vm.nurse.phoneNumbers[0].number"/>
 			<div ng-messages="nurseForm.PhoneNumber1.$error">
 				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Phone number is required.</div>
 				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
-			</div>
-		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number-Label</label> <md-select ng-model="vm.nurse.phoneNumbers[0].numberLabel">
-          <md-option ng-repeat="options in vm.options4" name="PhoneLabel1" value="{{options.name}}">{{options.name}}</md-option>
-        </md-select>
-			<div ng-messages="nurseForm.PhoneLabel1.$error">
-				<div ng-message="required">Phone Label is required.</div>
-				
 			</div>
 		</md-input-container>
 		<md-input-container class="md-block" flex-gt-sm>
@@ -127,7 +125,49 @@ Last Day of Work
 			</div>
 			
 		</md-input-container>
-		
+		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-click="vm.showPhoneNum()">Add-Phone-Number</md-button>
+		</div>
+		<div layout-gt-sm="row" ng-show="vm.displayPhone">
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Secondary-Phone-Number</label>
+			<input type='text'  name="PhoneNumber2" phone-input ng-model="vm.nurse.phoneNumbers[1].number"/>
+			<div ng-messages="nurseForm.PhoneNumber2.$error">
+				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
+				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number-Type </label> <md-select ng-model="vm.nurse.phoneNumbers[1].numberType">
+          <md-option ng-repeat="options in vm.options3" name="PhoneType1" value="{{options.name}}">{{options.name}}</md-option>
+        </md-select>
+			<div ng-messages="nurseForm.PhoneType1.$error">
+				
+				
+			</div>
+			
+		</md-input-container>
+		<md-button class="md-raised md-warn" style="height:20px;" md-autofocus ng-click="vm.showOtherPhoneNum()">Add-Phone-Number</md-button>
+		</div>
+		<div layout-gt-sm="row" ng-show="vm.displayOtherPhone">
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Other-Phone-Number</label>
+			<input type='text'  name="PhoneNumber3" phone-input ng-model="vm.nurse.phoneNumbers[2].number"/>
+			<div ng-messages="nurseForm.PhoneNumber3.$error">
+				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
+				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Phone-Number-Type </label> <md-select ng-model="vm.nurse.phoneNumbers[2].numberType">
+          <md-option ng-repeat="options in vm.options3" name="PhoneType1" value="{{options.name}}">{{options.name}}</md-option>
+        </md-select>
+			<div ng-messages="nurseForm.PhoneType1.$error">
+				
+				
+			</div>
+			
+		</md-input-container>
+		</div>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Comment</label> <input md-maxlength="200"  name="comment" ng-model="vm.nurse.comment" />
 			<div ng-messages="nurseForm.comment.$error">
