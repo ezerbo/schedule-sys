@@ -29,7 +29,7 @@
 			url:'/{id}/caregiver/edit',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/caregivers/caregiver-dialog.html',
+					templateUrl: 'schedulesys/caregivers/caregiver-dialog-edit.html',
 					parent: angular.element(document.body),
 					controller: 'careGiverDialogController',
 					clickOutsideToClose:true,

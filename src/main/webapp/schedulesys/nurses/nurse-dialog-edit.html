@@ -1,8 +1,8 @@
-<md-dialog aria-label="Create or update a nurse" style="width:1000px;" ng-controller="NurseDialogController as vm">
+<md-dialog aria-label="update a nurse" style="width:1000px;" ng-controller="NurseDialogController as vm">
   <form name="nurseForm" ng-submit="vm.createOrUpdatenurse()">
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Create or edit a Nurse</h2>
+        <h2>Edit a Nurse</h2>
         <span flex></span>
         <md-button class="md-icon-button" ng-click="vm.cancel()">
           <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
@@ -125,10 +125,11 @@ Last Day of Work
 			</div>
 			
 		</md-input-container>
-		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-click="vm.showPhoneNum()">Add-Phone-Number</md-button>
 		
+		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-hide="vm.nurse.phoneNumbers[0].id === undefined" ng-click="vm.createOrUpdatePhoneNum(vm.nurse.phoneNumbers[0])">Edit</md-button>
+		<md-button class="md-raised md-warn" style="height:20px;" md-autofocus ng-click="vm.showConfirmPhone(vm.nurse.phoneNumbers[0])">Delete</md-button>
 		</div>
-		<div layout-gt-sm="row" ng-show="vm.displayPhone">
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Secondary-Phone-Number</label>
 			<input type='text'  name="PhoneNumber2" phone-input ng-model="vm.nurse.phoneNumbers[1].number"/>
@@ -147,9 +148,11 @@ Last Day of Work
 			</div>
 			
 		</md-input-container>
-		<md-button class="md-raised md-warn" style="height:20px;" md-autofocus ng-click="vm.showOtherPhoneNum()">Add-Phone-Number</md-button>
+		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-show="vm.nurse.phoneNumbers[1].id === undefined" ng-click="vm.createOrUpdatePhoneNum(vm.nurse.phoneNumbers[1],vm.secondary)">Add</md-button>
+		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-hide="vm.nurse.phoneNumbers[1].id === undefined" ng-click="vm.createOrUpdatePhoneNum(vm.nurse.phoneNumbers[1])">Edit</md-button>
+		<md-button class="md-raised md-warn" style="height:20px;" md-autofocus ng-click="vm.showConfirmPhone(vm.nurse.phoneNumbers[1])">Delete</md-button>
 		</div>
-		<div layout-gt-sm="row" ng-show="vm.displayOtherPhone">
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Other-Phone-Number</label>
 			<input type='text'  name="PhoneNumber3" phone-input ng-model="vm.nurse.phoneNumbers[2].number"/>
@@ -168,6 +171,9 @@ Last Day of Work
 			</div>
 			
 		</md-input-container>
+		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-show="vm.nurse.phoneNumbers[2].id === undefined" ng-click="vm.createOrUpdatePhoneNum(vm.nurse.phoneNumbers[2],vm.other)">Add</md-button>
+		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-hide="vm.nurse.phoneNumbers[2].id === undefined" ng-click="vm.createOrUpdatePhoneNum(vm.nurse.phoneNumbers[2])">Edit</md-button>
+		<md-button class="md-raised md-warn" style="height:20px;" md-autofocus ng-click="vm.showConfirmPhone(vm.nurse.phoneNumbers[2])">Delete</md-button>
 		</div>
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Comment</label> <input md-maxlength="200"  name="comment" ng-model="vm.nurse.comment" />
