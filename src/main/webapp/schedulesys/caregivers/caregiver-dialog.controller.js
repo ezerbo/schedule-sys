@@ -4,13 +4,14 @@
 		.module('scheduleSys')
 		.controller('careGiverDialogController', careGiverDialogController);
 	
-	careGiverDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast', 'careGiversService','careGiversPositionTypeService','PhoneLabelService','PhoneTypeService'];
+	careGiverDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast', 'careGiversService','careGiversPositionTypeService','PhoneLabelService','PhoneTypeService','careGiverPhoneService'];
 	
-	function careGiverDialogController($state,$stateParams, $mdDialog, $mdToast, careGiversService,careGiversPositionTypeService,PhoneLabelService,PhoneTypeService){
+	function careGiverDialogController($state,$stateParams, $mdDialog, $mdToast, careGiversService,careGiversPositionTypeService,PhoneLabelService,PhoneTypeService,careGiverPhoneService){
 		var vm = this;
 		
 		vm.cancel = cancel;
 		vm.createOrUpdatecareGiver = createOrUpdatecareGiver;
+		vm.createOrUpdatePhoneNum = createOrUpdatePhoneNum;
 		vm.showToast = showToast;
 		vm.careGiverpositionType = careGiversPositionTypeService.query();
 		vm.options2 = vm.careGiverpositionType;
@@ -22,10 +23,12 @@
 		console.log(vm.options3);
 		console.log(vm.options4);
 		vm.getSelectedcareGiver = getSelectedcareGiver;
-		vm.showPhone = function(){
-			
-			vm.displayPhone = ! vm.displayPhone;
-		}
+		vm.showPhoneNum = showPhoneNum;
+		vm.showOtherPhoneNum = showOtherPhoneNum;
+		vm.secondary = "SECONDARY";
+		vm.other = "OTHER";
+		vm.showConfirmPhone = showConfirmPhone;
+		
 		vm.myModel = {};
 		vm.careGiver = {
 				id: null,
@@ -47,6 +50,75 @@
 			    ]
 			
 		};
+		
+		vm.careGiver.phoneNumbers[0].numberLabel = "PRIMARY";
+		
+
+		
+        function showPhoneNum(){
+			
+			vm.displayPhone = ! vm.displayPhone;
+			console.log(vm.displayPhone);
+			if(vm.displayPhone){
+				
+				vm.q =  { 
+			           number: null,
+			           numberLabel: "SECONDARY",
+			           numberType: null
+			         };
+				
+			vm.careGiver['phoneNumbers'].push(vm.q);
+		
+				
+		
+						
+				console.log(vm.careGiver);
+				
+				
+				
+				
+				
+			}else if(!vm.displayPhone){
+				
+				vm.careGiver['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.careGiver);
+		}
+		
+ function showOtherPhoneNum(){
+			
+			vm.displayOtherPhone = ! vm.displayOtherPhone;
+			console.log(vm.displayOtherPhone);
+			if(vm.displayOtherPhone){
+				
+				vm.u =  { 
+			           number: null,
+			           numberLabel: "OTHER",
+			           numberType: null
+			         };
+				
+			vm.careGiver['phoneNumbers'].push(vm.u);
+		
+				
+		
+						
+				console.log(vm.careGiver);
+				
+				
+				
+				
+				
+			}else if(!vm.displayOtherPhone){
+				
+				vm.careGiver['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.careGiver);
+		}
+		
 		
 		if(angular.isDefined($stateParams.id)){
 			vm.getSelectedcareGiver();
@@ -122,6 +194,71 @@
 					.position('top right')
 					.hideDelay(delay));
 		}
+		
+		
+		function createOrUpdatePhoneNum(phonenumber,label){
+			if(label === "SECONDARY"){
+				
+				phonenumber.numberLabel="SECONDARY";
+			}else if(label === "OTHER"){
+				
+				phonenumber.numberLabel="OTHER";
+				
+			}
+					vm.phoneNumbers = phonenumber;
+					console.log(vm.phoneNumbers);
+					if(vm.phoneNumbers.id === undefined){
+						console.log('Phone-Numbers to be created : ' + angular.toJson(vm.phoneNumbers));
+						careGiverPhoneService.save({caregivID: vm.careGiver.id},vm.phoneNumbers, onCreatePhoneSucess, onCreateFailure);
+					}else{
+						careGiverPhoneService.update({caregivID: vm.careGiver.id, id: vm.phoneNumbers.id},vm.phoneNumbers, onUpdatePhoneSucess, onUpdateFailure);
+						console.log(vm.phoneNumbers);
+					}
+				}
+				
+		function showConfirmPhone(phone){
+			
+			vm.deleteNumber = phone;
+			
+			showConfirm();
+			
+		}
+		function showConfirm(ev) {
+			
+			console.log(ev);
+			
+			
+			var confirm = $mdDialog.confirm()
+					.title('Delete Phone-Number')
+					.textContent('Are you sure you want to delete this Phone-Number ?')
+					.ariaLabel('Phone-Number deletion')
+					.targetEvent(ev)
+					.ok('Delete')
+					.cancel('Cancel');
+			$mdDialog.show(confirm).then(function() {
+				careGiverPhoneService.remove(
+						{caregivID: vm.careGiver.id, id: vm.deleteNumber.id},
+						onDeleteSuccess,
+						onDeleteFailure
+						);
+			}, function() {
+				console.log('Keep this one ...');
+			});
+		};
+
+		function onDeleteSuccess (){
+			$mdDialog.cancel();
+			$state.go('home.caregivers',{}, {reload: true});
+			vm.showToast('Phone-Number ' + vm.deleteNumber.number + ' successfully deleted', 5000);
+		}	
+
+		function onDeleteFailure (){
+			$mdDialog.cancel();
+			$state.go('home.caregivers',{}, {reload: true});
+			vm.showToast('Phone-Number ' + vm.deleteNumber.number 
+					+ ' could not be deleted ', 5000);
+		}
+		
 	}
 	
 })();

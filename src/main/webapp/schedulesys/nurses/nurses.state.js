@@ -30,17 +30,15 @@
 		})
 		.state('home.nurses.edit', {
 			url:'/{id}/nurses/edit',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/nurses/nurse-dialog.html',
+					templateUrl: 'schedulesys/nurses/nurse-dialog-edit.html',
 					parent: angular.element(document.body),
 					controller: 'NurseDialogController',
-					clickOutsideToClose:true
-				}).then(function() {
-					console.log('Clicked on save');
-					
-				}, function() {
-					$state.go('^');
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
 				});
 			}]
 			

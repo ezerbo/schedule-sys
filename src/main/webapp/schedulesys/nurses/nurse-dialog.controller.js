@@ -4,13 +4,14 @@
 		.module('scheduleSys')
 		.controller('NurseDialogController', NurseDialogController);
 	
-	NurseDialogController.$Inject = ['$state','$scope','$stateParams', '$mdDialog', '$mdToast', 'NursesService','NursesPositionTypeService','PhoneLabelService','PhoneTypeService'];
+	NurseDialogController.$Inject = ['$state','$scope','$stateParams', '$mdDialog', '$mdToast', 'NursesService','NursesPositionTypeService','PhoneLabelService','PhoneTypeService','NursePhoneService'];
 	
-	function NurseDialogController($state,$scope,$stateParams, $mdDialog, $mdToast, NursesService,NursesPositionTypeService,PhoneLabelService,PhoneTypeService){
+	function NurseDialogController($state,$scope,$stateParams, $mdDialog, $mdToast, NursesService,NursesPositionTypeService,PhoneLabelService,PhoneTypeService,NursePhoneService){
 		var vm = this;
 		
 		vm.cancel = cancel;
 		vm.createOrUpdatenurse = createOrUpdatenurse;
+		vm.createOrUpdatePhoneNum = createOrUpdatePhoneNum;
 		vm.showToast = showToast;
 		vm.nursepositionType = NursesPositionTypeService.query();
 		vm.options2 = vm.nursepositionType;
@@ -22,10 +23,12 @@
 		console.log(vm.options3);
 		console.log(vm.options4);
 		vm.getSelectedNurse = getSelectedNurse;
-		vm.showPhone = function(){
-			
-			vm.displayPhone = ! vm.displayPhone;
-		}
+		vm.showPhoneNum = showPhoneNum;
+		vm.showOtherPhoneNum = showOtherPhoneNum;
+		vm.secondary = "SECONDARY";
+		vm.other = "OTHER";
+		vm.showConfirmPhone = showConfirmPhone;
+		
 		vm.myModel = {};
 		vm.nurse = {
 				id: null,
@@ -45,9 +48,78 @@
 			        numberLabel: null,
 			        numberType: null
 			      }
+			      
+				 
+			 
 			    ]
 			
 		};
+		
+		vm.nurse.phoneNumbers[0].numberLabel = "PRIMARY";
+		
+        function showPhoneNum(){
+			
+			vm.displayPhone = ! vm.displayPhone;
+			console.log(vm.displayPhone);
+			if(vm.displayPhone){
+				
+				vm.q =  { 
+			           number: null,
+			           numberLabel: "SECONDARY",
+			           numberType: null
+			         };
+				
+			vm.nurse['phoneNumbers'].push(vm.q);
+		
+				
+		
+						
+				console.log(vm.nurse);
+				
+				
+				
+				
+				
+			}else if(!vm.displayPhone){
+				
+				vm.nurse['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.nurse);
+		}
+		
+ function showOtherPhoneNum(){
+			
+			vm.displayOtherPhone = ! vm.displayOtherPhone;
+			console.log(vm.displayOtherPhone);
+			if(vm.displayOtherPhone){
+				
+				vm.u =  { 
+			           number: null,
+			           numberLabel: "OTHER",
+			           numberType: null
+			         };
+				
+			vm.nurse['phoneNumbers'].push(vm.u);
+		
+				
+		
+						
+				console.log(vm.nurse);
+				
+				
+				
+				
+				
+			}else if(!vm.displayOtherPhone){
+				
+				vm.nurse['phoneNumbers'].pop();
+				
+				
+			}
+			console.log(vm.nurse);
+		}
 		
 		
 		
@@ -92,13 +164,21 @@
 				NursesService.save(vm.nurse, onCreateSucess, onCreateFailure);
 			}else{
 				NursesService.update({id:$stateParams.id},vm.nurse, onUpdateSucess, onUpdateFailure);
+				console.log(vm.nurse);
 			}
 		}
+		
 		
 		function onCreateSucess(result){
 			$mdDialog.cancel();
 			$state.go('home.nurses',{}, {reload: true});
 			vm.showToast('Nurse ' + vm.nurse.firstName + ' successfully created', 5000);
+		}
+		
+		function onCreatePhoneSucess(result){
+			$mdDialog.cancel();
+			$state.go('home.nurses',{}, {reload: true});
+			vm.showToast('Nurse ' + vm.nurse.firstName + 'phone number successfully created', 5000);
 		}
 		
 		function onCreateFailure(result){
@@ -111,6 +191,12 @@
 			vm.showToast('Nurse ' + vm.nurse.firstName + ' successfully updated', 5000);
 		}
 		
+		function onUpdatePhoneSucess(result){
+			$mdDialog.cancel();
+			$state.go('home.nurses',{}, {reload: true});
+			vm.showToast('Nurse ' + vm.nurse.firstName + 'phone number successfully updated', 5000);
+		}
+		
 		function onUpdateFailure(result){
 			vm.showToast(result.data, 5000);
 		}
@@ -121,6 +207,69 @@
 					.position('top right')
 					.hideDelay(delay));
 		}
+		
+function createOrUpdatePhoneNum(phonenumber,label){
+	if(label === "SECONDARY"){
+		
+		phonenumber.numberLabel="SECONDARY";
+	}else if(label === "OTHER"){
+		
+		phonenumber.numberLabel="OTHER";
+		
+	}
+			vm.phoneNumbers = phonenumber;
+			console.log(vm.phoneNumbers);
+			if(vm.phoneNumbers.id === undefined){
+				console.log('Phone-Numbers to be created : ' + angular.toJson(vm.phoneNumbers));
+				NursePhoneService.save({nurseID: vm.nurse.id},vm.phoneNumbers, onCreatePhoneSucess, onCreateFailure);
+			}else{
+				NursePhoneService.update({nurseID: vm.nurse.id, id: vm.phoneNumbers.id},vm.phoneNumbers, onUpdatePhoneSucess, onUpdateFailure);
+				console.log(vm.phoneNumbers);
+			}
+		}
+		
+function showConfirmPhone(phone){
+	
+	vm.deleteNumber = phone;
+	
+	showConfirm();
+	
+}
+function showConfirm(ev) {
+	
+	console.log(ev);
+	
+	
+	var confirm = $mdDialog.confirm()
+			.title('Delete Phone-Number')
+			.textContent('Are you sure you want to delete this Phone-Number ?')
+			.ariaLabel('Phone-Number deletion')
+			.targetEvent(ev)
+			.ok('Delete')
+			.cancel('Cancel');
+	$mdDialog.show(confirm).then(function() {
+		NursePhoneService.remove(
+				{nurseID: vm.nurse.id, id: vm.deleteNumber.id},
+				onDeleteSuccess,
+				onDeleteFailure
+				);
+	}, function() {
+		console.log('Keep this one ...');
+	});
+};
+
+function onDeleteSuccess (){
+	$mdDialog.cancel();
+	$state.go('home.nurses',{}, {reload: true});
+	vm.showToast('Phone-Number ' + vm.deleteNumber.number + ' successfully deleted', 5000);
+}	
+
+function onDeleteFailure (){
+	$mdDialog.cancel();
+	$state.go('home.nurses',{}, {reload: true});
+	vm.showToast('Phone-Number ' + vm.deleteNumber.number 
+			+ ' could not be deleted ', 5000);
+}
 	}
 	
 })();

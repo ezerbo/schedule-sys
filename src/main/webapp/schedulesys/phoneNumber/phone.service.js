@@ -3,20 +3,15 @@
 	
 	angular
 		.module('scheduleSys')
-		.factory('NursesService', NursesService)
-		.factory('NurseLicenseService', NurseLicenseService).service('popupService',function($window){
-		    this.showPopup=function(message){
-		        return $window.confirm(message);
-		    }
-		})
+		.factory('NursePhoneService', NursePhoneService)
+		.factory('careGiverPhoneService', careGiverPhoneService);
 	
+	NursePhoneService.$Inject = ['$resource'];
+	careGiverPhoneService.$Inject = ['$resource'];
 	
-	
-	NursesService.$Inject = ['$resource'];
-	
-	function NursesService($resource) {
-		console.log('calling nurses service');
-		var resourceUrl = '/nurses/:id';
+	function NursePhoneService($resource) {
+		console.log('calling nurse phone service');
+		var resourceUrl = '/nurses/:nurseID/phone-numbers/:id';
 		
 		return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
@@ -37,7 +32,6 @@
                     return data;
                 }
             },
-            
             'remove':  {
                 method: 'DELETE',
                 transformResponse: function (data) {
@@ -61,29 +55,50 @@
 		
 	}
 	
-NurseLicenseService.$Inject = ['$resource'];
-	
-	function NurseLicenseService($resource){
-		var resourceUrl = '/nurses/:id/licenses/:licenseId';
-		return $resource(resourceUrl, {},{
-			'query': { method: 'GET', isArray: true},
-			'save': {
-				method: "POST", 
-				 transformResponse: function (data) {
-	                    if (data) {
-	                        data = angular.toJson(data);
-	                    }
-	                    return data;
-	                }
-			},
-			'update': { method:'PUT',
+	function careGiverPhoneService($resource) {
+		console.log('calling Care-Giver phone service');
+		var resourceUrl = '/care-givers/:caregivID/phone-numbers/:id';
+		
+		return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT',
             	transformResponse: function (data) {
                     if (data) {
                         data = angular.toJson(data);
                     }
                     return data;
                 }
+            },
+            'remove':  {
+                method: 'DELETE',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.toJson(data);
+                    }
+                    return data;
+                }
+            },
+            'save': {
+                method: 'POST',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.toJson(data);
+                    }
+                    return data;
+                }
+            
             }
-		});
+        });
+		
 	}
+	
 })();
