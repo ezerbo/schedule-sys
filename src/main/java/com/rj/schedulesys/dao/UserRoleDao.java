@@ -26,9 +26,7 @@ public class UserRoleDao extends GenericDao<UserRole>{
 	 * @return userRole : Entire role object
 	 */
 	public UserRole findByRole(String role){
-		
 		UserRole userRole =  null;
-		
 		try{
 			userRole = entityManager.createQuery(
 					"from UserRole ur where ur.userRole = :userRole", UserRole.class)
@@ -37,8 +35,6 @@ public class UserRoleDao extends GenericDao<UserRole>{
 		}catch(NoResultException e){
 			log.warn("No such role : ", role);
 		}
-		
 		return userRole;
 	}
-	
 }

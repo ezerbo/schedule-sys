@@ -40,6 +40,32 @@ public class ScheduleSysUserDao extends GenericDao<ScheduleSysUser> {
 		return user;
 	}
 	
+	public ScheduleSysUser findByEmailAddress(String emailAddress){
+		ScheduleSysUser user = null ;
+		try{
+			user = entityManager.createQuery(
+					"from ScheduleSysUser u where u.emailAddress =:emailAddress", ScheduleSysUser.class)
+					.setParameter("emailAddress", emailAddress)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No user found with emailAddress : {}", emailAddress);
+		}
+		return user;
+	}
+	
+	public ScheduleSysUser findByActivationToken(String activationToken){
+		ScheduleSysUser user = null ;
+		try{
+			user = entityManager.createQuery(
+					"from ScheduleSysUser u where u.activationToken =:activationToken", ScheduleSysUser.class)
+					.setParameter("activationToken", activationToken)
+					.getSingleResult();
+		}catch(NoResultException e){
+			log.warn("No user found with emailAddress : {}", activationToken);
+		}
+		return user;
+	}
+	
 	/**
 	 * @return users : An empty list is return when no user can be found
 	 */
@@ -56,5 +82,6 @@ public class ScheduleSysUserDao extends GenericDao<ScheduleSysUser> {
 		}
 		return users;
 	}
+	
 	
 }

@@ -23,8 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/tests")
 public class TestController {
 	
-	private @Autowired TestService testService;
-	private @Autowired TestSubCategoryService testSubCategoryService;
+	@Autowired
+	private TestService testService;
+	@Autowired
+	private TestSubCategoryService testSubCategoryService;
 	
 	/**
 	 * @param id
@@ -32,18 +34,13 @@ public class TestController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findOne(@PathVariable Long id){
-		
 		log.info("Fetching test with id {}", id);
-		
 		TestViewModel viewModel = testService.findOne(id);
-		
 		if(viewModel == null){
 			log.info("No test found with id : {}", id);
 			return new ResponseEntity<String>("No test found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		log.info("Test found : {}", viewModel);
-		
 		return new ResponseEntity<TestViewModel>(viewModel, HttpStatus.OK);
 	}
 	
@@ -52,19 +49,14 @@ public class TestController {
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAll(){
-		
 		log.info("Fetching all tests");
-		
 		List<TestViewModel> viewModels = testService.findAll();
-		
 		if(viewModels.isEmpty()){
 			log.info("No test found");
 			return new ResponseEntity<String>("No test found", HttpStatus.NOT_FOUND);
 		}
-		
 		log.info("Tests found : {}", viewModels);
-		
-		return new ResponseEntity<List<TestViewModel>>(viewModels, HttpStatus.OK);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}
 	
 	/**
@@ -73,20 +65,15 @@ public class TestController {
 	 */
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public ResponseEntity<String> create(@RequestBody TestViewModel viewModel){
-		
 		log.info("Creating test : {}", viewModel);
-		
 		viewModel.setId(null);//Overrides id provided in view model
-		
 		try{
 			viewModel = testService.create(viewModel);
 		}catch(Exception e){
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Test created : {}", viewModel);
-		
 		return new ResponseEntity<String>("Test created successfully", HttpStatus.CREATED);
 	}
 	
@@ -97,14 +84,11 @@ public class TestController {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
 	public ResponseEntity<String> update(@PathVariable Long id, @RequestBody TestViewModel viewModel){
-		
 		log.info("Updating test with id : {}", id);
-		
 		if(testService.findOne(id) == null){
 			log.info("No test found with id : {}", id);
 			return new ResponseEntity<String>("No test found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		viewModel.setId(id);//Overriding the id received in the view model
 		try{
 		viewModel = testService.update(viewModel);
@@ -113,7 +97,6 @@ public class TestController {
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		log.info("Test updated : {}", viewModel);
-		
 		return new ResponseEntity<String>("Test updated successfully", HttpStatus.OK);
 	}
 	
@@ -124,7 +107,6 @@ public class TestController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> delete(@PathVariable Long id){
 		log.info("Deleting test with id : {}", id);
-		
 		if(testService.findOne(id) == null){
 			log.info("No test found with id : {}", id);
 			return new ResponseEntity<String>("No test found with id : " + id, HttpStatus.NOT_FOUND);
@@ -135,9 +117,7 @@ public class TestController {
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Test successfully deleted");
-		
 		return new ResponseEntity<String>("Test successfully deleted", HttpStatus.OK);
 	}
 	
@@ -147,24 +127,66 @@ public class TestController {
 	 */
 	@RequestMapping(value = "/{id}/sub-categories", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findSubCategories(@PathVariable Long id){
-		
 		log.info("Fetching all sub categories of test with id : {}", id);
-		
 		if(testService.findOne(id) == null){
 			log.warn("No test found with id : {}", id);
 			return new ResponseEntity<>("No test found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		List<TestSubCategoryViewModel> viewModels = testSubCategoryService.findAllByTest(id);
-		
 		if(viewModels.isEmpty()){
 			log.warn("No test sub catrgories found for test with id : {}", id);
 			return new ResponseEntity<>("No test sub category found for test with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		log.info("Subcategories found : {}", viewModels);
-		
 		return new ResponseEntity<List<TestSubCategoryViewModel>>(viewModels, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/{id}/sub-categories", method = RequestMethod.POST, consumes = "application/json")
+	public ResponseEntity<String> addSubCategory(@PathVariable Long id, @RequestBody TestSubCategoryViewModel viewModel){
+		log.info("Creating new test sub category: {}", viewModel);
+		if(testService.findOne(id) == null){
+			log.warn("No test found with id : {}", id);
+			return new ResponseEntity<>("No test found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		viewModel.setTestId(id);
+		try{
+			testSubCategoryService.create(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("Test sub category successfully created");
+		return new ResponseEntity<String>("Test sub category successfully created", HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value = "/{id}/sub-categories/{subCategoryId}", method = RequestMethod.PUT, consumes = "application/json")
+	public ResponseEntity<String> updateSubCategory(@PathVariable Long id, @PathVariable Long subCategoryId
+			, @RequestBody TestSubCategoryViewModel viewModel){
+		log.info("Updating test sub category: {}", viewModel);
+		TestViewModel test = testService.findOne(id);
+		if(test == null){
+			log.warn("No test found with id : {}", id);
+			return new ResponseEntity<>("No test found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		TestSubCategoryViewModel testSubCategory = testSubCategoryService.findOne(subCategoryId);
+		if(testSubCategory == null){
+			log.warn("No test sub category found with id : {}", subCategoryId);
+			return new ResponseEntity<>("No test sub category found with id : " + subCategoryId, HttpStatus.NOT_FOUND);
+		}
+		if(testSubCategory.getTestId() != test.getId()){
+			log.error("No test sub category with id : {} found for test with id : {}", subCategoryId, id);
+			return new ResponseEntity<>("No test sub category with id : " 
+					+ subCategoryId + " found for test with id : {}" + id, HttpStatus.NOT_FOUND);
+		}
+		viewModel.setTestId(id);
+		viewModel.setId(subCategoryId);
+		try{
+			testSubCategoryService.update(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("Test sub category successfully updated");
+		return new ResponseEntity<String>("Test sub category successfully created", HttpStatus.OK);
+	}
 }

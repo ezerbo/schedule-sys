@@ -33,60 +33,42 @@ public class TestSubCategoryService {
 	
 	
 	public TestSubCategoryViewModel create(TestSubCategoryViewModel viewModel){
-		
 		Assert.notNull(viewModel, "No test sub category provided");
-		
 		log.debug("Creating new sub category for test with name : {}", viewModel.getName());
-		
-		TestSubCategory testSubCategory = testSubCategoryDao.findByNameAndTestName(
-				viewModel.getName(), viewModel.getTestName());
-		
+		TestSubCategory testSubCategory = testSubCategoryDao.findByNameAndTestId(
+				viewModel.getName(), viewModel.getTestId());
 		if(testSubCategory != null){
-			log.error("A sub category with name : {} already exists for test with name : {}"
-					, viewModel.getName(), viewModel.getTestName());
+			log.error("A sub category with name : {} already exists for test with id : {}"
+					, viewModel.getName(), viewModel.getTestId());
 			throw new RuntimeException("A sub category with name : " + viewModel.getName() 
-				+ " already exists for test with name : " + viewModel.getTestName());
+				+ " already exists for test with id: " + viewModel.getTestId());
 		}
-		
 		viewModel = this.createOrUpdate(viewModel);
-		
 		log.debug("Created sub category : {}", viewModel);
-		
 		return viewModel;
 	}
 	
 	public TestSubCategoryViewModel update(TestSubCategoryViewModel viewModel){
-		
 		Assert.notNull(viewModel, "No test sub category provided");
-		
 		log.debug("Updating test sub category : {}", viewModel);
-		
 		if(testSubCategoryDao.findOne(viewModel.getId()) == null){
 			log.error("No test sub category found with id : {}", viewModel.getId());
 			throw new RuntimeException("No test sub category found with id : " + viewModel.getId());
 		}
-		
 		TestSubCategory testSubCategory = testSubCategoryDao.findOne(viewModel.getId());
-		
 		if(!StringUtils.equalsIgnoreCase(testSubCategory.getName(), viewModel.getName())){
-			
 			log.warn("Test sub category name updated, checking its uniqueness");
-			
-			if(testSubCategoryDao.findByNameAndTestName(viewModel.getName(), viewModel.getTestName()) != null){
-				log.error("A sub category with name : {} already exists for test with name : {}"
-						, viewModel.getName(), viewModel.getTestName());
+			if(testSubCategoryDao.findByNameAndTestId(viewModel.getName(), viewModel.getTestId()) != null){
+				log.error("A sub category with name : {} already exists for test with id : {}"
+						, viewModel.getName(), viewModel.getTestId());
 				
 				throw new RuntimeException("A sub category with name : " + viewModel.getName() 
-				+ " already exists for test with name : " + viewModel.getTestName());
+				+ " already exists for test with id : " + viewModel.getTestId());
 			}
 		}
-		
 		viewModel = this.createOrUpdate(viewModel);
-		
 		log.debug("Updated test sub category : {}", viewModel.getName());
-		
 		return viewModel;
-		
 	}
 	
 	/**
@@ -94,47 +76,33 @@ public class TestSubCategoryService {
 	 * @return
 	 */
 	public TestSubCategoryViewModel createOrUpdate(TestSubCategoryViewModel viewModel){
-		
 		validator.validate(viewModel);
-		
-		Test test = testDao.findByName(viewModel.getTestName());
-		
+		Test test = testDao.findOne(viewModel.getTestId());
 		if(test == null){
-			log.error("No test found with name : {}", viewModel.getTestName());
-			throw new RuntimeException("No test found with name : " + viewModel.getTestName());
+			log.error("No test found with id : {}", viewModel.getTestId());
+			throw new RuntimeException("No test found with name : " + viewModel.getTestId());
 		}
-		
 		TestSubCategory testSubCategory = dozerMapper.map(viewModel, TestSubCategory.class);
-		
 		testSubCategory.setTest(test);
-		
 		testSubCategory = testSubCategoryDao.merge(testSubCategory);
-		
 		return dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class);
-		
 	}
 	
 	/**
 	 * @param id
 	 */
 	public void delete(Long id){
-		
 		log.debug("Deleting test sub category with id : {}", id);
-		
 		TestSubCategory testSubCategory = testSubCategoryDao.findOne(id);
-		
 		if(testSubCategory == null){
 			log.error("No test sub category found with id : {}", id);
 			throw new RuntimeException("No test sub category found with id : " + id);
 		}
-		
 		if(!testSubCategory.getNurseTests().isEmpty()){
 			log.error("Test sub category with id : {} can not be deleted, it has been taken by nurses", id);
 			throw new RuntimeException("Test sub category with id : " + id + " can not be deleted, it has been taken by nurses");
 		}
-		
 		testSubCategoryDao.delete(testSubCategory);
-		
 		log.debug("Test sub category with id successfully deleted ");
 	}
 	
@@ -143,20 +111,14 @@ public class TestSubCategoryService {
 	 * @return
 	 */
 	public TestSubCategoryViewModel findByName(String name){
-		
 		log.debug("Fetching test sub category with name : {}", name);
-		
 		TestSubCategory testSubCategory = testSubCategoryDao.findByName(name);
-		
 		TestSubCategoryViewModel viewModel = null;
-		
 		if(testSubCategory != null){
 			viewModel = dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class);
-			viewModel.setTestName(testSubCategory.getTest().getName());
+			viewModel.setTestId(testSubCategory.getTest().getId());
 		}
-		
 		log.debug("Test sub category found : {}", viewModel);
-		
 		return viewModel;
 	}
 	
@@ -165,20 +127,15 @@ public class TestSubCategoryService {
 	 * @return
 	 */
 	public TestSubCategoryViewModel findOne(Long id){
-		
 		log.debug("Fetching test sub category with id : {}", id);
-		
 		TestSubCategory testSubCategory = testSubCategoryDao.findOne(id);
-		
 		TestSubCategoryViewModel viewModel = null;
-		
 		if(testSubCategory == null){
 			log.warn("No test sub category found with id : {}", id);
 		}else{
 			viewModel = dozerMapper.map(testSubCategory, TestSubCategoryViewModel.class);
-			viewModel.setTestName(testSubCategory.getTest().getName());
+			viewModel.setTestId(testSubCategory.getTest().getId());
 		}
-		
 		return viewModel;
 	}
 	
@@ -187,28 +144,19 @@ public class TestSubCategoryService {
 	 * @return
 	 */
 	public List<TestSubCategoryViewModel> findAllByTest(Long testId){
-		
 		log.debug("Fetching all sub categories for test with id : {}", testId);
-		
 		if(testDao.findOne(testId) == null){
 			log.debug("No test found with id : {}", testId);
 			throw new RuntimeException("No test found with id : " + testId);
 		}
-		
 		List<TestSubCategory> testSubCategories = testSubCategoryDao.findAllByTest(testId);
-		
 		List<TestSubCategoryViewModel> viewModels = new LinkedList<>();
-		
 		for(TestSubCategory testSubCategory : testSubCategories){
-			
 			TestSubCategoryViewModel viewModel = dozerMapper.map(
 					testSubCategory, TestSubCategoryViewModel.class);
-			
-			viewModel.setTestName(testSubCategory.getTest().getName());
-			
+			viewModel.setTestId(testSubCategory.getTest().getId());
 			viewModels.add(viewModel);
 		}
-		
 		return viewModels;
 	}
 }

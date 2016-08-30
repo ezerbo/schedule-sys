@@ -3,12 +3,15 @@ package com.rj.schedulesys.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 
+import org.hibernate.validator.constraints.Email;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -30,11 +33,21 @@ public class ScheduleSysUser implements Serializable {
 	@Column(name="ID", unique=true, nullable=false)
 	private Long id;
 
-	@Column(name="PASSWORDHASH", nullable=false, length=254)
+	@Column(name="PASSWORDHASH", length=254)
 	private String passwordhash;
 
 	@Column(name="USERNAME", nullable=false, length=50)
 	private String username;
+	
+	@Email
+	@Column(name="EMAIL_ADDRESS", nullable = false, length = 100)
+	private String emailAddress;
+	
+	@Column(name="ACTIVATION_TOKEN", nullable = false, length = 254)
+	private String activationToken;
+	
+	@Column(name="IS_ACTIVATED", nullable = false)
+	private Boolean isActivated;
 
 	@OneToMany(mappedBy="scheduleSysUser")
 	private List<Schedule> schedules;
@@ -45,7 +58,12 @@ public class ScheduleSysUser implements Serializable {
 
 	@OneToMany(mappedBy="scheduleSysUser")
 	private List<ScheduleUpdate> scheduleUpdates;
-
+	
+	@PrePersist
+	public void onPersist(){
+		setIsActivated(Boolean.FALSE);
+		setActivationToken(UUID.randomUUID().toString());
+	}
 
 	public Schedule addSchedule(Schedule schedule) {
 		getSchedules().add(schedule);

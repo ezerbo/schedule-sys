@@ -20,23 +20,20 @@ public class TestSubCategoryDao extends GenericDao<TestSubCategory> {
 	
 	/**
 	 * @param name
-	 * @param testName
+	 * @param testId
 	 * @return
 	 */
-	public TestSubCategory findByNameAndTestName(String name, String testName){
-		
+	public TestSubCategory findByNameAndTestId(String name, Long testId){
 		TestSubCategory testSubCategory = null;
-		
 		try{
 			testSubCategory = entityManager.createQuery("from TestSubCategory tsc where tsc.name =:name"
-					+ " and tsc.test.name =:testName", TestSubCategory.class)
+					+ " and tsc.test.id =:testId", TestSubCategory.class)
 					.setParameter("name", name)
-					.setParameter("testName", testName)
+					.setParameter("testId", testId)
 					.getSingleResult();
 		}catch(NoResultException e){
-			log.warn("No test sub category with name : {} found for test with name : {}", name, testName);
+			log.warn("No test sub category with name : {} found for test with id : {}", name, testId);
 		}
-		
 		return testSubCategory;
 	}
 	

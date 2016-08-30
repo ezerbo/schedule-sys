@@ -3,12 +3,12 @@
 	
 	angular
 		.module('scheduleSys')
-		.factory('usersService', usersService);
+		.factory('usersService', usersService)
+		.factory('UserAccountService', UserAccountService);
 	
 	usersService.$Inject = ['$resource'];
 	
 	function usersService($resource) {
-		console.log('calling users service');
 		var resourceUrl = '/users/:id';
 		
 		return $resource(resourceUrl, {}, {
@@ -51,6 +51,26 @@
             }
         });
 		
+	}
+	
+	UserAccountService.$Inject = ['$resource'];
+	
+	function UserAccountService($resource){
+		
+		var resourceUrl = '/users/activate';
+		
+		return $resource(resourceUrl, {}, {
+            'save': {
+                method: 'POST',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.toJson(data);
+                    }
+                    return data;
+                }
+            
+            }
+        });
 	}
 	
 })();

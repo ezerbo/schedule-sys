@@ -1,0 +1,25 @@
+<div class="md-padding" style="margin-left: 30%;margin-right: 30%" ng-controller="UserActivationController as vm">
+<form name="accountActivationForm" ng-submit="vm.activate()">
+	<md-input-container class="md-block" flex-gt-sm>
+		<label>Password</label> <input md-maxlength="100"  name="password" type="password" required ng-model="vm.profile.password" />
+		<div ng-messages="userForm.password.$error">
+			<div ng-message="required">Password is required.</div>
+			<div ng-message="md-maxlength">The password has to be less than 100 characters long.</div>
+			</div>
+	</md-input-container>
+	<md-input-container class="md-block" flex-gt-sm>
+		<label>Reenter password</label> <input md-maxlength="100"  name="repassword" type="password" data-password-verify="vm.profile.password" required ng-model="repassword" />
+			<div ng-show="accountActivationForm.repassword.$error.passwordVerify">
+            <span style="color:red;">Passwords do not match</span></div>
+			<div ng-messages="accountActivationForm.repassword.$error">
+				<div ng-message="required">Password is required.</div>
+				<div ng-message="md-maxlength">The password has to be less than 100 characters long.</div>
+			</div>
+	</md-input-container>
+	<div layout="row" layout-align="end center">
+		<md-button class="md-raised md-primary" type="submit" ng-disabled="(repassword !== vm.profile.password) 
+		&& (vm.profile.password.length < 8 || repassword.length < 8)">Sign in</md-button>
+		<md-button class="md-raised md-primary" type="reset">Clear</md-button>
+	</div>
+</form>
+</div>

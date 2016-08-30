@@ -18,8 +18,8 @@ import com.rj.schedulesys.domain.ScheduleSysUser;
 import com.rj.schedulesys.domain.UserRole;
 import com.rj.schedulesys.util.ObjectValidator;
 import com.rj.schedulesys.util.PasswordHashUtil;
-import com.rj.schedulesys.util.ServiceHelper;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
+import com.rj.schedulesys.view.model.UserProfileViewModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,25 +40,30 @@ public class UserService {
 	 */
 	@Transactional
 	public ScheduleSysUserViewModel create(ScheduleSysUserViewModel viewModel){
-		
 		Assert.notNull(viewModel, "No user provided");
-		
 		log.debug("Creating new user : {}", viewModel);
 		
-		ScheduleSysUser user = userDao.findByUsername(viewModel.getUsername());
-		
-		if(user != null){
-			String errorMessage = new StringBuilder()
+		String errorMessage = "";
+		if(userDao.findByUsername(viewModel.getUsername()) != null){
+			errorMessage = new StringBuilder()
 					.append("A user with username '")
 					.append(viewModel.getUsername())
 					.append("' ")
 					.append("already exists").toString();
-			
-			ServiceHelper.logAndThrowException(errorMessage);
+		}else if(userDao.findByEmailAddress(viewModel.getEmailAddress()) != null){
+			errorMessage = new StringBuilder()
+					.append("Email address '")
+					.append(viewModel.getEmailAddress())
+					.append("' ")
+					.append("already in use").toString();
+		}
+		
+		if(StringUtils.isNoneBlank(errorMessage)){
+			log.error(errorMessage);
+			throw new RuntimeException(errorMessage);
 		}
 		
 		viewModel = this.createOrUpdate(viewModel);
-		
 		return viewModel;
 	}
 	
@@ -68,27 +73,37 @@ public class UserService {
 	 */
 	@Transactional
 	public ScheduleSysUserViewModel update(ScheduleSysUserViewModel viewModel){
-		
 		Assert.notNull(viewModel, "No user provided");
-		
 		log.debug("Updating user : {}", viewModel);
 		
 		ScheduleSysUser user = userDao.findOne(viewModel.getId());
-		
+		String errorMessage = "";
 		if(!StringUtils.equals(user.getUsername(), viewModel.getUsername())){
 			log.warn("Username altered, checking its uniqueness");
 			if(userDao.findByUsername(viewModel.getUsername()) != null){
-				String errorMessage = new StringBuilder()
+				errorMessage = new StringBuilder()
 						.append("A user with username '")
 						.append(viewModel.getUsername())
 						.append("' ")
 						.append("already exists").toString();
-				ServiceHelper.logAndThrowException(errorMessage);
+			}
+		}else if(!StringUtils.equals(user.getEmailAddress(), viewModel.getEmailAddress())){
+			log.warn("Email address altered, checking its uniqueness");
+			if(userDao.findByEmailAddress(viewModel.getEmailAddress()) != null){
+				errorMessage = new StringBuilder()
+						.append("Email address '")
+						.append(viewModel.getEmailAddress())
+						.append("' ")
+						.append("already in use").toString();
 			}
 		}
 		
-		viewModel = this.createOrUpdate(viewModel);
+		if(StringUtils.isNoneBlank(errorMessage)){
+			log.error(errorMessage);
+			throw new RuntimeException(errorMessage);
+		}
 		
+		viewModel = this.createOrUpdate(viewModel);
 		return viewModel;
 	}
 	
@@ -97,36 +112,18 @@ public class UserService {
 	 * @return
 	 */
 	public ScheduleSysUserViewModel createOrUpdate(ScheduleSysUserViewModel viewModel){
-		
-		String passwordHash = null;
-		
-		if(!StringUtils.isBlank(viewModel.getPassword())){
-			passwordHash = UserService.createPasswordHash(viewModel.getPassword());
-		}
-		
+		validator.validate(viewModel);
 		UserRole userRole = validateUserRole(viewModel.getUserRole());
-		
 		ScheduleSysUser user = null; 
-				
 		if(viewModel.getId() != null){
 			user = userDao.findOne(viewModel.getId());
-			validateUsername(viewModel.getUsername());
-			user.setUsername(viewModel.getUsername());
-			if(passwordHash != null){
-				user.setPasswordhash(passwordHash);
-			}
 		}else{
-			validator.validate(viewModel);//Password is validated here, and should not be empty
-			user = ScheduleSysUser.builder()
-					.username(viewModel.getUsername())
-					.passwordhash(passwordHash)
-					.build();
+			user = ScheduleSysUser.builder().build();
 		}
-		
+		user.setUsername(viewModel.getUsername());
+		user.setEmailAddress(viewModel.getEmailAddress());
 		user.setUserRole(userRole);
-		
 		user = userDao.merge(user);
-		
 		return dozerMapper.map(user, ScheduleSysUserViewModel.class);
 	}
 	
@@ -136,25 +133,20 @@ public class UserService {
 	 */
 	@Transactional
 	public void delete(Long id){
-		
 		log.debug("Deleting user with id : {}", id);
 		ScheduleSysUser scheduleSysUser = userDao.findOne(id);
-		  
 		if(scheduleSysUser == null){
 			log.error("No user found with Id : {}", id);
 			throw new RuntimeException("No user found with id : " + id);
 		}
-		
 		if(scheduleSysUser.getSchedules().isEmpty() 
 				&& scheduleSysUser.getScheduleUpdates().isEmpty()){
 			//User is deleted when (s)he has never created or updated a schedule
 			userDao.delete(scheduleSysUser);	
-			
 		}else{
 			log.error("User with id : {} can not be deleted", id);
 			throw new RuntimeException("User with id : " + id + " can not be deleted");
 		}
-		
 	}
 	
 	/**
@@ -171,6 +163,24 @@ public class UserService {
 		return viewModel;
 	}
 	
+	@Transactional
+	public void activatUserAccount(UserProfileViewModel viewModel) throws Exception{
+		Assert.notNull(viewModel, "User profile needed");
+		log.info("Fetching user with token : {}", viewModel.getActivationToken());
+		ScheduleSysUser user = userDao.findByActivationToken(viewModel.getActivationToken());
+		if(user == null){
+			log.error("An invalid activation token was used for account activation");
+			throw new RuntimeException("Invalid activation token");
+		}
+		if(user.getIsActivated()){
+			log.error("User account already activated");
+			throw new RuntimeException("Something unexpected happened");
+		}
+		user.setPasswordhash(PasswordHashUtil.createHash(viewModel.getPassword()));
+		user.setIsActivated(Boolean.TRUE);
+		userDao.merge(user);
+	}
+	
 	/**
 	 * @param username
 	 * @return
@@ -184,7 +194,6 @@ public class UserService {
 		}
 		return viewModel;
 	}
-	
 	
 	/**
 	 * @param usermame
@@ -231,9 +240,7 @@ public class UserService {
 	 * @return
 	 */
 	public static String createPasswordHash(String plainPassword){
-		
 		String passwordHash ;
-		
 		try {
 			passwordHash = PasswordHashUtil.createHash(plainPassword);
 		} catch (NoSuchAlgorithmException|InvalidKeySpecException e) {
@@ -250,21 +257,12 @@ public class UserService {
 	 * @throws RuntimeException : When the role is not found
 	 */
 	public UserRole validateUserRole(String roleName){
-		
 		UserRole userRole = userRoleDao.findByRole(roleName);
-		
 		if(userRole == null){
 			log.error("No such user role : {}", roleName);
 			throw new RuntimeException("No such user role : " + roleName);
 		}
-		
 		return userRole;
-	}
-	
-	private void validateUsername (String username){
-		if(StringUtils.isBlank(username) || username.length() < 3 || username.length() > 50){
-			throw new RuntimeException("username size must be between 3 and 50");
-		}
 	}
 
 }

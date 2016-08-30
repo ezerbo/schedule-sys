@@ -68,7 +68,7 @@ private @Autowired WebApplicationContext context;
 	public void test_create_WithNonExsitingParentTest() throws Exception{
 
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "sub-test-name", "This parent test does not exists"
+				null, "sub-test-name", 0L
 				);
 		
 		mockMvc.perform(post("/test-sub-categories")
@@ -83,7 +83,7 @@ private @Autowired WebApplicationContext context;
 	public void test_create_WithExistingParentTest_ThatHasAlreadyASubCategoryOfSameName() throws Exception{
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "ANNUAL PPD", "TB TEST"
+				null, "ANNUAL PPD", 3L
 				);
 		
 		mockMvc.perform(post("/test-sub-categories")
@@ -97,7 +97,7 @@ private @Autowired WebApplicationContext context;
 	public void test_create_WithExistingParentTest_ThatHasNotTheCategoryBeingCreated() throws Exception{
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "BRAND-NEW-SUBCAT-1", "TB TEST"
+				null, "BRAND-NEW-SUBCAT-1", 3L
 				);
 		
 		mockMvc.perform(post("/test-sub-categories")
@@ -112,7 +112,7 @@ private @Autowired WebApplicationContext context;
 	public void test_update_WithNonExistingTestSubCategoryId() throws  Exception{
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				0L, "BRAND-NEW-SUBCAT-1", "TB TEST"
+				0L, "BRAND-NEW-SUBCAT-1", 3L
 				);
 		
 		mockMvc.perform(put("/test-sub-categories/{id}", 0L)
@@ -127,7 +127,7 @@ private @Autowired WebApplicationContext context;
 	public void test_update_WithExistingTestSubCategory_ThatAlreayHas_ASubCategory_WithTheNewName() throws Exception{
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				1L, "2-STEP PPD", "TB TEST"
+				1L, "2-STEP PPD", 3L
 				);
 		
 		mockMvc.perform(put("/test-sub-categories/{id}", 1L)
@@ -141,7 +141,7 @@ private @Autowired WebApplicationContext context;
 	public void test_update_WithExistingTestSubCategory_AndNewSubCategoryName() throws Exception{
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				1L, "BRAND-NEW-NAME", "TB TEST"
+				1L, "BRAND-NEW-NAME", 3L
 				);
 		
 		mockMvc.perform(put("/test-sub-categories/{id}", 1L)

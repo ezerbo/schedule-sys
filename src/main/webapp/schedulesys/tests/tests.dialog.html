@@ -1,0 +1,41 @@
+<md-dialog  style="width:700px;" ng-controller="TestDialogController as vm">
+  <form name="testForm" ng-submit="vm.createOrUpdate()">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create or edit a test</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content class="md-padding">
+	<div layout-gt-sm="column">
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Name</label> <input md-maxlength="50" required name="name" ng-model="vm.test.name" />
+			<div ng-messages="testForm.name.$error">
+				<div ng-message="required">Name is required.</div>
+				<div ng-message="md-maxlength">The name has to be less than 50 characters long.</div>
+			</div>
+		</md-input-container>
+		<div layout-gt-sm="row">
+			<md-switch class="md-primary" md-no-ink aria-label="not applicable allowed" ng-model="vm.test.allowNotApplicable">
+    			'Not applicable' allowed
+  			</md-switch>
+  			<md-switch class="md-primary" md-no-ink aria-label="has completed date" ng-model="vm.test.hasCompletedDate">
+    			Has completed date
+  			</md-switch>
+  		 	<md-switch class="md-primary" md-no-ink aria-label="has expiration date" ng-model="vm.test.hasExpirationDate">
+    			Has expiration date
+  			</md-switch>
+  		</div>
+	</div>
+	
+	</md-dialog-content>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

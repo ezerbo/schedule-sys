@@ -41,6 +41,7 @@ public class TestUtil {
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.id(id)
 				.username(username)
+				.password(password)
 				.userRole(userRole)
 				.build();
 		return viewModel;
@@ -112,11 +113,11 @@ public class TestUtil {
 		return viewModel;
 	}
 	
-	public static TestSubCategoryViewModel aNewTestSubCategoryViewModel(Long id, String name, Long testId){
+	public static TestSubCategoryViewModel aNewTestSubCategoryViewModel(Long id, String name, String testName){
 		TestSubCategoryViewModel viewModel = TestSubCategoryViewModel.builder()
 				.id(id)
 				.name(name)
-				.testId(testId)
+				.testName(testName)
 				.build();
 		return viewModel;
 	}

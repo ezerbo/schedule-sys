@@ -1,11 +1,9 @@
 package com.rj.schedulesys.view.model;
 
-import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.NotBlank;
 
+import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,14 +11,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestSubCategoryViewModel {
-	
-	private Long id;
+public class UserProfileViewModel {
 
 	@NotBlank
-	@Size(min = 3, max = 50)
-	private String name;
+	private String password;
 	
-	private Long testId;
-
+	@NotBlank
+	private String activationToken;
 }

@@ -1,0 +1,41 @@
+<div ng-controller="TestsController as vm">
+	
+	<md-toolbar class="md-table-toolbar md-default">
+	  <div class="md-toolbar-tools">
+	    <span>Tests</span>
+	  </div>
+	
+	</md-toolbar>
+	
+	 <div layout="left start">
+	  	<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+      		<md-button class="md-raised md-primary" ui-sref="home.tests.new">Add</md-button>
+      		<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.tests.edit({id:vm.selected[0].id})">Edit</md-button>
+      		<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.tests-details({id:vm.selected[0].id})">Details</md-button>
+      		<md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+    	</section>
+	</div>
+	<md-table-container>
+	  <table md-table md-table md-row-select ng-model="vm.selected" >
+	    <thead md-head md-order="vm.query.order">
+	      <tr md-row>
+	        <th md-column md-order-by="name">
+	        	<span>Name</span>
+	        </th>
+	        <th md-column>Not applicable allowed</th>
+	        <th md-column>Has completed date</th>
+	        <th md-column>Has expiration date</th>
+	      </tr>
+	    </thead>
+	    <tbody md-body>
+	      <tr md-row md-select="test" md-select-id="name"  md-auto-select ng-repeat="test in vm.testsOnCurrentPage track by test.id">
+	        <td md-cell>{{test.name}}</td>
+	        <td md-cell>{{test.allowNotApplicable ? 'YES' : 'NO'}}</td>
+	        <td md-cell>{{test.hasCompletedDate ? 'YES' : 'NO'}}</td>
+	        <td md-cell>{{test.hasExpirationDate ? 'YES' : 'NO'}}</td>
+	      </tr>
+	    </tbody>
+	  </table>
+	</md-table-container>
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allTests.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+</div>

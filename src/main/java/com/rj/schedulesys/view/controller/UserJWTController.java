@@ -34,9 +34,9 @@ public class UserJWTController {
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<?> authorize(@RequestBody ScheduleSysUserViewModel loginDTO, HttpServletResponse response) {
-
-        UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+    	//TODO Update this to use another DTO for login
+        UsernamePasswordAuthenticationToken authenticationToken = null; /*=
+            new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());*/
         
         Authentication authentication ;
         

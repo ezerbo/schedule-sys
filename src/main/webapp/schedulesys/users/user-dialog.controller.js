@@ -17,12 +17,11 @@
 		vm.getSelectedUser = getSelectedUser;
 		vm.repassword = null;
 		
-		
-		
 		vm.myModel = {};
 		vm.user = {
 				id: null,
 				username: null,
+				emailAddres: null,
 				userRole: null
 			
 		};
@@ -35,16 +34,14 @@
 			vm.getSelectedUser();
 		}
 		
-		
-		
 		function getSelectedUser(){
-			usersService.get({id : $stateParams.id},function(result){
+			usersService.get({id : $stateParams.id}, function(result){
 				vm.user = result;
-				
 			});
 		}
+		
 		function createOrUpdateuser(){
-			console.log('User to be created : ' + angular.toJson(vm.user));
+			console.log("User to be created : ", angular.toJson(vm.user))
 			if(vm.user.id === null){
 				usersService.save(vm.user, onCreateSucess, onCreateFailure);
 			}else{
@@ -54,7 +51,6 @@
 		
 		function onCreateSucess(result){
 			$mdDialog.cancel();
-			$state.go('home.users',{}, {reload: true});
 			vm.showToast('User ' + vm.user.username + ' successfully created', 5000);
 		}
 		
@@ -64,7 +60,6 @@
 		
 		function onUpdateSucess(result){
 			$mdDialog.cancel();
-			$state.go('home.users',{}, {reload: true});
 			vm.showToast('User ' + vm.user.username + ' successfully updated', 5000);
 		}
 		

@@ -29,7 +29,7 @@
 			url:'/{id}/user/edit',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/users/user-dialog-edit.html',
+					templateUrl: 'schedulesys/users/user-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'userDialogController',
 					clickOutsideToClose:true,
@@ -44,6 +44,11 @@
 			url: '/{id}/user/details',
 			templateUrl: 'schedulesys/users/user-details.html',
 			controller: 'userDetailsController'
+		})
+		.state('home.activate-user',{
+			url: '/activate',
+			templateUrl: 'schedulesys/users/activate-user.html',
+			controller: 'UserActivationController'
 		})
 	}
 	

@@ -82,7 +82,6 @@ public class UserServiceTest {
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.username("ezerbo-test")
 				.userRole("This role does not exist")
-				.password("random password")
 				.build();
 		userService.create(viewModel);
 	}
@@ -101,7 +100,6 @@ public class UserServiceTest {
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.username("new-user")
 				.userRole(UserRole.ADMIN_ROLE)
-				.password("secured-password")
 				.build();
 		viewModel = userService.create(viewModel);
 		assertNotNull(viewModel.getId());

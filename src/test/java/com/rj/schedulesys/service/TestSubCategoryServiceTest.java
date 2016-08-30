@@ -69,7 +69,7 @@ public class TestSubCategoryServiceTest {
 		expectedException.expectMessage("name size must be between 3 and 50");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "SU", "Some random test name"
+				null, "SU", 0L
 				);
 		
 		testSubCategoryService.create(viewModel);
@@ -82,7 +82,7 @@ public class TestSubCategoryServiceTest {
 		expectedException.expectMessage("name size must be between 3 and 50");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "Some random test name which lentgth's should be greater than 50 chars", "Some random test name"
+				null, "Some random test name which lentgth's should be greater than 50 chars", 0L
 				);
 		
 		testSubCategoryService.create(viewModel);
@@ -93,10 +93,10 @@ public class TestSubCategoryServiceTest {
 	public void test_create_WithNonExsitingParentTest(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("No test found with name : This parent test does not exists");
+		expectedException.expectMessage("No test found with name : 0");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "sub-test-name", "This parent test does not exists"
+				null, "sub-test-name", 0L
 				);
 		
 		testSubCategoryService.create(viewModel);
@@ -109,7 +109,7 @@ public class TestSubCategoryServiceTest {
 		expectedException.expectMessage("A sub category with name : ANNUAL PPD already exists for test with name : TB TEST");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "ANNUAL PPD", "TB TEST"
+				null, "ANNUAL PPD", 3L
 				);
 		
 		testSubCategoryService.create(viewModel);
@@ -119,7 +119,7 @@ public class TestSubCategoryServiceTest {
 	public void test_create_WithExistingParentTest_ThatHasNotTheCategoryBeingCreated(){
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				null, "BRAND-NEW-SUBCAT-1", "TB TEST"
+				null, "BRAND-NEW-SUBCAT-1", 3L
 				);
 		
 		viewModel = testSubCategoryService.create(viewModel);
@@ -134,7 +134,7 @@ public class TestSubCategoryServiceTest {
 		expectedException.expectMessage("No test sub category found with id : 0");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				0L, "BRAND-NEW-SUBCAT-1", "TB TEST"
+				0L, "BRAND-NEW-SUBCAT-1", 3L
 				);
 		
 		testSubCategoryService.update(viewModel);
@@ -148,7 +148,7 @@ public class TestSubCategoryServiceTest {
 		expectedException.expectMessage("A sub category with name : 2-STEP PPD already exists for test with name : TB TEST");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				1L, "2-STEP PPD", "TB TEST"
+				1L, "2-STEP PPD", 3L
 				);
 		
 		testSubCategoryService.update(viewModel);
@@ -159,7 +159,7 @@ public class TestSubCategoryServiceTest {
 	public void test_update_WithExistingTestSubCategory_AndNewSubCategoryName(){
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
-				1L, "BRAND-NEW-NAME", "TB TEST"
+				1L, "BRAND-NEW-NAME", 3L
 				);
 		
 		testSubCategoryService.update(viewModel);

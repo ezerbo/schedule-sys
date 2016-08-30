@@ -1,0 +1,29 @@
+<md-dialog aria-label="Create or update a License" style="width:800px;" ng-controller="TestSubCategoryDialogController as vm">
+  <form name="licenseForm" ng-submit="vm.createOrUpdate()">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>Create or edit a Sub category</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="vm.cancel()">
+          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content style="max-width:800px;max-height:810px;" class="md-padding">
+	<div layout-gt-xs="column">
+		<md-input-container class="md-block" flex-gt-sm>
+			<label>Name</label> <input md-maxlength="100" required name="number"  ng-model="vm.subCategory.name" />
+			<div ng-messages="licenseForm.number.$error">
+				<div ng-message="required">sub category name is required.</div>
+				<div ng-message="md-maxlength">The Sub category name has to be less than 100 characters long.</div>
+			</div>
+		</md-input-container>
+	</div>
+    <md-dialog-actions layout="row">
+      <span flex></span>
+      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+    </md-dialog-actions>
+    </md-dialog-content>
+  </form>
+</md-dialog>
