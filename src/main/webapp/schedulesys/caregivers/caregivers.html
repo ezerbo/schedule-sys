@@ -30,7 +30,7 @@
 	      </tr>
 	    </thead>
 	    <tbody md-body>
-	      <tr md-row md-select="caregiver" md-select-id="name"  md-auto-select ng-repeat="caregiver in vm.careGiversOnCurrentPage track by caregiver.id">
+	      <tr md-row md-select="caregiver" md-select-id="name"  md-auto-select ng-repeat="caregiver in vm.careGiversOnCurrentPage track by caregiver.id" ng-class="{'selected' : vm.lastDayDateCheck(caregiver)}">
 	        <td md-cell>{{caregiver.firstName}}</td>
 	        <td md-cell>{{caregiver.lastName}}</td>
 	        <td md-cell>{{caregiver.positionName}}</td>

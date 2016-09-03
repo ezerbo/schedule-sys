@@ -25,7 +25,7 @@
 				limit: 5,
 				page: 1	
 				};
-		
+		vm.dateCheck = dateCheck;
 		loadAll();
 		getSelectedNurse();
 		getLicenses();
@@ -106,5 +106,19 @@
 				vm.allLicenses = result;
 			})
 		}
+		
+		function dateCheck(license){
+			vm.checkDate1 = new Date();
+			vm.checkDate2 = new Date(license.expirationDate);
+			
+			if(vm.checkDate1 > vm.checkDate2){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		
 	}
 })();

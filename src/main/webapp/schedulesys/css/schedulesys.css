@@ -7,6 +7,14 @@ body {
 	margin-top: 0px; 
 }
 
+.selected{
+	background-color : #ff0066;
+}
+
+.selectedlicense{
+	
+	background-color : green;
+}
 .div-login {
 	padding-top: 100px;
 }

@@ -22,6 +22,7 @@
 		vm.onPaginate = onPaginate;
 		vm.sliceFacilitiesArray = sliceFacilitiesArray;
 		vm.showFacilityDialog = showFacilityDialog;
+	
 		
 		vm.query = {
 				order: 'name',
@@ -102,7 +103,6 @@
 				clickOutsideToClose:true
 			});
 		};
-	
 	}
 	
 })();

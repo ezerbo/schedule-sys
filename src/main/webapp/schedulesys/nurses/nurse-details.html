@@ -41,7 +41,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row md-select="license" md-select-id="name"  md-auto-select ng-repeat="license in vm.licensesOnCurrentPage track by license.id">
+		      <tr md-row md-select="license" md-select-id="name"  md-auto-select ng-repeat="license in vm.licensesOnCurrentPage track by license.id" ng-class="{'selected' : vm.dateCheck(license)}">
 		        <td md-cell>{{license.number}}</td>
 		        <td md-cell>{{license.expirationDate}}</td>
 		      </tr>
