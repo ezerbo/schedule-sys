@@ -30,8 +30,8 @@
 	      <tr md-row md-select="facility" md-select-id="name"  md-auto-select ng-repeat="facility in vm.facilitiesOnCurrentPage track by facility.id">
 	        <td md-cell>{{facility.name}}</td>
 	        <td md-cell>{{facility.address}}</td>
-	        <td md-cell>{{facility.phoneNumber}}</td>
-	        <td md-cell>{{facility.fax}}</td>
+	        <td md-cell>{{facility.phoneNumber | tel}}</td>
+	        <td md-cell>{{facility.fax | tel}}</td>
 	      </tr>
 	    </tbody>
 	  </table>
