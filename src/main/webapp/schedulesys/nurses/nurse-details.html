@@ -11,11 +11,11 @@
 			<span> Date of hire : {{vm.nurse.dateOfHire}}</span><br>
 			<span> Rehire date : {{vm.nurse.rehireDate}}</span><br>
 			<span> Last day of work : {{vm.nurse.lastDayOfWork}}</span><br>
-			<span> Primary phone # : {{vm.nurse.phoneNumbers[0].number}}</span><br> 
+			<span> Primary phone # : {{vm.nurse.phoneNumbers[0].number | tel}}</span><br> 
 		    <span> Primary phone type : {{vm.nurse.phoneNumbers[0].numberType}}</span><br>
-		    <span> Secondary phone # : {{vm.nurse.phoneNumbers[1].number}}</span><br> 
+		    <span> Secondary phone # : {{vm.nurse.phoneNumbers[1].number | tel}}</span><br> 
 		    <span> Secondary phone type : {{vm.nurse.phoneNumbers[1].numberType}}</span><br> 
-		    <span> Other phone # : {{vm.nurse.phoneNumbers[2].number}}</span><br> 
+		    <span> Other phone # : {{vm.nurse.phoneNumbers[2].number | tel}}</span><br> 
 		    <span> Other phone type : {{vm.nurse.phoneNumbers[2].numberType}}</span><br>  
 			<span> Comment : {{vm.nurse.comment}}</span>
 		</div>
@@ -41,7 +41,7 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row md-select="license" md-select-id="name"  md-auto-select ng-repeat="license in vm.licensesOnCurrentPage track by license.id">
+		      <tr md-row md-select="license" md-select-id="name"  md-auto-select ng-repeat="license in vm.licensesOnCurrentPage track by license.id" ng-class="{'selected' : vm.dateCheck(license)}">
 		        <td md-cell>{{license.number}}</td>
 		        <td md-cell>{{license.expirationDate}}</td>
 		      </tr>
