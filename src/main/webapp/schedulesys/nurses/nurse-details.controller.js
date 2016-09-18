@@ -4,37 +4,40 @@
 		.module('scheduleSys')
 		.controller('NurseDetailsController', NurseDetailsController);
 	
-	NurseDetailsController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog',
-	                                     '$mdToast', 'NursesService','NurseLicenseService','LicenseService'];
+	NurseDetailsController.$Inject = ['$state', '$scope', '$stateParams', '$mdDialog', '$mdToast',
+	                                  'NursesService','NurseLicenseService','LicenseService', 'NurseTestService'];
 	
-	function NurseDetailsController($state,$scope, $stateParams, $mdDialog, $mdToast, NursesService,NurseLicenseService,LicenseService){
+	function NurseDetailsController($state, $scope, $stateParams, $mdDialog, $mdToast, NursesService, NurseLicenseService, NurseTestService, LicenseService){
 		var vm = this;
 		vm.allLicenses = null;
+		vm.allTests = [];
 		vm.licensesOnCurrentPage = null;
-		vm.loadAll = loadAll;
-		vm.showConfirm = showConfirm;
+		vm.testsOnCurrentPage = null;
+		vm.loadAllLicenses = loadAllLicenses;
+		vm.showLicenseDelConfirm = showLicenseDelConfirm;
 		vm.getSelectedNurse = getSelectedNurse;
-		vm.getLicenses = getLicenses;
 		
-		vm.selected = [];
+		vm.loadAllTests = loadAllTests;
+		
+		vm.selectedLicense = [];
+		vm.selectedTest = [];
 		vm.editOrDelete = true;
 		vm.showToast = showToast;
-		vm.onPaginate = onPaginate;
-		vm.sliceLicenseArray = sliceLicenseArray;
-		vm.query = {
-				limit: 5,
-				page: 1	
-				};
+		vm.onLicenseTablePaginate = onLicenseTablePaginate;
+		vm.sliceArray = sliceArray;
+		vm.licenseQuery = {limit: 5, page: 1};
+		vm.testQuery = {limit: 5, page: 1};
 		
-		loadAll();
+		loadAllLicenses();
 		getSelectedNurse();
-		getLicenses();
 		
-		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
-			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
+		loadAllTests();
+		
+		$scope.$watchCollection('vm.selectedLicense', function(oldValue, newValue) {
+			vm.editOrDelete = (vm.selectedLicense.length === 0) ? true : false;
 		});
 		
-		function showConfirm(ev) {
+		function showLicenseDelConfirm(ev) {
 			var confirm = $mdDialog.confirm()
 					.title('Delete a License')
 					.textContent('Are you sure you want to delete this License ?')
@@ -43,38 +46,35 @@
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				LicenseService.remove(
-						{id:vm.selected[0].id},
-						onDeleteSuccess,
-						onDeleteFailure
-						);
+				LicenseService.remove({id:vm.selectedLicense[0].id}, function() {
+					vm.licensesOnCurrentPage.splice(vm.licensesOnCurrentPage.indexOf(vm.selectedLicense[0]), 1);
+					vm.allLicenses.splice(vm.allLicenses.indexOf(vm.selecSelected[0]), 1);
+					vm.editOrDelete = true;
+					vm.showToast('License ' + vm.selectedLicense[0].number + ' successfully deleted', 5000);
+				}, function() {
+					vm.showToast('License ' + vm.selectedLicense[0].number 
+							+ ' could not be deleted ', 5000);
+				});
 			}, function() {
 				console.log('Keep this one ...');
 			});
 		};
-		function loadAll(){
-			NurseLicenseService.query({id: $stateParams.id}, onLoadAllSuccess, onLoadAllError);
+		
+		function loadAllLicenses(){
+			NurseLicenseService.query({id: $stateParams.id}, function(data){
+				vm.allLicenses = data;
+				vm.licensesOnCurrentPage = vm.sliceArray(vm.allLicenses, vm.licenseQuery);
+			}, function() {
+				console.log('Error status : ' + status);
+			});
 		}
 		
-		function onLoadAllSuccess(data){
-			vm.allLicenses = data;
-			vm.licensesOnCurrentPage = vm.sliceLicenseArray();
-		}
-		
-		function onLoadAllError(status){
-			console.log('Error status : ' + status);
-		}
-
-		function onDeleteSuccess (){
-			vm.licensesOnCurrentPage.splice(vm.licensesOnCurrentPage.indexOf(vm.selected[0]), 1);
-			vm.allLicenses.splice(vm.allLicenses.indexOf(vm.selected[0]), 1);
-			vm.editOrDelete = true;
-			vm.showToast('License ' + vm.selected[0].number + ' successfully deleted', 5000);
-		}	
-		
-		function onDeleteFailure (){
-			vm.showToast('License ' + vm.selected[0].number 
-					+ ' could not be deleted ', 5000);
+		function loadAllTests(){
+			NurseTestService.query({id: $stateParams.id}, function(data){
+				vm.allTests = data;
+				console.log('tests : ' + angular.toJson(data));
+				vm.testsOnCurrentPage = vm.sliceArray(vm.allTests, vm.testQuery);
+			});
 		}
 		
 		function showToast(textContent, delay){
@@ -82,17 +82,16 @@
 					$mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
-					.hideDelay(delay)
-					);
+					.hideDelay(delay));
 		}
 		
-		function onPaginate(){
-			vm.licensesOnCurrentPage = vm.sliceLicenseArray();
+		function onLicenseTablePaginate(){
+			vm.licensesOnCurrentPage = vm.sliceArray(vm.allLicense, vm.licenseQuery);
 		}
 		
-		function sliceLicenseArray(){
-			return vm.allLicenses.slice(
-					5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
+		function sliceArray(list, paginationObj){
+			return list.slice(
+					5 * (paginationObj - 1), (paginationObj.limit * paginationObj.page));
 		}
 		
 		function getSelectedNurse(){
@@ -101,10 +100,5 @@
 			})
 		}
 		
-		function getLicenses(){
-			NurseLicenseService.query({id:$stateParams.id}, function(result) {
-				vm.allLicenses = result;
-			})
-		}
 	}
 })();
