@@ -27,12 +27,25 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserService {
 	
-	private @Autowired UserRoleDao userRoleDao;
-	private @Autowired ScheduleSysUserDao userDao;
+	private UserRoleDao userRoleDao;
+	private ScheduleSysUserDao userDao;
 	
-	private @Autowired ObjectValidator<ScheduleSysUserViewModel> validator;
+	private DozerBeanMapper dozerMapper;
 	
-	private @Autowired DozerBeanMapper dozerMapper;
+	private ObjectValidator<ScheduleSysUserViewModel> userValidator;
+	private ObjectValidator<UserProfileViewModel> userProfileValidator;
+	
+	
+	@Autowired
+	public UserService(UserRoleDao userRoleDao, ScheduleSysUserDao userDao,
+			ObjectValidator<ScheduleSysUserViewModel> userValidator, ObjectValidator<UserProfileViewModel> userProfileValidator,
+			DozerBeanMapper dozerMapper) {
+		this.userRoleDao = userRoleDao;
+		this.userDao = userDao;
+		this.dozerMapper = dozerMapper;
+		this.userValidator = userValidator;
+		this.userProfileValidator = userProfileValidator;
+	}
 	
 	/**
 	 * @param viewModel : user to be created
@@ -112,7 +125,7 @@ public class UserService {
 	 * @return
 	 */
 	public ScheduleSysUserViewModel createOrUpdate(ScheduleSysUserViewModel viewModel){
-		validator.validate(viewModel);
+		userValidator.validate(viewModel);
 		UserRole userRole = validateUserRole(viewModel.getUserRole());
 		ScheduleSysUser user = null; 
 		if(viewModel.getId() != null){
@@ -166,6 +179,7 @@ public class UserService {
 	@Transactional
 	public void activatUserAccount(UserProfileViewModel viewModel) throws Exception{
 		Assert.notNull(viewModel, "User profile needed");
+		userProfileValidator.validate(viewModel);
 		log.info("Fetching user with token : {}", viewModel.getActivationToken());
 		ScheduleSysUser user = userDao.findByActivationToken(viewModel.getActivationToken());
 		if(user == null){

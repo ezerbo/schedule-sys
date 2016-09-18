@@ -21,7 +21,11 @@ import com.rj.schedulesys.domain.NurseTest;
 import com.rj.schedulesys.domain.NurseTestPK;
 import com.rj.schedulesys.domain.Test;
 import com.rj.schedulesys.domain.TestSubCategory;
+import com.rj.schedulesys.view.model.GetNurseTestViewModel;
 import com.rj.schedulesys.view.model.NurseTestViewModel;
+import com.rj.schedulesys.view.model.NurseViewModel;
+import com.rj.schedulesys.view.model.TestSubCategoryViewModel;
+import com.rj.schedulesys.view.model.TestViewModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -145,16 +149,24 @@ public class NurseTestService {
 	 * @return
 	 */
 	@Transactional
-	public List<NurseTestViewModel> findAllByNurse(Long nurseId) {
+	public List<GetNurseTestViewModel> findAllByNurse(Long nurseId) {
 
 		log.info("Finding all tests for nurse with id : {}", nurseId);
 
-		List<NurseTestViewModel> viewModels = new LinkedList<>();
+		List<GetNurseTestViewModel> viewModels = new LinkedList<>();
 		
 		List<NurseTest> nurseTests = nurseTestDao.findAllByNurse(nurseId);
 		
-		for (NurseTest userTest : nurseTests) {
-			viewModels.add(dozerMapper.map(userTest, NurseTestViewModel.class));
+		for (NurseTest nurseTest : nurseTests) {
+			GetNurseTestViewModel viewModel = GetNurseTestViewModel.builder()
+					.nurse(dozerMapper.map(nurseTest.getNurse(), NurseViewModel.class))
+					.test(dozerMapper.map(nurseTest.getTest(), TestViewModel.class))
+					.testSubCategory(dozerMapper.map(nurseTest.getTestSubCategory(), TestSubCategoryViewModel.class))
+					.expirationDate(nurseTest.getExpirationDate())
+					.completedDate(nurseTest.getCompletedDate())
+					.status(nurseTest.getStatus())
+					.build();
+			viewModels.add(viewModel);
 		}
 		
 		log.info("NurseTests found : {}", viewModels);

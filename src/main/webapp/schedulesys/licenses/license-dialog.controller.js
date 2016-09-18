@@ -42,6 +42,8 @@
 					vm.showToast(result.data, 5000);
 				});
 			}else{
+				console.log('Nurse ID : ' + $stateParams.id);
+				console.log('License ID : ' + $stateParams.licenseId);
 				NurseLicenseService.update({id:$stateParams.id, licenseId: $stateParams.licenseId},
 						vm.license, function(result) {
 							vm.showToast("License successfully updated", 5000);

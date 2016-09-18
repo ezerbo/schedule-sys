@@ -149,7 +149,9 @@
 		function createFilterFor(query) {
 			var lowercaseQuery = angular.lowercase(query);
 			return function filterFn(employee) {
-				return (employee.employeeName.indexOf(query) === 0);
+				var lowercaseEmployeeName = angular.lowercase(employee.employeeName);
+				return (lowercaseEmployeeName.indexOf(lowercaseQuery) === 0);
+				//return (employee.employeeName.indexOf(query) === 0);
 			};
 		}
 		

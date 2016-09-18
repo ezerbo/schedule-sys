@@ -37,7 +37,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="EMPLOYEE")
-@ToString(exclude = {"phoneNumbers", "schedules"})
+@ToString(exclude = {"phoneNumbers", "schedules", "position", "nurse", "careGiver"})
 @EqualsAndHashCode(exclude = {"careGiver", "nurse"})
 public class Employee implements Serializable {
 	

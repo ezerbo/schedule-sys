@@ -10,12 +10,13 @@
       <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurses.edit({id:vm.selected[0].id})">Edit</md-button>
       <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details({id:vm.selected[0].id})">Details</md-button>
       <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+      <md-button class="md-raised md-warn" ng-click="vm.licenseCheck({id:vm.selected[0].id})" ng-disabled="vm.editOrDelete">License-Check</md-button>
     </section>
 	  </div>
 	</md-toolbar>
 
 	<md-table-container>
-	  <table md-table md-table md-row-select ng-model="vm.selected" >
+	  <table md-table md-table md-row-select ng-model="vm.selected">
 	    <thead md-head md-order="vm.query.order">
 	      <tr md-row>
 	        <th md-column md-order-by="name">
@@ -30,11 +31,11 @@
 	      </tr>
 	    </thead>
 	    <tbody md-body>
-	      <tr md-row md-select="nurse" md-select-id="name"  md-auto-select ng-repeat="nurse in vm.nursesOnCurrentPage track by nurse.id">
+	      <tr md-row md-select="nurse" md-select-id="name"  md-auto-select ng-repeat="nurse in vm.nursesOnCurrentPage" ng-class="{'selected' : vm.lastDayDateCheck(nurse)}">
 	        <td md-cell>{{nurse.firstName}}</td>
 	        <td md-cell>{{nurse.lastName}}</td>
 	        <td md-cell>{{nurse.positionName}}</td>
-	        <td md-cell>{{nurse.phoneNumbers[0].number}}</td>
+	        <td md-cell>{{nurse.phoneNumbers[0].number | tel}}</td>
 	         <td md-cell>{{nurse.phoneNumbers[0].numberType}}</td>
 	      </tr>
 	    </tbody>

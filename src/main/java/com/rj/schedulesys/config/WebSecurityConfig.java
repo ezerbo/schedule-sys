@@ -20,7 +20,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.rj.schedulesys.security.AuthoritiesConstants;
 import com.rj.schedulesys.security.Http401UnauthorizedEntryPoint;
 import com.rj.schedulesys.security.PBKDF2PasswordEncoder;
 import com.rj.schedulesys.security.jwt.JWTConfigurer;

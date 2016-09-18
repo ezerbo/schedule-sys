@@ -1,14 +1,23 @@
 package com.rj.schedulesys.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import lombok.ToString;
 
 
 /**
@@ -21,6 +30,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="NURSE_TEST")
+@ToString(exclude = {"nurse", "test", "testSubCategory"})
 public class NurseTest implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

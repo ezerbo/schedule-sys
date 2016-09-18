@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 /**
@@ -30,6 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="POSITION")
+@ToString(exclude = "employees")
 public class Position implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

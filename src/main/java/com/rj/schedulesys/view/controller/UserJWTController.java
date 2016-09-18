@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rj.schedulesys.security.jwt.JWTConfigurer;
 import com.rj.schedulesys.security.jwt.TokenProvider;
 import com.rj.schedulesys.view.model.JWTToken;
-import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
+import com.rj.schedulesys.view.model.LoginViewModel;
 
 @RestController
 @RequestMapping("/authenticate")
@@ -33,10 +33,10 @@ public class UserJWTController {
     private AuthenticationManager authenticationManager;
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity<?> authorize(@RequestBody ScheduleSysUserViewModel loginDTO, HttpServletResponse response) {
+    public ResponseEntity<?> authorize(@RequestBody LoginViewModel loginDTO, HttpServletResponse response) {
     	//TODO Update this to use another DTO for login
-        UsernamePasswordAuthenticationToken authenticationToken = null; /*=
-            new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());*/
+        UsernamePasswordAuthenticationToken authenticationToken =
+            new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
         
         Authentication authentication ;
         

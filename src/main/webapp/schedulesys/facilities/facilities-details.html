@@ -6,8 +6,8 @@
 	</md-toolbar>
 		<div style="text-align: left" layout-padding layout-align="left start">
 			<span>Address : {{vm.facility.address}}</span><br>
-			<span>Phone number : {{vm.facility.phoneNumber}}</span><br>
-			<span>Fax : {{vm.facility.fax}}</span>
+			<span>Phone number : {{vm.facility.phoneNumber | tel}}</span><br>
+			<span>Fax : {{vm.facility.fax | tel}}</span>
 		</div>
 	<section layout="left" layout-align="left start" >
       <md-button class="md-raised md-primary" ui-sref="home.facilities-scheduling({id:vm.facility.id})">Schedules</md-button>
@@ -37,8 +37,8 @@
 		      <tr md-row md-select="staffMember" md-select-id="name"  md-auto-select ng-repeat="staffMember in vm.staffMembersOnCurrentPage track by staffMember.id">
 		        <td md-cell>{{staffMember.firstName}} {{staffMember.lastName}}</td>
 		        <td md-cell>{{staffMember.title}}</td>
-		        <td md-cell>{{staffMember.phoneNumber}}</td>
-		        <td md-cell>{{staffMember.fax}}</td>
+		        <td md-cell>{{staffMember.phoneNumber | tel}}</td>
+		        <td md-cell>{{staffMember.fax | tel}}</td>
 		      </tr>
 		    </tbody>
 		  </table>

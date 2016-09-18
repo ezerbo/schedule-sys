@@ -1,16 +1,35 @@
-<div>
-	<md-card style="height: auto;">
-	    <md-toolbar>
-	      <md-fab-actions class="md-toolbar-tools">
-	        <md-button aria-label="home" ui-sref="home.facilities">Home</md-button>
-	        <md-button aria-label="facilities" ui-sref="home.facilities">Facilities</md-button>
-	        <md-button aria-label="nurses" ui-sref="home.nurses">Nurses</md-button>
-	        <md-button aria-label="care givers" ui-sref="home.caregivers">Care givers</md-button>
-	        <md-button aria-label="tests" ui-sref="home.tests">Tests</md-button>
-	        <span flex></span>
-	        <md-button aria-label="users" ui-sref="home.users">Users</md-button>
-	      </md-fab-actions>
-	    </md-toolbar>
+<div >
+	<md-card style="margin: 0px;width: 100%;position: absolute;
+    left: 0px;
+    right:0px;"">
+	    <nav class="navbar navbar-inverse" style="margin: 0px;width: 100%;">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">RJ-HealthCare-Services</a>
+    </div>
+    <div class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class=""><a aria-label="home" class="hidden-xs" ui-sref="home.facilities">Home</a>
+        <a ui-sref="home.facilities" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Home</a></li>
+        <li class=""><a aria-label="facilities" class="hidden-xs" ui-sref="home.facilities">Facilities</a>
+        <a ui-sref="home.facilities" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Facilities</a></li>
+        <li class=""><a aria-label="nurses" class="hidden-xs" ui-sref="home.nurses">Nurses</a>
+        <a ui-sref="home.nurses" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Nurses</a></li>
+        <li class=""><a aria-label="care givers" class="hidden-xs" ui-sref="home.caregivers">Care-Givers</a>
+        <a ui-sref="home.caregivers" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Care-Givers</a></li>
+        <li class=""><a aria-label="tests" class="hidden-xs" ui-sref="home.tests">Tests</a>
+        <a ui-sref="home.tests" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Tests</a></li>
+        <li class=""><a aria-label="users" class="hidden-xs" ui-sref="home.users">Users</a>
+        <a ui-sref="home.users" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Users</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 		<div ui-view></div>
 	</md-card>
 </div>

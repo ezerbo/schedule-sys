@@ -23,6 +23,7 @@
 		vm.selectedTest = [];
 		vm.editOrDelete = true;
 		vm.showToast = showToast;
+
 		vm.onLicenseTablePaginate = onLicenseTablePaginate;
 		vm.sliceArray = sliceArray;
 		vm.licenseQuery = {limit: 5, page: 1};

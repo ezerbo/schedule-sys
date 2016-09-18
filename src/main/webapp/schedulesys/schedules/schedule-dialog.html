@@ -1,4 +1,4 @@
-<md-dialog aria-label="Create or edit a schedule"  style="width:1000px;" ng-controller="FacilitySchedulingDialogController as vm">
+<md-dialog aria-label="Create or edit a schedule"  style="width:1000px;text-align: center;" ng-controller="FacilitySchedulingDialogController as vm">
   <form name="facilityForm" ng-submit="vm.createOrUpdateSchedule()">
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -23,7 +23,7 @@
 		        </md-item-template>
 	        	<md-not-found>No employee matching "{{vm.searchText}}" were found.</md-not-found>
 	        </md-autocomplete>
-	        <div>
+	        <div class="md-padding">
 	  			<md-datepicker ng-model="vm.schedule.scheduleDate" md-placeholder="Schedule date" ></md-datepicker>
 	        </div>
   		</div>

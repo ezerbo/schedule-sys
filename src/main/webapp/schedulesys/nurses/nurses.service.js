@@ -4,18 +4,12 @@
 	angular
 		.module('scheduleSys')
 		.factory('NursesService', NursesService)
-		.factory('NurseLicenseService', NurseLicenseService).service('popupService',function($window){
-		    this.showPopup=function(message){
-		        return $window.confirm(message);
-		    }
-		})
-	
-	
+		.factory('NurseTestService', NurseTestService)
+		.factory('NurseLicenseService', NurseLicenseService);
 	
 	NursesService.$Inject = ['$resource'];
 	
 	function NursesService($resource) {
-		console.log('calling nurses service');
 		var resourceUrl = '/nurses/:id';
 		
 		return $resource(resourceUrl, {}, {
@@ -61,7 +55,7 @@
 		
 	}
 	
-NurseLicenseService.$Inject = ['$resource'];
+	NurseLicenseService.$Inject = ['$resource'];
 	
 	function NurseLicenseService($resource){
 		var resourceUrl = '/nurses/:id/licenses/:licenseId';
@@ -86,4 +80,31 @@ NurseLicenseService.$Inject = ['$resource'];
             }
 		});
 	}
+	
+	NurseTestService.$Inject = ['$resource'];
+	
+	function NurseTestService($resource){
+		var resourceUrl = '/nurses/:id/tests/:testId'
+			return $resource(resourceUrl, {}, {
+				'query': { method: 'GET', isArray: true},
+				'save': {
+					method: "POST", 
+					 transformResponse: function (data) {
+		                    if (data) {
+		                        data = angular.toJson(data);
+		                    }
+		                    return data;
+		                }
+				},
+				'update': { method:'PUT',
+	            	transformResponse: function (data) {
+	                    if (data) {
+	                        data = angular.toJson(data);
+	                    }
+	                    return data;
+	                }
+	            }
+			});
+	}
+	
 })();

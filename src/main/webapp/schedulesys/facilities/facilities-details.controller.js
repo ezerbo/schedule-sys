@@ -68,9 +68,7 @@
 		}
 
 		function onDeleteSuccess (){
-			vm.staffMembersOnCurrentPage.splice(vm.staffMembersOnCurrentPage.indexOf(vm.selected[0]), 1);
-			vm.allStaffMembers.splice(vm.allStaffMembers.indexOf(vm.selected[0]), 1);
-			vm.editOrDelete = true;
+			$state.go($state.$current, {}, {reload:true});
 			vm.showToast('Staff-Member ' + vm.selected[0].firstName + ' successfully deleted', 5000);
 		}	
 		

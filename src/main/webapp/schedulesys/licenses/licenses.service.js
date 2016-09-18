@@ -11,7 +11,6 @@
 	LicenseService.$Inject = ['$resource'];
 	
 	function LicenseService($resource) {
-		console.log('calling nurse license service');
 		var resourceUrl = '/licenses/:id';
 		
 		return $resource(resourceUrl, {}, {

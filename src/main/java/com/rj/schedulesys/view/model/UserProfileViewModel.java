@@ -1,5 +1,7 @@
 package com.rj.schedulesys.view.model;
 
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import groovy.transform.builder.Builder;
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class UserProfileViewModel {
 
 	@NotBlank
+	@Size(min = 8, max = 20)
 	private String password;
 	
 	@NotBlank

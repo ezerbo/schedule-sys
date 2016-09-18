@@ -22,6 +22,7 @@ import com.rj.schedulesys.service.NurseTestService;
 import com.rj.schedulesys.service.PhoneNumberService;
 import com.rj.schedulesys.service.TestService;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
+import com.rj.schedulesys.view.model.GetNurseTestViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
 import com.rj.schedulesys.view.model.NurseTestViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
@@ -336,7 +337,7 @@ public class NurseController {
 		return new ResponseEntity<>("Test successfully added", HttpStatus.CREATED);
 	}
 	
-	@RequestMapping(value = "/{id}/tests", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}/tests", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAllTests(@PathVariable Long id){
 		
 		log.info("Fetching all test for nurse with id", id);
@@ -346,7 +347,7 @@ public class NurseController {
 			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		
-		List<NurseTestViewModel> viewModels = nurseTestService.findAllByNurse(id);
+		List<GetNurseTestViewModel> viewModels = nurseTestService.findAllByNurse(id);
 		
 		if(viewModels.isEmpty()){
 			log.warn("No test found for nurse with id : {}", id);

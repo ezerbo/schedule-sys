@@ -6,14 +6,16 @@
 		.module('scheduleSys')
 		.controller('NursesController', NursesController);
 	
-	NursesController.$Inject = ['$scope', '$state', '$mdToast', '$mdDialog' ,'NursesService'];
+	NursesController.$Inject = ['$scope', '$state', '$mdToast', '$mdDialog' ,'NursesService','NurseLicenseService'];
 	
-	function NursesController($scope, $state, $mdToast, $mdDialog, NursesService){
+	function NursesController($scope, $state, $mdToast, $mdDialog, NursesService,NurseLicenseService){
 		var vm = this;
 		
 		vm.allNurses = null;
+		vm.allLicenses = null;
 		vm.nursesOnCurrentPage = null;
-		
+		vm.showAlert = showAlert;
+		vm.showNoAlert = showNoAlert;
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.selected = [];
@@ -21,7 +23,10 @@
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.sliceNursesArray = sliceNursesArray;
-		vm.showNurseDialog = showNurseDialog;
+		vm.licenseCheck = licenseCheck;
+		vm.lastDayDateCheck = lastDayDateCheck;
+		
+		
 		
 		vm.query = {
 				order: 'name',
@@ -62,8 +67,12 @@
 		
 		function onLoadAllSuccess(data){
 			vm.allNurses = data;
+			
 			vm.nursesOnCurrentPage = vm.sliceNursesArray();
+			
 		}
+		
+		
 		
 		function onLoadAllError(status){
 			console.log('Error status : ' + status);
@@ -92,6 +101,7 @@
 		
 		function onPaginate(){
 			vm.nursesOnCurrentPage = vm.sliceNursesArray();
+			
 		}
 		
 		function sliceNursesArray(){
@@ -100,20 +110,104 @@
 			return slicedArray;
 		}
 		
-		function showNurseDialog(ev) {
-			$mdDialog.show({
-				templateUrl: 'schedulesys/nurses/nurse-dialog.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true
-			})
-			.then(function() {
-				//$scope.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				//$scope.status = 'You cancelled the dialog.';
-			});
-		};
+		
+		console.log("HI");
+		
+		
+		var counter = 0;
+		
+		
+     function lastDayDateCheck(nurse){
+			
+			vm.checkDate1 = new Date();
+			vm.checkDate2 = new Date(nurse.lastDayOfWork);
+			
+			if(vm.checkDate1 > vm.checkDate2){
+				return true;
+			}
+			else{
+				return false;
+			}
+			
+		}
+		
+		
+     
+     function licenseCheck(nurse){
+			
+    		NurseLicenseService.query({id:nurse.id}, function(result) {
+				
+				
+   			 vm.allLicenses = result;
+   				var count = 0;
+        for(var i = 0; i < vm.allLicenses.length ; i++){
+				
+				
+				
+				vm.checkDate3 = new Date();
+				vm.checkDate4 = new Date(vm.allLicenses[i].expirationDate);
+				
+				if(vm.checkDate3 > vm.checkDate4){
+					count ++ ;
+				}
+				
+				
+			}
+   			
+   			if(count >=1){
+   				
+   				showAlert();
+   			}
+   			else{
+   				
+   				showNoAlert();
+   			}
+   				
+   			});
+			
+			
+		}
+			
+			
+			
+     function showAlert(ev) {
+    	    // Appending dialog to document.body to cover sidenav in docs app
+    	    // Modal dialogs should fully cover application
+    	    // to prevent interaction outside of dialog
+    	    $mdDialog.show(
+    	      $mdDialog.alert()
+    	        .parent(angular.element(document.querySelector('#popupContainer')))
+    	        .clickOutsideToClose(true)
+    	        .title('Expired-License')
+    	        .textContent('This Nurse has licenses/license expired.')
+    	        .ariaLabel('License Alert')
+    	        .ok('ok!')
+    	        .targetEvent(ev)
+    	    );
+    	  };
+    	  
+    	  function showNoAlert(ev) {
+      	    // Appending dialog to document.body to cover sidenav in docs app
+      	    // Modal dialogs should fully cover application
+      	    // to prevent interaction outside of dialog
+      	    $mdDialog.show(
+      	      $mdDialog.alert()
+      	        .parent(angular.element(document.querySelector('#popupContainer')))
+      	        .clickOutsideToClose(true)
+      	        .title('Valid License')
+      	        .textContent('This Nurse has valid licenses')
+      	        .ariaLabel('License Alert')
+      	        .ok('ok!')
+      	        .targetEvent(ev)
+      	    );
+      	  };
+				
+			
+		
+		}
 	
-	}
+		
+	
+	
 	
 })();

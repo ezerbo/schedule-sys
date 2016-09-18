@@ -22,6 +22,7 @@
 		vm.onPaginate = onPaginate;
 		vm.slicecareGiversArray = slicecareGiversArray;
 		vm.showcareGiversDialog = showcareGiversDialog;
+		vm.lastDayDateCheck = lastDayDateCheck;
 		
 		vm.query = {
 				order: 'name',
@@ -114,6 +115,21 @@
 			});
 		};
 	
+		
+		   function lastDayDateCheck(caregiver){
+				
+				vm.checkDate1 = new Date();
+				vm.checkDate2 = new Date(caregiver.lastDayOfWork);
+				
+				if(vm.checkDate1 > vm.checkDate2){
+					return true;
+				}
+				else{
+					return false;
+				}
+				
+			}
+		   
 	}
 	
 })();

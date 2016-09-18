@@ -11,7 +11,7 @@
 	function usersController($scope, $state, $mdToast, $mdDialog, usersService){
 		var vm = this;
 		
-		vm.allusers = null;
+		vm.allUsers = null;
 		vm.usersOnCurrentPage = null;
 		
 		vm.loadAll = loadAll;
@@ -20,21 +20,18 @@
 		vm.editOrDelete = true;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
-		vm.sliceusersArray = sliceusersArray;
-		vm.showusersDialog = showusersDialog;
+		vm.sliceUsersArray = sliceUsersArray;
 		
 		vm.query = {
 				order: 'name',
-				limit: 5,
+				limit: 10,
 				page: 1
-		};
+				};
 		
 		loadAll();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
-			console.log('Selected items : ' + angular.toJson(vm.selected));
-			console.log('Edit or delete : ' + vm.editOrDelete);
 		});
 		
 		function showConfirm(ev) {
@@ -46,32 +43,26 @@
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				usersService.remove(
-						{id:vm.selected[0].id},
+				usersService.remove({id:vm.selected[0].id},
 						onDeleteSuccess,
-						onDeleteFailure
-						);
+						onDeleteFailure);
 			}, function() {
 				console.log('Keep this one ...');
 			});
 		};
 		
 		function loadAll(){
-			usersService.query({}, onLoadAllSuccess, onLoadAllError);
-		}
-		
-		function onLoadAllSuccess(data){
-			vm.allusers = data;
-			vm.usersOnCurrentPage = vm.sliceusersArray();
-		}
-		
-		function onLoadAllError(status){
-			console.log('Error status : ' + status);
+			usersService.query({}, function(data) {
+				vm.allUsers = data;
+				vm.usersOnCurrentPage = vm.sliceUsersArray();
+			}, function() {
+				console.log('Error status : ' + status);
+			});
 		}
 		
 		function onDeleteSuccess (){
 			vm.usersOnCurrentPage.splice(vm.usersOnCurrentPage.indexOf(vm.selected[0]), 1);
-			vm.allusers.splice(vm.allusers.indexOf(vm.selected[0]), 1);
+			vm.allUsers.splice(vm.allUsers.indexOf(vm.selected[0]), 1);
 			vm.editOrDelete = true;
 			vm.showToast('User ' + vm.selected[0].username + ' successfully deleted', 5000);
 		}	
@@ -86,34 +77,17 @@
 					$mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
-					.hideDelay(delay)
-					);
+					.hideDelay(delay));
 		}
 		
 		function onPaginate(){
-			vm.usersOnCurrentPage = vm.sliceusersArray();
+			vm.usersOnCurrentPage = vm.sliceUsersArray();
 		}
 		
-		function sliceusersArray(){
-			var slicedArray = vm.allusers.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
-			console.log('Sliced array : ' + angular.toJson(slicedArray));
-			return slicedArray;
+		function sliceUsersArray(){
+			return vm.allUsers.slice(10 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
 		}
 		
-		function showusersDialog(ev) {
-			$mdDialog.show({
-				templateUrl: 'schedulesys/users/user-dialog.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true
-			})
-			.then(function() {
-				//$scope.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				//$scope.status = 'You cancelled the dialog.';
-			});
-		};
-	
 	}
 	
 })();

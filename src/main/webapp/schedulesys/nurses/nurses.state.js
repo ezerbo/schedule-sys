@@ -88,6 +88,20 @@
 				});
 			}]
 		})
+		.state('home.nurse-details.add-test', {
+			url:'/tests',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/nurses/nurse-test-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'NurseTestDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
+		})
 		.state('home.nurses-scheduling', {
 			url:'/nurses/{id}/schedules',
 			data: {

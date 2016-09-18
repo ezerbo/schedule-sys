@@ -70,7 +70,7 @@
 		function getCurrentfacility(){
 			FacilitiesService.get({id:$stateParams.id}, function(result) {
 				vm.facility = result;
-			})
+			});
 		}
 		
 		function getAllSchedulesForCurrentEmployee(){
@@ -88,7 +88,7 @@
 		function getCurrentEmployee(){
 			EmployeesService.get({id:$stateParams.id}, function(result) {
 				vm.employee = result;
-			})
+			});
 		}
 		
 		function showConfirm(ev) {

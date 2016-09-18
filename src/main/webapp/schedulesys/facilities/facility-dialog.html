@@ -25,24 +25,26 @@
 				<div ng-message="md-maxlength">The address has to be less than 50 characters long.</div>
 			</div>
 		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone number</label> 
-			<input type='text' required name="phoneNumber" phone-input ng-model="vm.facility.phoneNumber"/>
-			<div ng-messages="facilityForm.phoneNumber.$error">
-				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
-				<div ng-message="required">Phone number is required.</div>
-				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
-			</div>
-		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Fax</label>
-			<input type='text' required name="fax" phone-input ng-model="vm.facility.fax"/>
-			<div ng-messages="facilityForm.fax.$error">
-			<div ng-message="pattern">(###)-###-#### - Please enter a valid phone number.</div>
-				<div ng-message="required">Fax is required.</div>
-				<div ng-message="md-maxlength">The fax number has to be less than 30 characters long.</div>
-			</div>
-		</md-input-container>
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Phone number</label> 
+				<input type='text' required name="phoneNumber" phone-input ng-model="vm.facility.phoneNumber"/>
+				<div ng-messages="facilityForm.phoneNumber.$error">
+					<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
+					<div ng-message="required">Phone number is required.</div>
+					<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Fax</label>
+				<input type='text' required name="fax" phone-input ng-model="vm.facility.fax"/>
+				<div ng-messages="facilityForm.fax.$error">
+				<div ng-message="pattern">(###)-###-#### - Please enter a valid phone number.</div>
+					<div ng-message="required">Fax is required.</div>
+					<div ng-message="md-maxlength">The fax number has to be less than 30 characters long.</div>
+				</div>
+			</md-input-container>
+		</div>
 	</div>
 	
 	</md-dialog-content>
