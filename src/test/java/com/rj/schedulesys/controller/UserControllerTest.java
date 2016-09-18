@@ -52,7 +52,7 @@ public class UserControllerTest {
 	public void test_create_WithNonExistingRole() throws Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				null, "new-user", "secured-one", "Non existing role"
+				null, "new-user","user1@simplesoft.com", "Non existing role"
 				);
 		
 		mockMvc.perform(post("/users")
@@ -66,7 +66,7 @@ public class UserControllerTest {
 	public void test_create_WithExistingUsername() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				null, "ezerbo", "secured-one", UserRole.SUPERVISOR_ROLE
+				null, "ezerbo", "user2@simplesoft.com", UserRole.SUPERVISOR_ROLE
 				);
 		
 		mockMvc.perform(post("/users")
@@ -81,7 +81,7 @@ public class UserControllerTest {
 	public void test_create_WithExistingRoleAndNonExistingUsername() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				null, "new-user", "secured-one", UserRole.ADMIN_ROLE
+				null, "new-user", "user3@simplesoft.com", UserRole.ADMIN_ROLE
 				);
 		log.info("viewModel : {}", viewModel);
 		
@@ -96,7 +96,7 @@ public class UserControllerTest {
 	public void test_update_WithNonExistingUserId() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				0L, "new-user", "secured-one", UserRole.ADMIN_ROLE
+				0L, "new-user", "user4@simplesoft.com", UserRole.ADMIN_ROLE
 				);
 		
 		mockMvc.perform(put("/users/{id}", 0)
@@ -109,7 +109,7 @@ public class UserControllerTest {
 	public void test_update_WithExistingUserIdAndNewUsername() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				1L, "new-username", "secured-one", UserRole.ADMIN_ROLE
+				1L, "new-username", "user4@simplesoft.com", UserRole.ADMIN_ROLE
 				);
 		
 		mockMvc.perform(put("/users/{id}", 1)
@@ -123,7 +123,7 @@ public class UserControllerTest {
 	public void test_delete_WithNonExistingUserId() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				0L, "new-username", "secured-one", UserRole.ADMIN_ROLE
+				0L, "new-username", "user5@simplesoft.com", UserRole.ADMIN_ROLE
 				);
 		
 		mockMvc.perform(delete("/users/{id}", 0)
@@ -136,7 +136,7 @@ public class UserControllerTest {
 	public void test_delete_WithUserThatHasCreatedASchedule() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				1L, "ezerbo", "secured-one", UserRole.ADMIN_ROLE
+				1L, "ezerbo", "user6@simplesoft.com", UserRole.ADMIN_ROLE
 				);
 		
 		mockMvc.perform(delete("/users/{id}", 1)
@@ -149,7 +149,7 @@ public class UserControllerTest {
 	public void test_delete_WithUserThatHasCreatedOrUpdatedNoSchedules() throws IOException, Exception{
 		
 		ScheduleSysUserViewModel viewModel = TestUtil.aNewScheduleSysUserViewModel(
-				7L, "szerbo", "secured-one", UserRole.ADMIN_ROLE
+				7L, "szerbo", "user7@simplesoft.com", UserRole.ADMIN_ROLE
 				);
 		
 		mockMvc.perform(delete("/users/{id}", 7)

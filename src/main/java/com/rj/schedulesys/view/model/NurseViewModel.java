@@ -39,7 +39,7 @@ public class NurseViewModel {
 	
 	private Boolean ebc;
 	
-	private Boolean cpr;
+	private Boolean insvc;
 	
 	@NotNull
 	@JsonSerialize(using = JsonDateSerializer.class)

@@ -35,147 +35,111 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/nurses")
 public class NurseController {
 	
-	@Autowired
 	private TestService testService;
-	
-	@Autowired
 	private NurseService nurseService;
-	
-	@Autowired
+	private LicenseService licenseService;
 	private EmployeeService employeeService;
-	
-	@Autowired
 	private NurseTestService nurseTestService;
-	
-	@Autowired
 	private PhoneNumberService phoneNumberService;
 	
 	@Autowired
-	private LicenseService licenseService;
-	
-	@Autowired
-	private DozerBeanMapper dozerMapper;
+	public NurseController(TestService testService, NurseService nurseService, EmployeeService employeeService,
+			NurseTestService nurseTestService, PhoneNumberService phoneNumberService, LicenseService licenseService,
+			DozerBeanMapper dozerMapper) {
+		this.testService = testService;
+		this.nurseService = nurseService;
+		this.employeeService = employeeService;
+		this.nurseTestService = nurseTestService;
+		this.phoneNumberService = phoneNumberService;
+		this.licenseService = licenseService;
+	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-	public @ResponseBody ResponseEntity<?> create(@RequestBody NurseViewModel viewModel){
-		
+	public @ResponseBody ResponseEntity<?> create(@RequestBody EmployeeViewModel viewModel){
 		Assert.notNull(viewModel, "No nurse provided");
-		
 		log.info("Creating nurse : {}", viewModel);
-		
 		try {
 			nurseService.validatePosition(viewModel.getPositionName());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
 		viewModel.setId(null);
-		
 		try{
-			EmployeeViewModel employeeViewModel = dozerMapper.map(viewModel, EmployeeViewModel.class);
-			employeeViewModel = employeeService.create(employeeViewModel);
-			viewModel.setId(employeeViewModel.getId());
+			viewModel = employeeService.create(viewModel);
+			viewModel.setId(viewModel.getId());
 			nurseService.create(viewModel);
 		}catch(Exception e){
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Nurse successfully created");
-		
 		return new ResponseEntity<String>("Nurse successfully created", HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
-	public @ResponseBody ResponseEntity<?> update(@PathVariable Long id, @RequestBody NurseViewModel viewModel){
-		
+	public @ResponseBody ResponseEntity<?> update(@PathVariable Long id, @RequestBody EmployeeViewModel viewModel){
 		log.info("Updating nurse : {}", viewModel);
-		
 		if(nurseService.findOne(id) == null){
 			log.error("No nurse found with id : {}", id);
 			return new ResponseEntity<String>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		try {
 			nurseService.validatePosition(viewModel.getPositionName());
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
 		}
-		
 		viewModel.setId(id);
-		
 		try{
-			EmployeeViewModel employeeViewModel = dozerMapper.map(viewModel, EmployeeViewModel.class);
-			employeeService.update(employeeViewModel);
-			nurseService.update(viewModel);
+			employeeService.update(viewModel);
 		}catch(Exception e){
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Nurse successfully updated");
-		
 		return new ResponseEntity<String>("Nurse successfully updated", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<String> delete(@PathVariable Long id){
-		
 		log.info("Deleting nurse with id : {}", id);
-		
 		if(nurseService.findOne(id) == null){
 			log.error("No nurse found with id : {}", id);
 			return new ResponseEntity<String>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		try{
 			nurseService.delete(id);
 		}catch(Exception e){
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Nurse successfully deleted");
-		
 		return new ResponseEntity<String>("Nurse successfully deleted", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody ResponseEntity<?> findOne(@PathVariable Long id){
-		
 		log.info("Fetching nurse with id : {}", id);
-		
-		NurseViewModel viewModel = nurseService.findOne(id);
-		
-		if(viewModel == null){
+		if(nurseService.findOne(id) == null){
 			log.error("No nurse found with id : {}", id);
 			return new ResponseEntity<String>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
+		EmployeeViewModel viewModel = employeeService.findOne(id);
 		log.info("Nurse found : {}", viewModel);
-		
-		return new ResponseEntity<NurseViewModel>(viewModel, HttpStatus.OK);
-		
+		return new ResponseEntity<EmployeeViewModel>(viewModel, HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public @ResponseBody ResponseEntity<?> findAll(){
-		
 		log.info("Fetching all nurses");
-		
 		List<NurseViewModel> viewModels = nurseService.findAll();
-		
 		if(viewModels.isEmpty()){
 			log.warn("No nurse found");
 			return new ResponseEntity<>("No nurse found", HttpStatus.NOT_FOUND);
 		}
-		
 		log.info("Nurses found : {}", viewModels);
-		
 		return new ResponseEntity<>(viewModels, HttpStatus.OK);
-		
 	}
 	
 	@RequestMapping(value = "/{id}/phone-numbers", method = RequestMethod.POST, consumes = "application/json")

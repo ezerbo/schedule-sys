@@ -53,7 +53,7 @@ private @Autowired WebApplicationContext context;
 		mockMvc.perform(get("/test-sub-categories/{id}", 3))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$.name", is("QUANTIFERON GOLD")))
-		.andExpect(jsonPath("$.testName", is("TB TEST")));
+		.andExpect(jsonPath("$.testId", is(3)));
 		
 	}
 	
@@ -75,7 +75,7 @@ private @Autowired WebApplicationContext context;
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("No test found with name : This parent test does not exists")));
+		.andExpect(jsonPath("$", is("No test found with id : 0")));
 		
 	}
 	
@@ -90,7 +90,7 @@ private @Autowired WebApplicationContext context;
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("A sub category with name : ANNUAL PPD already exists for test with name : TB TEST")));
+		.andExpect(jsonPath("$", is("A sub category with name : ANNUAL PPD already exists for test with id : 3")));
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ private @Autowired WebApplicationContext context;
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("A sub category with name : 2-STEP PPD already exists for test with name : TB TEST")));
+		.andExpect(jsonPath("$", is("A sub category with name : 2-STEP PPD already exists for test with id : 3")));
 	}
 	
 	@Test

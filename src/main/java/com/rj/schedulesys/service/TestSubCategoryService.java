@@ -41,7 +41,7 @@ public class TestSubCategoryService {
 			log.error("A sub category with name : {} already exists for test with id : {}"
 					, viewModel.getName(), viewModel.getTestId());
 			throw new RuntimeException("A sub category with name : " + viewModel.getName() 
-				+ " already exists for test with id: " + viewModel.getTestId());
+				+ " already exists for test with id : " + viewModel.getTestId());
 		}
 		viewModel = this.createOrUpdate(viewModel);
 		log.debug("Created sub category : {}", viewModel);
@@ -80,7 +80,7 @@ public class TestSubCategoryService {
 		Test test = testDao.findOne(viewModel.getTestId());
 		if(test == null){
 			log.error("No test found with id : {}", viewModel.getTestId());
-			throw new RuntimeException("No test found with name : " + viewModel.getTestId());
+			throw new RuntimeException("No test found with id : " + viewModel.getTestId());
 		}
 		TestSubCategory testSubCategory = dozerMapper.map(viewModel, TestSubCategory.class);
 		testSubCategory.setTest(test);

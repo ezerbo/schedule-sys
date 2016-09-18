@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -55,9 +56,6 @@ public class Employee implements Serializable {
 	@Column(name = "DATE_OF_HIRE", nullable = false)
 	private Date dateOfHire;
 
-	@Column(name = "EBC")
-	private Boolean ebc;
-
 	@Column(name = "FIRST_NAME", nullable = false, length = 254)
 	private String firstName;
 
@@ -71,6 +69,12 @@ public class Employee implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(name = "REHIRE_DATE")
 	private Date rehireDate;
+	
+	@Column(name = "EBC")
+	private Boolean ebc;
+	
+	@Column(name = "INSVC")
+	private Boolean insvc;
 
 	@OneToOne(mappedBy = "employee", fetch=FetchType.LAZY, orphanRemoval = true)
 	private CareGiver careGiver;
@@ -87,6 +91,11 @@ public class Employee implements Serializable {
 
 	@OneToMany(mappedBy = "employee", orphanRemoval = true)
 	private List<Schedule> schedules;
+	
+	@PrePersist
+	public void onCreate(){
+		setInsvc(true);
+	}
 
 	public PhoneNumber addPhoneNumber(PhoneNumber phoneNumber) {
 		getPhoneNumbers().add(phoneNumber);

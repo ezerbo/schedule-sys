@@ -44,9 +44,6 @@ public class Nurse implements Serializable {
 	//@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
-	@Column(name = "CPR")
-	private Boolean cpr;
-
 	@MapsId
 	@OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
 	@JoinColumn(name = "ID", nullable = false, insertable = false, updatable = false)

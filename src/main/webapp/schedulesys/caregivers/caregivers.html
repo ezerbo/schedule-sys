@@ -19,14 +19,13 @@
 	    <thead md-head md-order="vm.query.order">
 	      <tr md-row>
 	        <th md-column md-order-by="name">
-	        	<span>First-Name</span>
+	        	<span>First name</span>
 	        </th>
-	        <th md-column>Last-Name</th>
-	        <th md-column>Position-Name</th>
-	        <th md-column>Primary-Ph.No</th>
-	        <th md-column>Primary-Ph-Type</th>
-	         
-	        
+	        <th md-column>Last name</th>
+	        <th md-column>Position name</th>
+	        <th md-column>Primary phone #</th>
+	        <th md-column>Phone number type</th>
+	        <th md-column>In service</th>
 	      </tr>
 	    </thead>
 	    <tbody md-body>
@@ -36,6 +35,7 @@
 	        <td md-cell>{{caregiver.positionName}}</td>
 	        <td md-cell>{{caregiver.phoneNumbers[0].number  | tel}}</td>
 	         <td md-cell>{{caregiver.phoneNumbers[0].numberType}}</td>
+	         <td md-cell>{{caregiver.insvc ? 'YES' : 'NO'}}</td>
 	      </tr>
 	    </tbody>
 	  </table>

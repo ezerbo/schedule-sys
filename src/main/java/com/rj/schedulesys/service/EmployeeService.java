@@ -30,75 +30,59 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class EmployeeService {
 
-	@Autowired
 	private EmployeeDao employeeDao;
-	
-	@Autowired
 	private PositionDao positionDao;
-	
-	@Autowired
 	private PhoneNumberDao phoneNumberDao;
-	
-	@Autowired
+	private PhoneNumberTypeDao phoneNumberTypeDao;
 	private PhoneNumberLabelDao phoneNumberLabelDao;
 	
-	@Autowired
-	private PhoneNumberTypeDao phoneNumberTypeDao;
-	
-	@Autowired
+	private DozerBeanMapper dozerMapper;
 	private ObjectValidator<EmployeeViewModel> validator;
 	
 	@Autowired
-	private DozerBeanMapper dozerMapper;
+	public EmployeeService(EmployeeDao employeeDao, PositionDao positionDao, PhoneNumberDao phoneNumberDao,
+			PhoneNumberLabelDao phoneNumberLabelDao, PhoneNumberTypeDao phoneNumberTypeDao,
+			ObjectValidator<EmployeeViewModel> validator, DozerBeanMapper dozerMapper) {
+		this.employeeDao = employeeDao;
+		this.positionDao = positionDao;
+		this.phoneNumberDao = phoneNumberDao;
+		this.phoneNumberLabelDao = phoneNumberLabelDao;
+		this.phoneNumberTypeDao = phoneNumberTypeDao;
+		this.validator = validator;
+		this.dozerMapper = dozerMapper;
+	}
 	
 	@Transactional
 	public EmployeeViewModel create(EmployeeViewModel viewModel){
-		
 		log.debug("Creating employee : {}", viewModel);
-		
 		Assert.notNull(viewModel, "No employee provided");
-		
 		Assert.notEmpty(viewModel.getPhoneNumbers(), "No phone number provided");
-		
 		validator.validate(viewModel);
-		
 		log.debug("Creating new employee : {}", viewModel);
-		
 		Position position = this.validatePosition(viewModel.getPositionName());
 		//At least the primary phone number should be provided
 		PhoneNumberUtil.assertPrimaryPhoneNumberExist(viewModel.getPhoneNumbers());
-		
 		//Make sure two phone numbers do not have the same label
 		PhoneNumberUtil.assertNoDuplicateLabelExist(viewModel.getPhoneNumbers());
-		
 		List<PhoneNumber> phoneNumbers = new LinkedList<>();
-		
 		for(PhoneNumberViewModel vm : viewModel.getPhoneNumbers()){
-			
 			PhoneNumber phoneNumber = phoneNumberDao.findByNumber(vm.getNumber());
-			
 			if(phoneNumber != null){
 				log.error("Phone number : {} already exists", vm.getNumber());
 				throw new RuntimeException("Phone number : " + vm.getNumber() + " already exists");
 			}
-			
 			PhoneNumberLabel phoneNumberLabel = PhoneNumberUtil.validatePhoneNumberLabel(
 					vm.getNumberLabel(), phoneNumberLabelDao);
-			
 			PhoneNumberType phoneNumberType = PhoneNumberUtil.validatePhoneNumberType(
 					vm.getNumberType(), phoneNumberTypeDao);
-			
 			phoneNumber = PhoneNumber.builder()
 					.number(vm.getNumber())
 					.phoneNumberLabel(phoneNumberLabel)
 					.phoneNumberType(phoneNumberType)
 					.build();
-			
 			phoneNumbers.add(phoneNumber);
 		}
-		
 		Employee employee = dozerMapper.map(viewModel, Employee.class);
-		
 		employee.setPosition(position);
 		employee = employeeDao.merge(employee);
 		
@@ -128,12 +112,12 @@ public class EmployeeService {
 		employee.setLastName(viewModel.getLastName());
 		employee.setLastDayOfWork(viewModel.getLastDayOfWork());
 		employee.setRehireDate(viewModel.getRehireDate());
+		employee.setInsvc(viewModel.getInsvc());
 		log.info("Phone numbers : {}", employee.getPhoneNumbers());
 		employee.setPosition(position);
 		employee = employeeDao.merge(employee);
 		return dozerMapper.map(employee, EmployeeViewModel.class);
 	}
-	
 
 	public Position validatePosition(String positionName){
 		Position position = positionDao.findByName(positionName);

@@ -93,7 +93,7 @@ public class TestSubCategoryServiceTest {
 	public void test_create_WithNonExsitingParentTest(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("No test found with name : 0");
+		expectedException.expectMessage("No test found with id : 0");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
 				null, "sub-test-name", 0L
@@ -106,7 +106,7 @@ public class TestSubCategoryServiceTest {
 	public void test_create_WithExistingParentTest_ThatHasAlreadyASubCategoryOfSameName(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("A sub category with name : ANNUAL PPD already exists for test with name : TB TEST");
+		expectedException.expectMessage("A sub category with name : ANNUAL PPD already exists for test with id : 3");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
 				null, "ANNUAL PPD", 3L
@@ -145,7 +145,7 @@ public class TestSubCategoryServiceTest {
 	public void test_update_WithExistingTestSubCategory_ThatAlreayHas_ASubCategory_WithTheNewName(){
 		
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("A sub category with name : 2-STEP PPD already exists for test with name : TB TEST");
+		expectedException.expectMessage("A sub category with name : 2-STEP PPD already exists for test with id : 3");
 		
 		TestSubCategoryViewModel viewModel = TestUtil.aNewTestSubCategoryViewModel(
 				1L, "2-STEP PPD", 3L

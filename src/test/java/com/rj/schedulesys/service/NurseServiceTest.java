@@ -104,11 +104,6 @@ public class NurseServiceTest {
 	
 	@Test
 	public void test_create_WithExisingPosition(){
-		
-		NurseViewModel aNewNurseViewModel = TestUtil.aNewNurseViewModel(null, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
-		
-		
 		EmployeeViewModel aNewEmployeeViewModel = TestUtil.aNewEmployeeViewModel(null, "firstName", "lastName", "LNP"
 				, true, new Date(), null, null, null);
 		
@@ -118,9 +113,8 @@ public class NurseServiceTest {
 		
 		EmployeeViewModel createdEmployee = employeeService.create(aNewEmployeeViewModel);
 		assertNotNull(createdEmployee.getId());
-		aNewNurseViewModel.setId(createdEmployee.getId());
 		
-		nurseService.create(aNewNurseViewModel);
+		nurseService.create(createdEmployee);
 	}
 	
 	@Test
@@ -143,15 +137,15 @@ public class NurseServiceTest {
 	
 	@Test
 	public void test_update_WithNonExisitingNurseId(){
-		NurseViewModel aNewNurseViewModel = TestUtil.aNewNurseViewModel(2L, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
+		EmployeeViewModel aNewNurseViewModel = TestUtil.aNewEmployeeViewModel(2L, "firstName", "lastName", "LNP"
+				, true, new Date(), null, null, null);
 		
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-100-9836", "PRIMARY", "MOBILE");
 		
 		aNewNurseViewModel.setPhoneNumbers(Arrays.asList(aNewPhoneNumberViewModel));
 		
-		NurseViewModel viewModel = nurseService.update(aNewNurseViewModel);
+		aNewNurseViewModel = employeeService.update(aNewNurseViewModel);
 		
-		assertEquals(viewModel.getLastName(), nurseService.findOne(2L).getLastName());
+		assertEquals(aNewNurseViewModel.getLastName(), nurseService.findOne(2L).getLastName());
 	}
 }

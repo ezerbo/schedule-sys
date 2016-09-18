@@ -37,11 +37,12 @@ public class TestUtil {
 	}
 	
 	public static ScheduleSysUserViewModel aNewScheduleSysUserViewModel(Long id, String username
-			, String password, String userRole){
+			, String emailAddress, String userRole){
 		ScheduleSysUserViewModel viewModel = ScheduleSysUserViewModel.builder()
 				.id(id)
 				.username(username)
 				.userRole(userRole)
+				.emailAddress(emailAddress)
 				.build();
 		return viewModel;
 	}
@@ -132,14 +133,13 @@ public class TestUtil {
 	
 	
 	public static NurseViewModel aNewNurseViewModel(Long id, String firstName, String lastName, String positionName
-			,Boolean ebc, Boolean cpr, Date dateOfHire, Date rehireDate, Date lastDayOfWork, String comment){
+			,Boolean ebc, Date dateOfHire, Date rehireDate, Date lastDayOfWork, String comment){
 		NurseViewModel viewModel = NurseViewModel.builder()
 				.id(id)
 				.firstName(firstName)
 				.lastName(lastName)
 				.positionName(positionName)
 				.ebc(ebc)
-				.cpr(cpr)
 				.dateOfHire(dateOfHire)
 				.rehireDate(rehireDate)
 				.lastDayOfWork(lastDayOfWork)

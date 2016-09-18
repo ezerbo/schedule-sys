@@ -74,7 +74,7 @@ public class NurseControllerTest {
 	public void test_create_WithNonExistingPosition() throws IOException, Exception{
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-720-9836", "PRIMARY", "MOBILE");
 		NurseViewModel aNewNurseViewModel = TestUtil.aNewNurseViewModel(0L, "firstName", "lastName", "This position does not exist"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		aNewNurseViewModel.setPhoneNumbers(Arrays.asList(aNewPhoneNumberViewModel));
 		mockMvc.perform(post("/nurses")
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
@@ -90,7 +90,7 @@ public class NurseControllerTest {
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-720-9836", "PRIMARY", "MOBILE");
 		
 		NurseViewModel aNewNurseViewModel = TestUtil.aNewNurseViewModel(0L, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		
 		aNewNurseViewModel.setPhoneNumbers(Arrays.asList(aNewPhoneNumberViewModel));
 		
@@ -104,7 +104,7 @@ public class NurseControllerTest {
 	@Test
 	public void test_update_WithNonExistingNurse() throws IOException, Exception{
 		NurseViewModel aNewNurseViewModel = TestUtil.aNewNurseViewModel(0L, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		mockMvc.perform(put("/nurses/{id}", 0L)
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewNurseViewModel)))
@@ -116,7 +116,7 @@ public class NurseControllerTest {
 	public void test_update_WithExistingNurse() throws IOException, Exception{
 		PhoneNumberViewModel aNewPhoneNumberViewModel = TestUtil.aNewPhoneNumberViewModel(null, "(718)-720-9836", "PRIMARY", "MOBILE");
 		NurseViewModel aNewNurseViewModel = TestUtil.aNewNurseViewModel(2L, "firstName", "lastName", "LNP"
-				, true, false, new Date(), null, null, null);
+				, true, new Date(), null, null, null);
 		aNewNurseViewModel.setPhoneNumbers(Arrays.asList(aNewPhoneNumberViewModel));
 		mockMvc.perform(put("/nurses/{id}", 2)
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
