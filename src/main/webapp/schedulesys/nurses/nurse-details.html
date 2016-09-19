@@ -60,7 +60,7 @@
 		</div>
 		<section layout="row" layout-sm="column" layout-align="left left" layout-wrap>
 			<md-button class="md-raised md-primary" ui-sref="home.nurse-details.add-license({id:vm.nurse.id})">Add</md-button>
-			<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details.edit-license({id:vm.selectedLicense[0].nurseId, licenseId:vm.selectedLicense[0].id})">Edit</md-button>
+			<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details.edit-license({id:vm.selectedLicense[0].nurse.id, licenseId:vm.selectedLicense[0].id})">Edit</md-button>
       		<md-button class="md-raised md-warn" ng-click="vm.showLicenseDelConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
       </section>
 	<md-table-container>
@@ -70,13 +70,15 @@
 		        <th md-column md-order-by="name">
 		        	<span>License number</span>
 		        </th>
-		        <th md-column>Expiration-Date</th>
+		        <th md-column>Expiration date</th>
+		        <th md-column>Type</th>
 		      </tr>
 		    </thead>
 		    <tbody md-body>
 		      <tr md-row md-select="license" md-select-id="name"  md-auto-select ng-repeat="license in vm.licensesOnCurrentPage track by license.id">
 		        <td md-cell>{{license.number}}</td>
 		        <td md-cell>{{license.expirationDate}}</td>
+		        <td md-cell>{{license.licenseType.typeName}}</td>
 		      </tr>
 		    </tbody>
 		  </table>

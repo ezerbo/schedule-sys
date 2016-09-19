@@ -1,6 +1,8 @@
 package com.rj.schedulesys.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.Date;
 
@@ -16,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.rj.schedulesys.config.TestConfiguration;
 import com.rj.schedulesys.util.TestUtil;
+import com.rj.schedulesys.view.model.GetLicenseViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
 
 @Transactional
@@ -36,7 +39,7 @@ public class LicenseServiceTest {
 	
 	@Test
 	public void test_findOne_WithExistingLicense(){
-		LicenseViewModel viewModel = licenseService.findOne(1L);
+		GetLicenseViewModel viewModel = licenseService.findOne(1L);
 		assertEquals("111222333444551", viewModel.getNumber());
 	}
 	
@@ -57,7 +60,7 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("number may not be empty");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 1L, "", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 1L, 1L, "", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		licenseService.create(aNewLicenseViewModel);
 	}
 	
@@ -66,7 +69,7 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("expirationDate must be in the future");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 1L, "##000eettwwww", new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
+				null, 2L, 1L, "##000eettwwww", new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
 		licenseService.create(aNewLicenseViewModel);
 	}
 	
@@ -75,7 +78,7 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("111222333444551 is already in use");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 1L, "111222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 3L, 1L, "111222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		licenseService.create(aNewLicenseViewModel);
 	}
 	
@@ -84,14 +87,14 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("No nurse found with id : 0");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 0L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 4L, 0L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		licenseService.create(aNewLicenseViewModel);
 	}
 	
 	@Test
 	public void test_create_WithValidData(){
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 1L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 5L, 1L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		aNewLicenseViewModel = licenseService.create(aNewLicenseViewModel);
 		assertNotNull(aNewLicenseViewModel.getId());
 	}
@@ -101,7 +104,7 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("No nurse found with id : 0");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 0L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 1L, 0L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		licenseService.update(aNewLicenseViewModel);
 	}
 	
@@ -110,7 +113,7 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("No license found with id : 0");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				0L, 1L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				0L, 2L, 1L, "0000222333444551", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		licenseService.update(aNewLicenseViewModel);
 	}
 	
@@ -119,14 +122,14 @@ public class LicenseServiceTest {
 		expectedException.expect(RuntimeException.class);
 		expectedException.expectMessage("License number 111222333444552 is already in use");
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				1L, 1L, "111222333444552", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				1L, 3L, 1L, "111222333444552", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		licenseService.update(aNewLicenseViewModel);
 	}
 	
 	@Test
 	public void test_update_WithValidData(){
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				1L, 1L, "000022233344455199", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				1L, 4L, 1L, "000022233344455199", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		aNewLicenseViewModel = licenseService.create(aNewLicenseViewModel);
 		assertEquals(licenseService.findOne(1L).getNumber(),aNewLicenseViewModel.getNumber());
 	}

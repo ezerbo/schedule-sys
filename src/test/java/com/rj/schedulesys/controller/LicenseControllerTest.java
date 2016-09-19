@@ -55,14 +55,14 @@ private @Autowired WebApplicationContext context;
 		mockMvc.perform(get("/licenses/{id}", 1))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id", is(1)))
-			.andExpect(jsonPath("$.nurseId", is(1)))
+			.andExpect(jsonPath("$.nurse.id", is(1)))
 			.andExpect(jsonPath("$.number", is("111222333444551")));
 	}
 	
 	@Test
 	public void test_create_WithNonExistingNurse() throws IOException, Exception{
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 0L, "##2777330000111", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 1L, 0L, "##2777330000111", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		mockMvc.perform(post("/licenses").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewLicenseViewModel)))
 		.andExpect(status().is5xxServerError())
@@ -72,7 +72,7 @@ private @Autowired WebApplicationContext context;
 	@Test
 	public void test_create_WithExistingLicenseNumber() throws IOException, Exception{
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 1L, "111222333444557", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 1L, 1L, "111222333444557", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		mockMvc.perform(post("/licenses").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewLicenseViewModel)))
 		.andExpect(status().is5xxServerError())
@@ -82,7 +82,7 @@ private @Autowired WebApplicationContext context;
 	@Test
 	public void test_create_WithValidData() throws IOException, Exception{
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				null, 1L, "111222333444557000", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				null, 2L, 1L, "111222333444557000", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		mockMvc.perform(post("/licenses").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewLicenseViewModel)))
 		.andExpect(status().isCreated())
@@ -92,7 +92,7 @@ private @Autowired WebApplicationContext context;
 	@Test
 	public void test_update_WithNonExistingLicense() throws IOException, Exception{
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				0L, 0L, "111222333444557000", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				0L, 1L, 0L, "111222333444557000", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		mockMvc.perform(put("/licenses/{id}", 0).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewLicenseViewModel)))
 		.andExpect(status().isNotFound())
@@ -102,7 +102,7 @@ private @Autowired WebApplicationContext context;
 	@Test
 	public void test_update_WithNonExistingNurse() throws IOException, Exception{
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				1L, 0L, "11122233344455232", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				1L, 3L, 0L, "11122233344455232", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		mockMvc.perform(put("/licenses/{id}", 1L).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewLicenseViewModel)))
 		.andExpect(status().is5xxServerError())
@@ -112,7 +112,7 @@ private @Autowired WebApplicationContext context;
 	@Test
 	public void test_update_WithValidData() throws IOException, Exception{
 		LicenseViewModel aNewLicenseViewModel = TestUtil.aNewLicenseViewModel(
-				6L, 1L, "11122233344455232", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
+				6L, 5L, 1L, "11122233344455232", new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
 		mockMvc.perform(put("/licenses/{id}", 6L).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewLicenseViewModel)))
 		.andExpect(status().isOk())

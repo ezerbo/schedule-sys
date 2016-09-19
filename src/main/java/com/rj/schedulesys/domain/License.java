@@ -40,5 +40,9 @@ public class License implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "NURSE_ID")
 	private Nurse nurse;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="LICENSE_TYPE_ID", nullable = false)
+	private LicenseType licenseType;
 
 }

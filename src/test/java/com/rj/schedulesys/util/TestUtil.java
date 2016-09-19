@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rj.schedulesys.view.model.CreateScheduleViewModel;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.FacilityViewModel;
+import com.rj.schedulesys.view.model.LicenseTypeViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
 import com.rj.schedulesys.view.model.NurseTestViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
@@ -176,9 +177,10 @@ public class TestUtil {
 		return viewModel;
 	}
 	
-	public static LicenseViewModel aNewLicenseViewModel(Long id, Long nurseId, String number, Date expirationDate){
+	public static LicenseViewModel aNewLicenseViewModel(Long id, Long licenseTypeId, Long nurseId, String number, Date expirationDate){
 		LicenseViewModel viewModel = LicenseViewModel.builder()
 				.id(id)
+				.licenseTypeId(licenseTypeId)
 				.nurseId(nurseId)
 				.number(number)
 				.expirationDate(expirationDate)
@@ -230,7 +232,14 @@ public class TestUtil {
 				.comment(comment)
 				.build();
 		return viewModel;
-				
+	}
+	
+	public static LicenseTypeViewModel aNewLicenseTypeViewModel(Long id, String typeName){
+		LicenseTypeViewModel viewModel = LicenseTypeViewModel.builder()
+				.id(id)
+				.typeName(typeName)
+				.build();
+		return viewModel;
 	}
 	
 }

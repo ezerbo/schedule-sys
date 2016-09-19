@@ -22,6 +22,7 @@ import com.rj.schedulesys.service.NurseTestService;
 import com.rj.schedulesys.service.PhoneNumberService;
 import com.rj.schedulesys.service.TestService;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
+import com.rj.schedulesys.view.model.GetLicenseViewModel;
 import com.rj.schedulesys.view.model.GetNurseTestViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
 import com.rj.schedulesys.view.model.NurseTestViewModel;
@@ -218,7 +219,7 @@ public class NurseController {
 			log.info("No nurse found with id : {}", id);
 			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		List<LicenseViewModel> viewModels = licenseService.findAllByNurse(id);
+		List<GetLicenseViewModel> viewModels = licenseService.findAllByNurse(id);
 		if(viewModels.isEmpty()){
 			log.info("No licenses found for nurse with id : ", id);
 			return new ResponseEntity<>("No licenses found for nurse with id : " + id, HttpStatus.NOT_FOUND);
@@ -255,15 +256,15 @@ public class NurseController {
 			log.info("No nurse found with id : {}", id);
 			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		LicenseViewModel license = licenseService.findOne(licenseId);
+		GetLicenseViewModel license = licenseService.findOne(licenseId);
 		if(license == null){
 			log.info("No license with id : {}", licenseId);
 			return new ResponseEntity<>("No license found with id : " + licenseId, HttpStatus.NOT_FOUND);
 		}
-		if(license.getNurseId() != nurse.getId()){
+		if(license.getNurse().getId() != nurse.getId()){
 			log.error("No license with id : {} found for nurse with id : {}", license.getId(), nurse.getId());
 			return new ResponseEntity<>("No license with id : " 
-					+ license.getNurseId() + " found for nurse with id : {}" + nurse.getId(), HttpStatus.NOT_FOUND);
+					+ license.getNurse().getId() + " found for nurse with id : {}" + nurse.getId(), HttpStatus.NOT_FOUND);
 		}
 		viewModel.setNurseId(id);
 		viewModel.setId(licenseId);

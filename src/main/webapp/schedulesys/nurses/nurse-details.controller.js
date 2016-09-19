@@ -5,9 +5,10 @@
 		.controller('NurseDetailsController', NurseDetailsController);
 	
 	NurseDetailsController.$Inject = ['$state', '$scope', '$stateParams', '$mdDialog', '$mdToast',
-	                                  'NursesService','NurseLicenseService','LicenseService', 'NurseTestService'];
+	                                  'NursesService','NurseLicenseService','LicenseService', 'NurseTestService', 'LicenseTypeService'];
 	
-	function NurseDetailsController($state, $scope, $stateParams, $mdDialog, $mdToast, NursesService, NurseLicenseService, NurseTestService, LicenseService){
+	function NurseDetailsController($state, $scope, $stateParams, $mdDialog, $mdToast, NursesService,
+			NurseLicenseService, NurseTestService, LicenseService, LicenseTypeService){
 		var vm = this;
 		vm.allLicenses = null;
 		vm.allTests = [];
@@ -87,7 +88,7 @@
 		}
 		
 		function onLicenseTablePaginate(){
-			vm.licensesOnCurrentPage = vm.sliceArray(vm.allLicense, vm.licenseQuery);
+			vm.licensesOnCurrentPage = vm.sliceArray(vm.allLicenses, vm.licenseQuery);
 		}
 		
 		function sliceArray(list, paginationObj){

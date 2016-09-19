@@ -5,8 +5,6 @@ import java.util.Date;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.rj.schedulesys.util.JsonDateSerializer;
@@ -20,15 +18,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LicenseViewModel {
-	
+public class GetLicenseViewModel {
+
 	private Long id;
 	
-	@NotNull
-	private Long licenseTypeId;
+	private LicenseTypeViewModel licenseType;
 	
-	@NotNull
-	private Long nurseId;
+	private NurseViewModel nurse;
 	
 	@Future
 	@JsonFormat(timezone = "America/New_York")
@@ -36,7 +32,5 @@ public class LicenseViewModel {
 	@NotNull(message = "was not provided")
 	private Date expirationDate;
 	
-	@NotBlank
 	private String number;
-	
 }

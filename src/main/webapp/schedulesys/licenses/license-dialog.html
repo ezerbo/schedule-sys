@@ -1,4 +1,4 @@
-<md-dialog aria-label="Create or update a License" style="width:800px;" ng-controller="LicenseDialogController as vm">
+<md-dialog aria-label="Create or update a License" style="width:800px;text-align:left" ng-controller="LicenseDialogController as vm">
   <form name="licenseForm" ng-submit="vm.createOrUpdateLicense()">
     <md-toolbar>
       <div class="md-toolbar-tools">
@@ -14,14 +14,24 @@
 		<div layout="left start">
 			<md-datepicker type="date" ng-model="vm.license.expirationDate" name="expirationDate" md-placeholder="Expiration date" required></md-datepicker>
 		</div>
-		<div>
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>License #</label> <input md-maxlength="100" required name="number"  ng-model="vm.license.number" />
-			<div ng-messages="licenseForm.number.$error">
-				<div ng-message="required">License number is required.</div>
-				<div ng-message="md-maxlength">The License number has to be less than 100 characters long.</div>
-			</div>
-		</md-input-container>
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>License #</label> 
+				<input md-maxlength="100" required name="number"  ng-model="vm.license.number" />
+				<div ng-messages="licenseForm.number.$error">
+					<div ng-message="required">License number is required.</div>
+					<div ng-message="md-maxlength">The License number has to be less than 100 characters long.</div>
+				</div>
+			</md-input-container>
+			<md-input-container flex-gt-sm >
+	      		<label>Type</label>
+				<md-select ng-model="vm.license.licenseTypeId" required name="licenseType">
+		          <md-option ng-repeat="licenseType in vm.licenseTypes" value="{{licenseType.id}}">{{licenseType.typeName}}</md-option>
+	        	</md-select>
+	        	<div ng-messages="licenseForm.licenseType.$error">
+					<div ng-message="required">License type is required.</div>
+				</div>
+      		</md-input-container>
 		</div>
 	</div>
     <md-dialog-actions layout="row">
