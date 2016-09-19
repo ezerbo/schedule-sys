@@ -94,13 +94,13 @@ Last Day of Work
 		<md-input-container class="md-block" flex-gt-sm>
 		<div layout="column" layout-gt-sm="row">
 	        <div flex-xs="" flex="50">
-	          <md-checkbox ng-model="vm.nurse.cpr" name="cpr" aria-label="Checkbox 1">
-	          	CPR
+	          <md-checkbox ng-model="vm.nurse.insvc" name="insvc" aria-label="Checkbox 1">
+	          	In-Service
 	          </md-checkbox>
 	        </div>
       </div>
-			<div ng-messages="nurseForm.cpr.$error">
-				<div ng-message="required">CPR is required.</div>
+			<div ng-messages="nurseForm.insvc.$error">
+				<div ng-message="required">In-Service is required.</div>
 				
 			</div>
 		</md-input-container>

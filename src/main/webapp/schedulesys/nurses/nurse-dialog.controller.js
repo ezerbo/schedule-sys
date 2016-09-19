@@ -33,7 +33,7 @@
 				lastName: null,
 				positionName: null,
 				ebc: null,
-				cpr: null,
+				insvc: null,
 				dateOfHire: null,
 				rehireDate: null,
 				lastDayOfWork: null,
