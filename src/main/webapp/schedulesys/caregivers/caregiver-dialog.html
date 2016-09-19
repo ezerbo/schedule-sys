@@ -77,7 +77,7 @@ Last Day of Work
 				<div ng-message="md-maxlength">The position name has to be less than 100 characters long.</div>
 			</div>
 		</md-input-container>
-		
+		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 		<div layout="column" layout-gt-sm="row">
 	        <div flex-xs="" flex="50">
@@ -91,6 +91,20 @@ Last Day of Work
 				
 			</div>
 		</md-input-container>
+		<md-input-container class="md-block" flex-gt-sm>
+		<div layout="column" layout-gt-sm="row">
+	        <div flex-xs="" flex="50">
+	          <md-checkbox ng-model="vm.careGiver.insvc" name="insvc" aria-label="Checkbox 1">
+	          	In-Service
+	          </md-checkbox>
+	        </div>
+      </div>
+			<div ng-messages="careGiverForm.insvc.$error">
+				<div ng-message="required">In-Service is required.</div>
+				
+			</div>
+		</md-input-container>
+		</div>
 		<div layout-gt-sm="row">
 		<md-input-container class="md-block" flex-gt-sm>
 			<label>Primary-Phone-Number</label>

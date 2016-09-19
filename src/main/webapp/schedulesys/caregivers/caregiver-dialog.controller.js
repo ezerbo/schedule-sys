@@ -36,6 +36,7 @@
 				lastName: null,
 				positionName: null,
 				ebc: null,
+				insvc: null,
 				dateOfHire: null,
 				rehireDate: null,
 				lastDayOfWork: null,
