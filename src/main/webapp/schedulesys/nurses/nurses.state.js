@@ -92,9 +92,9 @@
 			url:'/tests',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/nurses/nurse-test-dialog.html',
+					templateUrl: 'schedulesys/employees/employee-test-dialog.html',
 					parent: angular.element(document.body),
-					controller: 'NurseTestDialogController',
+					controller: 'EmployeeTestDialogController',
 					clickOutsideToClose:true,
 					onRemoving: function (){
 						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});

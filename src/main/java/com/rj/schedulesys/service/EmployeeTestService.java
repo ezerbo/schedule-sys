@@ -11,18 +11,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import com.rj.schedulesys.dao.NurseDao;
-import com.rj.schedulesys.dao.NurseTestDao;
+import com.rj.schedulesys.dao.EmployeeDao;
+import com.rj.schedulesys.dao.EmployeeTestDao;
 import com.rj.schedulesys.dao.TestDao;
 import com.rj.schedulesys.dao.TestSubCategoryDao;
-import com.rj.schedulesys.data.NurseTestStatusConstants;
-import com.rj.schedulesys.domain.Nurse;
-import com.rj.schedulesys.domain.NurseTest;
-import com.rj.schedulesys.domain.NurseTestPK;
+import com.rj.schedulesys.data.EmployeeTestStatusConstants;
+import com.rj.schedulesys.domain.EmployeTestPK;
+import com.rj.schedulesys.domain.Employee;
+import com.rj.schedulesys.domain.EmployeeTest;
 import com.rj.schedulesys.domain.Test;
 import com.rj.schedulesys.domain.TestSubCategory;
 import com.rj.schedulesys.view.model.GetNurseTestViewModel;
-import com.rj.schedulesys.view.model.NurseTestViewModel;
+import com.rj.schedulesys.view.model.EmployeeTestViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
 import com.rj.schedulesys.view.model.TestSubCategoryViewModel;
 import com.rj.schedulesys.view.model.TestViewModel;
@@ -31,160 +31,143 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class NurseTestService {
+public class EmployeeTestService {
 	
-	@Autowired
 	private TestDao testDao;
-	
-	@Autowired
-	private NurseDao nurseDao;
-	
-	@Autowired
-	private NurseTestDao nurseTestDao;
-	
-	@Autowired
+	private EmployeeDao employeeDao;
+	private EmployeeTestDao employeeTestDao;
 	private TestSubCategoryDao testSubCategoryDao;
 	
-	@Autowired
 	private DozerBeanMapper dozerMapper;
+	
+	@Autowired
+	public EmployeeTestService(TestDao testDao, EmployeeDao employeeDao, EmployeeTestDao nurseTestDao,
+			TestSubCategoryDao testSubCategoryDao, DozerBeanMapper dozerMapper) {
+		this.testDao = testDao;
+		this.employeeDao = employeeDao;
+		this.employeeTestDao = nurseTestDao;
+		this.testSubCategoryDao = testSubCategoryDao;
+		this.dozerMapper = dozerMapper;
+	}
 
 	/**
 	 * @param viewModel
 	 * @return
 	 */
 	@Transactional
-	public NurseTestViewModel createOrUpate(NurseTestViewModel viewModel) {
-		
-		log.info("Adding new test for urse with id : {}", viewModel.getNurseId());
-		
-		Assert.notNull(viewModel, "No nurse_test details provided");
-
+	public EmployeeTestViewModel createOrUpate(EmployeeTestViewModel viewModel) {
+		log.info("Adding new test for employee with id : {}", viewModel.getEmployeeId());
+		Assert.notNull(viewModel, "No employee_test details provided");
 		Test test = validateTest(viewModel.getTestId());
-		
-		Nurse nurse = validateNurse(viewModel.getNurseId());
-		
+		Employee employee = validateEmployee(viewModel.getEmployeeId());
 		TestSubCategory testSubCategory = null;
-		
 		if(viewModel.getTestSubCategoryId() != null){
 			testSubCategory = validateTestSubCategory(viewModel.getTestSubCategoryId());
 		}
-		
-		NurseTestPK nurseTestPK = NurseTestPK.builder()
-				.nurseId(viewModel.getNurseId())
+		EmployeTestPK nurseTestPK = EmployeTestPK.builder()
+				.employeeId(viewModel.getEmployeeId())
 				.testId(viewModel.getTestId())
 				.build();
 		
-		NurseTest nurseTest = nurseTestDao.findOne(nurseTestPK);
+		EmployeeTest nurseTest = employeeTestDao.findOne(nurseTestPK);
 		
 		if(nurseTest == null){
-			nurseTest = NurseTest.builder()
+			nurseTest = EmployeeTest.builder()
 					.id(nurseTestPK)
-					.nurse(nurse)
+					.employee(employee)
 					.test(test)
 					.testSubCategory(testSubCategory)
 					.build();
 		}
 		
-		if(test.getHasCompletedDate() && (viewModel.getCompletedDate() == null)){
+		if(test.getHasCompletedDate() && StringUtils.equals(viewModel.getStatus(), EmployeeTestStatusConstants.APPLICABLE_STATUS) 
+				&& (viewModel.getCompletedDate() == null)){
 			log.error("A completion date must be provided");
 			throw new RuntimeException("A complete date must be provided");
 		}
-		
-		if(test.getHasExpirationDate() && (viewModel.getExpirationDate() == null)){
+		if(test.getHasExpirationDate() && StringUtils.equals(viewModel.getStatus(), EmployeeTestStatusConstants.APPLICABLE_STATUS) 
+				&& (viewModel.getExpirationDate() == null)){
 			log.error("An expiration date must be provided");
 			throw new RuntimeException("An expiration date must be provided");
 		}
-		
 		if(!test.getAllowNotApplicable() 
-				&& (StringUtils.equalsIgnoreCase(viewModel.getStatus(), NurseTestStatusConstants.NOT_APPLICABLE_STATUS))){
+				&& (StringUtils.equalsIgnoreCase(viewModel.getStatus(), EmployeeTestStatusConstants.NOT_APPLICABLE_STATUS))){
 			log.warn("Test : {} does not allow 'NOT APPLICABLE' status, falling back to 'APPLICABLE'", test.getName());
-			viewModel.setStatus(NurseTestStatusConstants.NOT_APPLICABLE_STATUS);
+			viewModel.setStatus(EmployeeTestStatusConstants.NOT_APPLICABLE_STATUS);
 		}
-		
 		Date today = new Date();
-		
 		if(viewModel.getCompletedDate() != null && viewModel.getCompletedDate().after(today)){
 			log.error("Completed date must be in the past");
 			throw new RuntimeException("Completed date must be in the past");
 		}
-		
 		if(viewModel.getExpirationDate() != null && viewModel.getExpirationDate().before(today)){
 			log.error("Expiration date must be in the future");
 			throw new RuntimeException("Expiration date must be in the future");
 		}
-		
 		nurseTest.setStatus(viewModel.getStatus());
 		nurseTest.setCompletedDate(viewModel.getCompletedDate());
 		nurseTest.setExpirationDate(viewModel.getExpirationDate());
-		
 		log.info("Created test : {}", viewModel);
-		
-		nurseTest = nurseTestDao.merge(nurseTest);
-		
-		return viewModel = dozerMapper.map(nurseTest, NurseTestViewModel.class);
+		nurseTest = employeeTestDao.merge(nurseTest);
+		return viewModel = dozerMapper.map(nurseTest, EmployeeTestViewModel.class);
 	}
 
 	/**
 	 * @param nurseTestPK
 	 */
 	@Transactional
-	public void delete(NurseTestPK nurseTestPK) {
-		
-		log.debug("Deleting NurseTest with nurseId : {} and testId: {}", nurseTestPK.getNurseId(), nurseTestPK.getTestId());
-
-		NurseTest nurseTest = nurseTestDao.findOne(nurseTestPK);
-		
+	public void delete(EmployeTestPK nurseTestPK) {
+		log.debug("Deleting NurseTest with nurseId : {} and testId: {}", nurseTestPK.getEmployeeId(), nurseTestPK.getTestId());
+		EmployeeTest nurseTest = employeeTestDao.findOne(nurseTestPK);
 		if(nurseTest == null){
 			log.error("No NurseTest found with nurseId : {} and testId : {}"
-					, nurseTestPK.getNurseId(), nurseTestPK.getTestId());
+					, nurseTestPK.getEmployeeId(), nurseTestPK.getTestId());
 			throw new RuntimeException("No data found with nurseId : " 
-					+ nurseTestPK.getNurseId() + " and testId : " + nurseTestPK.getTestId());
+					+ nurseTestPK.getEmployeeId() + " and testId : " + nurseTestPK.getTestId());
 		}
 		
-		nurseTestDao.delete(nurseTest);
+		employeeTestDao.delete(nurseTest);
 	}
 
 	/**
-	 * @param nurseId
+	 * @param employeeId
 	 * @return
 	 */
 	@Transactional
-	public List<GetNurseTestViewModel> findAllByNurse(Long nurseId) {
-
-		log.info("Finding all tests for nurse with id : {}", nurseId);
-
+	public List<GetNurseTestViewModel> findAllByEmployee(Long employeeId) {
+		log.info("Finding all tests for employee with id : {}", employeeId);
 		List<GetNurseTestViewModel> viewModels = new LinkedList<>();
-		
-		List<NurseTest> nurseTests = nurseTestDao.findAllByNurse(nurseId);
-		
-		for (NurseTest nurseTest : nurseTests) {
+		List<EmployeeTest> employeeTests = employeeTestDao.findAllByNurse(employeeId);
+		employeeTests.stream()
+		.forEach(employeeTest -> {
 			GetNurseTestViewModel viewModel = GetNurseTestViewModel.builder()
-					.nurse(dozerMapper.map(nurseTest.getNurse(), NurseViewModel.class))
-					.test(dozerMapper.map(nurseTest.getTest(), TestViewModel.class))
-					.testSubCategory(dozerMapper.map(nurseTest.getTestSubCategory(), TestSubCategoryViewModel.class))
-					.expirationDate(nurseTest.getExpirationDate())
-					.completedDate(nurseTest.getCompletedDate())
-					.status(nurseTest.getStatus())
+					.employee(dozerMapper.map(employeeTest.getEmployee(), NurseViewModel.class))
+					.test(dozerMapper.map(employeeTest.getTest(), TestViewModel.class))
+					//.testSubCategory(dozerMapper.map(employeeTest.getTestSubCategory(), TestSubCategoryViewModel.class))
+					.expirationDate(employeeTest.getExpirationDate())
+					.completedDate(employeeTest.getCompletedDate())
+					.status(employeeTest.getStatus())
 					.build();
+			if(employeeTest.getTestSubCategory() != null){
+				viewModel.setTestSubCategory(dozerMapper.map(employeeTest.getTestSubCategory(), TestSubCategoryViewModel.class));
+			}
 			viewModels.add(viewModel);
-		}
-		
-		log.info("NurseTests found : {}", viewModels);
-		
+		});
+		log.info("EmployeeTests found : {}", viewModels);
 		return viewModels;
 	}
 	
 	/**
-	 * @param nurseId
+	 * @param employeeId
 	 * @return
 	 */
-	public Nurse validateNurse(Long nurseId){
-		Nurse nurse = nurseDao.findOne(nurseId);
-		if(nurse == null){
-			log.error("No nurse found with id : {}", nurseId);
-			throw new RuntimeException("No nurse found with id : " + nurseId);
+	public Employee validateEmployee(Long employeeId){
+		Employee employee = employeeDao.findOne(employeeId);
+		if(employee == null){
+			log.error("No employee found with id : {}", employeeId);
+			throw new RuntimeException("No employee found with id : " + employeeId);
 		}
-		return nurse;
+		return employee;
 	}
 	
 	/**

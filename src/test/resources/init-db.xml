@@ -26,7 +26,7 @@
 		<jdbc:script location="classpath:test-data/staff-member.sql"/>
 		<jdbc:script location="classpath:test-data/test.sql"/>
 		<jdbc:script location="classpath:test-data/test-sub-category.sql"/>
-		<jdbc:script location="classpath:test-data/nurse-test.sql"/>
+		<jdbc:script location="classpath:test-data/employee-test.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-update.sql"/>
 	</jdbc:initialize-database>
 	

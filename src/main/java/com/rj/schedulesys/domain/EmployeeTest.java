@@ -21,7 +21,7 @@ import lombok.ToString;
 
 
 /**
- * The persistent class for the NURSE_TEST database table.
+ * The persistent class for the EMPLOYEE_TEST database table.
  * 
  */
 @Data
@@ -29,14 +29,14 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="NURSE_TEST")
-@ToString(exclude = {"nurse", "test", "testSubCategory"})
-public class NurseTest implements Serializable {
+@Table(name="EMPLOYEE_TEST")
+@ToString(exclude = {"employee", "test", "testSubCategory"})
+public class EmployeeTest implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private NurseTestPK id;
+	private EmployeTestPK id;
 	
 	@Column(name = "STATUS")
 	private String status;
@@ -50,8 +50,8 @@ public class NurseTest implements Serializable {
 	private Date expirationDate;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "NURSE_ID", nullable = false, insertable = false, updatable = false)
-	private Nurse nurse;
+	@JoinColumn(name = "EMPLOYEE_ID", nullable = false, insertable = false, updatable = false)
+	private Employee employee;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "TEST_SUB_CATEGORY_ID")

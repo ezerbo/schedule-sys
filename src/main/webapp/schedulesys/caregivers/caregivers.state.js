@@ -40,9 +40,23 @@
 			}]
 		})
 		.state('home.caregiver-details', {
-			url: '/{id}/caregiver/details',
+			url: '/care-givers/{id}/details',
 			templateUrl: 'schedulesys/caregivers/caregiver-details.html',
 			controller: 'careGiverDetailsController'
+		})
+		.state('home.caregiver-details.add-test', {
+			url:'/tests',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/employees/employee-test-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'EmployeeTestDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
 		})
 		.state('home.caregivers-scheduling', {
 			url: '/care-givers/{id}/schedules',

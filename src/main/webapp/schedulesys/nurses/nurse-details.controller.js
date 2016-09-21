@@ -5,10 +5,10 @@
 		.controller('NurseDetailsController', NurseDetailsController);
 	
 	NurseDetailsController.$Inject = ['$state', '$scope', '$stateParams', '$mdDialog', '$mdToast',
-	                                  'NursesService','NurseLicenseService','LicenseService', 'NurseTestService', 'LicenseTypeService'];
+	                                  'NursesService','NurseLicenseService','LicenseService', 'EmployeeTestService', 'LicenseTypeService'];
 	
 	function NurseDetailsController($state, $scope, $stateParams, $mdDialog, $mdToast, NursesService,
-			NurseLicenseService, NurseTestService, LicenseService, LicenseTypeService){
+			NurseLicenseService, EmployeeTestService, LicenseService, LicenseTypeService){
 		var vm = this;
 		vm.allLicenses = null;
 		vm.allTests = [];
@@ -16,6 +16,7 @@
 		vm.testsOnCurrentPage = null;
 		vm.loadAllLicenses = loadAllLicenses;
 		vm.showLicenseDelConfirm = showLicenseDelConfirm;
+		vm.showTestDelConfirm = showTestDelConfirm;
 		vm.getSelectedNurse = getSelectedNurse;
 		
 		vm.loadAllTests = loadAllTests;
@@ -23,6 +24,7 @@
 		vm.selectedLicense = [];
 		vm.selectedTest = [];
 		vm.editOrDelete = true;
+		vm.enableTestDel = true;
 		vm.showToast = showToast;
 
 		vm.onLicenseTablePaginate = onLicenseTablePaginate;
@@ -39,18 +41,22 @@
 			vm.editOrDelete = (vm.selectedLicense.length === 0) ? true : false;
 		});
 		
+		$scope.$watchCollection('vm.selectedTest', function(oldValue, newValue) {
+			vm.enableTestDel = (vm.selectedTest.length === 0) ? true : false;
+		});
+		
 		function showLicenseDelConfirm(ev) {
 			var confirm = $mdDialog.confirm()
-					.title('Delete a License')
-					.textContent('Are you sure you want to delete this License ?')
-					.ariaLabel('License deletion')
-					.targetEvent(ev)
-					.ok('Delete')
-					.cancel('Cancel');
+			.title('Delete a License')
+			.textContent('Are you sure you want to delete this License ?')
+			.ariaLabel('License deletion')
+			.targetEvent(ev)
+			.ok('Delete')
+			.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
 				LicenseService.remove({id:vm.selectedLicense[0].id}, function() {
 					vm.licensesOnCurrentPage.splice(vm.licensesOnCurrentPage.indexOf(vm.selectedLicense[0]), 1);
-					vm.allLicenses.splice(vm.allLicenses.indexOf(vm.selecSelected[0]), 1);
+					vm.allLicenses.splice(vm.allLicenses.indexOf(vm.selectedLicense[0]), 1);
 					vm.editOrDelete = true;
 					vm.showToast('License ' + vm.selectedLicense[0].number + ' successfully deleted', 5000);
 				}, function() {
@@ -62,6 +68,29 @@
 			});
 		};
 		
+		function showTestDelConfirm(ev){
+			var confirm = $mdDialog.confirm()
+			.title('Delete a Test')
+			.textContent('Are you sure you want to delete this test ?')
+			.ariaLabel('Test deletion')
+			.targetEvent(ev)
+			.ok('Delete')
+			.cancel('Cancel');
+			$mdDialog.show(confirm).then(function() {
+				EmployeeTestService.remove({id:vm.selectedTest[0].employee.id, testId:vm.selectedTest[0].test.id}, function() {
+					vm.testsOnCurrentPage.splice(vm.testsOnCurrentPage.indexOf(vm.selectedTest[0]), 1);
+					vm.allTests.splice(vm.allTests.indexOf(vm.selectedTest[0]), 1);
+					vm.editOrDelete = true;
+					vm.showToast('Test ' + vm.selectedTest[0].test.name + ' successfully deleted', 5000);
+				}, function() {
+					vm.showToast('Test ' + vm.selectedTest[0].test.name 
+							+ ' could not be deleted ', 5000);
+				});
+			}, function() {
+				console.log('Keep this one ...');
+			});
+		}
+		
 		function loadAllLicenses(){
 			NurseLicenseService.query({id: $stateParams.id}, function(data){
 				vm.allLicenses = data;
@@ -72,9 +101,8 @@
 		}
 		
 		function loadAllTests(){
-			NurseTestService.query({id: $stateParams.id}, function(data){
+			EmployeeTestService.query({id: $stateParams.id}, function(data){
 				vm.allTests = data;
-				console.log('tests : ' + angular.toJson(data));
 				vm.testsOnCurrentPage = vm.sliceArray(vm.allTests, vm.testQuery);
 			});
 		}

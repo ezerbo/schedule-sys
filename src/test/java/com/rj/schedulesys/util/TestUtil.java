@@ -11,7 +11,7 @@ import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.FacilityViewModel;
 import com.rj.schedulesys.view.model.LicenseTypeViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
-import com.rj.schedulesys.view.model.NurseTestViewModel;
+import com.rj.schedulesys.view.model.EmployeeTestViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
 import com.rj.schedulesys.view.model.PhoneNumberViewModel;
 import com.rj.schedulesys.view.model.PositionViewModel;
@@ -188,10 +188,10 @@ public class TestUtil {
 		return viewModel;
 	}
 	
-	public static NurseTestViewModel aNewNurseTestViewModel(Long testId, Long nurseId, Long testSubCategoryId, String status
+	public static EmployeeTestViewModel aNewNurseTestViewModel(Long testId, Long employeeId, Long testSubCategoryId, String status
 			, Date completedDate, Date expirationDate){
-		NurseTestViewModel viewModel = NurseTestViewModel.builder()
-				.nurseId(nurseId)
+		EmployeeTestViewModel viewModel = EmployeeTestViewModel.builder()
+				.employeeId(employeeId)
 				.testId(testId)
 				.testSubCategoryId(testSubCategoryId)
 				.status(status)

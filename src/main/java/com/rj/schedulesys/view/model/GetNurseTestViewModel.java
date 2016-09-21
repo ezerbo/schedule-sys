@@ -18,14 +18,14 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"test", "testSubCategory", "nurse"})
+@ToString(exclude = {"test", "testSubCategory", "employee"})
 public class GetNurseTestViewModel {
 
 	private TestViewModel test;
 	
 	private TestSubCategoryViewModel testSubCategory;
 	
-	private NurseViewModel nurse;
+	private NurseViewModel employee;
 	
 	@NotBlank
 	private String status;

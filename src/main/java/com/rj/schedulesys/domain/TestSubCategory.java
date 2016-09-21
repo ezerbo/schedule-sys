@@ -36,19 +36,19 @@ public class TestSubCategory implements Serializable {
 	private String name;
 
 	@OneToMany(mappedBy = "testSubCategory")
-	private List<NurseTest> nurseTests;
+	private List<EmployeeTest> nurseTests;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="TEST_ID", nullable=false)
 	private Test test;
 
-	public NurseTest addNurseTest(NurseTest nurseTest) {
+	public EmployeeTest addNurseTest(EmployeeTest nurseTest) {
 		getNurseTests().add(nurseTest);
 		nurseTest.setTestSubCategory(this);
 		return nurseTest;
 	}
 
-	public NurseTest removeNurseTest(NurseTest nurseTest) {
+	public EmployeeTest removeNurseTest(EmployeeTest nurseTest) {
 		getNurseTests().remove(nurseTest);
 		nurseTest.setTestSubCategory(null);
 		return nurseTest;

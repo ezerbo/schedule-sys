@@ -1,15 +1,22 @@
 package com.rj.schedulesys.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.List;
 
 
 /**
@@ -22,7 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="TEST")
-@ToString(exclude = {"nurseTests", "testSubCategories"})
+@ToString(exclude = {"employeeTests", "testSubCategories"})
 public class Test implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -45,20 +52,20 @@ public class Test implements Serializable {
 	private String name;
 
 	@OneToMany(mappedBy = "test")
-	private List<NurseTest> nurseTests;
+	private List<EmployeeTest> employeeTests;
 
 	@OneToMany(mappedBy = "test")
-	private List<TestSubCategory> testSubCategories;
+	private List<TestSubCategory> testSubCategories = new ArrayList<>();
 
 
-	public NurseTest addNurseTest(NurseTest nurseTest) {
-		getNurseTests().add(nurseTest);
+	public EmployeeTest addNurseTest(EmployeeTest nurseTest) {
+		getEmployeeTests().add(nurseTest);
 		nurseTest.setTest(this);
 		return nurseTest;
 	}
 
-	public NurseTest removeNurseTest(NurseTest nurseTest) {
-		getNurseTests().remove(nurseTest);
+	public EmployeeTest removeNurseTest(EmployeeTest nurseTest) {
+		getEmployeeTests().remove(nurseTest);
 		nurseTest.setTest(null);
 		return nurseTest;
 	}

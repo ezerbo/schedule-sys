@@ -14,18 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.rj.schedulesys.domain.NurseTestPK;
 import com.rj.schedulesys.service.EmployeeService;
 import com.rj.schedulesys.service.LicenseService;
 import com.rj.schedulesys.service.NurseService;
-import com.rj.schedulesys.service.NurseTestService;
 import com.rj.schedulesys.service.PhoneNumberService;
-import com.rj.schedulesys.service.TestService;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.GetLicenseViewModel;
-import com.rj.schedulesys.view.model.GetNurseTestViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
-import com.rj.schedulesys.view.model.NurseTestViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
 import com.rj.schedulesys.view.model.PhoneNumberViewModel;
 
@@ -36,21 +31,17 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/nurses")
 public class NurseController {
 	
-	private TestService testService;
 	private NurseService nurseService;
 	private LicenseService licenseService;
 	private EmployeeService employeeService;
-	private NurseTestService nurseTestService;
 	private PhoneNumberService phoneNumberService;
 	
 	@Autowired
-	public NurseController(TestService testService, NurseService nurseService, EmployeeService employeeService,
-			NurseTestService nurseTestService, PhoneNumberService phoneNumberService, LicenseService licenseService,
+	public NurseController(NurseService nurseService, EmployeeService employeeService,
+			PhoneNumberService phoneNumberService, LicenseService licenseService,
 			DozerBeanMapper dozerMapper) {
-		this.testService = testService;
 		this.nurseService = nurseService;
 		this.employeeService = employeeService;
-		this.nurseTestService = nurseTestService;
 		this.phoneNumberService = phoneNumberService;
 		this.licenseService = licenseService;
 	}
@@ -277,85 +268,5 @@ public class NurseController {
 		log.info("License : {} successfully updated", viewModel);
 		return new ResponseEntity<>("License successfully updated", HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "/{id}/tests", method = RequestMethod.POST, consumes = "application/json")
-	public ResponseEntity<?> addOrUpdateTest(@PathVariable Long id, @RequestBody NurseTestViewModel viewModel){
-		
-		log.info("Adding new test : {} for nurse with id : {}", viewModel, id);
-		
-		if(nurseService.findOne(id) == null){
-			log.warn("No nurse found with id : {}", id);
-			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
-		}
-		
-		viewModel.setNurseId(id);
-		
-		try {
-			viewModel = nurseTestService.createOrUpate(viewModel);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		log.info("Test successfully added");
-		
-		return new ResponseEntity<>("Test successfully added", HttpStatus.CREATED);
-	}
-	
-	@RequestMapping(value = "/{id}/tests", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> findAllTests(@PathVariable Long id){
-		
-		log.info("Fetching all test for nurse with id", id);
-		
-		if(nurseService.findOne(id) == null){
-			log.warn("No nurse found with id : {}", id);
-			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
-		}
-		
-		List<GetNurseTestViewModel> viewModels = nurseTestService.findAllByNurse(id);
-		
-		if(viewModels.isEmpty()){
-			log.warn("No test found for nurse with id : {}", id);
-			return new ResponseEntity<>("No test found for nurse with id : " + id, HttpStatus.NOT_FOUND);
-		}
-		
-		log.info("Tests found : {}", viewModels);
-		
-		return new ResponseEntity<>(viewModels, HttpStatus.OK);
-	}
-	
-	@RequestMapping(value = "/{id}/tests/{testId}", method = RequestMethod.DELETE)
-	public ResponseEntity<?> deleteTest(@PathVariable Long id, @PathVariable Long testId){
-		
-		log.info("Deleting NurseTest with nurseId : {} and testId : {}", id, testId);
-		
-		if(nurseService.findOne(id) == null){
-			log.warn("No nurse found with id : {}", id);
-			return new ResponseEntity<>("No nurse found with id : " + id, HttpStatus.NOT_FOUND);
-		}
-		
-		if(testService.findOne(testId) == null){
-			log.error("No test found with id : {}", testId);
-			return new ResponseEntity<>("No test found with id : " + testId, HttpStatus.NOT_FOUND);
-		}
-		
-		NurseTestPK nurseTestPK = NurseTestPK.builder()
-				.testId(testId)
-				.nurseId(id)
-				.build();
-		
-		try {
-			nurseTestService.delete(nurseTestPK);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
-		log.info("Test successfully deleted");
-		
-		return new ResponseEntity<>("Test successfully deleted", HttpStatus.OK);
-	}
-	
-	
 	
 }

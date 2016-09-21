@@ -21,12 +21,11 @@
     	</section>
     	
     	<div style="text-align: center" layout-padding>
-			<span><h4>Tests ({{vm.allTests.length}})</h4></span>
+			<h4><span>Tests ({{vm.allTests.length}})</span></h4>
 		</div>
 		<section layout="row" layout-sm="column" layout-align="left left" layout-wrap>
 			<md-button class="md-raised md-primary" ui-sref="home.nurse-details.add-test({id:vm.nurse.id})">Add</md-button>
-			<md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details.edit-license({id:vm.selectedLicense[0].nurseId, licenseId:vm.selectedLicense[0].id})">Edit</md-button>
-      		<md-button class="md-raised md-warn" ng-click="vm.showLicenseDelConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+      		<md-button class="md-raised md-warn" ng-click="vm.showTestDelConfirm()" ng-disabled="vm.enableTestDel">Delete</md-button>
       </section>
 		
 		<md-table-container>
@@ -43,11 +42,11 @@
 		      </tr>
 		    </thead>
 		    <tbody md-body>
-		      <tr md-row md-select="nurseTest" md-select-id="name"  md-auto-select ng-repeat="nurseTest in vm.testsOnCurrentPage track by nurseTest.id">
+		      <tr md-row md-select="nurseTest" md-select-id="name"  md-auto-select ng-repeat="nurseTest in vm.testsOnCurrentPage">
 		        <td md-cell>{{nurseTest.test.name}}</td>
-		        <td md-cell>{{nurseTest.testSubCategory === undefined ? 'NONE' : nurseTest.testSubCategory.name}}</td>
-		        <td md-cell>{{nurseTest.completeDate === undefined ? 'NONE' : nurseTest.completeDate}}</td>
-		        <td md-cell>{{nurseTest.expirationDate === undefined ? 'NONE' : nurseTest.expirationDate}}</td>
+		        <td md-cell>{{nurseTest.testSubCategory === null ? 'NONE' : nurseTest.testSubCategory.name}}</td>
+		        <td md-cell>{{nurseTest.completedDate === null ? 'NONE' : nurseTest.completedDate}}</td>
+		        <td md-cell>{{nurseTest.expirationDate === null ? 'NONE' : nurseTest.expirationDate}}</td>
 		        <td md-cell>{{nurseTest.status}}</td>
 		      </tr>
 		    </tbody>
@@ -56,7 +55,7 @@
 	<md-table-pagination md-limit="vm.testQuery.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.testQuery.page" md-total="{{vm.allTests.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
 		
 		<div style="text-align: center" layout-padding>
-			<span><h4>Licenses ({{vm.allLicenses.length}})</h4></span>
+			<h4><span>Licenses ({{vm.allLicenses.length}})</span></h4>
 		</div>
 		<section layout="row" layout-sm="column" layout-align="left left" layout-wrap>
 			<md-button class="md-raised md-primary" ui-sref="home.nurse-details.add-license({id:vm.nurse.id})">Add</md-button>

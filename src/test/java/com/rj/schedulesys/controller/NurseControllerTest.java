@@ -1,6 +1,7 @@
 package com.rj.schedulesys.controller;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,9 +26,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.rj.schedulesys.config.TestConfiguration;
-import com.rj.schedulesys.data.NurseTestStatusConstants;
 import com.rj.schedulesys.util.TestUtil;
-import com.rj.schedulesys.view.model.NurseTestViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
 import com.rj.schedulesys.view.model.PhoneNumberViewModel;
 
@@ -137,113 +136,6 @@ public class NurseControllerTest {
 		mockMvc.perform(delete("/nurses/{id}", 3))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$", is("Nurse successfully deleted")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithNonExistingNurse() throws Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				0L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS, new Date(),new Date());
-		mockMvc.perform(post("/nurses/{id}/tests", 0L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().isNotFound())
-		.andExpect(jsonPath("$", is("No nurse found with id : 0")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithNonExistingTest() throws IOException, Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				0L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS, new Date(),new Date());
-		mockMvc.perform(post("/nurses/{id}/tests", 1L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("No test found with id : 0")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithNoCompletionDateForTestThatRequiresCompletionDate() throws IOException, Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				1L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS, null, new Date());
-		mockMvc.perform(post("/nurses/{id}/tests", 1L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("A complete date must be provided")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithNoExpirationDateForTestThatRequiresExpirationDate() throws IOException, Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				2L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS, new Date(), null);
-		mockMvc.perform(post("/nurses/{id}/tests", 1L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("An expiration date must be provided")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithFutureCompletionDate() throws IOException, Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				1L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS, new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)), new Date());
-		mockMvc.perform(post("/nurses/{id}/tests", 1L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("Completed date must be in the past")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithPastExpirationDate() throws IOException, Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				1L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS, new Date(), new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000)));
-		mockMvc.perform(post("/nurses/{id}/tests", 1L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("Expiration date must be in the future")));
-	}
-	
-	@Test
-	public void test_addOrUpdateTest_WithValidData() throws IOException, Exception{
-		NurseTestViewModel viewModel = TestUtil.aNewNurseTestViewModel(
-				1L, 1L, null, NurseTestStatusConstants.APPLICABLE_STATUS
-				, new Date(System.currentTimeMillis() - (24 * 60 * 60 * 1000))
-				, new Date(System.currentTimeMillis() + (24 * 60 * 60 * 1000)));
-		mockMvc.perform(post("/nurses/{id}/tests", 1L)
-				.contentType(MediaType.APPLICATION_JSON_UTF8)
-				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().isCreated())
-		.andExpect(jsonPath("$", is("Test successfully added")));
-	}
-
-	@Test
-	public void test_deleteTest_WithNonExistingNurse() throws Exception{
-		mockMvc.perform(delete("/nurses/{id}/tests/{testId}", 0, 1))
-			.andExpect(status().isNotFound())
-			.andExpect(jsonPath("$", is("No nurse found with id : 0")));
-	}
-	
-	@Test
-	public void test_deleteTest_WithNonExistingTest() throws Exception{
-		mockMvc.perform(delete("/nurses/{id}/tests/{testId}", 1, 0))
-			.andExpect(status().isNotFound())
-			.andExpect(jsonPath("$", is("No test found with id : 0")));
-	}
-	
-	@Test
-	public void test_deleteTest_WithExistingNurseTest() throws Exception{
-		mockMvc.perform(delete("/nurses/{id}/tests/{testId}", 5, 4))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", is("Test successfully deleted")));
-	}
-	
-	@Test
-	public void test_findAllByNurse() throws Exception{
-		mockMvc.perform(get("/nurses/{id}/tests", 4))
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$", hasSize(2)));
 	}
 	
 	@Test

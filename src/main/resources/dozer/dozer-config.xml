@@ -77,11 +77,11 @@
 	</mapping>
 	
 	<mapping>
-		<class-a>com.rj.schedulesys.domain.NurseTest</class-a>
-		<class-b>com.rj.schedulesys.view.model.NurseTestViewModel</class-b>
+		<class-a>com.rj.schedulesys.domain.EmployeeTest</class-a>
+		<class-b>com.rj.schedulesys.view.model.EmployeeTestViewModel</class-b>
 		<field>
-			<a>nurse.id</a>
-			<b>nurseId</b>
+			<a>employee.id</a>
+			<b>employeeId</b>
 		</field>
 		<field>
 			<a>test.id</a>
@@ -90,6 +90,15 @@
 		<field>
 			<a>testSubCategory.id</a>
 			<b>testSubCategoryId</b>
+		</field>
+	</mapping>
+	
+	<mapping>
+		<class-a>com.rj.schedulesys.domain.TestSubCategory</class-a>
+		<class-b>com.rj.schedulesys.view.model.TestSubCategoryViewModel</class-b>
+		<field>
+			<a>test.id</a>
+			<b>testId</b>
 		</field>
 	</mapping>
 	

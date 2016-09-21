@@ -132,6 +132,6 @@ public class EmployeeService {
 		log.debug("Fetching employee with id : {}", id);
 		Employee employee  = employeeDao.findOne(id);
 		log.debug("Employee found : {}", employee);
-		return dozerMapper.map(employee, EmployeeViewModel.class);
+		return (employee == null) ? null : dozerMapper.map(employee, EmployeeViewModel.class);
 	}
 }

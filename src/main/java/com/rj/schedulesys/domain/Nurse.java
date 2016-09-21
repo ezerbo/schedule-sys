@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,7 +32,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="NURSE")
-@ToString(exclude = {"nurseTests", "licences"})
+@ToString(exclude = {"licences"})
 public class Nurse implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -50,33 +49,6 @@ public class Nurse implements Serializable {
 	private Employee employee;
 
 	@OneToMany(mappedBy = "nurse", orphanRemoval = true)
-	private List<NurseTest> nurseTests;
-	
-	@OneToMany(mappedBy = "nurse", orphanRemoval = true)
 	private List<License> licences;
-
-	public NurseTest addNurseTest(NurseTest nurseTest) {
-		getNurseTests().add(nurseTest);
-		nurseTest.setNurse(this);
-		return nurseTest;
-	}
-
-	public NurseTest removeNurseTest(NurseTest nurseTest) {
-		getNurseTests().remove(nurseTest);
-		nurseTest.setNurse(null);
-		return nurseTest;
-	}
-	
-	public License addLicense(License license){
-		getLicences().add(license);
-		license.setNurse(this);
-		return license;
-	}
-	
-	public License removeLicense(License license){
-		getLicences().remove(license);
-		license.setNurse(null);
-		return license;
-	}
 
 }

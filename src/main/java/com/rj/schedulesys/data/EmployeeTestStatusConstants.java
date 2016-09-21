@@ -1,6 +1,6 @@
 package com.rj.schedulesys.data;
 
-public class NurseTestStatusConstants {
+public class EmployeeTestStatusConstants {
 
 	public final static String APPLICABLE_STATUS = "APPLICABLE";
 	

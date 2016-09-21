@@ -1,6 +1,8 @@
 package com.rj.schedulesys.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.transaction.Transactional;
 
@@ -14,6 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.rj.schedulesys.config.TestConfiguration;
 import com.rj.schedulesys.util.TestUtil;
+import com.rj.schedulesys.view.model.GetTestViewModel;
 import com.rj.schedulesys.view.model.TestViewModel;
 
 @Transactional
@@ -38,7 +41,7 @@ public class TestServiceTest {
 	
 	@Test
 	public void test_findOne_WithExistingId(){
-		TestViewModel viewModel = testService.findOne(1L);
+		GetTestViewModel viewModel = testService.findOne(1L);
 		assertEquals("DRUG TEST", viewModel.getName());
 	}
 	
@@ -49,7 +52,7 @@ public class TestServiceTest {
 	
 	@Test
 	public void test_findByName_WithExistingName(){
-		TestViewModel viewModel = testService.findByName("FLU VACCINE");
+		GetTestViewModel viewModel = testService.findByName("FLU VACCINE");
 		assertEquals(Long.valueOf(2), viewModel.getId());
 	}
 	

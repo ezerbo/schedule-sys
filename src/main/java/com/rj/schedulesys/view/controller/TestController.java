@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.rj.schedulesys.service.TestService;
 import com.rj.schedulesys.service.TestSubCategoryService;
+import com.rj.schedulesys.view.model.GetTestViewModel;
 import com.rj.schedulesys.view.model.TestSubCategoryViewModel;
 import com.rj.schedulesys.view.model.TestViewModel;
 
@@ -35,13 +36,13 @@ public class TestController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findOne(@PathVariable Long id){
 		log.info("Fetching test with id {}", id);
-		TestViewModel viewModel = testService.findOne(id);
+		GetTestViewModel viewModel = testService.findOne(id);
 		if(viewModel == null){
 			log.info("No test found with id : {}", id);
 			return new ResponseEntity<String>("No test found with id : " + id, HttpStatus.NOT_FOUND);
 		}
 		log.info("Test found : {}", viewModel);
-		return new ResponseEntity<TestViewModel>(viewModel, HttpStatus.OK);
+		return new ResponseEntity<GetTestViewModel>(viewModel, HttpStatus.OK);
 	}
 	
 	/**
@@ -50,7 +51,7 @@ public class TestController {
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAll(){
 		log.info("Fetching all tests");
-		List<TestViewModel> viewModels = testService.findAll();
+		List<GetTestViewModel> viewModels = testService.findAll();
 		if(viewModels.isEmpty()){
 			log.info("No test found");
 			return new ResponseEntity<String>("No test found", HttpStatus.NOT_FOUND);
@@ -163,7 +164,7 @@ public class TestController {
 	public ResponseEntity<String> updateSubCategory(@PathVariable Long id, @PathVariable Long subCategoryId
 			, @RequestBody TestSubCategoryViewModel viewModel){
 		log.info("Updating test sub category: {}", viewModel);
-		TestViewModel test = testService.findOne(id);
+		GetTestViewModel test = testService.findOne(id);
 		if(test == null){
 			log.warn("No test found with id : {}", id);
 			return new ResponseEntity<>("No test found with id : " + id, HttpStatus.NOT_FOUND);

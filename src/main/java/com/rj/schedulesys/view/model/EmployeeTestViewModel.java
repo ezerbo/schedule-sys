@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class NurseTestViewModel {
+public class EmployeeTestViewModel {
 	
 	private Long testId;
 	
 	private Long testSubCategoryId;
 	
-	private Long nurseId;
+	private Long employeeId;
 	
 	@NotBlank
 	private String status;
