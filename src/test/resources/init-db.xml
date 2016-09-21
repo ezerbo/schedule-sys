@@ -17,6 +17,7 @@
 		<jdbc:script location="classpath:test-data/phone-number-label.sql"/>
 		<jdbc:script location="classpath:test-data/phone-number.sql"/>
 		<jdbc:script location="classpath:test-data/facility.sql"/>
+		<jdbc:script location="classpath:test-data/private-care.sql"/>
 		<jdbc:script location="classpath:test-data/license-type.sql"/>
 		<jdbc:script location="classpath:test-data/license.sql"/>
 		<jdbc:script location="classpath:test-data/shift.sql"/>

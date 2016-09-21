@@ -53,7 +53,6 @@
 		
 		function onUpdateSucess(result){
 			$mdDialog.cancel();
-			$state.go('home.facilities',{}, {reload: true});
 			vm.showToast('Facility ' + vm.facility.name + ' successfully updated', 5000);
 		}
 		
