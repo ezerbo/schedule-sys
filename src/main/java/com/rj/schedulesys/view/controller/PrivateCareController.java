@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rj.schedulesys.service.ContactService;
 import com.rj.schedulesys.service.PrivateCareService;
+import com.rj.schedulesys.view.model.ContactViewModel;
 import com.rj.schedulesys.view.model.PrivateCareViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,11 +24,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/private-cares")
 public class PrivateCareController {
 	
+	private ContactService contactService;
 	private PrivateCareService privateCareService;
 	
 	@Autowired
-	public PrivateCareController(PrivateCareService privateCareService) {
+	public PrivateCareController(PrivateCareService privateCareService, ContactService contactService) {
 		this.privateCareService = privateCareService;
+		this.contactService = contactService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -98,5 +102,72 @@ public class PrivateCareController {
 		}
 		log.info("Private care with id successfully deleted : {}", id);
 		return new ResponseEntity<String>("Private care successfully deleted", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/{id}/contacts", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> findAllContacts(@PathVariable Long id){
+		log.info("Finding all contacts ");
+		if(privateCareService.findOne(id) == null){
+			log.warn("No private care found with id : {}", id);
+			return new ResponseEntity<String>("No private care found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		List<ContactViewModel> viewModels = contactService.findAllByPrivateCare(id);
+		if(viewModels.isEmpty()){
+			log.info("No contacts found");
+			return new ResponseEntity<String>("No contact found", HttpStatus.NOT_FOUND);
+		}
+		log.info("Contacts found : {}", viewModels);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/{id}/contacts", method = RequestMethod.POST, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> addContact(@PathVariable Long id, @RequestBody ContactViewModel viewModel){
+		log.info("Creating contact : {} ", viewModel);
+		if(privateCareService.findOne(id) == null){
+			log.warn("No private cate found with id : {}", id);
+			return new ResponseEntity<String>("No private care found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		viewModel.setPrivateCareId(id);
+		try{
+			contactService.create(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("Contact successfully created");
+		return new ResponseEntity<>("Contact successfully created", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value ="/{id}/contacts/{contactId}", method = RequestMethod.PUT, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> updateContact(@PathVariable Long id, @PathVariable Long contactId,
+			@RequestBody ContactViewModel viewModel){
+		log.info("Updating contact : {}", viewModel);
+		PrivateCareViewModel facility = privateCareService.findOne(id);
+		if(facility == null){
+			log.warn("No private care found with id : {}", id);
+			return new ResponseEntity<String>("No private care found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		
+		ContactViewModel staffMember = contactService.findOne(contactId);
+		if(staffMember == null){
+			log.error("No private care found with id : {}", contactId);
+			return new ResponseEntity<String>("No private care found with id : " + contactId, HttpStatus.NOT_FOUND);
+		}
+		
+		if(facility.getId() != staffMember.getPrivateCareId()){
+			log.warn("No contact with id : {} found for facility with id : {}", contactId, id);
+			return new ResponseEntity<String>("No contact with id : " + contactId 
+					+ " found for private care with id : " + id, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		viewModel.setPrivateCareId(id);
+		viewModel.setId(contactId);
+		try{
+			contactService.update(viewModel);
+		}catch(Exception e){
+			log.error(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		log.info("Contact successfully created");
+		return new ResponseEntity<>("Contact successfully created", HttpStatus.OK);
 	}
 }

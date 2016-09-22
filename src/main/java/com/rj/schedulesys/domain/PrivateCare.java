@@ -1,18 +1,21 @@
 package com.rj.schedulesys.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 /**
  * The persistent class for the PRIVATE_CARE database table.
@@ -24,7 +27,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="PRIVATE_CARE")
-//@ToString(exclude = {"schedules", "staffMembers"})
+@ToString(exclude = {"contacts"})
 public class PrivateCare implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -45,4 +48,7 @@ public class PrivateCare implements Serializable{
 
 	@Column(name = "PHONE_NUMBER", nullable = false, length = 50)
 	private String phoneNumber;
+	
+	@OneToMany(mappedBy = "privateCare")
+	private List<Contact> contacts;
 }

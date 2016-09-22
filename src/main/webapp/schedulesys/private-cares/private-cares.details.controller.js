@@ -5,30 +5,29 @@
 		.controller('PrivateCareDetailsController', PrivateCareDetailsController);
 	
 	PrivateCareDetailsController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog',
-	                                     '$mdToast', 'PrivateCareService', 'FacilitiesStaffMemberService','StaffMemberService'];
+	                                     '$mdToast', 'PrivateCareService', 'PrivateCareContactService','ContactService'];
 	
-	function PrivateCareDetailsController($state,$scope, $stateParams, $mdDialog, $mdToast, PrivateCareService, FacilitiesStaffMemberService,StaffMemberService){
+	function PrivateCareDetailsController($state,$scope, $stateParams, $mdDialog, $mdToast,
+			PrivateCareService, PrivateCareContactService, ContactService){
+		
 		var vm = this;
-		vm.allStaffMembers = [];
-		vm.staffMembersOnCurrentPage = [];
+		vm.allContacts = [];
+		vm.contactsOnCurrentPage = [];
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
-		vm.getStaffMembers = getStaffMembers;
-		vm.getSelectedFacility = getSelectedFacility;
+		vm.getContacts = getContacts;
+		vm.getSelectedPrivateCare = getSelectedPrivateCare;
 		
 		vm.selected = [];
 		vm.editOrDelete = true;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
-		vm.sliceStaffMemberArray = sliceStaffMemberArray;
-		vm.query = {
-				limit: 5,
-				page: 1	
-		};
+		vm.sliceContactsArray = sliceContactsArray;
+		vm.query = {limit: 5, page: 1};
 		
 		loadAll();
-		getStaffMembers();
-		getSelectedFacility();
+		getContacts();
+		getSelectedPrivateCare();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
@@ -36,14 +35,14 @@
 		
 		function showConfirm(ev) {
 			var confirm = $mdDialog.confirm()
-					.title('Delete a Staff-Member')
-					.textContent('Are you sure you want to delete this Staff-Member ?')
-					.ariaLabel('Staff-Member deletion')
+					.title('Delete a Contact')
+					.textContent('Are you sure you want to delete this Contact ?')
+					.ariaLabel('Contact deletion')
 					.targetEvent(ev)
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				StaffMemberService.remove(
+				ContactService.remove(
 						{id:vm.selected[0].id},
 						onDeleteSuccess,
 						onDeleteFailure
@@ -54,13 +53,13 @@
 		};
 		
 		function loadAll(){
-			FacilitiesStaffMemberService.query({id: $stateParams.id},
+			PrivateCareContactService.query({id: $stateParams.id},
 					onLoadAllSuccess, onLoadAllError);
 		}
 		
 		function onLoadAllSuccess(data){
-			vm.allStaffMembers = data;
-			vm.staffMembersOnCurrentPage = vm.sliceStaffMemberArray();
+			vm.allContacts = data;
+			vm.contactsOnCurrentPage = vm.sliceContactsArray();
 		}
 		
 		function onLoadAllError(status){
@@ -69,41 +68,39 @@
 
 		function onDeleteSuccess (){
 			$state.go($state.$current, {}, {reload:true});
-			vm.showToast('Staff-Member ' + vm.selected[0].firstName + ' successfully deleted', 5000);
+			vm.showToast('Contact ' + vm.selected[0].firstName + ' successfully deleted', 5000);
 		}	
 		
 		function onDeleteFailure (){
-			vm.showToast('Staff-Member ' + vm.selected[0].firstName 
+			vm.showToast('Contact ' + vm.selected[0].firstName 
 					+ ' could not be deleted ', 5000);
 		}
 		
 		function showToast(textContent, delay){
-			$mdToast.show(
-					$mdToast.simple()
+			$mdToast.show($mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
-					.hideDelay(delay)
-					);
+					.hideDelay(delay));
 		}
 		
 		function onPaginate(){
-			vm.staffMembersOnCurrentPage = vm.sliceStaffMemberArray();
+			vm.contactsOnCurrentPage = vm.sliceContactsArray();
 		}
 		
-		function sliceStaffMemberArray(){
-			return vm.allStaffMembers.slice(
+		function sliceContactsArray(){
+			return vm.allContacts.slice(
 					5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
 		}
 		
-		function getSelectedFacility(){
+		function getSelectedPrivateCare(){
 			PrivateCareService.get({id:$stateParams.id}, function(result) {
 				vm.privateCare = result;
 			});
 		}
 		
-		function getStaffMembers(){
-			FacilitiesStaffMemberService.query({id:$stateParams.id}, function(result) {
-				vm.allStaffMembers = result;
+		function getContacts(){
+			PrivateCareContactService.query({id:$stateParams.id}, function(result) {
+				vm.allContacts = result;
 			});
 		}
 	}

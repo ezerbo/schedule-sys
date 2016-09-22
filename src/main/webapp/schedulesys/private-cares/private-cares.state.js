@@ -83,33 +83,33 @@
 //				});
 //			}]
 //		})
-//		.state('home.facilities-details.add-staffmembers', {
-//			url: '/staff-members/new',
-//			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
-//				$mdDialog.show({
-//					title: 'New Staff-Member',
-//					templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
-//					parent: angular.element(document.body),
-//					controller: 'StaffMemberDialogController',
-//					clickOutsideToClose:true,
-//					onRemoving: function (){
-//						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
-//					}
-//				});
-//			}]
-//		}).state('home.facilities-details.edit-staffmembers', {
-//			url:'/staff-members/{staffMemberId}/edit',
-//			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
-//				$mdDialog.show({
-//					templateUrl: 'schedulesys/staff-members/staff-member-dialog.html',
-//					parent: angular.element(document.body),
-//					controller: 'StaffMemberDialogController',
-//					clickOutsideToClose:true,
-//					onRemoving: function (){
-//						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
-//					}
-//				});
-//			}]
-//		})
+		.state('home.privatecares-details.add-contacts', {
+			url: '/contacts/new',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					title: 'New Contact',
+					templateUrl: 'schedulesys/contacts/contacts.dialog.html',
+					parent: angular.element(document.body),
+					controller: 'ContactDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
+		}).state('home.privatecares-details.edit-contacts', {
+			url:'/contacts/{contactId}/edit',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/contacts/contacts.dialog.html',
+					parent: angular.element(document.body),
+					controller: 'ContactDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
+		})
 	}
 })();
