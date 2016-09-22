@@ -25,7 +25,7 @@ import com.rj.schedulesys.view.model.ShiftViewModel;
 @SpringApplicationConfiguration(TestConfiguration.class)
 public class ShiftServiceTest {
 
-	private @Autowired ShiftService shiftService;
+	private @Autowired FacilityShiftService shiftService;
 	
 	@Rule
 	public ExpectedException expectedException = ExpectedException.none();

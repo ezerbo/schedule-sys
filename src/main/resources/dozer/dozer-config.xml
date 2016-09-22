@@ -103,7 +103,7 @@
 	</mapping>
 	
 	<mapping>
-		<class-a>com.rj.schedulesys.domain.Schedule</class-a>
+		<class-a>com.rj.schedulesys.domain.FacilitySchedule</class-a>
 		<class-b>com.rj.schedulesys.view.model.CreateScheduleViewModel</class-b>
 		<field>
 			<a>facility.id</a>

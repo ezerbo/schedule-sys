@@ -20,15 +20,16 @@
 		<jdbc:script location="classpath:test-data/private-care.sql"/>
 		<jdbc:script location="classpath:test-data/license-type.sql"/>
 		<jdbc:script location="classpath:test-data/license.sql"/>
-		<jdbc:script location="classpath:test-data/shift.sql"/>
+		<jdbc:script location="classpath:test-data/facility-shift.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-status.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-post-status.sql"/>
-		<jdbc:script location="classpath:test-data/schedule.sql"/>
+		<jdbc:script location="classpath:test-data/facility-schedule.sql"/>
 		<jdbc:script location="classpath:test-data/staff-member.sql"/>
+		<jdbc:script location="classpath:test-data/contact.sql"/>
 		<jdbc:script location="classpath:test-data/test.sql"/>
 		<jdbc:script location="classpath:test-data/test-sub-category.sql"/>
 		<jdbc:script location="classpath:test-data/employee-test.sql"/>
-		<jdbc:script location="classpath:test-data/schedule-update.sql"/>
+		<jdbc:script location="classpath:test-data/facility-schedule-update.sql"/>
 	</jdbc:initialize-database>
 	
 </beans>

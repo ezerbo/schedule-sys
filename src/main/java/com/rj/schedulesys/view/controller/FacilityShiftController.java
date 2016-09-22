@@ -15,64 +15,57 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.rj.schedulesys.service.ShiftService;
+import com.rj.schedulesys.service.FacilityShiftService;
 import com.rj.schedulesys.view.model.ShiftViewModel;
 
 @Slf4j
 @Controller
-@RequestMapping("/shifts")
-public class ShiftController {
+@RequestMapping("/facility-shifts")
+public class FacilityShiftController {
 	
-	private @Autowired ShiftService shiftService;
+	private FacilityShiftService shiftService;
+	
+	@Autowired
+	public FacilityShiftController(FacilityShiftService shiftService) {
+		this.shiftService = shiftService;
+	}
 	
 	@RequestMapping(method = RequestMethod.POST , consumes = "application/json")
 	public @ResponseBody ResponseEntity<String> create(@RequestBody ShiftViewModel viewModel){
-		
 		log.info("Creating new shift : {}", viewModel);
-		
 		try{
 			viewModel = shiftService.create(viewModel);
 		}catch(Exception e){
 			log.error(e.getMessage());
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Created shift : {}", viewModel);
-		
 		return new ResponseEntity<String>("Shift successfully created", HttpStatus.CREATED);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = "application/json")
 	public @ResponseBody ResponseEntity<String> update(@PathVariable Long id, @RequestBody ShiftViewModel viewModel){
-		
 		log.info("Updating shift : {}", viewModel);
-		
 		if(shiftService.findOne(id) == null){
 			log.error("No shift found with id : {}", id);
 			return new ResponseEntity<String>("No shift found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		try{
 			viewModel = shiftService.update(viewModel);
 		}catch(Exception e){
 			log.error(e.getMessage());
 		}
-		
 		log.info("Updated shift : {}", viewModel);
-		
 		return new ResponseEntity<String>("Shift successfully updated", HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<String> delete(@PathVariable Long id){
-		
 		log.info("Deleting shift with id : {}", id);
-		
 		if(shiftService.findOne(id) == null){
 			log.error("No shift found with id : {}", id);
 			return new ResponseEntity<String>("No shift found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		try {
 			shiftService.delete(id);
 		} catch (Exception e) {

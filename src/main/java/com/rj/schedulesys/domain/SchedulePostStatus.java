@@ -35,15 +35,15 @@ public class SchedulePostStatus implements Serializable {
 	private String status;
 	
 	@OneToMany(mappedBy="schedulePostStatus")
-	private List<Schedule> schedules;
+	private List<FacilitySchedule> schedules;
 	
-	public Schedule addSchedule(Schedule schedule) {
+	public FacilitySchedule addSchedule(FacilitySchedule schedule) {
 		getSchedules().add(schedule);
 		schedule.setSchedulePostStatus(this);
 		return schedule;
 	}
 
-	public Schedule removeSchedule(Schedule schedule) {
+	public FacilitySchedule removeSchedule(FacilitySchedule schedule) {
 		getSchedules().remove(schedule);
 		schedule.setSchedulePostStatus(null);
 		return schedule;

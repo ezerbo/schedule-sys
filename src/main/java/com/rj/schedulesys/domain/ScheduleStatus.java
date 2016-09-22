@@ -40,15 +40,15 @@ public class ScheduleStatus implements Serializable {
 	private String status;
 	
 	@OneToMany(mappedBy="scheduleStatus")
-	private List<Schedule> schedules;
+	private List<FacilitySchedule> schedules;
 	
-	public Schedule addSchedule(Schedule schedule) {
+	public FacilitySchedule addSchedule(FacilitySchedule schedule) {
 		getSchedules().add(schedule);
 		schedule.setScheduleStatus(this);
 		return schedule;
 	}
 
-	public Schedule removeSchedule(Schedule schedule) {
+	public FacilitySchedule removeSchedule(FacilitySchedule schedule) {
 		getSchedules().remove(schedule);
 		schedule.setScheduleStatus(null);
 		return schedule;

@@ -1,23 +1,18 @@
-(function(){
+(function() {
 	'use strict';
-	angular.module('scheduleSys')
-		.factory('ScheduleService', ScheduleService);
 	
-	ScheduleService.$Inject = ['$resource'];
+	angular
+		.module('scheduleSys')
+		.factory('ShiftService', ShiftService);
 	
-	function ScheduleService($resource){
-		var resourceUrl = '/schedules/:id';
+	ShiftService.$Inject = ['$resource'];
+	
+	function ShiftService($resource) {
+		var resourceUrl = '/facility-shifts/:id';
+		
 		return $resource(resourceUrl, {}, {
-			'update':{
-                method: 'PUT',
-                transformResponse: function (data) {
-                    if (data) {
-                        data = angular.toJson(data);
-                    }
-                    return data;
-                }
-            },
-			'get': {
+            'query': { method: 'GET', isArray: true},
+            'get': {
                 method: 'GET',
                 transformResponse: function (data) {
                     if (data) {
@@ -26,6 +21,7 @@
                     return data;
                 }
             },
+            'update': { method:'PUT' },
             'remove':  {
                 method: 'DELETE',
                 transformResponse: function (data) {
@@ -45,6 +41,7 @@
                 }
             
             }
-		});
+        });
 	}
+	
 })();

@@ -52,14 +52,14 @@
 			 data: {
 	                schedulingType: 'facility'
 	            },
-			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
+			templateUrl: 'schedulesys/facility-schedules/facilities.scheduling-page.html',
 			controller: 'FacilitySchedulingController'
 		})
 		.state('home.facilities-scheduling.add', {
 			url: '/add',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/schedules/schedule-dialog.html',
+					templateUrl: 'schedulesys/facility-schedules/schedule-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'FacilitySchedulingDialogController',
 					clickOutsideToClose:true,
@@ -73,7 +73,7 @@
 			url: '/{scheduleId}/edit',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
-					templateUrl: 'schedulesys/schedules/schedule-dialog.html',
+					templateUrl: 'schedulesys/facility-schedules/schedule-dialog.html',
 					parent: angular.element(document.body),
 					controller: 'FacilitySchedulingDialogController',
 					clickOutsideToClose:true,

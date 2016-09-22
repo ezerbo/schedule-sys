@@ -30,7 +30,7 @@
 		vm.getAllShifts = getAllShifts;
 		vm.buildSchedule = buildSchedule;
 		vm.getAllFaclities = getAllFaclities;
-		vm.getAllEmployees = getAllEmployees;
+		vm.getAllNurses = getAllNurses;
 		vm.createOrUpdateSchedule = createOrUpdateSchedule;
 		vm.getAllScheduleStatuses = getAllScheduleStatuses;
 		vm.getAllSchedulePostStatuses = getAllSchedulePostStatuses;
@@ -48,7 +48,7 @@
 		
 		getAllShifts();
 		getAllFaclities();
-		getAllEmployees();
+		getAllNurses();
 		getAllScheduleStatuses();
 		getAllSchedulePostStatuses();
 		getSelectedSchedule();
@@ -119,8 +119,7 @@
 			$mdDialog.cancel();
 		}
 		
-		function getAllEmployees(){
-			
+		function getAllNurses(){
 			 NursesService.query(function(result) {
 				if(typeof result !== 'undefined' && result.length > 0){
 					vm.nurses = result.map(function(nurse){
@@ -132,18 +131,6 @@
 					vm.employees = vm.employees.concat(vm.nurses);
 				}
 			});
-			
-			careGiversService.query(function(result) {
-				if(typeof result !== 'undefined' && result.length > 0){
-					vm.careGivers = result.map(function(careGiver){
-						return {
-							employeeId: careGiver.id,
-							employeeName: careGiver.firstName + ' ' + careGiver.lastName
-						}
-					});
-					vm.employees = vm.employees.concat(vm.careGivers);
-				}
-			});
 		}
 		
 		function createFilterFor(query) {
@@ -151,7 +138,6 @@
 			return function filterFn(employee) {
 				var lowercaseEmployeeName = angular.lowercase(employee.employeeName);
 				return (lowercaseEmployeeName.indexOf(lowercaseQuery) === 0);
-				//return (employee.employeeName.indexOf(query) === 0);
 			};
 		}
 		

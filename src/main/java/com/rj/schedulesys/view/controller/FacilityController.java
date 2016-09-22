@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.schedulesys.service.FacilityService;
-import com.rj.schedulesys.service.ScheduleService;
+import com.rj.schedulesys.service.FacilityScheduleService;
 import com.rj.schedulesys.service.StaffMemberService;
 import com.rj.schedulesys.view.model.FacilityViewModel;
 import com.rj.schedulesys.view.model.GetScheduleViewModel;
@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class FacilityController {
 	
 	private @Autowired FacilityService facilityService;
-	private @Autowired ScheduleService scheduleService;
+	private @Autowired FacilityScheduleService scheduleService;
 	private @Autowired StaffMemberService staffMemberService;
 
 	/**

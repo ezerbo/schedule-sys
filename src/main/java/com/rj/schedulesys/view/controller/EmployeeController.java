@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.rj.schedulesys.domain.EmployeTestPK;
 import com.rj.schedulesys.service.EmployeeService;
 import com.rj.schedulesys.service.EmployeeTestService;
-import com.rj.schedulesys.service.ScheduleService;
+import com.rj.schedulesys.service.FacilityScheduleService;
 import com.rj.schedulesys.service.TestService;
 import com.rj.schedulesys.view.model.EmployeeTestViewModel;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
@@ -35,7 +35,7 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	
 	@Autowired
-	private ScheduleService scheduleService;
+	private FacilityScheduleService scheduleService;
 	
 	@Autowired
 	private EmployeeTestService employeeTestService;
@@ -53,9 +53,9 @@ public class EmployeeController {
 		}
 		List<GetScheduleViewModel> viewModels  = new LinkedList<>();
 		if(startDate == null || endDate == null){
-			viewModels = scheduleService.findAllByEmployee(id);
+			viewModels = scheduleService.findAllByNurse(id);
 		}else{
-			viewModels = scheduleService.findAllBetweenDatesByEmployee(startDate, endDate, id);
+			viewModels = scheduleService.findAllBetweenDatesByNurse(startDate, endDate, id);
 		}
 		if(viewModels.isEmpty()){
 			log.warn("No schedule found between : {} and : {} for employee with id : {}", startDate, endDate, id);

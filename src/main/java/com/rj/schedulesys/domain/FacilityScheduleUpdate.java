@@ -23,17 +23,16 @@ import lombok.ToString;
 
 
 /**
- * The persistent class for the SCHEDULE_UPDATE database table.
- * 
+ * The persistent class for the FACILITY_SCHEDULE_UPDATE database table.
  */
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="SCHEDULE_UPDATE")
+@Table(name="FACILITY_SCHEDULE_UPDATE")
 @ToString(exclude = {"scheduleSysUser"})
-public class ScheduleUpdate implements Serializable {
+public class FacilityScheduleUpdate implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +45,7 @@ public class ScheduleUpdate implements Serializable {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SCHEDULE_ID", nullable = false, insertable = false, updatable = false)
-	private Schedule schedule;
+	private FacilitySchedule schedule;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false, insertable = false, updatable = false)

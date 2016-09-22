@@ -50,14 +50,14 @@ public class ScheduleSysUser implements Serializable {
 	private Boolean isActivated;
 
 	@OneToMany(mappedBy="scheduleSysUser")
-	private List<Schedule> schedules;
+	private List<FacilitySchedule> schedules;
 
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="ROLE_ID", nullable=false)
 	private UserRole userRole;
 
 	@OneToMany(mappedBy="scheduleSysUser")
-	private List<ScheduleUpdate> scheduleUpdates;
+	private List<FacilityScheduleUpdate> scheduleUpdates;
 	
 	@PrePersist
 	public void onPersist(){
@@ -65,25 +65,25 @@ public class ScheduleSysUser implements Serializable {
 		setActivationToken(UUID.randomUUID().toString());
 	}
 
-	public Schedule addSchedule(Schedule schedule) {
+	public FacilitySchedule addSchedule(FacilitySchedule schedule) {
 		getSchedules().add(schedule);
 		schedule.setScheduleSysUser(this);
 		return schedule;
 	}
 
-	public Schedule removeSchedule(Schedule schedule) {
+	public FacilitySchedule removeSchedule(FacilitySchedule schedule) {
 		getSchedules().remove(schedule);
 		schedule.setScheduleSysUser(null);
 		return schedule;
 	}
 
-	public ScheduleUpdate addScheduleUpdate(ScheduleUpdate scheduleUpdate) {
+	public FacilityScheduleUpdate addScheduleUpdate(FacilityScheduleUpdate scheduleUpdate) {
 		getScheduleUpdates().add(scheduleUpdate);
 		scheduleUpdate.setScheduleSysUser(this);
 		return scheduleUpdate;
 	}
 
-	public ScheduleUpdate removeScheduleUpdate(ScheduleUpdate scheduleUpdate) {
+	public FacilityScheduleUpdate removeScheduleUpdate(FacilityScheduleUpdate scheduleUpdate) {
 		getScheduleUpdates().remove(scheduleUpdate);
 		scheduleUpdate.setScheduleSysUser(null);
 		return scheduleUpdate;

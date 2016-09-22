@@ -28,7 +28,7 @@ public class ScheduleServiceTest {
 	public ExpectedException expectedException = ExpectedException.none();
 	
 	@Autowired
-	private ScheduleService scheduleService;
+	private FacilityScheduleService scheduleService;
 	
 	@Test
 	public void test_findAllByFacility(){
@@ -97,7 +97,7 @@ public class ScheduleServiceTest {
 	@Test
 	public void test_create_WithDuplicateShift(){
 		expectedException.expect(RuntimeException.class);
-		expectedException.expectMessage("Employee with id : 1 already has a shift on " + new Date());
+		expectedException.expectMessage("Nurse with id : 1 already has a shift on " + new Date());
 		CreateScheduleViewModel viewModel = TestUtil.aNewCreateScheduleViewModel(
 				1L, 1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
 		scheduleService.create(viewModel, 1L);
@@ -106,7 +106,7 @@ public class ScheduleServiceTest {
 	@Test
 	public void test_create_WithValidData(){
 		CreateScheduleViewModel viewModel = TestUtil.aNewCreateScheduleViewModel(
-				10L, 1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
+				5L, 1L, 4L, 1L, 1L, new Date(), "Comment on the schedule");
 		viewModel = scheduleService.create(viewModel, 1L);
 		assertNotNull(viewModel.getId());
 	}
@@ -150,11 +150,11 @@ public class ScheduleServiceTest {
 	
 	@Test
 	public void test_update_WithValidData(){
-		assertEquals(Long.valueOf(1), scheduleService.findOne(1L).getShift().getId());
-		UpdateScheduleViewModel viewModel = TestUtil.aNewUpdateScheduleViewModel(
-				1L, 1L, 1L, 2L, 1L, 1L, 8D, 0., true, new Date(), "Comment on the schedule");
-		viewModel = scheduleService.update(viewModel, 1L);
 		assertEquals(Long.valueOf(2), scheduleService.findOne(1L).getShift().getId());
+		UpdateScheduleViewModel viewModel = TestUtil.aNewUpdateScheduleViewModel(
+				1L, 1L, 1L, 4L, 1L, 1L, 8D, 0., true, new Date(), "Comment on the schedule");
+		viewModel = scheduleService.update(viewModel, 1L);
+		assertEquals(Long.valueOf(4), scheduleService.findOne(1L).getShift().getId());
 	}
 	
 	@Test

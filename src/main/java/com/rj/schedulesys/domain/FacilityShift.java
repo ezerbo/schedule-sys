@@ -22,7 +22,7 @@ import lombok.ToString;
 
 
 /**
- * The persistent class for the SHIFT database table.
+ * The persistent class for the FACILITY_SHIFT database table.
  * 
  */
 @Data
@@ -30,9 +30,9 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="SHIFT")
+@Table(name="FACILITY_SHIFT")
 @ToString(exclude = "schedules")
-public class Shift implements Serializable {
+public class FacilityShift implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -54,15 +54,15 @@ public class Shift implements Serializable {
 	private LocalTime startTime;
 
 	@OneToMany(mappedBy = "shift")
-	private List<Schedule> schedules;
+	private List<FacilitySchedule> schedules;
 
-	public Schedule addSchedule(Schedule schedule) {
+	public FacilitySchedule addSchedule(FacilitySchedule schedule) {
 		getSchedules().add(schedule);
 		schedule.setShift(this);
 		return schedule;
 	}
 
-	public Schedule removeSchedule(Schedule schedule) {
+	public FacilitySchedule removeSchedule(FacilitySchedule schedule) {
 		getSchedules().remove(schedule);
 		schedule.setShift(null);
 		return schedule;

@@ -38,7 +38,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name="EMPLOYEE")
-@ToString(exclude = {"phoneNumbers", "schedules","employeeTests","position", "nurse", "careGiver"})
+@ToString(exclude = {"phoneNumbers", "employeeTests","position", "nurse", "careGiver"})
 @EqualsAndHashCode(exclude = {"careGiver", "nurse"})
 public class Employee implements Serializable {
 	
@@ -89,9 +89,6 @@ public class Employee implements Serializable {
 	@OneToMany(mappedBy = "employee", orphanRemoval = true)
 	private List<PhoneNumber> phoneNumbers;
 
-	@OneToMany(mappedBy = "employee", orphanRemoval = true)
-	private List<Schedule> schedules;
-	
 	@OneToMany(mappedBy = "employee", orphanRemoval = true)
 	private List<EmployeeTest> employeeTests;
 	

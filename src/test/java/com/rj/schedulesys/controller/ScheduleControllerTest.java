@@ -50,7 +50,7 @@ public class ScheduleControllerTest {
 	public void test_create_WithCONFIRMEDStatusButNoEmployee() throws Exception{
 		CreateScheduleViewModel aNewCreateScheduleViewModel = TestUtil.aNewCreateScheduleViewModel(
 				null, 1L, 2L, 1L,1L, new Date(), "Comment on schedule");
-		mockMvc.perform(post("/schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(post("/facility-schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(aNewCreateScheduleViewModel)))
 		.andExpect(status().is5xxServerError())
 		.andExpect(jsonPath("$", is("The schedule is of status 'CONFIRMED' but no nurse or care giver is provided")));
@@ -60,19 +60,19 @@ public class ScheduleControllerTest {
 	public void test_create_WithDuplicateShift() throws IOException, Exception{
 		CreateScheduleViewModel viewModel = TestUtil.aNewCreateScheduleViewModel(
 				1L, 1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
-		mockMvc.perform(post("/schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(post("/facility-schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", startsWith("Employee with id : 1 already has a shift on")));
+		.andExpect(jsonPath("$", startsWith("Nurse with id : 1 already has a shift on")));
 		
 	}
 	
 	@Test
 	public void test_create_WithValidData() throws IOException, Exception{
 		CreateScheduleViewModel viewModel = TestUtil.aNewCreateScheduleViewModel(
-				10L, 1L, 1L, 1L, 1L, new Date(), "Comment on the schedule");
+				5L, 1L, 4L, 1L, 1L, new Date(), "Comment on the schedule");
 		
-		mockMvc.perform(post("/schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(post("/facility-schedules").contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().isCreated())
 		.andExpect(jsonPath("$", startsWith("Schedule successfully created")));
@@ -83,7 +83,7 @@ public class ScheduleControllerTest {
 		UpdateScheduleViewModel viewModel = TestUtil.aNewUpdateScheduleViewModel(
 				0L, 1L, 1L, 1L, 1L, 1L, 0., 0., false, new Date(), "Comment on the schedule");
 		
-		mockMvc.perform(put("/schedules/{id}", 0).contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(put("/facility-schedules/{id}", 0).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().isNotFound())
 		.andExpect(jsonPath("$", startsWith("No schedule found with id : 0")));
@@ -93,7 +93,7 @@ public class ScheduleControllerTest {
 	public void test_update_WithTimesheetReceivedButNoEmployee() throws IOException, Exception{
 		UpdateScheduleViewModel viewModel = TestUtil.aNewUpdateScheduleViewModel(
 				1L, null, 1L, 1L, 1L, null, 0., 0., true, new Date(), "Comment on the schedule");
-		mockMvc.perform(put("/schedules/{id}", 1).contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(put("/facility-schedules/{id}", 1).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
 		.andExpect(jsonPath("$", startsWith("No time sheet can be provided when the schedule has no employee or is not confirmed")));
@@ -103,7 +103,7 @@ public class ScheduleControllerTest {
 	public void test_update_WithTimesheetReceivedButNoHoursWorked() throws IOException, Exception{
 		UpdateScheduleViewModel viewModel = TestUtil.aNewUpdateScheduleViewModel(
 				1L, 1L, 1L, 2L, 1L, null, 0., 0., true, new Date(), "Comment on the schedule");
-		mockMvc.perform(put("/schedules/{id}", 1).contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(put("/facility-schedules/{id}", 1).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().is5xxServerError())
 		.andExpect(jsonPath("$", startsWith("Time sheet is received but the actual hours worked was not submitted")));
@@ -113,7 +113,7 @@ public class ScheduleControllerTest {
 	public void test_update_WithValidData() throws IOException, Exception{
 		UpdateScheduleViewModel viewModel = TestUtil.aNewUpdateScheduleViewModel(
 				1L, 1L, 1L, 2L, 1L, 1L, 8D, 0., true, new Date(), "Comment on the schedule");
-		mockMvc.perform(put("/schedules/{id}", 1).contentType(MediaType.APPLICATION_JSON_UTF8)
+		mockMvc.perform(put("/facility-schedules/{id}", 1).contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("$", startsWith("Schedule updated successfully")));
@@ -121,14 +121,14 @@ public class ScheduleControllerTest {
 	
 	@Test
 	public void test_delete_WithNonExistingSchedule() throws Exception{
-		mockMvc.perform(delete("/schedules/{id}", 0))
+		mockMvc.perform(delete("/facility-schedules/{id}", 0))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$", is("No schedule found with id : 0")));
 	}
 	
 	@Test
 	public void test_delete_WithExistingSchedule() throws Exception{
-		mockMvc.perform(delete("/schedules/{id}", 8))
+		mockMvc.perform(delete("/facility-schedules/{id}", 8))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", is("Schedule successfully deleted")));
 	}

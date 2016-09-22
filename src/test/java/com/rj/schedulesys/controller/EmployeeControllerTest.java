@@ -61,7 +61,7 @@ public class EmployeeControllerTest {
 				.param("endDate", new Date().toString())
 				)
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$", hasSize(1)));
+			.andExpect(jsonPath("$", hasSize(2)));
 	}
 	
 	@Test

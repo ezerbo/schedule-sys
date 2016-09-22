@@ -10,24 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.rj.schedulesys.dao.EmployeeDao;
 import com.rj.schedulesys.dao.FacilityDao;
-import com.rj.schedulesys.dao.ScheduleDao;
+import com.rj.schedulesys.dao.FacilityScheduleUpdateDao;
+import com.rj.schedulesys.dao.FacilityShiftDao;
+import com.rj.schedulesys.dao.NurseDao;
+import com.rj.schedulesys.dao.FacilityScheduleDao;
 import com.rj.schedulesys.dao.SchedulePostStatusDao;
 import com.rj.schedulesys.dao.ScheduleStatusDao;
 import com.rj.schedulesys.dao.ScheduleSysUserDao;
-import com.rj.schedulesys.dao.ScheduleUpdateDao;
-import com.rj.schedulesys.dao.ShiftDao;
 import com.rj.schedulesys.data.ScheduleStatusConstants;
-import com.rj.schedulesys.domain.Employee;
 import com.rj.schedulesys.domain.Facility;
-import com.rj.schedulesys.domain.Schedule;
+import com.rj.schedulesys.domain.FacilityScheduleUpdate;
+import com.rj.schedulesys.domain.FacilityShift;
+import com.rj.schedulesys.domain.Nurse;
+import com.rj.schedulesys.domain.FacilitySchedule;
 import com.rj.schedulesys.domain.SchedulePostStatus;
 import com.rj.schedulesys.domain.ScheduleStatus;
 import com.rj.schedulesys.domain.ScheduleSysUser;
-import com.rj.schedulesys.domain.ScheduleUpdate;
 import com.rj.schedulesys.domain.ScheduleUpdatePK;
-import com.rj.schedulesys.domain.Shift;
 import com.rj.schedulesys.util.ObjectValidator;
 import com.rj.schedulesys.view.model.CreateScheduleViewModel;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
@@ -44,37 +44,36 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class ScheduleService {
+public class FacilityScheduleService {
 	
-	@Autowired
-	private ScheduleSysUserDao scheduleSysUserDao;
-	
-	@Autowired
-	private ShiftDao shiftDao;
-	
-	@Autowired
-	private EmployeeDao employeeDao;
-	
-	@Autowired
+	private FacilityShiftDao shiftDao;
+	private NurseDao nurseDao;
 	private FacilityDao facilityDao;
-	
-	@Autowired
-	private ScheduleDao scheduleDao;
-	
-	@Autowired
-	private ScheduleUpdateDao scheduleUpdateDao;
-	
-	@Autowired
+	private FacilityScheduleDao scheduleDao;
 	private ScheduleStatusDao scheduleStatusDao;
-	
-	@Autowired
+	private ScheduleSysUserDao scheduleSysUserDao;
+	private FacilityScheduleUpdateDao facilityScheduleUpdateDao;
 	private SchedulePostStatusDao schedulePostStatusDao;
 	
-	@Autowired
 	private DozerBeanMapper dozerMapper;
+	private ObjectValidator<CreateScheduleViewModel> validator;
 	
 	@Autowired
-	private ObjectValidator<CreateScheduleViewModel> validator;
+	public FacilityScheduleService(ScheduleSysUserDao scheduleSysUserDao, FacilityShiftDao shiftDao, NurseDao nurseDao,
+			FacilityDao facilityDao, FacilityScheduleDao scheduleDao, FacilityScheduleUpdateDao facilityScheduleUpdateDao,
+			SchedulePostStatusDao schedulePostStatusDao, ScheduleStatusDao scheduleStatusDao, DozerBeanMapper dozerMapper,
+			ObjectValidator<CreateScheduleViewModel> validator) {
+		this.scheduleSysUserDao = scheduleSysUserDao;
+		this.shiftDao = shiftDao;
+		this.nurseDao = nurseDao;
+		this.facilityDao = facilityDao;
+		this.scheduleDao = scheduleDao;
+		this.facilityScheduleUpdateDao = facilityScheduleUpdateDao;
+		this.scheduleStatusDao = scheduleStatusDao;
+		this.schedulePostStatusDao = schedulePostStatusDao;
+		this.dozerMapper = dozerMapper;
+		this.validator = validator;
+	}
 	
 	/**
 	 * @param viewModel
@@ -83,35 +82,26 @@ public class ScheduleService {
 	 */
 	@Transactional
 	public CreateScheduleViewModel create(CreateScheduleViewModel viewModel, Long scheduleSysUserId){
-		
 		validator.validate(viewModel);
-		
 		Facility facility = validateFacility(viewModel.getFacilityId());
-		
 		ScheduleStatus scheduleStatus = validateScheduleStatus(viewModel.getScheduleStatusId());
 		SchedulePostStatus schedulePostStatus = validateSchedulePostStatus(viewModel.getSchedulePostStatusId());
-		
-		Shift shift = validateShift(viewModel.getShiftId());
-		
+		FacilityShift shift = validateShift(viewModel.getShiftId());
 		if(StringUtils.equalsIgnoreCase(scheduleStatus.getStatus(), ScheduleStatusConstants.CONFIRMED_STATUS) 
 				&& viewModel.getEmployeeId() == null){
 			log.error("The schedule is of status 'CONFIRMED' but no nurse or care giver is provided");
 			throw new RuntimeException("The schedule is of status 'CONFIRMED' but no nurse or care giver is provided");
 		}
-		
-		Employee employee = null;
-		
+		Nurse nurse = null;
 		if(viewModel.getEmployeeId() != null){
-			employee = validateEmployee(viewModel.getEmployeeId());
+			nurse = validateNurse(viewModel.getEmployeeId());
 			//Make sure the employee does not already have a shift on the schedule date received
-			assertUniqueShiftPerDay(employee.getId(), shift.getId(), viewModel.getScheduleDate());
+			assertUniqueShiftPerDay(nurse.getId(), shift.getId(), viewModel.getScheduleDate());
 		}
-		
 		//User creating the schedule
 		ScheduleSysUser scheduleSysUser = scheduleSysUserDao.findOne(scheduleSysUserId);
-		
-		Schedule schedule = Schedule.builder()
-				.employee(employee)
+		FacilitySchedule schedule = FacilitySchedule.builder()
+				.nurse(nurse)
 				.facility(facility)
 				.shift(shift)
 				.hours(0.0)
@@ -125,19 +115,14 @@ public class ScheduleService {
 				.scheduleSysUser(scheduleSysUser)
 				.build();
 		
-		log.info("Creating schedule : {}", schedule);
-		
 		schedule = scheduleDao.merge(schedule);
-		
 		viewModel = dozerMapper.map(schedule, CreateScheduleViewModel.class);
-		log.info("Created schedule : {}", viewModel);
-		
 		return viewModel;
 	}
 	
 	@Transactional
 	public UpdateScheduleViewModel update(UpdateScheduleViewModel viewModel, Long scheduleSysUserId){
-		Schedule schedule = scheduleDao.findOne(viewModel.getId());
+		FacilitySchedule schedule = scheduleDao.findOne(viewModel.getId());
 		if(schedule == null){
 			log.error("No schedule found with id : {}", viewModel.getId());
 			throw new RuntimeException("No schedule found with id : " + viewModel.getId());
@@ -148,7 +133,7 @@ public class ScheduleService {
 			facility = validateFacility(viewModel.getFacilityId());
 		}
 		
-		Shift shift = schedule.getShift();
+		FacilityShift shift = schedule.getShift();
 		
 		if(shift.getId() != viewModel.getShiftId()){
 			log.warn("Schedule's shift updated, validating new shift");
@@ -166,10 +151,10 @@ public class ScheduleService {
 			schedulePostStatus = validateSchedulePostStatus(viewModel.getSchedulePostStatusId());
 		}
 		
-		Employee employee = validateEmployee(viewModel.getEmployeeId());
+		Nurse employee = validateNurse(viewModel.getEmployeeId());
 		
-		if(viewModel.getEmployeeId() != null && schedule.getEmployee() != null){
-			if(viewModel.getEmployeeId() != schedule.getEmployee().getId()){
+		if(viewModel.getEmployeeId() != null && schedule.getNurse() != null){
+			if(viewModel.getEmployeeId() != schedule.getNurse().getId()){
 				//Make sure the employee does not already have a shift on the schedule date received
 				assertUniqueShiftPerDay(employee.getId(), shift.getId(), viewModel.getScheduleDate());
 			}
@@ -196,10 +181,8 @@ public class ScheduleService {
 		
 		//TODO Check that there is no overtime when hours_worked < shift_capacity
 		
-		log.info("Hours : {}", viewModel.getHours());
-		
 		schedule.setScheduleDate(viewModel.getScheduleDate());
-		schedule.setEmployee(employee);
+		schedule.setNurse(employee);
 		schedule.setFacility(facility);
 		schedule.setShift(shift);
 		schedule.setTimesheetReceived(viewModel.isTimesheetReceived());
@@ -208,7 +191,6 @@ public class ScheduleService {
 		schedule.setScheduleComment(viewModel.getComment());
 		schedule.setScheduleStatus(scheduleStatus);
 		schedule.setSchedulePostStatus(schedulePostStatus);
-		log.info("Updating schedule : {}", schedule);
 		schedule = scheduleDao.merge(schedule);
 		createScheduleUpdate(schedule, scheduleSysUserId);
 		return dozerMapper.map(schedule, UpdateScheduleViewModel.class);
@@ -219,16 +201,16 @@ public class ScheduleService {
 	 * @param scheduleSysUserId
 	 * @param comment
 	 */
-	public void createScheduleUpdate(Schedule schedule , Long scheduleSysUserId){
+	public void createScheduleUpdate(FacilitySchedule schedule , Long scheduleSysUserId){
 		ScheduleUpdatePK pk = ScheduleUpdatePK.builder()
 				.scheduleId(schedule.getId())
 				.userId(scheduleSysUserId)
 				.build();
-		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder()
+		FacilityScheduleUpdate scheduleUpdate = FacilityScheduleUpdate.builder()
 				.id(pk)
 				.scheduleSysUser(scheduleSysUserDao.findOne(scheduleSysUserId))
 				.build();
-		scheduleUpdate = scheduleUpdateDao.merge(scheduleUpdate);
+		scheduleUpdate = facilityScheduleUpdateDao.merge(scheduleUpdate);
 		log.info("ScheduleUpdate : {}", scheduleUpdate);
 	}
 	
@@ -238,7 +220,7 @@ public class ScheduleService {
 	@Transactional
 	public void delete(Long id){
 		log.debug("Deleting schedule with id : {}", id);
-		Schedule schedule = scheduleDao.findOne(id);
+		FacilitySchedule schedule = scheduleDao.findOne(id);
 		if(schedule == null){
 			log.error("No schedule found with id : {}", id);
 			throw new RuntimeException("No schedule found with id : " + id);
@@ -247,23 +229,23 @@ public class ScheduleService {
 	}
 	
 	/**
-	 * @param employeeId
+	 * @param nurseId
 	 * @param shiftId
 	 * @param scheduleDate
 	 * @return
 	 */
-	private void assertUniqueShiftPerDay(Long employeeId, Long shiftId, Date scheduleDate){
-		Schedule schedule = scheduleDao.findByEmployeeAndShiftAndDate(employeeId, shiftId, scheduleDate);
+	private void assertUniqueShiftPerDay(Long nurseId, Long shiftId, Date scheduleDate){
+		FacilitySchedule schedule = scheduleDao.findByNurseAndShiftAndDate(nurseId, shiftId, scheduleDate);
 		if(schedule != null){
-			log.error("Employee with id : {} already has a shift on  {}", employeeId, scheduleDate);
-			throw new RuntimeException("Employee with id : " + employeeId + " already has a shift on " + scheduleDate);
+			log.error("Nurse with id : {} already has a shift on  {}", nurseId, scheduleDate);
+			throw new RuntimeException("Nurse with id : " + nurseId + " already has a shift on " + scheduleDate);
 		}
 	}
 	
 	@Transactional
 	public GetScheduleViewModel findOne(Long id){
 		log.info("Finding schedule with id : {}", id);
-		Schedule schedule = scheduleDao.findOne(id);
+		FacilitySchedule schedule = scheduleDao.findOne(id);
 		GetScheduleViewModel viewModel = null;
 		if(schedule != null){
 			viewModel = this.buildGetScheduleViewModel(schedule);
@@ -282,8 +264,8 @@ public class ScheduleService {
 	public List<GetScheduleViewModel> findAllBetweenDatesByFacility(Date startDate, Date endDate, Long facilityId){
 		log.info("Fetching schedules between startDate : {} and endDate : {} for facility with id : {}", startDate, endDate, facilityId);
 		List<GetScheduleViewModel> viewModels = new LinkedList<>();
-		List<Schedule> schedules = scheduleDao.findAllBetweenDatesByFacility(startDate, endDate, facilityId);
-		for(Schedule schedule : schedules){
+		List<FacilitySchedule> schedules = scheduleDao.findAllBetweenDatesByFacility(startDate, endDate, facilityId);
+		for(FacilitySchedule schedule : schedules){
 			viewModels.add(this.buildGetScheduleViewModel(schedule));
 		}
 		log.info("Schedule found : {}", viewModels);
@@ -291,22 +273,22 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public List<GetScheduleViewModel> findAllBetweenDatesByEmployee(Date startDate, Date endDate, Long employeeId){
-		log.info("Fetching schedules between startDate : {} and endDate : {} for employee with id : {}", startDate, endDate, employeeId);
+	public List<GetScheduleViewModel> findAllBetweenDatesByNurse(Date startDate, Date endDate, Long nurseId){
+		log.info("Fetching schedules between startDate : {} and endDate : {} for employee with id : {}", startDate, endDate, nurseId);
 		List<GetScheduleViewModel> viewModels = new LinkedList<>();
-		List<Schedule> schedules = scheduleDao.findAllBetweenDatesByEmployee(startDate, endDate, employeeId);
-		for(Schedule schedule : schedules){
+		List<FacilitySchedule> schedules = scheduleDao.findAllBetweenDatesByNurse(startDate, endDate, nurseId);
+		for(FacilitySchedule schedule : schedules){
 			viewModels.add(this.buildGetScheduleViewModel(schedule));
 		}
 		log.info("Schedule found : {}", viewModels);
 		return viewModels;
 	}
 	
-	public List<GetScheduleViewModel> findAllByEmployee(Long employeeId){
-		log.debug("Fetching schedules for employee with id : {}", employeeId);
-		List<Schedule> schedules = scheduleDao.findAllByEmployee(employeeId);
+	public List<GetScheduleViewModel> findAllByNurse(Long nurseId){
+		log.debug("Fetching schedules for employee with id : {}", nurseId);
+		List<FacilitySchedule> schedules = scheduleDao.findAllByNurse(nurseId);
 		List<GetScheduleViewModel> viewModels = new LinkedList<>();
-		for(Schedule schedule : schedules){
+		for(FacilitySchedule schedule : schedules){
 			viewModels.add(this.buildGetScheduleViewModel(schedule));
 		}
 		return viewModels;
@@ -319,9 +301,9 @@ public class ScheduleService {
 	 */
 	public List<GetScheduleViewModel> findAllByFacility(Long facilityId){
 		log.debug("Fetching schedules for faclity with id : {}", facilityId);
-		List<Schedule> schedules = scheduleDao.findAllByFacility(facilityId);
+		List<FacilitySchedule> schedules = scheduleDao.findAllByFacility(facilityId);
 		List<GetScheduleViewModel> viewModels = new LinkedList<>();
-		for(Schedule schedule : schedules){
+		for(FacilitySchedule schedule : schedules){
 			viewModels.add(this.buildGetScheduleViewModel(schedule));
 		}
 		return viewModels;
@@ -331,8 +313,8 @@ public class ScheduleService {
 	 * @param shiftId
 	 * @return
 	 */
-	public Shift validateShift(Long shiftId){
-		Shift shift = shiftDao.findOne(shiftId);
+	public FacilityShift validateShift(Long shiftId){
+		FacilityShift shift = shiftDao.findOne(shiftId);
 		if(shift == null){
 			log.error("No shift found with id : {}", shiftId);
 			throw new RuntimeException("No shift found with id : " + shiftId);
@@ -379,14 +361,14 @@ public class ScheduleService {
 		return schedulePostStatus;
 	}
 	
-	public Employee validateEmployee(Long employeeId){
-		if(employeeId == null){
+	public Nurse validateNurse(Long nurseId){
+		if(nurseId == null){
 			return null;
 		}
-		Employee employee = employeeDao.findOne(employeeId);
+		Nurse employee = nurseDao.findOne(nurseId);
 		if(employee == null){
-			log.error("No employee found with id : {}", employeeId);
-			throw new RuntimeException("No employee found with id : " + employeeId);
+			log.error("No employee found with id : {}", nurseId);
+			throw new RuntimeException("No employee found with id : " + nurseId);
 		}
 		return employee;
 	}
@@ -395,35 +377,27 @@ public class ScheduleService {
 	 * @param schedule
 	 * @return
 	 */
-	private GetScheduleViewModel buildGetScheduleViewModel(Schedule schedule){
-		
+	private GetScheduleViewModel buildGetScheduleViewModel(FacilitySchedule schedule){
 		EmployeeViewModel employeeVm = null;
 		PositionViewModel positionVm = null;
-		
-		if(schedule.getEmployee() != null){
-			employeeVm = dozerMapper.map(schedule.getEmployee(), EmployeeViewModel.class);
-			positionVm = dozerMapper.map(schedule.getEmployee().getPosition(), PositionViewModel.class);
+		if(schedule.getNurse() != null){
+			employeeVm = dozerMapper.map(schedule.getNurse().getEmployee(), EmployeeViewModel.class);
+			positionVm = dozerMapper.map(schedule.getNurse().getEmployee().getPosition(), PositionViewModel.class);
 		}
-		
 		FacilityViewModel facilityVm = dozerMapper.map(schedule.getFacility(), FacilityViewModel.class);
 		ShiftViewModel shiftVm = dozerMapper.map(schedule.getShift(), ShiftViewModel.class);
 		ScheduleStatusViewModel scheduleStatusVm = dozerMapper.map(schedule.getScheduleStatus(), ScheduleStatusViewModel.class);
 		ScheduleSysUserViewModel filledBy = dozerMapper.map(schedule.getScheduleSysUser(), ScheduleSysUserViewModel.class);
-		
 		SchedulePostStatusViewModel schedulePostStatusVm = null;
-		
 		if(schedule.getSchedulePostStatus() != null){
 			schedulePostStatusVm = dozerMapper.map(schedule.getSchedulePostStatus(), SchedulePostStatusViewModel.class);
 		}
-		
 		ScheduleSysUserViewModel lastModifiedBy = null;
 		log.info("Schedule ID : {}", schedule.getId());
-		ScheduleUpdate scheduleUpdate = scheduleUpdateDao.findLatestByScheduleId(schedule.getId());
-		
+		FacilityScheduleUpdate scheduleUpdate = facilityScheduleUpdateDao.findLatestByScheduleId(schedule.getId());
 		if(scheduleUpdate != null){
 			lastModifiedBy = dozerMapper.map(scheduleUpdate.getScheduleSysUser(), ScheduleSysUserViewModel.class);
 		}
-		
 		GetScheduleViewModel viewModel = GetScheduleViewModel.builder()
 				.id(schedule.getId())
 				.employee(employeeVm)
@@ -440,7 +414,6 @@ public class ScheduleService {
 				.scheduleStatus(scheduleStatusVm)
 				.schedulePostStatus(schedulePostStatusVm)
 				.build();
-		
 		return viewModel;
 	}
 	

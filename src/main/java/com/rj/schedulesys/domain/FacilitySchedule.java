@@ -1,7 +1,21 @@
 package com.rj.schedulesys.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +23,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
-
 
 /**
- * The persistent class for the SCHEDULE database table.
+ * The persistent class for the FACILITY_SCHEDULE database table.
  * 
  */
 @Data
@@ -21,10 +33,10 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "SCHEDULE")
-@ToString(exclude = {"employee", "facility", "shift"
+@Table(name = "FACILITY_SCHEDULE")
+@ToString(exclude = {"nurse", "facility", "shift"
 		, "scheduleSysUser", "scheduleStatus", "schedulePostStatus"})
-public class Schedule implements Serializable {
+public class FacilitySchedule implements Serializable {
 	
 	private static final long serialVersionUID  =  1L;
 
@@ -62,8 +74,8 @@ public class Schedule implements Serializable {
 	private Boolean timesheetReceived;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "EMPLOYEE_ID")
-	private Employee employee;
+	@JoinColumn(name = "NURSE_ID")
+	private Nurse nurse;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "FACILITY_ID", nullable = false)
@@ -71,10 +83,13 @@ public class Schedule implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "SHIFT_ID", nullable = false)
-	private Shift shift;
+	private FacilityShift shift;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)
 	private ScheduleSysUser scheduleSysUser;
+	
+	@OneToMany(mappedBy = "schedule", orphanRemoval = true)
+	List<FacilityScheduleUpdate> facilityScheduleUpdates;
 
 }

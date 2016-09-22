@@ -45,7 +45,7 @@ public class Facility implements Serializable {
 	private String phoneNumber;
 
 	@OneToMany(mappedBy = "facility")
-	private List<Schedule> schedules;
+	private List<FacilitySchedule> schedules;
 
 	@OneToMany(mappedBy = "facility")
 	private List<StaffMember> staffMembers;

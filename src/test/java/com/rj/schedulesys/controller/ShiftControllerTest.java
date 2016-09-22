@@ -42,21 +42,21 @@ private @Autowired WebApplicationContext context;
 	
 	@Test
 	public void test_findAll() throws Exception{
-		mockMvc.perform(get("/shifts"))
+		mockMvc.perform(get("/facility-shifts"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", hasSize(4)));
 	}
 	
 	@Test
 	public void test_findOne_WithNonExistingShift() throws Exception{
-		mockMvc.perform(get("/shifts/{id}", 0L))
+		mockMvc.perform(get("/facility-shifts/{id}", 0L))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$", is("No shift found with either id or name : 0")));
 	}
 	
 	@Test
 	public void test_findOne_WithExistingShiftId() throws Exception{
-		mockMvc.perform(get("/shifts/{id}", 1L))
+		mockMvc.perform(get("/facility-shifts/{id}", 1L))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id", is(1)))
 			.andExpect(jsonPath("$.name", is("NIGHT")));
@@ -64,7 +64,7 @@ private @Autowired WebApplicationContext context;
 	
 	@Test
 	public void test_findOne_WithExistingShiftName() throws Exception{
-		mockMvc.perform(get("/shifts/{id}", "DAY"))
+		mockMvc.perform(get("/facility-shifts/{id}", "DAY"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id", is(2)))
 			.andExpect(jsonPath("$.name", is("DAY")));
@@ -72,14 +72,14 @@ private @Autowired WebApplicationContext context;
 	
 	@Test
 	public void test_delete_WithNonExistingShift() throws Exception{
-		mockMvc.perform(delete("/shifts/{id}", 0L))
+		mockMvc.perform(delete("/facility-shifts/{id}", 0L))
 			.andExpect(status().isNotFound())
 			.andExpect(jsonPath("$", is("No shift found with id : 0")));
 	}
 	
 	@Test
 	public void test_delete_WithExitingShift() throws Exception{
-		mockMvc.perform(delete("/shifts/{id}", 4L))
+		mockMvc.perform(delete("/facility-shifts/{id}", 4L))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$", is("Shift successfully deleted")));
 	}
@@ -91,7 +91,7 @@ private @Autowired WebApplicationContext context;
 				null, "NIGHT", LocalTime.now(), LocalTime.MIDNIGHT
 				);
 		
-		mockMvc.perform(post("/shifts")	
+		mockMvc.perform(post("/facility-shifts")	
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 			.andExpect(status().is5xxServerError())
@@ -105,7 +105,7 @@ private @Autowired WebApplicationContext context;
 				null, "ONE SHIFT", LocalTime.parse("10:15:00"), LocalTime.parse("5:30:00")
 				);
 		
-		mockMvc.perform(post("/shifts")	
+		mockMvc.perform(post("/facility-shifts")	
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
 			.andExpect(status().is5xxServerError())

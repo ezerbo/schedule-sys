@@ -50,5 +50,8 @@ public class Nurse implements Serializable {
 
 	@OneToMany(mappedBy = "nurse", orphanRemoval = true)
 	private List<License> licences;
+	
+	@OneToMany(mappedBy = "nurse", orphanRemoval = true)
+	private List<FacilitySchedule> schedules;
 
 }
