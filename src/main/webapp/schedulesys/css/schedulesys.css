@@ -13,11 +13,12 @@ body {
     
 }
 
-
-
-.selected{
-	background-color : #ff0066;
+tr.selected td.md-cell{
+	
+	color : red;
 }
+
+
 
 .selectedlicense{
 	
