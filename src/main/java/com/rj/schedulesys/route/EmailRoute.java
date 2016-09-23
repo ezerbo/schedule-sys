@@ -22,7 +22,7 @@ public class EmailRoute extends SpringRouteBuilder{
 			.setHeader("subject", constant("Schedule Sys account activation"))
 			.log(LoggingLevel.INFO, log.getName(), "email to be sent : ${body}")
 			.toD("smtp://{{schedule-sys.smtp.host}}:{{schedule-sys.smtp.port}}"
-					+ "?username={{schedule-sys.smtp.account}}&password=RAW({{schedule-sys.smtp.password}})&contentType=text/html");
+					+ "?username={{schedule-sys.smtp.account}}&password=RAW({{schedule-sys.smtp.password}})&mail.smtp.auth=true&mail.smtp.starttls=true&contentType=text/html");
 	}
 
 }
