@@ -1,5 +1,7 @@
 package com.rj.schedulesys.view.controller;
 
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
@@ -12,14 +14,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.schedulesys.service.EmployeeService;
+import com.rj.schedulesys.service.FacilityScheduleService;
 import com.rj.schedulesys.service.LicenseService;
 import com.rj.schedulesys.service.NurseService;
 import com.rj.schedulesys.service.PhoneNumberService;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.GetLicenseViewModel;
+import com.rj.schedulesys.view.model.GetScheduleViewModel;
 import com.rj.schedulesys.view.model.LicenseViewModel;
 import com.rj.schedulesys.view.model.NurseViewModel;
 import com.rj.schedulesys.view.model.PhoneNumberViewModel;
@@ -35,15 +40,17 @@ public class NurseController {
 	private LicenseService licenseService;
 	private EmployeeService employeeService;
 	private PhoneNumberService phoneNumberService;
+	private FacilityScheduleService scheduleService;
 	
 	@Autowired
 	public NurseController(NurseService nurseService, EmployeeService employeeService,
 			PhoneNumberService phoneNumberService, LicenseService licenseService,
-			DozerBeanMapper dozerMapper) {
+			DozerBeanMapper dozerMapper, FacilityScheduleService scheduleService) {
 		this.nurseService = nurseService;
 		this.employeeService = employeeService;
 		this.phoneNumberService = phoneNumberService;
 		this.licenseService = licenseService;
+		this.scheduleService = scheduleService;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
@@ -267,6 +274,29 @@ public class NurseController {
 		}
 		log.info("License : {} successfully updated", viewModel);
 		return new ResponseEntity<>("License successfully updated", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getSchedules(@PathVariable Long id, @RequestParam(required = false) Date startDate,
+			@RequestParam(required = false) Date endDate){
+		log.info("Fetching all schedule between : {} and : {} for employee with id : {}", startDate, endDate, id);
+		if(employeeService.findOne(id) == null){
+			log.warn("No employee found with id : {}", id);
+			return new ResponseEntity<>("No employee found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		List<GetScheduleViewModel> viewModels  = new LinkedList<>();
+		if(startDate == null || endDate == null){
+			viewModels = scheduleService.findAllByNurse(id);
+		}else{
+			viewModels = scheduleService.findAllBetweenDatesByNurse(startDate, endDate, id);
+		}
+		if(viewModels.isEmpty()){
+			log.warn("No schedule found between : {} and : {} for employee with id : {}", startDate, endDate, id);
+			return new ResponseEntity<>("No schedule found between : " + startDate + " and : " +
+						endDate + " for employee with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		log.info("Schedules found  : {}", viewModels);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}
 	
 }

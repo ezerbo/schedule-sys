@@ -107,7 +107,7 @@
 			data: {
 				schedulingType: 'employee'
 	        },
-			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
+			templateUrl: 'schedulesys/facility-schedules/facilities.scheduling-page.html',
 			controller: 'FacilitySchedulingController'
 		})
 	}

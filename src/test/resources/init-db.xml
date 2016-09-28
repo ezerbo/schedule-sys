@@ -21,6 +21,7 @@
 		<jdbc:script location="classpath:test-data/license-type.sql"/>
 		<jdbc:script location="classpath:test-data/license.sql"/>
 		<jdbc:script location="classpath:test-data/facility-shift.sql"/>
+		<jdbc:script location="classpath:test-data/private-care-shift.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-status.sql"/>
 		<jdbc:script location="classpath:test-data/schedule-post-status.sql"/>
 		<jdbc:script location="classpath:test-data/facility-schedule.sql"/>

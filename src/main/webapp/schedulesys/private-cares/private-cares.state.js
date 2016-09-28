@@ -47,42 +47,42 @@
 			templateUrl: 'schedulesys/private-cares/private-care.details.html',
 			controller: 'PrivateCareDetailsController'
 		})
-//		.state('home.facilities-scheduling', {
-//			url: '/facilities/{id}/schedules',
-//			 data: {
-//	                schedulingType: 'facility'
-//	            },
-//			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
-//			controller: 'FacilitySchedulingController'
-//		})
-//		.state('home.facilities-scheduling.add', {
-//			url: '/add',
-//			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
-//				$mdDialog.show({
-//					templateUrl: 'schedulesys/schedules/schedule-dialog.html',
-//					parent: angular.element(document.body),
-//					controller: 'FacilitySchedulingDialogController',
-//					clickOutsideToClose:true,
-//					onRemoving: function (){
-//						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
-//					}
-//				});
-//			}]
-//		})
-//		.state('home.facilities-scheduling.edit', {
-//			url: '/{scheduleId}/edit',
-//			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
-//				$mdDialog.show({
-//					templateUrl: 'schedulesys/schedules/schedule-dialog.html',
-//					parent: angular.element(document.body),
-//					controller: 'FacilitySchedulingDialogController',
-//					clickOutsideToClose:true,
-//					onRemoving: function (){
-//						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
-//					}
-//				});
-//			}]
-//		})
+		.state('home.privatecares-scheduling', {
+			url: '/private-cares/{id}/schedules',
+			 data: {
+	                schedulingType: 'privateCare'
+	            },
+			templateUrl: 'schedulesys/private-care-schedules/private-cares.scheduling-page.html',
+			controller: 'PrivateCareSchedulingController'
+		})
+		.state('home.privatecares-scheduling.add', {
+			url: '/add',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/private-care-schedules/schedule-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'PrivateCareSchedulingDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
+		})
+		.state('home.privatecares-scheduling.edit', {
+			url: '/{scheduleId}/edit',
+			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/private-care-schedules/schedule-dialog.html',
+					parent: angular.element(document.body),
+					controller: 'PrivateCareSchedulingDialogController',
+					clickOutsideToClose:true,
+					onRemoving: function (){
+						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
+					}
+				});
+			}]
+		})
 		.state('home.privatecares-details.add-contacts', {
 			url: '/contacts/new',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {

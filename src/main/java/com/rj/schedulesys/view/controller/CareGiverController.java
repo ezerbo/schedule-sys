@@ -1,5 +1,7 @@
 package com.rj.schedulesys.view.controller;
 
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.schedulesys.service.CareGiverService;
 import com.rj.schedulesys.service.EmployeeService;
 import com.rj.schedulesys.service.PhoneNumberService;
+import com.rj.schedulesys.service.PrivateCareScheduleService;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
+import com.rj.schedulesys.view.model.GetPrivateCareScheduleViewModel;
 import com.rj.schedulesys.view.model.PhoneNumberViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +39,9 @@ public class CareGiverController {
 	
 	@Autowired
 	private PhoneNumberService phoneNumberService;
+	
+	@Autowired
+	private PrivateCareScheduleService scheduleService;
 	
 	@RequestMapping(method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody ResponseEntity<?> create(@RequestBody EmployeeViewModel viewModel){
@@ -222,6 +230,29 @@ public class CareGiverController {
 		log.info("Phone number successfully deleted");
 		
 		return new ResponseEntity<>("Phone number successfully deleted", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getSchedules(@PathVariable Long id, @RequestParam(required = false) Date startDate,
+			@RequestParam(required = false) Date endDate){
+		log.info("Fetching all schedule between : {} and : {} for employee with id : {}", startDate, endDate, id);
+		if(employeeService.findOne(id) == null){
+			log.warn("No employee found with id : {}", id);
+			return new ResponseEntity<>("No employee found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		List<GetPrivateCareScheduleViewModel> viewModels  = new LinkedList<>();
+		if(startDate == null || endDate == null){
+			viewModels = scheduleService.findAllByCareGiver(id);
+		}else{
+			viewModels = scheduleService.findAllBetweenDatesByCareGiver(startDate, endDate, id);
+		}
+		if(viewModels.isEmpty()){
+			log.warn("No schedule found between : {} and : {} for employee with id : {}", startDate, endDate, id);
+			return new ResponseEntity<>("No schedule found between : " + startDate + " and : " +
+						endDate + " for employee with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		log.info("Schedules found  : {}", viewModels);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}
 	
 }

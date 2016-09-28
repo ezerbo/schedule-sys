@@ -1,5 +1,6 @@
 package com.rj.schedulesys.view.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rj.schedulesys.service.ContactService;
+import com.rj.schedulesys.service.PrivateCareScheduleService;
 import com.rj.schedulesys.service.PrivateCareService;
 import com.rj.schedulesys.view.model.ContactViewModel;
+import com.rj.schedulesys.view.model.GetPrivateCareScheduleViewModel;
 import com.rj.schedulesys.view.model.PrivateCareViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +30,14 @@ public class PrivateCareController {
 	
 	private ContactService contactService;
 	private PrivateCareService privateCareService;
+	private PrivateCareScheduleService scheduleService;
 	
 	@Autowired
-	public PrivateCareController(PrivateCareService privateCareService, ContactService contactService) {
+	public PrivateCareController(PrivateCareService privateCareService, ContactService contactService,
+			PrivateCareScheduleService scheduleService) {
 		this.privateCareService = privateCareService;
 		this.contactService = contactService;
+		this.scheduleService = scheduleService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
@@ -169,5 +176,29 @@ public class PrivateCareController {
 		}
 		log.info("Contact successfully created");
 		return new ResponseEntity<>("Contact successfully created", HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> findSchedules(@PathVariable Long id, @RequestParam(required = false) Date startDate
+			, @RequestParam(required = false) Date endDate){
+		log.info("Finding schedules between startDate : {} and endDate : {} for private care with id : {}", startDate, endDate);
+		if(privateCareService.findOne(id) == null){
+			log.info("No private care found with id : {}", id);
+			return new ResponseEntity<String>("No private care found with id : " + id, HttpStatus.NOT_FOUND);
+		}
+		List<GetPrivateCareScheduleViewModel> viewModels = null;
+		if(startDate == null || endDate == null){
+			viewModels = scheduleService.findAllByPrivateCare(id);
+		}else{
+			viewModels = scheduleService.findAllBetweenDatesByPrivateCare(startDate, endDate, id);
+		}
+		if(viewModels.isEmpty()){
+			log.info("No schedules found between : {} and : {} for private with id : {}", startDate, endDate, id);
+			return new ResponseEntity<>(
+					"No schedules found between : " + startDate + " and : " + endDate + " for private with id : " + id, HttpStatus.NOT_FOUND
+					);
+		}
+		log.info("Schedules found : {}", viewModels);
+		return new ResponseEntity<>(viewModels, HttpStatus.OK);
 	}
 }

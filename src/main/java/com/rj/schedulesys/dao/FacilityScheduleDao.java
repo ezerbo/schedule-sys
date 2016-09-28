@@ -82,6 +82,4 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 		return schedules;
 	}
 	
-	
-	
 }

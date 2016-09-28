@@ -2,25 +2,25 @@
 	'use strict';
 	angular
 		.module('scheduleSys')
-		.controller('FacilitySchedulingController', FacilitySchedulingController);
+		.controller('PrivateCareSchedulingController', PrivateCareSchedulingController);
 	
-	FacilitySchedulingController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog', '$mdToast',
-	                                        'FacilitiesSchedulingService', 'FacilitiesService', 'ScheduleService',
-	                                        'NurseScheduleService', 'EmployeesService', 'Commons'];
+	PrivateCareSchedulingController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog', '$mdToast',
+	                                        'PrivateCareScheduleService','PrivateCareSchedulingService', 'PrivateCareService', 'ScheduleService',
+	                                        'CareGiverScheduleService', 'EmployeesService', 'Commons'];
 	
-	function FacilitySchedulingController($state, $scope,$stateParams, $mdDialog, $mdToast,
-			FacilitiesSchedulingService, FacilitiesService, ScheduleService,
-			NurseScheduleService, EmployeesService, Commons){
+	function PrivateCareSchedulingController($state, $scope, $stateParams, $mdDialog, $mdToast,
+			PrivateCareScheduleService, PrivateCareSchedulingService, PrivateCareService, ScheduleService,
+			CareGiverScheduleService, EmployeesService, Commons){
 		var vm = this;
 		
 		vm.editOrDelete = true;
 		vm.selected = [];
 		vm.allSchedules = [];
 		vm.schedulesOnCurrentPage = [];
-		vm.getCurrentfacility = getCurrentfacility;
+		vm.getCurrentPrivateCare = getCurrentPrivateCare;
 		vm.getCurrentEmployee = getCurrentEmployee;
-		vm.getAllSchedulesForCurrentFacility = getAllSchedulesForCurrentFacility;
-		vm.getAllSchedulesForCurrentEmployee = getAllSchedulesForCurrentEmployee;
+		vm.getAllSchedulesForCurrentPrivateCare = getAllSchedulesForCurrentPrivateCare;
+		vm.getAllSchedulesForCurrentCareGiver = getAllSchedulesForCurrentCareGiver;
 		vm.showConfirm = showConfirm;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
@@ -43,20 +43,21 @@
 		
 		initScheduleWeek();
 		
-		if(vm.schedulingType === 'facility'){
-			getCurrentfacility();
-			getAllSchedulesForCurrentFacility();
+		if(vm.schedulingType === 'privateCare'){
+			getCurrentPrivateCare();
+			getAllSchedulesForCurrentPrivateCare();
 		}else{
+			console.log('Showing care givers scheduling');
 			getCurrentEmployee();
-			getAllSchedulesForCurrentEmployee();
+			getAllSchedulesForCurrentCareGiver();
 		}
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
 		});
 		
-		function getAllSchedulesForCurrentFacility(){
-			FacilitiesSchedulingService.query({id:$stateParams.id, startDate:vm.scheduleWeek.startDate,
+		function getAllSchedulesForCurrentPrivateCare(){
+			PrivateCareSchedulingService.query({id:$stateParams.id, startDate:vm.scheduleWeek.startDate,
 					endDate:vm.scheduleWeek.endDate
 				}, function(result) {
 					vm.allSchedules = result;
@@ -67,14 +68,14 @@
 			});
 		}
 		
-		function getCurrentfacility(){
-			FacilitiesService.get({id:$stateParams.id}, function(result) {
-				vm.facility = result;
+		function getCurrentPrivateCare(){
+			PrivateCareService.get({id:$stateParams.id}, function(result) {
+				vm.privateCare = result;
 			});
 		}
 		
-		function getAllSchedulesForCurrentEmployee(){
-			NurseScheduleService.query({id:$stateParams.id,startDate:vm.scheduleWeek.startDate,
+		function getAllSchedulesForCurrentCareGiver(){
+			CareGiverScheduleService.query({id:$stateParams.id,startDate:vm.scheduleWeek.startDate,
 					endDate:vm.scheduleWeek.endDate 
 					}, function(result) {
 						vm.allSchedules = result;
@@ -140,7 +141,7 @@
 					moment(vm.scheduleWeek.startDate, 'YYYY/MM/DD').subtract(7, 'day'));
 			vm.scheduleWeek.endDate = vm.formatDate(
 					moment(vm.scheduleWeek.endDate, 'YYYY/MM/DD').subtract(7, 'day'));
-			vm.schedulingType === 'facility' ? vm.getAllSchedulesForCurrentFacility() : vm.getAllSchedulesForCurrentEmployee();
+			vm.schedulingType === 'privateCare' ? vm.getAllSchedulesForCurrentPrivateCare() : vm.getAllSchedulesForCurrentCareGiver();
 		}
 		
 		function onRightArrowClick(){
@@ -148,7 +149,7 @@
 					moment(vm.scheduleWeek.startDate, 'YYYY/MM/DD').add(7, 'day'));
 			vm.scheduleWeek.endDate = vm.formatDate(
 					moment(vm.scheduleWeek.endDate, 'YYYY/MM/DD').add(7, 'day'));
-			vm.schedulingType === 'facility' ? vm.getAllSchedulesForCurrentFacility() : vm.getAllSchedulesForCurrentEmployee();
+			vm.schedulingType === 'privateCare' ? vm.getAllSchedulesForCurrentPrivateCare() : vm.getAllSchedulesForCurrentCareGiver();
 		}
 		
 		function initScheduleWeek(){

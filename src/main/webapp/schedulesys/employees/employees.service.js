@@ -4,9 +4,7 @@
 	angular
 		.module('scheduleSys')
 		.factory('EmployeesService', EmployeesService)
-		.factory('EmployeeTestService', EmployeeTestService)
-		.factory('EmployeesScheduleService', EmployeesScheduleService);
-	
+		.factory('EmployeeTestService', EmployeeTestService);	
 	EmployeesService.$Inject = ['$resource'];
 	
 	function EmployeesService($resource){
@@ -15,25 +13,7 @@
 			  'get': {method: 'GET'}
 		});
 	}
-	
-	EmployeesScheduleService.$Inject = ['$resource'];
-	
-	function EmployeesScheduleService($resource){
-		var resourceUrl = '/employees/:id/schedules';
-		return $resource(resourceUrl, {},{
-			'query': { method: 'GET', isArray: true,
-				transformResponse: function(data){
-            		try{
-            			data = angular.fromJson(data);
-            		}catch(error){
-            			data = angular.toJson(data);
-            		}
-                    return data;
-                }
-			}
-		});
-	}
-	
+
 	EmployeeTestService.$Inject = ['$resource'];
 	
 	function EmployeeTestService($resource){

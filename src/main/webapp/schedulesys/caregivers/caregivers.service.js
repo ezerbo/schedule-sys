@@ -3,7 +3,8 @@
 	
 	angular
 		.module('scheduleSys')
-		.factory('careGiversService', careGiversService);
+		.factory('careGiversService', careGiversService)
+		.factory('CareGiverScheduleService', CareGiverScheduleService);
 	
 	careGiversService.$Inject = ['$resource'];
 	
@@ -52,6 +53,24 @@
             }
         });
 		
+	}
+	
+	CareGiverScheduleService.$Inject = ['$resource'];
+	
+	function CareGiverScheduleService($resource){
+		var resourceUrl = '/care-givers/:id/schedules';
+		return $resource(resourceUrl, {},{
+			'query': { method: 'GET', isArray: true,
+				transformResponse: function(data){
+            		try{
+            			data = angular.fromJson(data);
+            		}catch(error){
+            			data = angular.toJson(data);
+            		}
+                    return data;
+                }
+			}
+		});
 	}
 	
 })();
