@@ -85,6 +85,6 @@ public class PrivateCareSchedule implements Serializable{
 	private ScheduleSysUser scheduleSysUser;
 	
 	@OneToMany(mappedBy = "schedule", orphanRemoval = true)
-	List<FacilityScheduleUpdate> facilityScheduleUpdates;//TODO Replace by private care schedule update.
+	List<PrivateCareScheduleUpdate> privateCareScheduleUpdates;//TODO Replace by private care schedule update.
 
 }

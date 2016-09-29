@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.rj.schedulesys.dao.CareGiverDao;
 import com.rj.schedulesys.dao.PrivateCareDao;
 import com.rj.schedulesys.dao.PrivateCareScheduleDao;
+import com.rj.schedulesys.dao.PrivateCareScheduleUpdateDao;
 import com.rj.schedulesys.dao.PrivateCareShiftDao;
 import com.rj.schedulesys.dao.ScheduleStatusDao;
 import com.rj.schedulesys.dao.ScheduleSysUserDao;
@@ -20,6 +21,8 @@ import com.rj.schedulesys.data.ScheduleStatusConstants;
 import com.rj.schedulesys.domain.CareGiver;
 import com.rj.schedulesys.domain.PrivateCare;
 import com.rj.schedulesys.domain.PrivateCareSchedule;
+import com.rj.schedulesys.domain.PrivateCareScheduleUpdate;
+import com.rj.schedulesys.domain.PrivateCareScheduleUpdatePK;
 import com.rj.schedulesys.domain.PrivateCareShift;
 import com.rj.schedulesys.domain.ScheduleStatus;
 import com.rj.schedulesys.domain.ScheduleSysUser;
@@ -31,7 +34,6 @@ import com.rj.schedulesys.view.model.PrivateCareShiftViewModel;
 import com.rj.schedulesys.view.model.PrivateCareViewModel;
 import com.rj.schedulesys.view.model.ScheduleStatusViewModel;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
-import com.rj.schedulesys.view.model.UpdateScheduleViewModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,6 +48,7 @@ public class PrivateCareScheduleService {
 	private ScheduleStatusDao scheduleStatusDao;
 	private ScheduleSysUserDao scheduleSysUserDao;
 	private PrivateCareScheduleDao privateCareScheduleDao;
+	private PrivateCareScheduleUpdateDao privateCareScheduleUpdateDao;
 	
 	private DozerBeanMapper dozerMapper;
 	private ObjectValidator<CreatePrivateCareScheduleViewModel> validator;
@@ -53,7 +56,8 @@ public class PrivateCareScheduleService {
 	@Autowired
 	public PrivateCareScheduleService(CareGiverDao careGiverDao, PrivateCareShiftDao shiftDao, PrivateCareDao privateCareDao,
 			ScheduleStatusDao scheduleStatusDao, ScheduleSysUserDao scheduleSysUserDao, DozerBeanMapper dozerMapper,
-			PrivateCareScheduleDao privateCareScheduleDao, ObjectValidator<CreatePrivateCareScheduleViewModel> validator) {
+			PrivateCareScheduleDao privateCareScheduleDao, ObjectValidator<CreatePrivateCareScheduleViewModel> validator,
+			PrivateCareScheduleUpdateDao privateCareScheduleUpdateDao) {
 		this.shiftDao = shiftDao;
 		this.careGiverDao = careGiverDao;
 		this.privateCareDao = privateCareDao;
@@ -62,6 +66,7 @@ public class PrivateCareScheduleService {
 		this.privateCareScheduleDao = privateCareScheduleDao;
 		this.dozerMapper = dozerMapper;
 		this.validator = validator;
+		this.privateCareScheduleUpdateDao = privateCareScheduleUpdateDao;
 	}
 	
 	/**
@@ -109,16 +114,16 @@ public class PrivateCareScheduleService {
 	}
 	
 	@Transactional
-	public UpdateScheduleViewModel update(CreatePrivateCareScheduleViewModel viewModel, Long scheduleSysUserId){
+	public CreatePrivateCareScheduleViewModel update(CreatePrivateCareScheduleViewModel viewModel, Long scheduleSysUserId){
 		PrivateCareSchedule schedule = privateCareScheduleDao.findOne(viewModel.getId());
 		if(schedule == null){
 			log.error("No schedule found with id : {}", viewModel.getId());
 			throw new RuntimeException("No schedule found with id : " + viewModel.getId());
 		}
-		PrivateCare facility = schedule.getPrivateCare();
-		if(facility.getId() != viewModel.getId()){
-			log.warn("Schedule's facility updated, validating new facility");
-			facility = validatePrivateCare(viewModel.getPrivateCareId());
+		PrivateCare privateCare = schedule.getPrivateCare();
+		if(privateCare.getId() != viewModel.getId()){
+			log.warn("Schedule's private care updated, validating new private care");
+			privateCare = validatePrivateCare(viewModel.getPrivateCareId());
 		}
 		PrivateCareShift shift = schedule.getShift();
 		if(shift.getId() != viewModel.getShiftId()){
@@ -126,7 +131,7 @@ public class PrivateCareScheduleService {
 			shift = validateShift(viewModel.getShiftId());
 		}
 		ScheduleStatus scheduleStatus = schedule.getScheduleStatus();
-		if(scheduleStatus.getId() != viewModel.getId()){
+		if(scheduleStatus.getId() != viewModel.getScheduleStatusId()){
 			log.warn("Schedule's status updated, validating new status");
 			scheduleStatus = validateScheduleStatus(viewModel.getScheduleStatusId());
 		}
@@ -139,14 +144,14 @@ public class PrivateCareScheduleService {
 		}
 		schedule.setScheduleDate(viewModel.getScheduleDate());
 		schedule.setCareGiver(employee);
-		schedule.setPrivateCare(facility);
+		schedule.setPrivateCare(privateCare);
 		schedule.setShift(shift);
 //		schedule.setTimesheetReceived(viewModel.isTimesheetReceived());
 		schedule.setScheduleComment(viewModel.getComment());
 		schedule.setScheduleStatus(scheduleStatus);
 		schedule = privateCareScheduleDao.merge(schedule);
-		//createScheduleUpdate(schedule, scheduleSysUserId);
-		return dozerMapper.map(schedule, UpdateScheduleViewModel.class);
+		createScheduleUpdate(schedule, scheduleSysUserId);
+		return dozerMapper.map(schedule, CreatePrivateCareScheduleViewModel.class);
 	}
 	
 	/**
@@ -154,18 +159,18 @@ public class PrivateCareScheduleService {
 	 * @param scheduleSysUserId
 	 * @param comment
 	 */
-//	public void createScheduleUpdate(FacilitySchedule schedule , Long scheduleSysUserId){
-//		ScheduleUpdatePK pk = ScheduleUpdatePK.builder()
-//				.scheduleId(schedule.getId())
-//				.userId(scheduleSysUserId)
-//				.build();
-//		FacilityScheduleUpdate scheduleUpdate = FacilityScheduleUpdate.builder()
-//				.id(pk)
-//				.scheduleSysUser(scheduleSysUserDao.findOne(scheduleSysUserId))
-//				.build();
-//		scheduleUpdate = facilityScheduleUpdateDao.merge(scheduleUpdate);
-//		log.info("ScheduleUpdate : {}", scheduleUpdate);
-//	}
+	public void createScheduleUpdate(PrivateCareSchedule schedule , Long scheduleSysUserId){
+		PrivateCareScheduleUpdatePK pk = PrivateCareScheduleUpdatePK.builder()
+				.scheduleId(schedule.getId())
+				.userId(scheduleSysUserId)
+				.build();
+		PrivateCareScheduleUpdate scheduleUpdate = PrivateCareScheduleUpdate.builder()
+				.id(pk)
+				.scheduleSysUser(scheduleSysUserDao.findOne(scheduleSysUserId))
+				.build();
+		scheduleUpdate = privateCareScheduleUpdateDao.merge(scheduleUpdate);
+		log.info("ScheduleUpdate : {}", scheduleUpdate);
+	}
 	
 	/**
 	 * @param id
@@ -331,10 +336,10 @@ public class PrivateCareScheduleService {
 		ScheduleStatusViewModel scheduleStatusVm = dozerMapper.map(schedule.getScheduleStatus(), ScheduleStatusViewModel.class);
 		ScheduleSysUserViewModel filledBy = dozerMapper.map(schedule.getScheduleSysUser(), ScheduleSysUserViewModel.class);
 		ScheduleSysUserViewModel lastModifiedBy = null;
-		//FacilityScheduleUpdate scheduleUpdate = facilityScheduleUpdateDao.findLatestByScheduleId(schedule.getId());
-		/*if(scheduleUpdate != null){
+		PrivateCareScheduleUpdate scheduleUpdate = privateCareScheduleUpdateDao.findLatestByScheduleId(schedule.getId());
+		if(scheduleUpdate != null){
 			lastModifiedBy = dozerMapper.map(scheduleUpdate.getScheduleSysUser(), ScheduleSysUserViewModel.class);
-		}*/
+		}
 		GetPrivateCareScheduleViewModel viewModel = GetPrivateCareScheduleViewModel.builder()
 				.id(schedule.getId())
 				.employee(employeeVm)

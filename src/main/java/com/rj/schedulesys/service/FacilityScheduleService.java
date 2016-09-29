@@ -18,6 +18,7 @@ import com.rj.schedulesys.dao.FacilityScheduleDao;
 import com.rj.schedulesys.dao.SchedulePostStatusDao;
 import com.rj.schedulesys.dao.ScheduleStatusDao;
 import com.rj.schedulesys.dao.ScheduleSysUserDao;
+import com.rj.schedulesys.data.SchedulePostStatusConstants;
 import com.rj.schedulesys.data.ScheduleStatusConstants;
 import com.rj.schedulesys.domain.Facility;
 import com.rj.schedulesys.domain.FacilityScheduleUpdate;
@@ -85,7 +86,7 @@ public class FacilityScheduleService {
 		validator.validate(viewModel);
 		Facility facility = validateFacility(viewModel.getFacilityId());
 		ScheduleStatus scheduleStatus = validateScheduleStatus(viewModel.getScheduleStatusId());
-		SchedulePostStatus schedulePostStatus = validateSchedulePostStatus(viewModel.getSchedulePostStatusId());
+		SchedulePostStatus schedulePostStatus = schedulePostStatusDao.findByStatus(SchedulePostStatusConstants.PENDING);
 		FacilityShift shift = validateShift(viewModel.getShiftId());
 		if(StringUtils.equalsIgnoreCase(scheduleStatus.getStatus(), ScheduleStatusConstants.CONFIRMED_STATUS) 
 				&& viewModel.getEmployeeId() == null){
@@ -141,7 +142,7 @@ public class FacilityScheduleService {
 		}
 		
 		ScheduleStatus scheduleStatus = schedule.getScheduleStatus();
-		if(scheduleStatus.getId() != viewModel.getId()){
+		if(scheduleStatus.getId() != viewModel.getScheduleStatusId()){
 			log.warn("Schedule's status updated, validating new status");
 			scheduleStatus = validateScheduleStatus(viewModel.getScheduleStatusId());
 		}

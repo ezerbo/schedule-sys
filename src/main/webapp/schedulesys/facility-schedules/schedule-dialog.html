@@ -40,7 +40,7 @@
 	          <md-option ng-repeat="status in vm.statuses" value="{{status.id}}">{{status.status}}</md-option>
         	</md-select>
       </md-input-container>
-      <md-input-container flex-gt-sm>
+      <md-input-container flex-gt-sm ng-show="vm.isEditing">
       	<label>Post status</label>
 			<md-select ng-model="vm.schedule.schedulePostStatusId" required>
 	          <md-option ng-repeat="postStatus in vm.postStatuses" value="{{postStatus.id}}">{{postStatus.status}}</md-option>

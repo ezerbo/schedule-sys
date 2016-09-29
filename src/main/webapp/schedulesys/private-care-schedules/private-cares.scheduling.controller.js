@@ -5,11 +5,11 @@
 		.controller('PrivateCareSchedulingController', PrivateCareSchedulingController);
 	
 	PrivateCareSchedulingController.$Inject = ['$state','$scope', '$stateParams', '$mdDialog', '$mdToast',
-	                                        'PrivateCareScheduleService','PrivateCareSchedulingService', 'PrivateCareService', 'ScheduleService',
+	                                        'PrivateCareScheduleService','PrivateCareSchedulingService', 'PrivateCareService',
 	                                        'CareGiverScheduleService', 'EmployeesService', 'Commons'];
 	
 	function PrivateCareSchedulingController($state, $scope, $stateParams, $mdDialog, $mdToast,
-			PrivateCareScheduleService, PrivateCareSchedulingService, PrivateCareService, ScheduleService,
+			PrivateCareScheduleService, PrivateCareSchedulingService, PrivateCareService,
 			CareGiverScheduleService, EmployeesService, Commons){
 		var vm = this;
 		
@@ -101,7 +101,7 @@
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				ScheduleService.remove({id:vm.selected[0].id},onDeleteSuccess,onDeleteFailure);
+				PrivateCareScheduleService.remove({id:vm.selected[0].id},onDeleteSuccess,onDeleteFailure);
 			}, function() {
 				console.log('Keep this one ...');
 			});
