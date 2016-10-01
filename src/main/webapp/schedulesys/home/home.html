@@ -1,4 +1,4 @@
-<div >
+<div ng-controller="HomeController as vm">
 	<md-card style="margin: 0px;width: 100%;position: absolute;
     left: 0px;
     right:0px;"">
@@ -10,23 +10,33 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">RJ-HealthCare-Services</a>
+    
     </div>
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li class=""><a aria-label="home" class="hidden-xs" ui-sref="home.facilities">Home</a>
         <a ui-sref="home.facilities" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Home</a></li>
+        
         <li class=""><a aria-label="facilities" class="hidden-xs" ui-sref="home.facilities">Facilities</a>
-        <li class=""><a aria-label="private cares" class="hidden-xs" ui-sref="home.privatecares">Private cares</a>
         <a ui-sref="home.facilities" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Facilities</a></li>
+        
+        <li class=""><a aria-label="private cares" class="hidden-xs" ui-sref="home.privatecares">Private cares</a>
+        <a ui-sref="home.facilities" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Private cares</a></li>
+        
         <li class=""><a aria-label="nurses" class="hidden-xs" ui-sref="home.nurses">Nurses</a>
         <a ui-sref="home.nurses" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Nurses</a></li>
-        <li class=""><a aria-label="care givers" class="hidden-xs" ui-sref="home.caregivers">Care-Givers</a>
-        <a ui-sref="home.caregivers" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Care-Givers</a></li>
+        
+        <li class=""><a aria-label="care givers" class="hidden-xs" ui-sref="home.caregivers">Care givers</a>
+        <a ui-sref="home.caregivers" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Care givers</a></li>
+        
         <li class=""><a aria-label="tests" class="hidden-xs" ui-sref="home.tests">Tests</a>
         <a ui-sref="home.tests" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Tests</a></li>
-        <li class=""><a aria-label="users" class="hidden-xs" ui-sref="home.users">Users</a>
+        
+        <li class="" ng-show="vm.showUsersMenu"><a aria-label="users" class="hidden-xs" ui-sref="home.users" >Users</a>
         <a ui-sref="home.users" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Users</a></li>
+        
+         <li class="" ><a aria-label="users" class="hidden-xs" ng-click="vm.logout()" ui-sref="login">Logout</a>
+        <a ui-sref="login" ng-click="vm.logout()" class="visible-xs" data-toggle="collapse" data-target=".navbar-collapse.in">Logout</a></li>
       </ul>
     </div>
   </div>

@@ -20,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.rj.schedulesys.security.AuthoritiesConstants;
 import com.rj.schedulesys.security.Http401UnauthorizedEntryPoint;
 import com.rj.schedulesys.security.PBKDF2PasswordEncoder;
 import com.rj.schedulesys.security.jwt.JWTConfigurer;
@@ -80,11 +81,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and()
 		.authorizeRequests()
-		.antMatchers("/authenticate").permitAll()
+		.antMatchers("/authenticate", "/").permitAll()
 		//	.antMatchers("/api/account/reset_password/init").permitAll()
 		// 	.antMatchers("/api/account/reset_password/finish").permitAll()
-		//.antMatchers("/**").authenticated()
-		//.antMatchers("/users/**").hasAuthority(AuthoritiesConstants.ADMIN)
+		.antMatchers("/**").authenticated()
+		.antMatchers("/users/**").hasAuthority(AuthoritiesConstants.ADMIN)
 		//.antMatchers("/configuration/ui").permitAll()
 		.and()
 		.apply(securityConfigurerAdapter());

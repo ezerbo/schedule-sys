@@ -25,7 +25,7 @@ public class EmailService {
 		String activationUrl = new StringBuilder().append("http://")
 				.append(hostServerName)
 				.append(":").append(port)
-				.append("/#/home/activate?key=")
+				.append("/#/activate?key=")
 				.append(createdUser.getActivationToken())
 				.toString();
 		Map<String, Object> headers = buildHeadersMap(recipient, createdUser.getUsername(), activationUrl);

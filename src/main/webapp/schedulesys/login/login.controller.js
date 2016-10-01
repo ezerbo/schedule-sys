@@ -23,10 +23,8 @@
 		function login() {
 			AuthenticationProvider.login(vm.credentials, function(result) {
 				if(result){
-					console.log("Auth success");
 					$state.go('home.facilities');
 				}else{
-					console.log("Auth failure, controller");
 					showAuthFailureToast();
 				}
 			});
@@ -37,8 +35,7 @@
 				      $mdToast.simple()
 				        .textContent('Incorrect username or password')
 				        .position('top center')
-				        .hideDelay(5000)
-				    );
+				        .hideDelay(5000));
 		}
 	}
 	

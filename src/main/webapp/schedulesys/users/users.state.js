@@ -45,7 +45,7 @@
 			templateUrl: 'schedulesys/users/user-details.html',
 			controller: 'userDetailsController'
 		})
-		.state('home.activate-user',{
+		.state('activate-user',{
 			url: '/activate',
 			templateUrl: 'schedulesys/users/activate-user.html',
 			controller: 'UserActivationController'

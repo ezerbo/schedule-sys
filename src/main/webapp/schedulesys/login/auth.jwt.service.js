@@ -24,7 +24,6 @@
 				var response = JSON.parse(JSON.stringify(data));
 				var jwt = response.data.id_token;
 				service.storeAuthenticationToken(jwt, credentials.rememberMe);
-				
 				callback(true);
 			}
 			
@@ -35,15 +34,15 @@
 		
 		function storeAuthenticationToken(jwt, rememberMe) {
 			if(rememberMe){
-				$localStorage.authenticationToken = jwt;
+				$localStorage.auth_token = jwt;
 			} else {
-				$sessionStorage.authenticationToken = jwt;
+				$sessionStorage.auth_token = jwt;
 			}
 		}
 		
 		function logout() {
-			delete $localStorage.authenticationToken;
-			delete $sessionStorage.authenticationToken;
+			delete $localStorage.auth_token;
+			delete $sessionStorage.auth_token;
 		}
 	}
 	

@@ -61,7 +61,7 @@ public class ScheduleSysUserDao extends GenericDao<ScheduleSysUser> {
 					.setParameter("activationToken", activationToken)
 					.getSingleResult();
 		}catch(NoResultException e){
-			log.warn("No user found with emailAddress : {}", activationToken);
+			log.warn("No user found with token : {}", activationToken);
 		}
 		return user;
 	}

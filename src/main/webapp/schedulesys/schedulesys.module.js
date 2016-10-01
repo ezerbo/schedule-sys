@@ -19,7 +19,6 @@
 		 $rootScope.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
 			 $rootScope.previousState = from;
 			 $rootScope.previousStateParams = fromParams;
-			 
 			});
 	}
 })();

@@ -39,7 +39,7 @@ public class AuthenticationService {
             }
         }
         
-		ScheduleSysUser authenticatedUser = userDao.findByUsername("ezerbo");//TODO pass the authenticated user 
+		ScheduleSysUser authenticatedUser = userDao.findByUsername(userName);
 		
 		if(authenticatedUser == null){
 			log.error("No user found");
