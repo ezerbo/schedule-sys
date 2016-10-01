@@ -41,6 +41,8 @@ public class NurseViewModel {
 	
 	private Boolean insvc;
 	
+	private Boolean hasExpiredLicense;
+	
 	@NotNull
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date dateOfHire;

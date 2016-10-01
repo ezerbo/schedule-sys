@@ -21,8 +21,6 @@
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.slicecareGiversArray = slicecareGiversArray;
-		vm.showcareGiversDialog = showcareGiversDialog;
-		vm.lastDayDateCheck = lastDayDateCheck;
 		
 		vm.query = {
 				order: 'name',
@@ -34,8 +32,6 @@
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
-			console.log('Selected items : ' + angular.toJson(vm.selected));
-			console.log('Edit or delete : ' + vm.editOrDelete);
 		});
 		
 		function showConfirm(ev) {
@@ -97,39 +93,8 @@
 		
 		function slicecareGiversArray(){
 			var slicedArray = vm.allcareGivers.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
-			console.log('Sliced array : ' + angular.toJson(slicedArray));
 			return slicedArray;
 		}
-		
-		function showcareGiversDialog(ev) {
-			$mdDialog.show({
-				templateUrl: 'schedulesys/caregivers/caregiver-dialog.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true
-			})
-			.then(function() {
-				//$scope.status = 'You said the information was "' + answer + '".';
-			}, function() {
-				//$scope.status = 'You cancelled the dialog.';
-			});
-		};
-	
-		
-		   function lastDayDateCheck(caregiver){
-				
-				vm.checkDate1 = new Date();
-				vm.checkDate2 = new Date(caregiver.lastDayOfWork);
-				
-				if(vm.checkDate1 > vm.checkDate2){
-					return true;
-				}
-				else{
-					return false;
-				}
-				
-			}
-		   
 	}
 	
 })();

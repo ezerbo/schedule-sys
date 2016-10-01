@@ -4,16 +4,15 @@
 	  <div class="md-toolbar-tools">
 	    <span>Nurses</span>
 	  </div>
-	  <div layout="left left">
-	  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
-      <md-button class="md-raised md-primary" ui-sref="home.nurses.new">Add</md-button>
-      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurses.edit({id:vm.selected[0].id})">Edit</md-button>
-      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details({id:vm.selected[0].id})">Details</md-button>
-      <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
-      <md-button class="md-raised md-warn" ng-click="vm.licenseCheck({id:vm.selected[0].id})" ng-disabled="vm.editOrDelete">License-Check</md-button>
-    </section>
-	  </div>
 	</md-toolbar>
+	<div layout="left left">
+		<section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+			<md-button class="md-raised md-primary" ui-sref="home.nurses.new">Add</md-button>
+		    <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurses.edit({id:vm.selected[0].id})">Edit</md-button>
+		    <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.nurse-details({id:vm.selected[0].id})">Details</md-button>
+		    <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+	    </section>
+	</div>
 
 	<md-table-container>
 	  <table md-table md-table md-row-select ng-model="vm.selected">
@@ -26,11 +25,11 @@
 	        <th md-column>Position name</th>
 	        <th md-column>Primary phone #</th>
 	        <th md-column>Phone number type</th>
-	         <th md-column>In-Service</th>
+	         <th md-column>In service</th>
 	      </tr>
 	    </thead>
 	    <tbody md-body>
-	      <tr md-row md-select="nurse" md-select-id="name"  md-auto-select ng-repeat="nurse in vm.nursesOnCurrentPage" ng-class="{'selected' : vm.lastDayDateCheck(nurse)}">
+	      <tr md-row md-select="nurse" md-select-id="name"  md-auto-select ng-repeat="nurse in vm.nursesOnCurrentPage" ng-class="{'selected' : nurse.hasExpiredLicense}">
 	        <td md-cell>{{nurse.firstName}}</td>
 	        <td md-cell>{{nurse.lastName}}</td>
 	        <td md-cell>{{nurse.positionName}}</td>
@@ -41,7 +40,7 @@
 	    </tbody>
 	  </table>
 	</md-table-container>
-
+	
 	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allNurses.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
-
+	
 </div>

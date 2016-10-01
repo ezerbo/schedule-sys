@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rj.schedulesys.dao.EmployeeDao;
+import com.rj.schedulesys.dao.LicenseDao;
 import com.rj.schedulesys.dao.NurseDao;
 import com.rj.schedulesys.dao.PositionDao;
 import com.rj.schedulesys.data.PositionTypeConstants;
@@ -29,15 +30,17 @@ public class NurseService {
 	private NurseDao nurseDao;
 	private EmployeeDao employeeDao;
 	private PositionDao positionDao;
+	private LicenseDao licenseDao;
 	
 	private DozerBeanMapper dozerMapper;
 	
 	@Autowired
 	public NurseService(NurseDao nurseDao, EmployeeDao employeeDao,
-			PositionDao positionDao, DozerBeanMapper dozerMapper) {
+			PositionDao positionDao, LicenseDao licenseDao, DozerBeanMapper dozerMapper) {
 		this.nurseDao = nurseDao;
 		this.employeeDao = employeeDao;
 		this.positionDao = positionDao;
+		this.licenseDao = licenseDao;
 		this.dozerMapper = dozerMapper;
 	}
 	
@@ -86,6 +89,7 @@ public class NurseService {
 			viewModel = dozerMapper.map(employee, NurseViewModel.class);
 			viewModel.setPhoneNumbers(PhoneNumberUtil.convert(
 					employee.getPhoneNumbers(), dozerMapper));
+			viewModel.setHasExpiredLicense(!licenseDao.findExpiredLicenses(nurse.getId()).isEmpty());
 		}
 		return viewModel;
 	}
@@ -103,6 +107,8 @@ public class NurseService {
 			NurseViewModel viewModel = dozerMapper.map(employee, NurseViewModel.class);
 			viewModel.setPhoneNumbers(PhoneNumberUtil.convert(
 					employee.getPhoneNumbers(), dozerMapper));
+			viewModel.setHasExpiredLicense(!licenseDao.findExpiredLicenses(nurse.getId()).isEmpty());
+			log.info("Nurse name : {}, hasExpiredLicense : {}", viewModel.getFirstName(), viewModel.getHasExpiredLicense());
 			viewModels.add(viewModel);
 		}
 		log.debug("Nurses : {}", viewModels);

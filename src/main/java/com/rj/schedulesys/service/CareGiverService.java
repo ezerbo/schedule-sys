@@ -1,5 +1,6 @@
 package com.rj.schedulesys.service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,20 +77,17 @@ public class CareGiverService {
 	 */
 	@Transactional
 	public EmployeeViewModel findOne(Long id){
-		
 		log.debug("Fetching care giver with id : {}", id);
-		
 		CareGiver careGiver = careGiverDao.findOne(id);
 		EmployeeViewModel viewModel = null;
-		
 		if(careGiver == null){
 			log.warn("No care giver found with id : {}", id);
 		}else{
 			Employee employee = careGiver.getEmployee();
 			viewModel = dozerMapper.map(employee, EmployeeViewModel.class);
 			viewModel.setPhoneNumbers(PhoneNumberUtil.convert(employee.getPhoneNumbers(), dozerMapper));
+			viewModel.setIsLastDayOfWork(employee.getLastDayOfWork().before(new Date()));
 		}
-		
 		return viewModel;
 	}
 	
@@ -98,21 +96,17 @@ public class CareGiverService {
 	 */
 	@Transactional
 	public List<EmployeeViewModel> findAll(){
-		
 		log.debug("Fetching all care givers");
-		
 		List<CareGiver> careGivers = careGiverDao.findAll();
 		List<EmployeeViewModel> viewModels = new LinkedList<>();
-		
 		for(CareGiver careGiver : careGivers){
 			Employee employee = careGiver.getEmployee();
 			EmployeeViewModel viewModel = dozerMapper.map(employee, EmployeeViewModel.class);
 			viewModel.setPhoneNumbers(PhoneNumberUtil.convert(employee.getPhoneNumbers(), dozerMapper));
+			viewModel.setIsLastDayOfWork(employee.getLastDayOfWork().before(new Date()));
 			viewModels.add(viewModel);
 		}
-		
 		log.debug("Care givers : {}", viewModels);
-		
 		return viewModels;
 	}
 	

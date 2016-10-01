@@ -23,10 +23,6 @@
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.sliceNursesArray = sliceNursesArray;
-		vm.licenseCheck = licenseCheck;
-		vm.lastDayDateCheck = lastDayDateCheck;
-		
-		
 		
 		vm.query = {
 				order: 'name',
@@ -38,8 +34,6 @@
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
 			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
-			console.log('Selected items : ' + angular.toJson(vm.selected));
-			console.log('Edit or delete : ' + vm.editOrDelete);
 		});
 		
 		function showConfirm(ev) {
@@ -67,12 +61,8 @@
 		
 		function onLoadAllSuccess(data){
 			vm.allNurses = data;
-			
 			vm.nursesOnCurrentPage = vm.sliceNursesArray();
-			
 		}
-		
-		
 		
 		function onLoadAllError(status){
 			console.log('Error status : ' + status);
@@ -110,104 +100,38 @@
 			return slicedArray;
 		}
 		
-		
-		console.log("HI");
-		
-		
-		var counter = 0;
-		
-		
-     function lastDayDateCheck(nurse){
-			
-			vm.checkDate1 = new Date();
-			vm.checkDate2 = new Date(nurse.lastDayOfWork);
-			
-			if(vm.checkDate1 > vm.checkDate2){
-				return true;
-			}
-			else{
-				return false;
-			}
-			
-		}
-		
-		
-     
-     function licenseCheck(nurse){
-			
-    		NurseLicenseService.query({id:nurse.id}, function(result) {
-				
-				
-   			 vm.allLicenses = result;
-   				var count = 0;
-        for(var i = 0; i < vm.allLicenses.length ; i++){
-				
-				
-				
-				vm.checkDate3 = new Date();
-				vm.checkDate4 = new Date(vm.allLicenses[i].expirationDate);
-				
-				if(vm.checkDate3 > vm.checkDate4){
-					count ++ ;
-				}
-				
-				
-			}
-   			
-   			if(count >=1){
-   				
-   				showAlert();
-   			}
-   			else{
-   				
-   				showNoAlert();
-   			}
-   				
-   			});
-			
-			
-		}
-			
-			
-			
-     function showAlert(ev) {
-    	    // Appending dialog to document.body to cover sidenav in docs app
-    	    // Modal dialogs should fully cover application
-    	    // to prevent interaction outside of dialog
-    	    $mdDialog.show(
-    	      $mdDialog.alert()
-    	        .parent(angular.element(document.querySelector('#popupContainer')))
-    	        .clickOutsideToClose(true)
-    	        .title('Expired-License')
-    	        .textContent('This Nurse has licenses/license expired.')
-    	        .ariaLabel('License Alert')
-    	        .ok('ok!')
-    	        .targetEvent(ev)
-    	    );
-    	  };
-    	  
-    	  function showNoAlert(ev) {
-      	    // Appending dialog to document.body to cover sidenav in docs app
-      	    // Modal dialogs should fully cover application
-      	    // to prevent interaction outside of dialog
-      	    $mdDialog.show(
-      	      $mdDialog.alert()
-      	        .parent(angular.element(document.querySelector('#popupContainer')))
-      	        .clickOutsideToClose(true)
-      	        .title('Valid License')
-      	        .textContent('This Nurse has valid licenses')
-      	        .ariaLabel('License Alert')
-      	        .ok('ok!')
-      	        .targetEvent(ev)
-      	    );
-      	  };
-				
-			
-		
-		}
-	
-		
-	
-	
+		function showAlert(ev) {
+			// Appending dialog to document.body to cover sidenav in docs app
+			// Modal dialogs should fully cover application
+			// to prevent interaction outside of dialog
+			$mdDialog.show(
+					$mdDialog.alert()
+					.parent(angular.element(document.querySelector('#popupContainer')))
+					.clickOutsideToClose(true)
+					.title('Expired-License')
+					.textContent('This Nurse has licenses/license expired.')
+					.ariaLabel('License Alert')
+					.ok('ok!')
+					.targetEvent(ev)
+			);
+		};
+
+		function showNoAlert(ev) {
+			// Appending dialog to document.body to cover sidenav in docs app
+			// Modal dialogs should fully cover application
+			// to prevent interaction outside of dialog
+			$mdDialog.show(
+					$mdDialog.alert()
+					.parent(angular.element(document.querySelector('#popupContainer')))
+					.clickOutsideToClose(true)
+					.title('Valid License')
+					.textContent('This Nurse has valid licenses')
+					.ariaLabel('License Alert')
+					.ok('ok!')
+					.targetEvent(ev)
+			);
+		};
+
+	}
 	
 })();

@@ -52,6 +52,8 @@ public class EmployeeViewModel {
 	@JsonSerialize(using = JsonDateSerializer.class)
 	private Date lastDayOfWork;
 	
+	private Boolean isLastDayOfWork ;
+	
 	private String comment;
 	
 	@NotEmpty
