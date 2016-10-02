@@ -6,7 +6,7 @@
 	<groupId>com.rj.healthcare</groupId>
 	<artifactId>schedule-sys</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
