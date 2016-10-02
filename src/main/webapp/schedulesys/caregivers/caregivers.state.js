@@ -63,7 +63,7 @@
 			data: {
 				schedulingType: 'employee'
 	        },
-			templateUrl: 'schedulesys/schedules/facilities.scheduling-page.html',
+			templateUrl: 'schedulesys/private-care-schedules/private-cares.scheduling-page.html',
 			controller: 'FacilitySchedulingController'
 		})
 	}
