@@ -18,7 +18,7 @@
 			var currentWeekStartDate = new Date(
 					currentDate.getFullYear(),
 					currentDate.getMonth(),
-					currentDate.getDate() - currentDateIndex);
+					currentDate.getDate() - currentDateIndex+1);
 			return currentWeekStartDate;
 		}
 		
