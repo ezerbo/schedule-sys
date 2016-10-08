@@ -14,9 +14,10 @@
 		vm.passwordConfirmation = null;
 		vm.activateBtnDiabled = true;
 		
+		vm.accountActivation = angular.isDefined($location.search().key) ? true : false;
 		
 		vm.profile = {
-			activationToken: $location.search().key,
+			activationToken: angular.isDefined($location.search().key) ? $location.search().key : $location.search().token,
 			password: null
 		};
 		
@@ -25,12 +26,15 @@
 		vm.onPasswordInput = onPasswordInput;
 		
 		function activate(){
-			console.log('User profile : ' + angular.toJson(vm.profile));
 			UserAccountService.save(vm.profile, function() {
+				if(vm.accountActivation == true){
+					vm.showToast('Account successfully activated. You may now sign in');
+				}else{
+					vm.showToast('Password successfully reset. You may now sign in');
+				}
 				$state.go('login', {}, {});
 			}, function(result) {
 				vm.showToast('Unable to activate account');
-				console.log('Something unexpected happened : ');
 			});
 		}
 		

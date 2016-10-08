@@ -53,15 +53,15 @@ public class ScheduleSysUserDao extends GenericDao<ScheduleSysUser> {
 		return user;
 	}
 	
-	public ScheduleSysUser findByActivationToken(String activationToken){
+	public ScheduleSysUser findByToken(String token){
 		ScheduleSysUser user = null ;
 		try{
 			user = entityManager.createQuery(
-					"from ScheduleSysUser u where u.activationToken =:activationToken", ScheduleSysUser.class)
-					.setParameter("activationToken", activationToken)
+					"from ScheduleSysUser u where u.token =:token", ScheduleSysUser.class)
+					.setParameter("token", token)
 					.getSingleResult();
 		}catch(NoResultException e){
-			log.warn("No user found with token : {}", activationToken);
+			log.warn("No user found with token : {}", token);
 		}
 		return user;
 	}

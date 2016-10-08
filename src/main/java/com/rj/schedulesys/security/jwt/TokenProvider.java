@@ -49,7 +49,7 @@ public class TokenProvider {
         long now = System.currentTimeMillis();
        
         Date validity = new Date(now + this.tokenValidityInSeconds);
-
+        log.info("Principal name : {}", authentication.getName());
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)

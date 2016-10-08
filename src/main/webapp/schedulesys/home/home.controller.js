@@ -4,12 +4,14 @@
 		.module('scheduleSys')
 		.controller('HomeController', HomeController);
 	
-	HomeController.$Inject = ['$scope', '$state', '$localStorage', '$sessionStorage', 'AuthenticationProvider', 'jwtHelper'];
+	HomeController.$Inject = ['$scope', '$state', '$rootScope', '$localStorage', '$sessionStorage', 'AuthenticationProvider', 'jwtHelper'];
 	
-	function HomeController($scope, $state, $localStorage, $sessionStorage, AuthenticationProvider, jwtHelper){
+	function HomeController($scope, $state, $rootScope, $localStorage, $sessionStorage, AuthenticationProvider, jwtHelper){
 		var vm = this;
 		vm.logout = logout;
+		vm.openUserMenu = openUserMenu;
 		vm.showUsersMenuButton = showUsersMenuButton;
+		vm.currentUser = AuthenticationProvider.getPrincipal();
 		
 		showUsersMenuButton();
 		
@@ -24,7 +26,14 @@
 			}
 			var tokenPayload = jwtHelper.decodeToken(auth_token);
 			vm.showUsersMenu = (tokenPayload.auth == 'ADMIN') ? true : false;
+			console.log("Authenticated user : " + AuthenticationProvider.getPrincipal());
 		}
+		
+		function openUserMenu($mdOpenMenu, ev) {
+			$mdOpenMenu(ev);
+		};
+		
+		
 	}
 	
 })();

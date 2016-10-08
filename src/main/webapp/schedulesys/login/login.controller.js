@@ -23,7 +23,7 @@
 		function login() {
 			AuthenticationProvider.login(vm.credentials, function(result) {
 				if(result){
-					$state.go('home.facilities');
+					$state.go('home.facilities', {}, {});
 				}else{
 					showAuthFailureToast();
 				}

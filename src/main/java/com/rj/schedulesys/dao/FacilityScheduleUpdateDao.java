@@ -1,7 +1,10 @@
 package com.rj.schedulesys.dao;
 
+import java.util.List;
+
 import javax.persistence.NoResultException;
 
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 import com.rj.schedulesys.domain.FacilityScheduleUpdate;
@@ -24,7 +27,8 @@ public class FacilityScheduleUpdateDao extends GenericDao<FacilityScheduleUpdate
 		FacilityScheduleUpdate scheduleUpdate = null;
 		try {
 			scheduleUpdate = entityManager.createQuery("from FacilityScheduleUpdate fsu where fsu.schedule.id =:scheduleId "
-					+ " and fsu.updateTime = (select max(updateTime) from FacilityScheduleUpdate fsu where fsu.schedule.id =:scheduleId)", FacilityScheduleUpdate.class)
+					+ " and fsu.updateTime = (select max(updateTime) from FacilityScheduleUpdate fsu where fsu.schedule.id =:scheduleId)",
+					FacilityScheduleUpdate.class)
 					.setParameter("scheduleId", scheduleId)
 					.getSingleResult();
 		} catch (NoResultException e) {
@@ -32,4 +36,16 @@ public class FacilityScheduleUpdateDao extends GenericDao<FacilityScheduleUpdate
 		}
 		return scheduleUpdate;
 	}
+	
+	public List<FacilityScheduleUpdate> findByDatesByUser(DateTime startDate, DateTime endDate, String username){
+		List<FacilityScheduleUpdate> scheduleUpdate = entityManager.createQuery(
+				"from FacilityScheduleUpdate fsu where fsu.updateTime between :startDate and :endDate"
+					, FacilityScheduleUpdate.class)
+					.setParameter("startDate", startDate)
+					.setParameter("endDate", endDate)
+					.getResultList();
+		return scheduleUpdate;
+	}
 }
+
+

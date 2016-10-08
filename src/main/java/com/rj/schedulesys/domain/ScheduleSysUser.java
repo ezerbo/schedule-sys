@@ -43,8 +43,8 @@ public class ScheduleSysUser implements Serializable {
 	@Column(name="EMAIL_ADDRESS", nullable = false, length = 100)
 	private String emailAddress;
 	
-	@Column(name="ACTIVATION_TOKEN", nullable = false, length = 254)
-	private String activationToken;
+	@Column(name="TOKEN", nullable = false, length = 254)
+	private String token;
 	
 	@Column(name="IS_ACTIVATED", nullable = false)
 	private Boolean isActivated;
@@ -62,7 +62,7 @@ public class ScheduleSysUser implements Serializable {
 	@PrePersist
 	public void onPersist(){
 		setIsActivated(Boolean.FALSE);
-		setActivationToken(UUID.randomUUID().toString());
+		setToken(UUID.randomUUID().toString());
 	}
 
 	public FacilitySchedule addSchedule(FacilitySchedule schedule) {

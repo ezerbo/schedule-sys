@@ -1,24 +1,32 @@
 package com.rj.schedulesys.service;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dozer.DozerBeanMapper;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.rj.schedulesys.dao.FacilityScheduleDao;
+import com.rj.schedulesys.dao.FacilityScheduleUpdateDao;
+import com.rj.schedulesys.dao.PrivateCareScheduleDao;
+import com.rj.schedulesys.dao.PrivateCareScheduleUpdateDao;
 import com.rj.schedulesys.dao.ScheduleSysUserDao;
 import com.rj.schedulesys.dao.UserRoleDao;
 import com.rj.schedulesys.domain.ScheduleSysUser;
 import com.rj.schedulesys.domain.UserRole;
 import com.rj.schedulesys.util.ObjectValidator;
 import com.rj.schedulesys.util.PasswordHashUtil;
+import com.rj.schedulesys.view.model.PasswordResetRequestViewModel;
+import com.rj.schedulesys.view.model.PasswordUpdateViewModel;
 import com.rj.schedulesys.view.model.ScheduleSysUserViewModel;
+import com.rj.schedulesys.view.model.UserActivityViewModel;
 import com.rj.schedulesys.view.model.UserProfileViewModel;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,22 +37,35 @@ public class UserService {
 	
 	private UserRoleDao userRoleDao;
 	private ScheduleSysUserDao userDao;
+	private FacilityScheduleDao facilityScheduleDao;
+	private PrivateCareScheduleDao privateCareScheduleDao;
+	private FacilityScheduleUpdateDao facilityScheduleUpdateDao;
+	private PrivateCareScheduleUpdateDao privateCareScheduleUpdateDao;
 	
 	private DozerBeanMapper dozerMapper;
 	
 	private ObjectValidator<ScheduleSysUserViewModel> userValidator;
 	private ObjectValidator<UserProfileViewModel> userProfileValidator;
+	private ObjectValidator<PasswordUpdateViewModel> passwordViewModelValidator;
 	
 	
 	@Autowired
-	public UserService(UserRoleDao userRoleDao, ScheduleSysUserDao userDao,
+	public UserService(UserRoleDao userRoleDao, ScheduleSysUserDao userDao, FacilityScheduleDao facilityScheduleDao,
+			PrivateCareScheduleDao privateCareScheduleDao, FacilityScheduleUpdateDao facilityScheduleUpdateDao,
+			PrivateCareScheduleUpdateDao privateCareScheduleUpdateDao,
 			ObjectValidator<ScheduleSysUserViewModel> userValidator, ObjectValidator<UserProfileViewModel> userProfileValidator,
-			DozerBeanMapper dozerMapper) {
+			ObjectValidator<PasswordUpdateViewModel> passwordViewModelValidator, DozerBeanMapper dozerMapper) {
 		this.userRoleDao = userRoleDao;
 		this.userDao = userDao;
 		this.dozerMapper = dozerMapper;
 		this.userValidator = userValidator;
 		this.userProfileValidator = userProfileValidator;
+		this.passwordViewModelValidator = passwordViewModelValidator;
+		
+		this.facilityScheduleDao = facilityScheduleDao;
+		this.privateCareScheduleDao = privateCareScheduleDao;
+		this.facilityScheduleUpdateDao = facilityScheduleUpdateDao;
+		this.privateCareScheduleUpdateDao = privateCareScheduleUpdateDao;
 	}
 	
 	/**
@@ -177,22 +198,66 @@ public class UserService {
 	}
 	
 	@Transactional
-	public void activatUserAccount(UserProfileViewModel viewModel) throws Exception{
+	public void createPassword(UserProfileViewModel viewModel) throws Exception{
 		Assert.notNull(viewModel, "User profile needed");
 		userProfileValidator.validate(viewModel);
 		log.info("Fetching user with token : {}", viewModel.getActivationToken());
-		ScheduleSysUser user = userDao.findByActivationToken(viewModel.getActivationToken());
+		ScheduleSysUser user = userDao.findByToken(viewModel.getActivationToken());
 		if(user == null){
-			log.error("An invalid activation token was used for account activation");
+			log.error("Invalid token '{}'", viewModel.getActivationToken());
 			throw new RuntimeException("Invalid activation token");
-		}
-		if(user.getIsActivated()){
-			log.error("User account already activated");
-			throw new RuntimeException("Something unexpected happened");
 		}
 		user.setPasswordhash(PasswordHashUtil.createHash(viewModel.getPassword()));
 		user.setIsActivated(Boolean.TRUE);
+		user.setToken(null);//Remove the token.//TODO Create a table specifically for tokens(id, userId, create_date, expiration_date)
 		userDao.merge(user);
+	}
+	
+	@Transactional
+	public void updatePassword(PasswordUpdateViewModel viewModel, String username) throws Exception{
+		Assert.notNull(viewModel, "No password update view model provided");
+		passwordViewModelValidator.validate(viewModel);
+		ScheduleSysUser user = userDao.findByUsername(username);
+		if(user == null){
+			log.error("No user found with username : {}", username);
+			throw new RuntimeException("No user found with username : " + username);
+		}
+		boolean isPasswordValid = PasswordHashUtil.validatePassword(viewModel.getOldPassword(), user.getPasswordhash());
+		if(!isPasswordValid){
+			log.error("Incorrect password provided");
+			throw new RuntimeException("The old password provided is incorrect");
+		}
+		user.setPasswordhash(PasswordHashUtil.createHash(viewModel.getNewPassword()));
+		userDao.merge(user);
+	}
+	
+	@Transactional
+	public void createPasswordResetToken(PasswordResetRequestViewModel viewModel){
+		Assert.notNull(viewModel, "No password reset view model provided");
+		log.info("Creating password reset token for user with username or email address : {}", viewModel.getUsernameOrEmailAddress());
+		ScheduleSysUser user = userDao.findByEmailAddress(viewModel.getUsernameOrEmailAddress());
+		if(user == null){
+			user = userDao.findByUsername(viewModel.getUsernameOrEmailAddress());
+			if(user == null){
+				log.error("No user found with username or email address : {}", viewModel.getUsernameOrEmailAddress());
+				throw new RuntimeException("No user found with username or email address : " + viewModel.getUsernameOrEmailAddress());
+			}
+		}
+		user.setToken(UUID.randomUUID().toString());
+		userDao.merge(user);
+	}
+	
+	public UserActivityViewModel getActivityLogs(Date startDate, Date endDate, String username){
+		int facilitySchedulesCreated = facilityScheduleDao.findAllByDatesAndUser(startDate, endDate, username).size();
+		int facilitySchedulesUpdated = facilityScheduleUpdateDao.findByDatesByUser(new DateTime(startDate), new DateTime(endDate), username).size();
+		
+		int privateCareSchedulesCreated = privateCareScheduleDao.findAllByDatesAndUser(startDate, endDate, username).size();
+		int privateCareSchedulesUpdated = privateCareScheduleUpdateDao.findByDatesByUser(new DateTime(startDate), new DateTime(endDate), username).size();
+		UserActivityViewModel activity = UserActivityViewModel.builder()
+				.schedulesCreated(facilitySchedulesCreated + privateCareSchedulesCreated)
+				.schedulesUpdated(facilitySchedulesUpdated + privateCareSchedulesUpdated)
+				.build();
+		return activity;
 	}
 	
 	/**
@@ -217,7 +282,6 @@ public class UserService {
 		log.debug("Loading user by username : {}", username);
 		return userDao.findByUsername(username);
 	}
-	
 	
 	/**
 	 * @param userRole
@@ -247,22 +311,6 @@ public class UserService {
 			viewModels.add(dozerMapper.map(user, ScheduleSysUserViewModel.class));
 		}
 		return viewModels;
-	}
-	
-	/**
-	 * @param plainPassword
-	 * @return
-	 */
-	public static String createPasswordHash(String plainPassword){
-		String passwordHash ;
-		try {
-			passwordHash = PasswordHashUtil.createHash(plainPassword);
-		} catch (NoSuchAlgorithmException|InvalidKeySpecException e) {
-			log.error("Unable to create password hash");
-			throw new RuntimeException("Something unexpected happened");
-		}
-		
-		return passwordHash;
 	}
 	
 	/**

@@ -1,14 +1,16 @@
 <div ng-cloak layout-align="center center" ng-controller="LoginController as vm">
 	
-	<div layout="column" style="margin-bottom: 20px;">
-		<md-icon md-svg-src="schedulesys/img/1468127067_user_male2.svg"></md-icon>
-		<span class="md-headline">Sign in to schedule-sys</span>
-	</div>
-	<md-card class="md-padding login-main-div" >
+	<md-card class="md-padding login-main-div " >
+		
+		<div layout="column" style="margin-bottom: 20px;">
+<!-- 			<md-icon md-svg-src="schedulesys/img/1468127067_user_male2.svg"></md-icon> -->
+			<span class="md-headline">Sign in to schedule-sys</span>
+		</div>
+
 		<form name="loginForm" ng-submit="vm.login()">
 			<md-content class="md-no-momentum"> 
 			
-				<md-input-container class="md-icon-float md-block"> <!-- Use floating label instead of placeholder -->
+				<md-input-container class="md-icon-float md-block">
 					<label>Username</label>
 			 		<md-icon md-svg-src="schedulesys/img/ic_account_circle_black_24px.svg" class="name"></md-icon> 
 			 		<input ng-model="vm.credentials.username" name="username" type="text" required> 
@@ -17,18 +19,22 @@
        				</div>
 			 	</md-input-container>
 			 	
-			 	<md-input-container class="md-icon-float md-block"> <!-- Use floating label instead of placeholder -->
+			 	<md-input-container class="md-icon-float md-block">
 					<label>Password</label>
 			 		<md-icon md-svg-src="schedulesys/img/ic_lock_open_black_24px.svg" class="name"></md-icon> 
 			 		<input ng-model="vm.credentials.password" type="password" name="password" required> 
+			 		<div class="hint" style="text-align: left;">
+			 			<a ui-sref="password-reset-request" href="#"> I forgot my password</a>
+			 		</div>
 			 		 <div ng-messages="loginForm.password.$error">
           				<div ng-message="required">Please provide a password</div>
        				</div>
 			 	</md-input-container>
-			 	<div layout="left">
-		          <md-checkbox ng-model="vm.credentials.rememberMe" md-no-ink aria-label="Remember me" class="md-primary">
+			 	
+			 	<div layout="column">
+		          <md-switch ng-model="vm.credentials.rememberMe" md-no-ink aria-label="Remember me" class="md-primary" flex="33">
 		          	Remember me
-		          </md-checkbox>
+		          </md-switch>
        			</div >
 			 	<div layout="column">
 			 		<md-button class="md-raised md-primary login-button" type="submit">Sign in</md-button>

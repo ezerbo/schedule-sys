@@ -42,6 +42,17 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 		return schedule;
 	}
 	
+	public List<FacilitySchedule> findAllByDatesAndUser(Date startDate, Date endDate, String username){
+		List<FacilitySchedule> schedules = entityManager.createQuery(
+				"from FacilitySchedule fs where fs.scheduleDate between :startDate and :endDate and fs.scheduleSysUser.username =:username"
+				, FacilitySchedule.class)
+				.setParameter("username", username)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
+				.getResultList();
+		return schedules;
+	}
+	
 	public List<FacilitySchedule> findAllBetweenDatesByFacility(Date startDate, Date endDate, Long facilityId){
 		List<FacilitySchedule> schedules = entityManager.createQuery(
 				"from FacilitySchedule fs where fs.facility.id =:facilityId and fs.scheduleDate between :startDate and :endDate"

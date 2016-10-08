@@ -38,18 +38,27 @@
 					}
 				});
 			}]
-			
 		})
-		.state('home.user-details', {
-			url: '/{id}/user/details',
-			templateUrl: 'schedulesys/users/user-details.html',
-			controller: 'userDetailsController'
+		.state('home.user-profile',{
+			url: '/user/profile',
+			templateUrl: 'schedulesys/users/users.profile.html',
+			controller: 'UserProfileController'
 		})
 		.state('activate-user',{
 			url: '/activate',
 			templateUrl: 'schedulesys/users/activate-user.html',
 			controller: 'UserActivationController'
 		})
+		.state('password-reset-request',{
+			url: '/reset-request',
+			templateUrl: 'schedulesys/users/password-reset-request.html',
+			controller: 'PasswordResetRequestController'
+		})
+		.state('reset-request',{
+			url: '/reset-password',
+			templateUrl: 'schedulesys/users/password-reset.html',
+			controller: 'PasswordResetController'
+		}) 
 	}
 	
 })();

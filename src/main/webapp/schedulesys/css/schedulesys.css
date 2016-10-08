@@ -3,25 +3,17 @@ body {
   text-align: center;
   margin: 0px;
 }
-
-
  
 .container-fluid{
-    
  margin: 0px;
  width: 100%;
-    
 }
 
 tr.selected td.md-cell{
-	
 	color : red;
 }
 
-
-
 .selectedlicense{
-	
 	background-color : green;
 }
 .div-login {
@@ -33,7 +25,7 @@ tr.selected td.md-cell{
 }
 
 .login-main-div {
-	margin-top : 0px;
+	margin-top : 10%;
 	margin-left: 25%;
 	margin-right: 25%;
 }

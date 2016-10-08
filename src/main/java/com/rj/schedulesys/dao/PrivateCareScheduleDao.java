@@ -42,6 +42,17 @@ public class PrivateCareScheduleDao extends GenericDao<PrivateCareSchedule>{
 		return schedule;
 	}
 	
+	public List<PrivateCareSchedule> findAllByDatesAndUser(Date startDate, Date endDate, String username){
+		List<PrivateCareSchedule> schedules = entityManager.createQuery(
+				"from PrivateCareSchedule pcs where pcs.scheduleDate between :startDate and :endDate and pcs.scheduleSysUser.username =:username"
+				, PrivateCareSchedule.class)
+				.setParameter("username", username)
+				.setParameter("startDate", startDate)
+				.setParameter("endDate", endDate)
+				.getResultList();
+		return schedules;
+	}
+	
 	public List<PrivateCareSchedule> findAllBetweenDatesByPrivateCare(Date startDate, Date endDate, Long privateCareId){
 		List<PrivateCareSchedule> schedules = entityManager.createQuery(
 				"from PrivateCareSchedule pcs where pcs.privateCare.id =:privateCareId and pcs.scheduleDate between :startDate and :endDate"
