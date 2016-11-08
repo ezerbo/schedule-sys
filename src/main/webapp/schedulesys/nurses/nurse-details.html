@@ -11,9 +11,6 @@
 			<span> Date of hire : {{vm.nurse.dateOfHire}}</span><br>
 			<span> Rehire date : {{vm.nurse.rehireDate}}</span><br>
 			<span> Last day of work : {{vm.nurse.lastDayOfWork}}</span><br>
-			<span> Primary phone # : {{vm.nurse.phoneNumbers[0].number}}</span>, Type : <span>{{vm.nurse.phoneNumbers[0].numberType}}</span><br>
-		    <span> Secondary phone # : {{vm.nurse.phoneNumbers[1].number}}</span>, Type : <span>{{vm.nurse.phoneNumbers[1].numberType}}</span><br>
-		    <span> Other phone # : {{vm.nurse.phoneNumbers[2].number}}</span>, Type : <span>{{vm.nurse.phoneNumbers[2].numberType}}</span><br>
 			<span> Comment : {{vm.nurse.comment}}</span>
 		</div>
 		<section layout="left" layout-align="left start" >
@@ -21,13 +18,44 @@
     	</section>
     	
     	<div style="text-align: center" layout-padding>
+			<h4><span>Phone numbers ({{vm.nurse.phoneNumbers.length}})</span></h4>
+		</div>
+		<section layout="row" layout-sm="column" layout-align="left left" layout-wrap>
+			<md-button class="md-raised md-primary" ui-sref="home.nurse-details.add-number({id:vm.nurse.id})" ng-disabled="vm.nurse.phoneNumbers.length == 3">Add</md-button>
+      		<md-button class="md-raised md-primary" ui-sref="home.nurse-details.edit-number({id:vm.nurse.id, phoneNumberId:vm.selectedPhoneNumber[0].id})" ng-disabled="vm.enablePhoneNumberEdit">Edit</md-button>
+      		<md-button class="md-raised md-warn" ng-click="vm.showPhoneNumberDelConfirm()" ng-disabled="vm.enablePhoneNumberDel">Delete</md-button>
+      </section>
+      
+      	<md-table-container>
+		 <table md-table md-table md-row-select ng-model="vm.selectedPhoneNumber" >
+		    <thead md-head md-order="">
+		      <tr md-row>
+		        <th md-column md-order-by="name">
+		        	<span>Number Label</span>
+		        </th>
+		        <th md-column>Number type</th>
+		        <th md-column>Number</th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row md-select="phoneNumber" md-select-id="name"  md-auto-select ng-repeat="phoneNumber in vm.nurse.phoneNumbers">
+		        <td md-cell>{{phoneNumber.numberLabel}}</td>
+		        <td md-cell>{{phoneNumber.numberType}}</td>
+		        <td md-cell>{{phoneNumber.number}}</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-table-container>
+		<md-table-pagination md-limit="3" md-limit-options="[3]" md-page="1"  md-total="{{vm.nurse.phoneNumbers.length}}" md-page-select></md-table-pagination>
+		
+		<div style="text-align: center" layout-padding>
 			<h4><span>Tests ({{vm.allTests.length}})</span></h4>
 		</div>
 		<section layout="row" layout-sm="column" layout-align="left left" layout-wrap>
 			<md-button class="md-raised md-primary" ui-sref="home.nurse-details.add-test({id:vm.nurse.id})">Add</md-button>
       		<md-button class="md-raised md-warn" ng-click="vm.showTestDelConfirm()" ng-disabled="vm.enableTestDel">Delete</md-button>
       </section>
-		
+      
 		<md-table-container>
 		 <table md-table md-table md-row-select ng-model="vm.selectedTest" >
 		    <thead md-head md-order="vm.testQuery.order">

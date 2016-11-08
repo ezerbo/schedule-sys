@@ -13,20 +13,10 @@
 			templateUrl: 'schedulesys/nurses/nurses.html',
 			controller: 'NursesController'
 		})
-		.state('home.nurses.new', {
-			url: '/new',
-			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
-				$mdDialog.show({
-					title: 'New Nurse',
-					templateUrl: 'schedulesys/nurses/nurse-dialog.html',
-					parent: angular.element(document.body),
-					controller: 'NurseDialogController',
-					clickOutsideToClose:true,
-					onRemoving: function (){
-						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
-					}
-				});
-			}]
+		.state('home.nurses-new', {
+			url: '/nurses/new',
+			templateUrl: 'schedulesys/nurses/nurse-dialog.html',
+			controller: 'NurseDialogController'
 		})
 		.state('home.nurses.edit', {
 			url:'/{id}/nurses/edit',
@@ -48,18 +38,18 @@
 			templateUrl: 'schedulesys/nurses/nurse-details.html',
 			controller: 'NurseDetailsController'
 		})
-		.state('home.licenses-new', {
-			url: 'nurse/{nurseId}/new',
-			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
-				$mdDialog.show({
-					title: 'New Nurse',
-					templateUrl: 'schedulesys/licenses/license-dialog.html',
-					parent: angular.element(document.body),
-					controller: 'LicenseDialogController',
-					clickOutsideToClose:true
-				});
-			}]
-		})
+//		.state('home.licenses-new', {
+//			url: 'nurse/{nurseId}/new',
+//			onEnter: ['$stateParams', '$state', '$mdDialog', function($stateParams, $state, $mdDialog) {
+//				$mdDialog.show({
+//					title: 'New Nurse',
+//					templateUrl: 'schedulesys/licenses/license-dialog.html',
+//					parent: angular.element(document.body),
+//					controller: 'LicenseDialogController',
+//					clickOutsideToClose:true
+//				});
+//			}]
+//		})
 		.state('home.nurse-details.add-license', {
 			url:'/licenses',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
@@ -99,6 +89,30 @@
 					onRemoving: function (){
 						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
 					}
+				});
+			}]
+		})
+		.state('home.nurse-details.add-number', {
+			url:'/phone-numbers',
+			onEnter: ['$mdDialog', function($mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/phoneNumber/phone-number.dialog.html',
+					parent: angular.element(document.body),
+					controller: 'NurseDetailsController',
+					controllerAs: "vm",
+					clickOutsideToClose:true
+				});
+			}]
+		})
+		.state('home.nurse-details.edit-number', {
+			url:'/phone-numbers/{phoneNumberId}/edit',
+			onEnter: ['$mdDialog', function($mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/phoneNumber/phone-number.dialog.html',
+					parent: angular.element(document.body),
+					controller: 'NurseDetailsController',
+					controllerAs: "vm",
+					clickOutsideToClose:true
 				});
 			}]
 		})

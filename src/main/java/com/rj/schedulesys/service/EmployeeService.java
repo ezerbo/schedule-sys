@@ -3,12 +3,15 @@ package com.rj.schedulesys.service;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 import com.rj.schedulesys.dao.EmployeeDao;
 import com.rj.schedulesys.dao.PhoneNumberDao;
 import com.rj.schedulesys.dao.PhoneNumberLabelDao;
@@ -57,6 +60,7 @@ public class EmployeeService {
 		log.debug("Creating employee : {}", viewModel);
 		Assert.notNull(viewModel, "No employee provided");
 		Assert.notEmpty(viewModel.getPhoneNumbers(), "No phone number provided");
+		Iterables.removeIf(viewModel.getPhoneNumbers(), Predicates.isNull());
 		validator.validate(viewModel);
 		log.debug("Creating new employee : {}", viewModel);
 		Position position = this.validatePosition(viewModel.getPositionName());
@@ -66,21 +70,23 @@ public class EmployeeService {
 		PhoneNumberUtil.assertNoDuplicateLabelExist(viewModel.getPhoneNumbers());
 		List<PhoneNumber> phoneNumbers = new LinkedList<>();
 		for(PhoneNumberViewModel vm : viewModel.getPhoneNumbers()){
-			PhoneNumber phoneNumber = phoneNumberDao.findByNumber(vm.getNumber());
-			if(phoneNumber != null){
-				log.error("Phone number : {} already exists", vm.getNumber());
-				throw new RuntimeException("Phone number : " + vm.getNumber() + " already exists");
+			if(vm.getNumber() != null && StringUtils.isNotBlank(vm.getNumberLabel()) && StringUtils.isNotBlank(vm.getNumberType())){
+				PhoneNumber phoneNumber = phoneNumberDao.findByNumber(vm.getNumber());
+				if(phoneNumber != null){
+					log.error("Phone number : {} already exists", vm.getNumber());
+					throw new RuntimeException("Phone number : " + vm.getNumber() + " already exists");
+				}
+				PhoneNumberLabel phoneNumberLabel = PhoneNumberUtil.validatePhoneNumberLabel(
+						vm.getNumberLabel(), phoneNumberLabelDao);
+				PhoneNumberType phoneNumberType = PhoneNumberUtil.validatePhoneNumberType(
+						vm.getNumberType(), phoneNumberTypeDao);
+				phoneNumber = PhoneNumber.builder()
+						.number(vm.getNumber())
+						.phoneNumberLabel(phoneNumberLabel)
+						.phoneNumberType(phoneNumberType)
+						.build();
+				phoneNumbers.add(phoneNumber);
 			}
-			PhoneNumberLabel phoneNumberLabel = PhoneNumberUtil.validatePhoneNumberLabel(
-					vm.getNumberLabel(), phoneNumberLabelDao);
-			PhoneNumberType phoneNumberType = PhoneNumberUtil.validatePhoneNumberType(
-					vm.getNumberType(), phoneNumberTypeDao);
-			phoneNumber = PhoneNumber.builder()
-					.number(vm.getNumber())
-					.phoneNumberLabel(phoneNumberLabel)
-					.phoneNumberType(phoneNumberType)
-					.build();
-			phoneNumbers.add(phoneNumber);
 		}
 		Employee employee = dozerMapper.map(viewModel, Employee.class);
 		employee.setPosition(position);

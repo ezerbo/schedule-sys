@@ -5,8 +5,9 @@
 		.module('scheduleSys')
 		.factory('Commons', Commons);
 	
+	Commons.$Inject = ['$state', '$rootScope'];
 	
-	function Commons(){
+	function Commons($state, $rootScope){
 		var commons = this;
 		
 		commons.getCurrentWeekStartDate = getCurrentWeekStartDate;
@@ -33,5 +34,9 @@
 		}
 		
 		return commons;
+	}
+	
+	function gotoPreviousState(reloadSate){
+		$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: reloadState});
 	}
 })();

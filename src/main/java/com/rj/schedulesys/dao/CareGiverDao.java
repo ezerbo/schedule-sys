@@ -25,4 +25,11 @@ public class CareGiverDao extends GenericDao<CareGiver> {
 		return careGivers;
 	}
 	
+	public List<CareGiver> findAll(){
+		List<CareGiver> careGivers = entityManager.createQuery(
+				"from CareGiver cg order by cg.employee.lastName", CareGiver.class)
+				.getResultList();
+		return careGivers;
+	}
+	
 }

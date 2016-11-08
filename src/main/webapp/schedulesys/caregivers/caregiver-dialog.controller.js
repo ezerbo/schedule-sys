@@ -4,9 +4,9 @@
 		.module('scheduleSys')
 		.controller('careGiverDialogController', careGiverDialogController);
 	
-	careGiverDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast', 'careGiversService','careGiversPositionTypeService','PhoneLabelService','PhoneTypeService','careGiverPhoneService'];
+	careGiverDialogController.$Inject = ['$state','$stateParams', '$mdDialog', '$mdToast', 'careGiversService','careGiversPositionTypeService','PhoneLabelService','PhoneTypeService','CareGiverPhoneService'];
 	
-	function careGiverDialogController($state,$stateParams, $mdDialog, $mdToast, careGiversService,careGiversPositionTypeService,PhoneLabelService,PhoneTypeService,careGiverPhoneService){
+	function careGiverDialogController($state,$stateParams, $mdDialog, $mdToast, careGiversService,careGiversPositionTypeService,PhoneLabelService,PhoneTypeService,CareGiverPhoneService){
 		var vm = this;
 		
 		vm.cancel = cancel;

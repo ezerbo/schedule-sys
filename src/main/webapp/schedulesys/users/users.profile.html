@@ -17,17 +17,13 @@
 		          	<span>Role : {{vm.currentUser.userRole}}</span><br/>
 		          	<span>Password : ********</span><span ng-show="!vm.passwordChangeUI"><a href="" ng-click="vm.showPasswordChangeUI()">(change password)</a></span>
 		          </p>
-		          <div>
-		          	<md-button class="md-raised md-primary">Edit profile</md-button>
-		          	<md-button class="md-raised md-primary" ng-click="vm.showHideLogsUI()">{{vm.activityLogsUI === false ? 'View activity logs' : 'Hide activity logs'}}</md-button>
-		          </div>
 		        </div>
 		        <!-- Password update view -->
 		        <div style="width: 500px" ng-show="vm.passwordChangeUI">
 		        	<form name="passwordChangeForm" ng-submit="vm.login()">
 						<md-content class="md-no-momentum"> 
 							<md-input-container class="md-icon-float md-block">
-								<label>Old passord</label>
+								<label>Old password</label>
 						 		<input ng-model="vm.credentials.oldPassword" name="oldPassword" type="password" required ng-change="vm.onPasswordInput()"> 
 						 		 <div ng-messages="passwordChangeForm.oldPassword.$error">
 			          				<div ng-message="required">Please provide old password</div>
@@ -59,34 +55,6 @@
 						 	</div>
 						</md-content>
 					</form>	
-		        </div>
-		        <!-- User activity logs view -->
-		        <span flex></span>
-		        <div ng-show="vm.activityLogsUI" style="text-align: center">
-		        	<md-button ng-click="vm.onLeftArrowClick()" class="md-raised md-primary">
-						<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_left_white_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
-					</md-button>
-					<span>Week: {{vm.activity.startDate}} - {{vm.activity.endDate}}</span>
-						<md-button ng-click="vm.onRightArrowClick()" class="md-raised md-primary">
-					<md-icon md-svg-src="schedulesys/img/ic_keyboard_arrow_right_white_24px.svg" class="s24" aria-label="Left arrow"></md-icon>
-					</md-button>
-		        	<md-table-container>
-					  <table md-table >
-					    <thead md-head md-order="vm.query.order">
-					      <tr md-row>
-					        <th md-column>Number of schedules created</th>
-					        <th md-column>Number of schedules updated</th>
-					      </tr>
-					    </thead>
-					    <tbody md-body>
-					       <tr md-row>
-					      	<td md-cell>{{vm.activity.schedulesCreated}}</td>
-					      	<td md-cell>{{vm.activity.schedulesUpdated}}</td>
-					      </tr>
-					    </tbody>
-					  </table>
-					</md-table-container>
-					<md-table-pagination md-limit="vm.query.limit"  md-page="vm.query.page" md-total="{{vm.allUsers.length}}"></md-table-pagination>
 		        </div>
 	        </div>
         </md-card-content>

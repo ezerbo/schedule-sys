@@ -210,6 +210,19 @@ public class NurseController {
 		return new ResponseEntity<>("Phone number successfully deleted", HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/{id}/phone-numbers/{phoneNumberId}", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> getPhoneNumber(@PathVariable Long id, @PathVariable Long phoneNumberId){
+		log.info("Getting phone number with id : {} for nurse with id : {}", phoneNumberId, id);
+		PhoneNumberViewModel viewModel = phoneNumberService.findByNurseAndNumberId(id, phoneNumberId);
+		if(viewModel == null){
+			log.warn("No nurse found with id : {}", id);
+			return new ResponseEntity<>("No phone number found with id : " + id
+					+ " for nurse with id " + phoneNumberId, HttpStatus.NOT_FOUND);
+		}
+		log.info("Phone number successfully retrieved : {}", viewModel);
+		return new ResponseEntity<>(viewModel, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/{id}/licenses", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> findAllLicenses(@PathVariable Long id){
 		log.info("Finding all licenses for user with id : {}", id);

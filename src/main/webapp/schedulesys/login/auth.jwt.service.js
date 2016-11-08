@@ -4,9 +4,9 @@
 		.module('scheduleSys')
 		.factory('AuthenticationProvider', AuthenticationProvider);
 	
-	AuthenticationProvider.$inject = ['$http', '$localStorage', '$sessionStorage', 'jwtHelper'];
+	AuthenticationProvider.$inject = ['$http', '$localStorage', '$sessionStorage','$location', 'jwtHelper'];
 	
-	function  AuthenticationProvider ($http, $localStorage, $sessionStorage, jwtHelper){
+	function  AuthenticationProvider ($http, $localStorage, $sessionStorage, $location, jwtHelper){
 		var principal = null;
 		var service = {
 				login: login,
@@ -21,6 +21,11 @@
 			if(principal !== null)
 				return principal;
 			var jwt = ($localStorage.auth_token) ? $localStorage.auth_token : $sessionStorage.auth_token;
+			if(angular.isDefined(jwt)){
+				return jwtHelper.decodeToken(jwt).sub;	
+			}else{
+				$location.path('');
+			}
 			return jwtHelper.decodeToken(jwt).sub;
 		}
 		

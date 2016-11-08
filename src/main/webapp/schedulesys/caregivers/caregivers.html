@@ -18,9 +18,9 @@
 	    <thead md-head md-order="vm.query.order">
 	      <tr md-row>
 	        <th md-column md-order-by="name">
-	        	<span>First name</span>
+	        	<span>Last name</span>
 	        </th>
-	        <th md-column>Last name</th>
+	        <th md-column>First name</th>
 	        <th md-column>Position name</th>
 	        <th md-column>Primary phone #</th>
 	        <th md-column>Phone number type</th>
@@ -29,8 +29,8 @@
 	    </thead>
 	    <tbody md-body>
 	      <tr md-row md-select="caregiver" md-select-id="name"  md-auto-select ng-repeat="caregiver in vm.careGiversOnCurrentPage track by caregiver.id" ng-class="{'selected' : !caregiver.isLastDayOfWork}">
-	        <td md-cell>{{caregiver.firstName}}</td>
 	        <td md-cell>{{caregiver.lastName}}</td>
+	        <td md-cell>{{caregiver.firstName}}</td>
 	        <td md-cell>{{caregiver.positionName}}</td>
 	        <td md-cell>{{caregiver.phoneNumbers[0].number  | tel}}</td>
 	         <td md-cell>{{caregiver.phoneNumbers[0].numberType}}</td>
@@ -40,6 +40,6 @@
 	  </table>
 	</md-table-container>
 
-	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[5, 10, 15, 20]" md-page="vm.query.page" md-total="{{vm.allcareGivers.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
+	<md-table-pagination md-limit="vm.query.limit" md-limit-options="[20, 40]" md-page="vm.query.page" md-total="{{vm.allcareGivers.length}}" md-on-paginate="vm.onPaginate" md-page-select></md-table-pagination>
 
 </div>

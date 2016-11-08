@@ -24,7 +24,7 @@
 		
 		vm.query = {
 				order: 'name',
-				limit: 5,
+				limit: 20,
 				page: 1
 		};
 		
@@ -46,8 +46,7 @@
 				careGiversService.remove(
 						{id:vm.selected[0].id},
 						onDeleteSuccess,
-						onDeleteFailure
-						);
+						onDeleteFailure);
 			}, function() {
 				console.log('Keep this one ...');
 			});

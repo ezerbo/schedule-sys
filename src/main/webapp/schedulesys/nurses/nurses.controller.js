@@ -26,7 +26,7 @@
 		
 		vm.query = {
 				order: 'name',
-				limit: 5,
+				limit: 20,
 				page: 1
 		};
 		

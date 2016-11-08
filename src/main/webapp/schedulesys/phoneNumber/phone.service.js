@@ -4,14 +4,13 @@
 	angular
 		.module('scheduleSys')
 		.factory('NursePhoneService', NursePhoneService)
-		.factory('careGiverPhoneService', careGiverPhoneService);
+		.factory('CareGiverPhoneService', CareGiverPhoneService);
 	
 	NursePhoneService.$Inject = ['$resource'];
-	careGiverPhoneService.$Inject = ['$resource'];
+	CareGiverPhoneService.$Inject = ['$resource'];
 	
 	function NursePhoneService($resource) {
-		console.log('calling nurse phone service');
-		var resourceUrl = '/nurses/:nurseID/phone-numbers/:id';
+		var resourceUrl = '/nurses/:id/phone-numbers/:phoneNumberId';
 		
 		return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
@@ -55,10 +54,8 @@
 		
 	}
 	
-	function careGiverPhoneService($resource) {
-		console.log('calling Care-Giver phone service');
-		var resourceUrl = '/care-givers/:caregivID/phone-numbers/:id';
-		
+	function CareGiverPhoneService($resource) {
+		var resourceUrl = '/care-givers/:id/phone-numbers/:phoneNumberId';
 		return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
             'get': {

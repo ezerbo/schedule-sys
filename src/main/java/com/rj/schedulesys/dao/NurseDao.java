@@ -25,4 +25,11 @@ public class NurseDao extends GenericDao<Nurse>{
 		return nurses;
 	}
 	
+	public List<Nurse> findAll(){
+		List<Nurse> nurses = entityManager.createQuery(
+				"from Nurse n order by n.employee.lastName", Nurse.class)
+				.getResultList();
+		return nurses;
+	}
+	
 }
