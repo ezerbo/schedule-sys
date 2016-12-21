@@ -114,21 +114,16 @@ public class FacilityController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody ResponseEntity<?> delete(@PathVariable Long id){
-		
 		log.info("Deleting facility with id : {}", id);
-		
 		if(facilityService.findOne(id) == null){
 			return new ResponseEntity<String>("No facility found with id : " + id, HttpStatus.NOT_FOUND);
 		}
-		
 		try{
 			facilityService.delete(id);
 		}catch(Exception e){
 			return new ResponseEntity<String>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 		log.info("Facility with id successfully deleted : {}", id);
-		
 		return new ResponseEntity<String>("Facility successfully deleted", HttpStatus.OK);
 	}
 	

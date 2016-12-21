@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
+@Transactional
 public class FacilityService {
 	
 	@Autowired
@@ -113,23 +114,17 @@ public class FacilityService {
 	
 	@Transactional
 	public void delete(Long id){
-		
 		log.debug("Deleting facility with id : {}", id);
-		
 		Facility facility = facilityDao.findOne(id);
-		
 		if (facility == null){
 			log.error("No facility found with id : {}", id);
 			throw new RuntimeException("No facility found with id : " + id);
 		}
-		
 		if(!(facility.getSchedules().isEmpty() && facility.getStaffMembers().isEmpty())){
 			log.error("Facility with id : {} can not be deleted", id);
 			throw new RuntimeException("Facility with id : " + id + " can not be deleted");
 		}
-		
 		facilityDao.delete(facility);
-		
 	}
 	
 	@Transactional

@@ -100,6 +100,7 @@ public class EmployeeTestService {
 			log.error("Completed date must be in the past");
 			throw new RuntimeException("Completed date must be in the past");
 		}
+		//TODO remove condition
 		if(viewModel.getExpirationDate() != null && viewModel.getExpirationDate().before(today)){
 			log.error("Expiration date must be in the future");
 			throw new RuntimeException("Expiration date must be in the future");

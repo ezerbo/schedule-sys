@@ -17,13 +17,12 @@
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.selected = [];
-		vm.editOrDelete = true;
+		vm.deletion = true;
+		vm.editOrDetails = false;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.sliceFacilitiesArray = sliceFacilitiesArray;
-		vm.showFacilityDialog = showFacilityDialog;
 	
-		
 		vm.query = {
 				order: 'name',
 				limit: 10,
@@ -33,20 +32,26 @@
 		loadAll();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
-			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
+			if(vm.selected.length === 0){
+				vm.deletion = true;
+			}else{
+				vm.deletion= false;
+			}
+			vm.editOrDetails = (vm.selected.length === 1) ? false : true;
 		});
 		
 		function showConfirm(ev) {
 			var confirm = $mdDialog.confirm()
-					.title('Delete a facility')
-					.textContent('Are you sure you want to delete this facility ?')
+					.title('Deleting ' + vm.selected.length +' facility(ies)')
+					.textContent('Are you sure you want to delete the selected facilities ?')
 					.ariaLabel('Facility deletion')
 					.targetEvent(ev)
 					.ok('Delete')
 					.cancel('Cancel');
-			
 			$mdDialog.show(confirm).then(function() {
-				FacilitiesService.remove({id:vm.selected[0].id},onDeleteSuccess,onDeleteFailure);
+				vm.selected.forEach(function(elt, i, array) {
+					FacilitiesService.remove({id: elt.id},onDeleteSuccess,onDeleteFailure);
+				});
 			}, function() {
 				console.log('Keep this one ...');
 			});
@@ -91,18 +96,8 @@
 		
 		function sliceFacilitiesArray(){
 			var slicedArray = vm.allFacilities.slice(10 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
-			console.log('Sliced array : ' + angular.toJson(slicedArray));
 			return slicedArray;
 		}
-		
-		function showFacilityDialog(ev) {
-			$mdDialog.show({
-				templateUrl: 'schedulesys/facilities/facility-dialog.html',
-				parent: angular.element(document.body),
-				targetEvent: ev,
-				clickOutsideToClose:true
-			});
-		};
 	}
 	
 })();

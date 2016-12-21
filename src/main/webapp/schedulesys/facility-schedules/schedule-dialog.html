@@ -53,11 +53,11 @@
       <div layout-gt-sm="row"  ng-show="vm.isEditing">
   		 <md-input-container flex-gt-sm>
       		<label>Hours</label>
-            <input type="number" ng-model="vm.schedule.hours">
+            <input type="number" ng-model="vm.schedule.hours" step="0.5">
       </md-input-container>
   		 <md-input-container flex-gt-sm>
       	<label>Overtime</label>
-		 <input type="number" ng-model="vm.schedule.overtime">
+		 <input type="number" ng-model="vm.schedule.overtime" step="0.5">
       </md-input-container>
       </div>
       <md-input-container>

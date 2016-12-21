@@ -4,22 +4,26 @@
 	.module('scheduleSys')
 	.controller('NurseDialogController', NurseDialogController);
 
-	NurseDialogController.$Inject = ['$state','$scope','$stateParams', '$mdDialog',
+	NurseDialogController.$Inject = ['$state', '$rootScope', '$scope','$stateParams', '$mdDialog',
 	                                 '$mdToast', 'NursesService','NursesPositionTypeService',
 	                                 'PhoneTypeService'];
 
-	function NurseDialogController($state, $scope, $stateParams, $mdDialog, $mdToast,
+	function NurseDialogController($state, $rootScope, $scope, $stateParams, $mdDialog, $mdToast,
 			NursesService, NursesPositionTypeService, PhoneTypeService){
 		var vm = this;
 		
 		vm.createOrUpdatenurse = createOrUpdatenurse;
 		vm.init = init;
 		vm.showToast = showToast;
-		
+		vm.cancel = cancel;
 		vm.getSelectedNurse = getSelectedNurse;
 		
 		vm.positions = NursesPositionTypeService.query();
 		vm.phoneNumberTypes = PhoneTypeService.query();
+		
+		function cancel() {
+			$mdDialog.cancel();
+		}
 		
 		init();
 		
@@ -73,7 +77,8 @@
 			}else{
 				NursesService.update({id:$stateParams.id},vm.nurse, function(){
 					vm.showToast('Nurse ' + vm.nurse.firstName + ' successfully updated', 5000);
-					$state.go($state.current, {}, {reload: true});
+					vm.cancel();
+					$state.go($rootScope.previousState.name, {}, {reload: true});
 				}, function(result){
 					vm.showToast(result.data, 5000);
 				});

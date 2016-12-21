@@ -41,7 +41,7 @@
 		      <tr md-row md-select="phoneNumber" md-select-id="name"  md-auto-select ng-repeat="phoneNumber in vm.nurse.phoneNumbers">
 		        <td md-cell>{{phoneNumber.numberLabel}}</td>
 		        <td md-cell>{{phoneNumber.numberType}}</td>
-		        <td md-cell>{{phoneNumber.number}}</td>
+		        <td md-cell>{{phoneNumber.number | tel}}</td>
 		      </tr>
 		    </tbody>
 		  </table>

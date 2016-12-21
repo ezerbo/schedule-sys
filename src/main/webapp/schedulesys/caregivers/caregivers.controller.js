@@ -17,7 +17,8 @@
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.selected = [];
-		vm.editOrDelete = true;
+		vm.deletion = true;
+		vm.editOrDetails = false;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.slicecareGiversArray = slicecareGiversArray;
@@ -31,7 +32,12 @@
 		loadAll();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
-			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
+			if(vm.selected.length === 0){
+				vm.deletion = true;
+			}else{
+				vm.deletion= false;
+			}
+			vm.editOrDetails = (vm.selected.length === 1) ? false : true;
 		});
 		
 		function showConfirm(ev) {
@@ -43,10 +49,9 @@
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				careGiversService.remove(
-						{id:vm.selected[0].id},
-						onDeleteSuccess,
-						onDeleteFailure);
+				vm.selected.forEach(function(elt, i, array) {
+					careGiversService.remove({id: elt.id}, onDeleteSuccess, onDeleteFailure);
+				});
 			}, function() {
 				console.log('Keep this one ...');
 			});
@@ -66,15 +71,13 @@
 		}
 		
 		function onDeleteSuccess (){
-			vm.careGiversOnCurrentPage.splice(vm.careGiversOnCurrentPage.indexOf(vm.selected[0]), 1);
-			vm.allcareGivers.splice(vm.allcareGivers.indexOf(vm.selected[0]), 1);
-			vm.editOrDelete = true;
-			vm.showToast('Care-Giver ' + vm.selected[0].firstName + ' successfully deleted', 5000);
-		}	
+			vm.showToast('Care giver successfully deleted', 5000);
+			$state.go($state.current,{}, {reload:true});
+			vm.deletion = true;
+		}
 		
 		function onDeleteFailure (){
-			vm.showToast('Care-Giver ' + vm.selected[0].firstName 
-					+ ' could not be deleted ', 5000);
+			vm.showToast('Care-Giver could not be deleted ', 5000);
 		}
 		
 		function showToast(textContent, delay){
@@ -82,8 +85,7 @@
 					$mdToast.simple()
 					.textContent(textContent)
 					.position('top right')
-					.hideDelay(delay)
-					);
+					.hideDelay(delay));
 		}
 		
 		function onPaginate(){

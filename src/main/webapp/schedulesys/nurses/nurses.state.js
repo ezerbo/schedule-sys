@@ -14,12 +14,12 @@
 			controller: 'NursesController'
 		})
 		.state('home.nurses-new', {
-			url: '/nurses/new',
+			url: '/new',
 			templateUrl: 'schedulesys/nurses/nurse-dialog.html',
 			controller: 'NurseDialogController'
 		})
 		.state('home.nurses.edit', {
-			url:'/{id}/nurses/edit',
+			url:'/{id}/edit',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
 				$mdDialog.show({
 					templateUrl: 'schedulesys/nurses/nurse-dialog-edit.html',
@@ -34,7 +34,7 @@
 			
 		})
 		.state('home.nurse-details', {
-			url: '/nurses/{id}/details',
+			url: '/{id}/details',
 			templateUrl: 'schedulesys/nurses/nurse-details.html',
 			controller: 'NurseDetailsController'
 		})

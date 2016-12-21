@@ -19,7 +19,8 @@
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.selected = [];
-		vm.editOrDelete = true;
+		vm.deletion = true;
+		vm.editOrDetails = false;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.sliceNursesArray = sliceNursesArray;
@@ -33,7 +34,12 @@
 		loadAll();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
-			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
+			if(vm.selected.length === 0){
+				vm.deletion = true;
+			}else{
+				vm.deletion= false;
+			}
+			vm.editOrDetails = (vm.selected.length === 1) ? false : true;
 		});
 		
 		function showConfirm(ev) {
@@ -45,11 +51,9 @@
 					.ok('Delete')
 					.cancel('Cancel');
 			$mdDialog.show(confirm).then(function() {
-				NursesService.remove(
-						{id:vm.selected[0].id},
-						onDeleteSuccess,
-						onDeleteFailure
-						);
+				vm.selected.forEach(function(elt, i, array) {
+					NursesService.remove({id: elt.id},onDeleteSuccess,onDeleteFailure);
+				});
 			}, function() {
 				console.log('Keep this one ...');
 			});
@@ -69,10 +73,9 @@
 		}
 		
 		function onDeleteSuccess (){
-			vm.nursesOnCurrentPage.splice(vm.nursesOnCurrentPage.indexOf(vm.selected[0]), 1);
-			vm.allNurses.splice(vm.allNurses.indexOf(vm.selected[0]), 1);
-			vm.editOrDelete = true;
-			vm.showToast('Nurse ' + vm.selected[0].firstName + ' successfully deleted', 5000);
+			vm.deletion = true;
+			vm.showToast('Nurse successfully deleted', 5000);
+			$state.go($state.current,{}, {reload:true});
 		}	
 		
 		function onDeleteFailure (){
@@ -96,7 +99,6 @@
 		
 		function sliceNursesArray(){
 			var slicedArray = vm.allNurses.slice(5 * (vm.query.page - 1), (vm.query.limit * vm.query.page));
-			console.log('Sliced array : ' + angular.toJson(slicedArray));
 			return slicedArray;
 		}
 		

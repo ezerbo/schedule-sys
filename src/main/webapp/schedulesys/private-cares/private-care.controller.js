@@ -17,7 +17,8 @@
 		vm.loadAll = loadAll;
 		vm.showConfirm = showConfirm;
 		vm.selected = [];
-		vm.editOrDelete = true;
+		vm.deletion = true;
+		vm.editOrDetails = false;
 		vm.showToast = showToast;
 		vm.onPaginate = onPaginate;
 		vm.slicePrivateCaresArray = slicePrivateCaresArray;
@@ -32,20 +33,27 @@
 		loadAll();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {
-			vm.editOrDelete = (vm.selected.length === 0) ? true : false;
+			if(vm.selected.length === 0){
+				vm.deletion = true;
+			}else{
+				vm.deletion= false;
+			}
+			vm.editOrDetails = (vm.selected.length === 1) ? false : true;
 		});
 		
 		function showConfirm(ev) {
 			var confirm = $mdDialog.confirm()
-					.title('Delete a private care')
-					.textContent('Are you sure you want to delete this private care?')
+					.title('Delete ' + vm.selected.length + ' private care(s)')
+					.textContent('Are you sure you want to delete the selected private care(s)?')
 					.ariaLabel('Private care deletion')
 					.targetEvent(ev)
 					.ok('Delete')
 					.cancel('Cancel');
 			
 			$mdDialog.show(confirm).then(function() {
-				PrivateCareService.remove({id:vm.selected[0].id}, onDeleteSuccess, onDeleteFailure);
+				vm.selected.forEach(function(elt, i, array) {
+					PrivateCareService.remove({id: elt.id},onDeleteSuccess,onDeleteFailure);
+				});
 			}, function() {
 				console.log('Keep this one ...');
 			});
@@ -67,7 +75,7 @@
 		function onDeleteSuccess (){
 			vm.privateCaresOnCurrentPage.splice(vm.privateCaresOnCurrentPage.indexOf(vm.selected[0]), 1);
 			vm.allPrivateCares.splice(vm.allPrivateCares.indexOf(vm.selected[0]), 1);
-			vm.editOrDelete = true;
+			vm.deletion = true;
 			vm.showToast('Private care ' + vm.selected[0].name + ' successfully deleted', 5000);
 		}	
 		

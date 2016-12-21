@@ -1,193 +1,147 @@
-<md-dialog aria-label="Create or update a Care-giver" style="width:1000px;" ng-controller="careGiverDialogController as vm">
-  <form name="careGiverForm" ng-submit="vm.createOrUpdatecareGiver()">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>Create or edit a Care-Giver</h2>
-        <span flex></span>
-        <md-button class="md-icon-button" ng-click="vm.cancel()">
-          <md-icon md-svg-src="schedulesys/img/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
-    <md-dialog-content style="max-width:1000px;max-height:810px;" class="md-padding">
+<div aria-label="Create or update a Care-giver"
+	style="width:1000px;" ng-controller="careGiverDialogController as vm">
+<form name="careGiverForm" ng-submit="vm.createOrUpdatecareGiver()">
+	<div style="max-width:1000px;max-height:810px;" class="md-padding">
 	<div layout-gt-sm="column">
-	<div layout-gt-sm="row">
-	<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
-			 <md-content>
-Date of Hire  
-  
-    <md-datepicker type="date" ng-model="vm.careGiver.dateOfHire" name="dateOfHire" md-placeholder="Enter date"></md-datepicker>
-
-   
-  </md-content>
-			<div ng-messages="careGiverForm.dateOfHire.$error">
-				<div ng-message="required">Date Of Hire is required.</div>
-				
-			</div>
-		</div>
-		<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
-			 <md-content>
-Rehire Date  
-  
-    <md-datepicker type="date" ng-model="vm.careGiver.rehireDate" name="rehireDate" md-placeholder="Enter date"></md-datepicker>
-
-   
-  </md-content>
-			<div ng-messages="careGiverForm.rehireDate.$error">
-				<div ng-message="required">Rehire Date is required.</div>
-				
-			</div>
-		</div>
-		<div class="md-block" flex-gt-sm  style="padding: 40px;align-items:left" ng-cloak="" class="datepickerdemoBasicUsage">
-			 <md-content>
-Last Day of Work 
-  
-    <md-datepicker type="date" ng-model="vm.careGiver.lastDayOfWork" name="lastDayOfWork" md-placeholder="Enter date"></md-datepicker>
-
-   
-  </md-content>
-			<div ng-messages="careGiverForm.lastDayOfWork.$error">
-				<div ng-message="required">Last Day of Work is required.</div>
-				
-			</div>
-		</div>
-		</div>
 		<div layout-gt-sm="row">
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>First-Name</label> <input md-maxlength="50" required name="firstName" ng-model="vm.careGiver.firstName" />
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>First name</label>
+				<input md-maxlength="50" required name="firstName" ng-model="vm.careGiver.firstName" />
 			<div ng-messages="careGiverForm.firstName.$error">
-				<div ng-message="required">First Name is required.</div>
-				<div ng-message="md-maxlength">The First-Name has to be less than 50 characters long.</div>
+				<div ng-message="required">First name is required.</div>
+				<div ng-message="md-maxlength">The First name has to be less than 50 characters long.</div>
 			</div>
-		</md-input-container>
-	<md-input-container class="md-block" flex-gt-sm>
-			<label>Last-Name</label> <input md-maxlength="50" required name="lastName" ng-model="vm.careGiver.lastName" />
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Last name</label>
+				<input md-maxlength="50" required name="lastName" ng-model="vm.careGiver.lastName" />
 			<div ng-messages="careGiverForm.lastName.$error">
 				<div ng-message="required">Last Name is required.</div>
-				<div ng-message="md-maxlength">The Last-Name has to be less than 50 characters long.</div>
+				<div ng-message="md-maxlength">The Last name has to be less than 50 characters long.</div>
 			</div>
-		</md-input-container>
-		</div>	
+			</md-input-container>
+		</div>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Position-Name</label> <md-select ng-model="vm.careGiver.positionName">
-          <md-option ng-repeat="options in vm.options2" value="{{options.name}}">{{options.name}}</md-option>
-        </md-select>
-			<div ng-messages="careGiverForm.positionName.$error">
-				<div ng-message="required">Position-Name is required.</div>
-				<div ng-message="md-maxlength">The position name has to be less than 100 characters long.</div>
-			</div>
+			<label>Position name</label>
+			<md-select ng-model="vm.careGiver.positionName">
+			<md-option ng-repeat="position in vm.positions" value="{{position.name}}">{{position.name}}</md-option>
+		</md-select>
+		<div ng-messages="careGiverForm.positionName.$error">
+			<div ng-message="required">Position name is required.</div>
+			<div ng-message="md-maxlength">The position name has to be less than 100 characters long.</div>
+		</div>
 		</md-input-container>
 		<div layout-gt-sm="row">
-		<md-input-container class="md-block" flex-gt-sm>
-		<div layout="column" layout-gt-sm="row">
-	        <div flex-xs="" flex="50">
-	          <md-checkbox ng-model="vm.careGiver.ebc" name="ebc" aria-label="Checkbox 1">
-	          	EBC
-	          </md-checkbox>
-	        </div>
-      </div>
+			<md-input-container class="md-block" flex-gt-sm>
+			<div layout="column" layout-gt-sm="row">
+				<div flex-xs="" flex="50">
+					<md-checkbox ng-model="vm.careGiver.ebc" name="ebc" aria-label="EBC">EBC</md-checkbox>
+				</div>
+			</div>
 			<div ng-messages="careGiverForm.ebc.$error">
 				<div ng-message="required">EBC is required.</div>
-				
 			</div>
-		</md-input-container>
-		<md-input-container class="md-block" flex-gt-sm>
-		<div layout="column" layout-gt-sm="row">
-	        <div flex-xs="" flex="50">
-	          <md-checkbox ng-model="vm.careGiver.insvc" name="insvc" aria-label="Checkbox 1">
-	          	In-Service
-	          </md-checkbox>
-	        </div>
-      </div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+			<div layout="column" layout-gt-sm="row">
+				<div flex-xs="" flex="50">
+					<md-checkbox ng-model="vm.careGiver.insvc" name="insvc" aria-label="In service"> In Service </md-checkbox>
+				</div>
+			</div>
 			<div ng-messages="careGiverForm.insvc.$error">
-				<div ng-message="required">In-Service is required.</div>
-				
+				<div ng-message="required">In service is required.</div>
 			</div>
-		</md-input-container>
+			</md-input-container>
 		</div>
 		<div layout-gt-sm="row">
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Primary-Phone-Number</label>
-     		<input type='text' required name="PhoneNumber1" phone-input ng-model="vm.careGiver.phoneNumbers[0].number"/>
-			<div ng-messages="careGiverForm.PhoneNumber1.$error">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Primary phone number</label>
+				<input type='text' required name="primaryPhoneNumber" phone-input ng-model="vm.primaryPhoneNumber.number" />
+			<div ng-messages="careGiverForm.primaryPhoneNumber.$error">
 				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
 				<div ng-message="required">Phone number is required.</div>
 				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
 			</div>
-		</md-input-container>
-		
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number-Type </label> <md-select ng-model="vm.careGiver.phoneNumbers[0].numberType">
-          <md-option ng-repeat="options in vm.options3" name="PhoneType1" value="{{options.name}}">{{options.name}}</md-option>
-        </md-select>
-			<div ng-messages="careGiverForm.PhoneType1.$error">
-				<div ng-message="required">Phone Type is required.</div>
-				
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Type</label> 
+				<md-select ng-model="vm.primaryPhoneNumber.numberType">
+				<md-option ng-repeat="numberType in vm.phoneNumberTypes" name="primaryPhoneNumberType" value="{{numberType.name}}">{{numberType.name}}</md-option>
+				</md-select>
+			<div ng-messages="careGiverForm.primaryPhoneNumber.$error">
+				<div ng-message="required">Type is required.</div>
 			</div>
-			
-		</md-input-container>
-		<md-button class="md-raised md-primary" style="height:20px;" md-autofocus ng-click="vm.showPhoneNum()">Add-Phone-Number</md-button>
+			</md-input-container>
 		</div>
-		<div layout-gt-sm="row" ng-show="vm.displayPhone">
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Secondary-Phone-Number</label>
-     		<input type='text'  name="PhoneNumber2" phone-input ng-model="vm.careGiver.phoneNumbers[1].number"/>
-			<div ng-messages="careGiverForm.PhoneNumber2.$error">
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm>
+			<label>Secondary phone number</label>
+			<input type='text' name="secondaryPhoneNumber" phone-input ng-model="vm.secondaryPhoneNumber.number" />
+			<div ng-messages="careGiverForm.secondaryPhoneNumber.$error">
 				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
-				
 				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
 			</div>
-		</md-input-container>
-		
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number-Type </label> <md-select ng-model="vm.careGiver.phoneNumbers[1].numberType">
-          <md-option ng-repeat="options in vm.options3" name="PhoneType2" value="{{options.name}}">{{options.name}}</md-option>
-        </md-select>
-			<div ng-messages="careGiverForm.PhoneType2.$error">
-				
-				
-			</div>
-			
-		</md-input-container>
-		<md-button class="md-raised md-warn" style="height:20px;" md-autofocus ng-click="vm.showOtherPhoneNum()">Add-Phone-Number</md-button>
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Type </label>
+				<md-select ng-model="vm.secondaryPhoneNumber.numberType">
+					<md-option ng-repeat="numberType in vm.phoneNumberTypes" name="secondaryPhoneNumberType" value="{{numberType.name}}">{{numberType.name}}</md-option>
+				</md-select>
+			<div ng-messages="careGiverForm.secondaryPhoneNumber.$error"></div>
+			</md-input-container>
 		</div>
-		<div layout-gt-sm="row" ng-show="vm.displayOtherPhone">
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Other-Phone-Number</label>
-     		<input type='text'  name="PhoneNumber3" phone-input ng-model="vm.careGiver.phoneNumbers[2].number"/>
-			<div ng-messages="careGiverForm.PhoneNumber3.$error">
+		<div layout-gt-sm="row">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Other Phone number</label>
+				<input type='text' name="otherPhoneNumber" phone-input ng-model="vm.otherPhoneNumber.number" />
+			<div ng-messages="careGiverForm.otherPhoneNumber.$error">
 				<div ng-message="pattern">(###) ###-#### - Please enter a valid phone number.</div>
-				
 				<div ng-message="md-maxlength">The phone number has to be less than 30 characters long.</div>
 			</div>
-		</md-input-container>
-		
-		<md-input-container class="md-block" flex-gt-sm>
-			<label>Phone-Number-Type </label> <md-select ng-model="vm.careGiver.phoneNumbers[2].numberType">
-          <md-option ng-repeat="options in vm.options3" name="PhoneType3" value="{{options.name}}">{{options.name}}</md-option>
-        </md-select>
-			<div ng-messages="careGiverForm.PhoneType3.$error">
-		
-				
+			</md-input-container>
+
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Type </label> 
+				<md-select ng-model="vm.otherPhoneNumber.numberType">
+					<md-option ng-repeat="numberType in vm.phoneNumberTypes" name="otherPhoneNumberType" value="{{numberType.name}}">{{numberType.name}}</md-option>
+				</md-select>
+			<div ng-messages="careGiverForm.otherPhoneNumber.$error"></div>
+			</md-input-container>
+		</div>
+		<div layout-gt-sm="row">
+			<div class="md-block" style="align-items: left" flex-gt-sm ng-cloak="" class="datepickerdemoBasicUsage">
+				<md-datepicker type="date" ng-model="vm.careGiver.dateOfHire" name="dateOfHire" md-placeholder="Date of Hire"></md-datepicker>
+				<div ng-messages="careGiverForm.dateOfHire.$error">
+					<div ng-message="required">Date Of Hire is required.</div>
+				</div>
 			</div>
-			
-		</md-input-container>
-		
+			<div class="md-block" style="align-items: left" flex-gt-sm ng-cloak="" class="datepickerdemoBasicUsage">
+				<md-datepicker type="date" ng-model="vm.careGiver.rehireDate" name="rehireDate" md-placeholder="Rehire Date"></md-datepicker>
+				<div ng-messages="careGiverForm.rehireDate.$error">
+					<div ng-message="required">Rehire Date is required.</div>
+				</div>
+			</div>
+			<div class="md-block" style="align-items: left" flex-gt-sm  ng-cloak="" class="datepickerdemoBasicUsage">
+				<md-datepicker type="date" ng-model="vm.careGiver.lastDayOfWork" name="lastDayOfWork" md-placeholder="Last Day of Work"></md-datepicker> 
+				<div ng-messages="careGiverForm.lastDayOfWork.$error">
+					<div ng-message="required">Last Day of Work is required.</div>
+				</div>
+			</div>
 		</div>
 		<md-input-container class="md-block" flex-gt-sm>
-			<label>Comment</label> <input md-maxlength="200"  name="comment" ng-model="vm.careGiver.comment" />
+			<label>Comment</label>
+			<input md-maxlength="200" name="comment" ng-model="vm.careGiver.comment" />
 			<div ng-messages="careGiverForm.comment.$error">
-				
 				<div ng-message="md-maxlength">The comment has to be less than 200 characters</div>
 			</div>
 		</md-input-container>
-		
 	</div>
-	</md-dialog-content>
-    <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
-      <md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
-    </md-dialog-actions>
-  </form>
-</md-dialog>
+	</div>
+	<div layout="row">
+	<md-button class="md-raised md-primary" md-autofocus type="submit">Save</md-button>
+	<md-button class="md-raised md-default" style="margin-right:20px;" ng-click="vm.cancel()">Cancel</md-button>
+	</div>
+</form>
+</div>

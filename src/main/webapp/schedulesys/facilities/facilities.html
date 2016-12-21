@@ -9,9 +9,9 @@
 	  <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
 	  
       <md-button class="md-raised md-primary" ui-sref="home.facilities.new" >Add</md-button>
-      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.facilities.edit({id:vm.selected[0].id})">Edit</md-button>
-      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDelete" ui-sref="home.facilities-details({id:vm.selected[0].id})">Details</md-button>
-      <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.editOrDelete">Delete</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDetails" ui-sref="home.facilities.edit({id:vm.selected[0].id})">Edit</md-button>
+      <md-button class="md-raised md-primary" ng-disabled="vm.editOrDetails" ui-sref="home.facilities-details({id:vm.selected[0].id})">Details</md-button>
+      <md-button class="md-raised md-warn" ng-click="vm.showConfirm()" ng-disabled="vm.deletion">Delete</md-button>
     
     </section>
     
@@ -19,7 +19,7 @@
 	  </div>
 
 	<md-table-container>
-	  <table md-table md-table md-row-select ng-model="vm.selected" >
+	  <table md-table md-table md-row-select multiple ng-model="vm.selected" >
 	    <thead md-head md-order="vm.query.order">
 	      <tr md-row>
 	        <th md-column md-order-by="name">

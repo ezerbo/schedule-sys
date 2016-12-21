@@ -54,7 +54,7 @@
 		    </thead>
 		    <tbody md-body>
 		      <tr md-row  md-select="schedule" md-auto-select ng-repeat="schedule in vm.schedulesOnCurrentPage track by schedule.id" >
-		      	<td md-cell>{{schedule.scheduleDate}}</td>
+		      	<td md-cell>{{schedule.scheduleDate | date: 'shortDate'}}</td>
 		      	<td md-cell>{{schedule.shift.name}}</td>
 		      	<td md-cell ng-show="{{vm.schedulingType !== 'facility'}}">{{schedule.facility.name}}</td>
 		      	<td md-cell>{{schedule.shift.startTime}} {{schedule.shift.endTime}}</td>

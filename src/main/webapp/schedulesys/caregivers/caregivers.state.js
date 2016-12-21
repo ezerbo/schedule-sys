@@ -11,20 +11,10 @@
 			url: '/caregivers',
 			templateUrl: 'schedulesys/caregivers/caregivers.html',
 			controller: 'careGiversController'
-		}).state('home.caregivers.new', {
-			url: '/new',
-			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {
-				$mdDialog.show({
-					title: 'New Care-Giver',
-					templateUrl: 'schedulesys/caregivers/caregiver-dialog.html',
-					parent: angular.element(document.body),
-					controller: 'careGiverDialogController',
-					clickOutsideToClose:true,
-					onRemoving: function (){
-						$state.go($rootScope.previousState.name, {id: $rootScope.previousStateParams.id}, {reload: true});
-					}
-				});
-			}]
+		}).state('home.caregivers-new', {
+			url: '/caregivers/new',
+			templateUrl: 'schedulesys/caregivers/caregiver-dialog.html',
+			controller: 'careGiverDialogController'
 		}).state('home.caregivers.edit', {
 			url:'/{id}/caregiver/edit',
 			onEnter: ['$rootScope', '$state', '$mdDialog', function($rootScope, $state, $mdDialog) {

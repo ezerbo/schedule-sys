@@ -40,10 +40,8 @@
                     }
                     return data;
                 }
-            
             }
         });
-		
 	}
 	
 	FacilitiesStaffMemberService.$Inject = ['$resource'];
