@@ -140,4 +140,15 @@ public class EmployeeService {
 		log.debug("Employee found : {}", employee);
 		return (employee == null) ? null : dozerMapper.map(employee, EmployeeViewModel.class);
 	}
+	
+	public List<EmployeeViewModel> findAll(){
+		log.debug("Finding all employees");
+		List<Employee> employees = employeeDao.findAll();
+		List<EmployeeViewModel> viewModels = new LinkedList<>();
+		employees.
+			forEach(employee -> {
+				viewModels.add(dozerMapper.map(employee, EmployeeViewModel.class));
+			});
+		return viewModels;
+	}
 }

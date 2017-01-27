@@ -33,7 +33,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "PRIVATE_CARE_SCHEDULE")
-@ToString(exclude = {"careGiver"/*,"facility"*/, "shift"
+@ToString(exclude = {"employee"/*,"facility"*/, "shift"
 		, "scheduleSysUser", "scheduleStatus"})
 public class PrivateCareSchedule implements Serializable{
 	
@@ -67,10 +67,16 @@ public class PrivateCareSchedule implements Serializable{
 
 	@Column(name = "TIMESHEET_RECEIVED")
 	private Boolean timesheetReceived;
+	
+	@Column(name = "PAID")
+	private Boolean paid;
+	
+	@Column(name = "BILLED")
+	private Boolean billed;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "CARE_GIVER_ID")
-	private CareGiver careGiver;
+	@JoinColumn(name = "EMPLOYEE_ID")
+	private Employee employee;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PRIVATE_CARE_ID", nullable = false)

@@ -44,7 +44,8 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 	
 	public List<FacilitySchedule> findAllByDatesAndUser(Date startDate, Date endDate, String username){
 		List<FacilitySchedule> schedules = entityManager.createQuery(
-				"from FacilitySchedule fs where fs.scheduleDate between :startDate and :endDate and fs.scheduleSysUser.username =:username"
+				"from FacilitySchedule fs where fs.scheduleDate between :startDate and :endDate "
+				+ "and fs.scheduleSysUser.username =:username  order by fs.scheduleDate asc"
 				, FacilitySchedule.class)
 				.setParameter("username", username)
 				.setParameter("startDate", startDate)
@@ -55,7 +56,8 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 	
 	public List<FacilitySchedule> findAllBetweenDatesByFacility(Date startDate, Date endDate, Long facilityId){
 		List<FacilitySchedule> schedules = entityManager.createQuery(
-				"from FacilitySchedule fs where fs.facility.id =:facilityId and fs.scheduleDate between :startDate and :endDate"
+				"from FacilitySchedule fs where fs.facility.id =:facilityId "
+				+ "and fs.scheduleDate between :startDate and :endDate  order by fs.scheduleDate asc"
 				, FacilitySchedule.class)
 				.setParameter("facilityId", facilityId)
 				.setParameter("startDate", startDate)
@@ -66,7 +68,7 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 	
 	public List<FacilitySchedule> findAllByFacility(Long facilityId){
 		List<FacilitySchedule> schedules = entityManager.createQuery(
-				"from FacilitySchedule fs where fs.facility.id =:facilityId"
+				"from FacilitySchedule fs where fs.facility.id =:facilityId  order by fs.scheduleDate asc"
 				, FacilitySchedule.class)
 				.setParameter("facilityId", facilityId)
 				.getResultList();
@@ -75,7 +77,8 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 	
 	public List<FacilitySchedule> findAllBetweenDatesByNurse(Date startDate, Date endDate, Long nurseId){
 		List<FacilitySchedule> schedules = entityManager.createQuery(
-				"from FacilitySchedule fs where fs.nurse.id =:nurseId and fs.scheduleDate between :startDate and :endDate"
+				"from FacilitySchedule fs where fs.nurse.id =:nurseId "
+				+ "and fs.scheduleDate between :startDate and :endDate  order by fs.scheduleDate asc"
 				, FacilitySchedule.class)
 				.setParameter("nurseId", nurseId)
 				.setParameter("startDate", startDate)
@@ -86,7 +89,7 @@ public class FacilityScheduleDao extends GenericDao<FacilitySchedule> {
 	
 	public List<FacilitySchedule> findAllByNurse(Long nurseId){
 		List<FacilitySchedule> schedules = entityManager.createQuery(
-				"from FacilitySchedule fs where fs.nurse.id =:nurseId"
+				"from FacilitySchedule fs where fs.nurse.id =:nurseId  order by fs.scheduleDate asc"
 				, FacilitySchedule.class)
 				.setParameter("nurseId", nurseId)
 				.getResultList();

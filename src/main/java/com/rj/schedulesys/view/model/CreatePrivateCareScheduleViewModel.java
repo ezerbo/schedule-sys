@@ -17,7 +17,7 @@ public class CreatePrivateCareScheduleViewModel {
 
 	private Long id;
 	
-	private Long careGiverId;
+	private Long employeeId;
 
 	@NotNull
 	private Long privateCareId;
@@ -32,4 +32,8 @@ public class CreatePrivateCareScheduleViewModel {
 	
 	@NotNull
 	private Date scheduleDate;
+	
+	private boolean paid;
+	
+	private boolean billed;
 }

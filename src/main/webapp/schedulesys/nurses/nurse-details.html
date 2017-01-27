@@ -14,7 +14,8 @@
 			<span> Comment : {{vm.nurse.comment}}</span>
 		</div>
 		<section layout="left" layout-align="left start" >
-      		<md-button class="md-raised md-primary" ui-sref="home.nurses-scheduling({id:vm.nurse.id})">Schedules</md-button>
+      		<md-button class="md-raised md-primary" ui-sref="home.nurses-scheduling({id:vm.nurse.id})">Facility-Schedules</md-button>
+      		<md-button class="md-raised md-primary" ui-sref="home.nurses-pc-scheduling({id:vm.nurse.id})">Private care-Schedules</md-button>
     	</section>
     	
     	<div style="text-align: center" layout-padding>
@@ -95,17 +96,17 @@
 		    <thead md-head md-order="vm.licenseQuery.order">
 		      <tr md-row>
 		        <th md-column md-order-by="name">
-		        	<span>License number</span>
+		        	<span>Type</span>
 		        </th>
+		        <th md-column>Number</th>
 		        <th md-column>Expiration date</th>
-		        <th md-column>Type</th>
 		      </tr>
 		    </thead>
 		    <tbody md-body>
 		      <tr md-row md-select="license" md-select-id="name"  md-auto-select ng-repeat="license in vm.licensesOnCurrentPage track by license.id">
+		        <td md-cell>{{license.licenseType.typeName}}</td>
 		        <td md-cell>{{license.number}}</td>
 		        <td md-cell>{{license.expirationDate}}</td>
-		        <td md-cell>{{license.licenseType.typeName}}</td>
 		      </tr>
 		    </tbody>
 		  </table>

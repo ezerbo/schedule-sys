@@ -11,17 +11,42 @@
 			<span> Date of hire : {{vm.careGiver.dateOfHire}}</span><br>
 			<span> Rehire date : {{vm.careGiver.rehireDate}}</span><br>
 			<span> Last day of work : {{vm.careGiver.lastDayOfWork}}</span><br>
-			<span> Primary phone # : {{vm.careGiver.phoneNumbers[0].number | tel}}</span><br> 
-		    <span> Primary phone type : {{vm.careGiver.phoneNumbers[0].numberType}}</span><br>
-		    <span> Secondary phone # : {{vm.careGiver.phoneNumbers[1].number | tel}}</span><br> 
-		    <span> Secondary phone type : {{vm.careGiver.phoneNumbers[1].numberType}}</span><br> 
-		    <span> Other phone # : {{vm.careGiver.phoneNumbers[2].number | tel}}</span><br> 
-		    <span> Other phone type : {{vm.careGiver.phoneNumbers[2].numberType}}</span><br> 
 			<span> Comment : {{vm.careGiver.comment}}</span>
 		</div>
 		<section layout="left" layout-align="left start" >
       		<md-button class="md-raised md-primary" ui-sref="home.caregivers-scheduling({id:vm.careGiver.id})">Schedules</md-button>
     	</section>
+    	
+    	<div style="text-align: center" layout-padding>
+			<h4><span>Phone numbers ({{vm.careGiver.phoneNumbers.length}})</span></h4>
+		</div>
+		<section layout="row" layout-sm="column" layout-align="left left" layout-wrap>
+			<md-button class="md-raised md-primary" ui-sref="home.caregiver-details.add-number({id:vm.careGiver.id})" ng-disabled="vm.careGiver.phoneNumbers.length == 3">Add</md-button>
+      		<md-button class="md-raised md-primary" ui-sref="home.caregiver-details.edit-number({id:vm.careGiver.id, phoneNumberId:vm.selectedPhoneNumber[0].id})" ng-disabled="vm.enablePhoneNumberEdit">Edit</md-button>
+      		<md-button class="md-raised md-warn" ng-click="vm.showPhoneNumberDelConfirm()" ng-disabled="vm.enablePhoneNumberDel">Delete</md-button>
+      </section>
+      
+      	<md-table-container>
+		 <table md-table md-table md-row-select ng-model="vm.selectedPhoneNumber" >
+		    <thead md-head md-order="">
+		      <tr md-row>
+		        <th md-column md-order-by="name">
+		        	<span>Number Label</span>
+		        </th>
+		        <th md-column>Number type</th>
+		        <th md-column>Number</th>
+		      </tr>
+		    </thead>
+		    <tbody md-body>
+		      <tr md-row md-select="phoneNumber" md-select-id="name"  md-auto-select ng-repeat="phoneNumber in vm.careGiver.phoneNumbers">
+		        <td md-cell>{{phoneNumber.numberLabel}}</td>
+		        <td md-cell>{{phoneNumber.numberType}}</td>
+		        <td md-cell>{{phoneNumber.number | tel}}</td>
+		      </tr>
+		    </tbody>
+		  </table>
+		</md-table-container>
+		<md-table-pagination md-limit="3" md-limit-options="[3]" md-page="1"  md-total="{{vm.careGiver.phoneNumbers.length}}" md-page-select></md-table-pagination>
     	
     	<div style="text-align: center" layout-padding>
 			<h4><span>Tests ({{vm.allTests.length}})</span></h4>

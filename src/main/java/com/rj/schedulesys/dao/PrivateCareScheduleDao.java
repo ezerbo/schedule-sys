@@ -25,26 +25,27 @@ public class PrivateCareScheduleDao extends GenericDao<PrivateCareSchedule>{
 	 * @param date
 	 * @return
 	 */
-	public PrivateCareSchedule findByCareGiverAndShiftAndDate(Long careGiverId, Long shiftId, Date date){
+	public PrivateCareSchedule findByEmployeeAndShiftAndDate(Long employeeId, Long shiftId, Date date){
 		PrivateCareSchedule schedule = null; 
 		try {
 			schedule = entityManager.createQuery(
-					"from PrivateCareSchedule pcs where pcs.careGiver.id =:careGiverId "
+					"from PrivateCareSchedule pcs where pcs.employee.id =:employeeId "
 							+ "and pcs.shift.id =:shiftId "
 							+ "and pcs.scheduleDate =:scheduleDate", PrivateCareSchedule.class)
-					.setParameter("careGiverId", careGiverId)
+					.setParameter("employeeId", employeeId)
 					.setParameter("shiftId", shiftId)
 					.setParameter("scheduleDate", date)
 					.getSingleResult();
 		} catch (NoResultException e) {
-			log.warn("No schedule found with careGiverId : {}, shiftId : {} and date : {}", careGiverId, shiftId, date);
+			log.warn("No schedule found with employeeId : {}, shiftId : {} and date : {}", employeeId, shiftId, date);
 		}
 		return schedule;
 	}
 	
 	public List<PrivateCareSchedule> findAllByDatesAndUser(Date startDate, Date endDate, String username){
 		List<PrivateCareSchedule> schedules = entityManager.createQuery(
-				"from PrivateCareSchedule pcs where pcs.scheduleDate between :startDate and :endDate and pcs.scheduleSysUser.username =:username"
+				"from PrivateCareSchedule pcs where pcs.scheduleDate between :startDate "
+				+ "and :endDate and pcs.scheduleSysUser.username =:username order by pcs.scheduleDate asc"
 				, PrivateCareSchedule.class)
 				.setParameter("username", username)
 				.setParameter("startDate", startDate)
@@ -55,7 +56,8 @@ public class PrivateCareScheduleDao extends GenericDao<PrivateCareSchedule>{
 	
 	public List<PrivateCareSchedule> findAllBetweenDatesByPrivateCare(Date startDate, Date endDate, Long privateCareId){
 		List<PrivateCareSchedule> schedules = entityManager.createQuery(
-				"from PrivateCareSchedule pcs where pcs.privateCare.id =:privateCareId and pcs.scheduleDate between :startDate and :endDate"
+				"from PrivateCareSchedule pcs where pcs.privateCare.id =:privateCareId "
+				+ "and pcs.scheduleDate between :startDate and :endDate order by pcs.scheduleDate asc"
 				, PrivateCareSchedule.class)
 				.setParameter("privateCareId", privateCareId)
 				.setParameter("startDate", startDate)
@@ -66,29 +68,30 @@ public class PrivateCareScheduleDao extends GenericDao<PrivateCareSchedule>{
 	
 	public List<PrivateCareSchedule> findAllByPrivateCare(Long privateCareId){
 		List<PrivateCareSchedule> schedules = entityManager.createQuery(
-				"from PrivateCareSchedule pcs where fs.privateCaere.id =:privateCareId"
+				"from PrivateCareSchedule pcs where fs.privateCare.id =:privateCareId order by pcs.scheduleDate asc"
 				, PrivateCareSchedule.class)
 				.setParameter("privateCareId", privateCareId)
 				.getResultList();
 		return schedules;
 	}
 	
-	public List<PrivateCareSchedule> findAllBetweenDatesByCareGiver(Date startDate, Date endDate, Long careGiverId){
+	public List<PrivateCareSchedule> findAllBetweenDatesByEmployeeId(Date startDate, Date endDate, Long employeeId){
 		List<PrivateCareSchedule> schedules = entityManager.createQuery(
-				"from PrivateCareSchedule pcs where pcs.careGiver.id =:careGiverId and pcs.scheduleDate between :startDate and :endDate"
+				"from PrivateCareSchedule pcs where pcs.employee.id =:employeeId "
+				+ "and pcs.scheduleDate between :startDate and :endDate order by pcs.scheduleDate asc"
 				, PrivateCareSchedule.class)
-				.setParameter("careGiverId", careGiverId)
+				.setParameter("employeeId", employeeId)
 				.setParameter("startDate", startDate)
 				.setParameter("endDate", endDate)
 				.getResultList();
 		return schedules;
 	}
 	
-	public List<PrivateCareSchedule> findAllByCareGiver(Long careGiverId){
+	public List<PrivateCareSchedule> findAllByEmployeeId(Long employeeId){
 		List<PrivateCareSchedule> schedules = entityManager.createQuery(
-				"from FacilitySchedule fs where fs.nurse.id =:nurseId"
+				"from PrivateCareSchedule pcs where pcs.employee.id =:employeeId order by pcs.scheduleDate asc"
 				, PrivateCareSchedule.class)
-				.setParameter("careGiverId", careGiverId)
+				.setParameter("employeeId", employeeId)
 				.getResultList();
 		return schedules;
 	}

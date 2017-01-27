@@ -43,4 +43,8 @@ public class GetPrivateCareScheduleViewModel {
 	private ScheduleStatusViewModel scheduleStatus;
 
 	private Boolean timesheetReceived;
+	
+	private Boolean paid;
+	
+	private Boolean billed;
 }

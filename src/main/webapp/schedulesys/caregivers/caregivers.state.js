@@ -48,13 +48,37 @@
 				});
 			}]
 		})
+		.state('home.caregiver-details.add-number', {
+			url:'/phone-numbers',
+			onEnter: ['$mdDialog', function($mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/phoneNumber/phone-number.dialog.html',
+					parent: angular.element(document.body),
+					controller: 'careGiverDetailsController',
+					controllerAs: "vm",
+					clickOutsideToClose:true
+				});
+			}]
+		})
+		.state('home.caregiver-details.edit-number', {
+			url:'/phone-numbers/{phoneNumberId}/edit',
+			onEnter: ['$mdDialog', function($mdDialog) {
+				$mdDialog.show({
+					templateUrl: 'schedulesys/phoneNumber/phone-number.dialog.html',
+					parent: angular.element(document.body),
+					controller: 'careGiverDetailsController',
+					controllerAs: "vm",
+					clickOutsideToClose:true
+				});
+			}]
+		})
 		.state('home.caregivers-scheduling', {
 			url: '/care-givers/{id}/schedules',
 			data: {
 				schedulingType: 'employee'
 	        },
 			templateUrl: 'schedulesys/private-care-schedules/private-cares.scheduling-page.html',
-			controller: 'FacilitySchedulingController'
+			controller: 'PrivateCareSchedulingController'
 		})
 	}
 	

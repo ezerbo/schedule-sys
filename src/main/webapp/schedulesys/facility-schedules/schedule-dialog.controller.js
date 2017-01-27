@@ -156,6 +156,8 @@
 				schedulePostStatusId: selectedSchedule.schedulePostStatus.id,
 				scheduleDate: new Date(moment(selectedSchedule.scheduleDate).format('MM/DD/YYYY')),
 				timesheetReceived: selectedSchedule.timesheetReceived,
+				paid: selectedSchedule.paid,
+				billed: selectedSchedule.billed,
 				hours: selectedSchedule.hours,
 				overtime: selectedSchedule.overtime
 			}

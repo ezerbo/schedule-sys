@@ -47,6 +47,8 @@
 		        <th md-column>Status</th>
 		        <th md-column>Post status</th>
 		        <th md-column>Time sheet received</th>
+		        <th md-column>Paid</th>
+		        <th md-column>Billed</th>
 		        <th md-column>Comments</th>
 		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">Filled by</th>
 		        <th md-column ng-show="{{vm.schedulingType == 'facility'}}">Last modified by</th>
@@ -65,6 +67,8 @@
 		      	<td md-cell>{{schedule.scheduleStatus.status}}</td>
 		      	<td md-cell>{{schedule.schedulePostStatus.status}}</td>
 		      	<td md-cell>{{schedule.timesheetReceived ? 'YES' : 'NO'}}</td>
+		      	<td md-cell>{{schedule.paid ? 'YES' : 'NO'}}</td>
+		      	<td md-cell>{{schedule.billed ? 'YES' : 'NO'}}</td>
 		        <td md-cell>{{schedule.scheduleComment}}</td>
 		        <td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.filledBy.username}}</td>
 		        <td md-cell ng-show="{{vm.schedulingType == 'facility'}}">{{schedule.lastModifiedBy.username}}</td>

@@ -72,6 +72,12 @@ public class FacilitySchedule implements Serializable {
 
 	@Column(name = "TIMESHEET_RECEIVED")
 	private Boolean timesheetReceived;
+	
+	@Column(name = "PAID")
+	private Boolean paid;
+	
+	@Column(name = "BILLED")
+	private Boolean billed;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "NURSE_ID")

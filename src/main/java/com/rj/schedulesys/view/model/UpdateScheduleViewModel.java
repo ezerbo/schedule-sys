@@ -38,6 +38,10 @@ public class UpdateScheduleViewModel {
 	
 	private boolean timesheetReceived;
 	
+	private boolean paid;
+	
+	private boolean billed;
+	
 	@NotNull
 	private Date scheduleDate;
 }

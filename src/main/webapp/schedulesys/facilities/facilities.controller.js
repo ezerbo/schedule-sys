@@ -25,10 +25,10 @@
 	
 		vm.query = {
 				order: 'name',
-				limit: 10,
+				limit: 20,
 				page: 1
 		};
-		
+			
 		loadAll();
 		
 		$scope.$watchCollection('vm.selected', function(oldValue, newValue) {

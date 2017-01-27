@@ -43,6 +43,17 @@ public class EmployeeController {
 	@Autowired
 	private TestService testService;
 	
+	@RequestMapping(method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getEmployees(){
+		log.info("Fetching all employees");
+		List<EmployeeViewModel> employees = employeeService.findAll();
+		if(employees.isEmpty()){
+			return new ResponseEntity<>("No employee found id", HttpStatus.NOT_FOUND);
+		}
+		log.info("Schedules found  : {}", employees);
+		return new ResponseEntity<>(employees, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getSchedules(@PathVariable Long id, @RequestParam(required = false) Date startDate,
 			@RequestParam(required = false) Date endDate){

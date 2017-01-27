@@ -6,11 +6,11 @@
 	
 	PrivateCareSchedulingDialogController.$Inject = ['$state', '$scope', '$stateParams', '$mdDialog', '$mdToast', 'PrivateCareShiftService',
 	                                              'PrivateCareService', 'PrivateCareScheduleService', 'ScheduleStatusService',
-	                                               'careGiversService'];
+	                                               'EmployeesService'];
 	
 	function PrivateCareSchedulingDialogController($state, $q, $scope, $stateParams, $mdDialog, PrivateCareShiftService, 
 			$mdToast, PrivateCareService, PrivateCareScheduleService, ScheduleStatusService
-			,careGiversService){
+			,EmployeesService){
 		var vm = this;
 		
 		vm.shifts = [];
@@ -28,13 +28,13 @@
 		vm.getAllShifts = getAllShifts;
 		vm.buildSchedule = buildSchedule;
 		vm.getAllPrivateCares = getAllPrivateCares;
-		vm.getAllCareGivers = getAllCareGivers;
+		vm.getAllEmployees = getAllEmployees;
 		vm.createOrUpdateSchedule = createOrUpdateSchedule;
 		vm.getAllScheduleStatuses = getAllScheduleStatuses;
 		
 		vm.schedule = {
 			id: null,
-			careGiverId: null,
+			employeeId: null,
 			privateCareId: null,
 			shiftId: null,
 			comment: null,
@@ -44,7 +44,7 @@
 		
 		getAllShifts();
 		getAllPrivateCares();
-		getAllCareGivers();
+		getAllEmployees();
 		getAllScheduleStatuses();
 		getSelectedSchedule();
 		
@@ -83,7 +83,7 @@
 		function createOrUpdateSchedule(){
 			vm.schedule.privateCareId = $stateParams.id;
 			if(vm.schedule.id === null){
-				vm.schedule.careGiverId = (vm.selectedItem === null) ? null : vm.selectedItem.employeeId;
+				vm.schedule.employeeId = (vm.selectedItem === null) ? null : vm.selectedItem.employeeId;
 				PrivateCareScheduleService.save(vm.schedule, function() {
 					vm.showToast("Schedule successfully created", 5000);
 					vm.cancel();
@@ -91,7 +91,7 @@
 					vm.showToast(result.data, 5000);
 				});
 			}else{
-				vm.schedule.careGiverId = (vm.selectedItem === null) 
+				vm.schedule.employeeId = (vm.selectedItem === null) 
 						? null : vm.selectedItem.employeeId;
 				PrivateCareScheduleService.update({id:$stateParams.scheduleId}, vm.schedule,
 						function() {
@@ -108,16 +108,16 @@
 			$mdDialog.cancel();
 		}
 		
-		function getAllCareGivers(){
-			careGiversService.query(function(result) {
+		function getAllEmployees(){
+			EmployeesService.query(function(result) {
 				if(typeof result !== 'undefined' && result.length > 0){
-					var careGivers = result.map(function(nurse){
+					var employees = result.map(function(nurse){
 						return {
 							employeeId: nurse.id,
 							employeeName: nurse.firstName + ' ' + nurse.lastName
 						}
 					});
-					vm.employees = vm.employees.concat(careGivers);
+					vm.employees = vm.employees.concat(employees);
 				}
 			});
 		}
@@ -137,13 +137,15 @@
 		function buildSchedule(selectedSchedule){
 			return {
 				id:selectedSchedule.id,
-				careGiverId: (selectedSchedule.employee === null) ? null : selectedSchedule.employee.id,
+				employeeId: (selectedSchedule.employee === null) ? null : selectedSchedule.employee.id,
 				privateCareId: selectedSchedule.privateCare.id,
 				shiftId: selectedSchedule.shift.id,
 				comment: selectedSchedule.scheduleComment,
 				scheduleStatusId: selectedSchedule.scheduleStatus.id,
 				scheduleDate: new Date(moment(selectedSchedule.scheduleDate).format('MM/DD/YYYY')),
-				timesheetReceived: selectedSchedule.timesheetReceived
+				timesheetReceived: selectedSchedule.timesheetReceived,
+				paid: selectedSchedule.paid,
+				billed: selectedSchedule.billed
 			}
 		}
 		

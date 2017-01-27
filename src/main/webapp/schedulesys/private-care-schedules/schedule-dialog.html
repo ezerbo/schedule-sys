@@ -42,6 +42,14 @@
       </md-input-container>
     
       </div>
+      <div layout-gt-sm="row" ng-show="vm.isEditing" >
+	  	  <md-switch class="md-primary" md-no-ink aria-label="paid" ng-model="vm.schedule.paid">
+	    		Paid ({{vm.schedule.paid ? 'YES' : 'NO'}})
+	  	  </md-switch>
+	  	  <md-switch class="md-primary" md-no-ink aria-label="billed" ng-model="vm.schedule.billed">
+	    		Billed ({{vm.schedule.billed ? 'YES' : 'NO'}})
+	  	  </md-switch>
+  	  </div>
 <!--       <md-switch class="md-primary" md-no-ink aria-label="timesheet received"  ng-show="vm.isEditing" ng-model="vm.schedule.timesheetReceived"> -->
 <!--     		Timesheet received ({{vm.schedule.timesheetReceived ? 'YES' : 'NO'}}) -->
 <!--   		</md-switch> -->

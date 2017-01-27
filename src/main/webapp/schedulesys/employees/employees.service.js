@@ -9,8 +9,8 @@
 	
 	function EmployeesService($resource){
 		var resourceUrl = '/employees/:id';
-		return $resource(resourceUrl, {},{
-			  'get': {method: 'GET'}
+		return $resource(resourceUrl, {},
+				{'query': { method: 'GET', isArray: true}
 		});
 	}
 

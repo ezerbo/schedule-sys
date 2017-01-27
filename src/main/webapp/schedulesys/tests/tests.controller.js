@@ -22,7 +22,7 @@
 		vm.onPaginate = onPaginate;
 		vm.sliceTestsArray = sliceTestsArray;
 		vm.query = {
-				limit: 10,
+				limit: 20,
 				page: 1
 		};
 		

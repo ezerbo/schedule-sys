@@ -32,7 +32,7 @@
 		vm.schedulingType = $state.$current.data.schedulingType;
 		
 		vm.query = {
-				limit: 10,
+				limit: 20,
 				page: 1
 		};
 		

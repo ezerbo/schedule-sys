@@ -190,7 +190,6 @@
 		
 		function getSelectedPhoneNumber(){
 			if(angular.isDefined($stateParams.phoneNumberId)){
-				console.log('phoneNumber : ' + $stateParams.phoneNumberId);
 				NursePhoneService.get({id:$stateParams.id, phoneNumberId:$stateParams.phoneNumberId}, function(data) {
 					vm.phoneNumber = data;
 				});

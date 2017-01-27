@@ -48,6 +48,10 @@ public class GetScheduleViewModel {
 	
 	private Boolean timesheetReceived;
 	
+	private Boolean paid;
+	
+	private Boolean billed;
+	
 	private Double hours;
 	
 	private Double overtime;

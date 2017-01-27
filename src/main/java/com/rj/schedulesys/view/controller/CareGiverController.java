@@ -232,6 +232,19 @@ public class CareGiverController {
 		return new ResponseEntity<>("Phone number successfully deleted", HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/{id}/phone-numbers/{phoneNumberId}", method = RequestMethod.GET, produces = "application/json")
+	public @ResponseBody ResponseEntity<?> getPhoneNumber(@PathVariable Long id, @PathVariable Long phoneNumberId){
+		log.info("Getting phone number with id : {} for nurse with id : {}", phoneNumberId, id);
+		PhoneNumberViewModel viewModel = phoneNumberService.findByCareGiverAndNumberId(id, phoneNumberId);
+		if(viewModel == null){
+			log.warn("No nurse found with id : {}", id);
+			return new ResponseEntity<>("No phone number found with id : " + id
+					+ " for nurse with id " + phoneNumberId, HttpStatus.NOT_FOUND);
+		}
+		log.info("Phone number successfully retrieved : {}", viewModel);
+		return new ResponseEntity<>(viewModel, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/{id}/schedules", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getSchedules(@PathVariable Long id, @RequestParam(required = false) Date startDate,
 			@RequestParam(required = false) Date endDate){
@@ -242,9 +255,9 @@ public class CareGiverController {
 		}
 		List<GetPrivateCareScheduleViewModel> viewModels  = new LinkedList<>();
 		if(startDate == null || endDate == null){
-			viewModels = scheduleService.findAllByCareGiver(id);
+			viewModels = scheduleService.findAllByEmployee(id);
 		}else{
-			viewModels = scheduleService.findAllBetweenDatesByCareGiver(startDate, endDate, id);
+			viewModels = scheduleService.findAllBetweenDatesByEmployee(startDate, endDate, id);
 		}
 		if(viewModels.isEmpty()){
 			log.warn("No schedule found between : {} and : {} for employee with id : {}", startDate, endDate, id);

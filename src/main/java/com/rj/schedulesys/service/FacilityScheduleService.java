@@ -187,6 +187,8 @@ public class FacilityScheduleService {
 		schedule.setFacility(facility);
 		schedule.setShift(shift);
 		schedule.setTimesheetReceived(viewModel.isTimesheetReceived());
+		schedule.setBilled(viewModel.isBilled());
+		schedule.setPaid(viewModel.isPaid());
 		schedule.setHours(viewModel.getHours());
 		schedule.setOvertime(viewModel.getOvertime());
 		schedule.setScheduleComment(viewModel.getComment());
@@ -400,20 +402,14 @@ public class FacilityScheduleService {
 			lastModifiedBy = dozerMapper.map(scheduleUpdate.getScheduleSysUser(), ScheduleSysUserViewModel.class);
 		}
 		GetScheduleViewModel viewModel = GetScheduleViewModel.builder()
-				.id(schedule.getId())
-				.employee(employeeVm)
-				.facility(facilityVm)
-				.filledBy(filledBy)
-				.lastModifiedBy(lastModifiedBy)
-				.hours(schedule.getHours())
-				.overtime(schedule.getOvertime())
-				.job(positionVm)
-				.scheduleComment(schedule.getScheduleComment())
-				.scheduleDate(schedule.getScheduleDate())
-				.shift(shiftVm)
-				.timesheetReceived(schedule.getTimesheetReceived())
-				.scheduleStatus(scheduleStatusVm)
-				.schedulePostStatus(schedulePostStatusVm)
+				.id(schedule.getId()).employee(employeeVm)
+				.facility(facilityVm).filledBy(filledBy)
+				.lastModifiedBy(lastModifiedBy).hours(schedule.getHours())
+				.overtime(schedule.getOvertime()).job(positionVm)
+				.scheduleComment(schedule.getScheduleComment()).scheduleDate(schedule.getScheduleDate())
+				.shift(shiftVm).timesheetReceived(schedule.getTimesheetReceived())
+				.billed(schedule.getBilled()).paid(schedule.getPaid())
+				.scheduleStatus(scheduleStatusVm).schedulePostStatus(schedulePostStatusVm)
 				.build();
 		return viewModel;
 	}

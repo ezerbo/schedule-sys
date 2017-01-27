@@ -124,5 +124,13 @@
 			templateUrl: 'schedulesys/facility-schedules/facilities.scheduling-page.html',
 			controller: 'FacilitySchedulingController'
 		})
+		.state('home.nurses-pc-scheduling', {
+			url: '/nurses/{id}/pc-schedules',
+			data: {
+				schedulingType: 'employee'
+	        },
+			templateUrl: 'schedulesys/private-care-schedules/private-cares.scheduling-page.html',
+			controller: 'PrivateCareSchedulingController'
+		})
 	}
 })();
