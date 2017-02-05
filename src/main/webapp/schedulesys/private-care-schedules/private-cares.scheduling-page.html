@@ -39,6 +39,7 @@
 		        </th>
 		        <th md-column ng-show="{{vm.schedulingType !== 'privateCare'}}">Private care</th>
 		        <th md-column>Time</th>
+		        <th md-column>Job</th>
 		        <th md-column ng-show="{{vm.schedulingType == 'privateCare'}}">Name</th>
 		        <th md-column>Status</th>
 		        <th md-column>Paid</th>
@@ -53,6 +54,7 @@
 		      	<td md-cell>{{schedule.scheduleDate}}</td>
 		      	<td md-cell ng-show="{{vm.schedulingType !== 'privateCare'}}">{{schedule.privateCare.name}}</td>
 		      	<td md-cell>{{schedule.shift.startTime}}-{{schedule.shift.endTime}}</td>
+		      	<td md-cell>{{schedule.employee.positionName}}</td>
 		        <td md-cell ng-show="{{vm.schedulingType == 'privateCare'}}">{{schedule.employee.firstName}} {{schedule.employee.lastName}}</td>
 		      	<td md-cell>{{schedule.scheduleStatus.status}}</td>
 		      	<td md-cell>{{schedule.paid ? 'YES' : 'NO'}}</td>
