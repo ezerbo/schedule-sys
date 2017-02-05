@@ -34,7 +34,7 @@
 		<md-input-container class="md-block" flex-gt-sm>
 		<label>Position-Name</label>
 			<md-select ng-model="vm.nurse.positionName">
-				<md-option ng-repeat="options in vm.options2" value="{{options.name}}">{{options.name}}</md-option>
+				<md-option ng-repeat="position in vm.positions" value="{{position.name}}">{{position.name}}</md-option>
 		</md-select>
 		<div ng-messages="nurseForm.positionName.$error">
 			<div ng-message="required">Position-Name is required.</div>
