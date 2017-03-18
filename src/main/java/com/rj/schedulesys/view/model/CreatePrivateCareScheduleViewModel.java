@@ -23,7 +23,10 @@ public class CreatePrivateCareScheduleViewModel {
 	private Long privateCareId;
 	
 	@NotNull
-	private Long shiftId;
+	private Long startShiftId;
+	
+	@NotNull
+	private Long endShiftId;
 	
 	private String comment;
 	

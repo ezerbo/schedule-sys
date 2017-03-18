@@ -1,5 +1,8 @@
 package com.rj.schedulesys.util;
 
+import java.util.Calendar;
+import java.util.Date;
+
 import org.joda.time.LocalTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -41,5 +44,11 @@ public class ServiceHelper {
 		Assert.notNull(localTime, "No time provided");
 		DateTimeFormatter formatter = DateTimeFormat.forPattern("HH:mm");
 		return localTime.toString(formatter);
+	}
+	
+	public static Date yesterday(){
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, -1);
+		return cal.getTime();
 	}
 }

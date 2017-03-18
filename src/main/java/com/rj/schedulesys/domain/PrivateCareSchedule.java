@@ -83,8 +83,12 @@ public class PrivateCareSchedule implements Serializable{
 	private PrivateCare privateCare;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "SHIFT_ID", nullable = false)
-	private PrivateCareShift shift;
+	@JoinColumn(name = "SHIFT_STARTTIME_ID", nullable = false)
+	private PrivateCareShift startShift;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "SHIFT_ENDTIME_ID", nullable = false)
+	private PrivateCareShift endShift;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "USER_ID", nullable = false)

@@ -136,8 +136,7 @@ public class EmployeeControllerTest {
 		mockMvc.perform(post("/employees/{id}/tests", 1L)
 				.contentType(MediaType.APPLICATION_JSON_UTF8)
 				.content(TestUtil.convertObjectToJsonBytes(viewModel)))
-		.andExpect(status().is5xxServerError())
-		.andExpect(jsonPath("$", is("Expiration date must be in the future")));
+		.andExpect(status().is2xxSuccessful());
 	}
 	
 	@Test

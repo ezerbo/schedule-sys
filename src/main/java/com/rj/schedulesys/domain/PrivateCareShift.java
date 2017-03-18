@@ -36,15 +36,8 @@ public class PrivateCareShift implements Serializable{
 	private Long id;
 	
 	
-	@Column(name = "END_TIME", nullable = false)
-	private String endTime;
-
-	
-	@Column(name = "START_TIME", nullable = false)
-	private String startTime;
-
-	//@OneToMany(mappedBy = "shift")
-	//private List<FacilitySchedule> schedules;
+	@Column(name = "SHIFT_TIME", nullable = false)
+	private String shiftTime;
 
 
 }

@@ -53,7 +53,7 @@
 		      <tr md-row  md-select="schedule" md-auto-select ng-repeat="schedule in vm.schedulesOnCurrentPage track by schedule.id" >
 		      	<td md-cell>{{schedule.scheduleDate}}</td>
 		      	<td md-cell ng-show="{{vm.schedulingType !== 'privateCare'}}">{{schedule.privateCare.name}}</td>
-		      	<td md-cell>{{schedule.shift.startTime}}-{{schedule.shift.endTime}}</td>
+		      	<td md-cell>{{schedule.startShift.shiftTime}}-{{schedule.endShift.shiftTime}}</td>
 		      	<td md-cell>{{schedule.employee.positionName}}</td>
 		        <td md-cell ng-show="{{vm.schedulingType == 'privateCare'}}">{{schedule.employee.firstName}} {{schedule.employee.lastName}}</td>
 		      	<td md-cell>{{schedule.scheduleStatus.status}}</td>

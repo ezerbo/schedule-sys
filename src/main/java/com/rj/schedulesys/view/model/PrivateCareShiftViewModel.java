@@ -19,9 +19,5 @@ public class PrivateCareShiftViewModel {
 	
 	@NotBlank
 	@Size(max = 10)
-	private String startTime;
-	
-	@NotBlank
-	@Size(min = 3, max = 30)
-	private String endTime;
+	private String shiftTime;
 }

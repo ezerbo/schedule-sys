@@ -29,9 +29,15 @@
   		</div>
      <div layout-gt-sm="row">
       <md-input-container flex-gt-sm >
-      	<label>Shift</label>
-			<md-select ng-model="vm.schedule.shiftId" required>
-	          <md-option ng-repeat="shift in vm.shifts" value="{{shift.id}}">{{shift.startTime}}-{{shift.endTime}}</md-option>
+      	<label>Start time</label>
+			<md-select ng-model="vm.schedule.startShiftId" required>
+	          <md-option ng-repeat="shift in vm.shifts" value="{{shift.id}}">{{shift.shiftTime}}</md-option>
+        	</md-select>
+      </md-input-container>
+      <md-input-container flex-gt-sm >
+      	<label>End time</label>
+			<md-select ng-model="vm.schedule.endShiftId" required>
+	          <md-option ng-repeat="shift in vm.shifts" value="{{shift.id}}">{{shift.shiftTime}}</md-option>
         	</md-select>
       </md-input-container>
        <md-input-container flex-gt-sm>

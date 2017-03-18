@@ -21,16 +21,15 @@ public class PrivateCareShiftDao extends GenericDao<PrivateCareShift>{
 	 * @param endTime
 	 * @return
 	 */
-	public PrivateCareShift findByStartAndEndTime(String startTime, String endTime){
+	public PrivateCareShift findByTime(String shiftTime){
 		PrivateCareShift shift = null;
 		try{
 			shift = entityManager.createQuery(
-					"from PrivateCareShift pcs where pcs.startTime =:startTime and pcs.endTime =:endTime", PrivateCareShift.class)
-					.setParameter("startTime", startTime)
-					.setParameter("endTime", endTime)
+					"from PrivateCareShift pcs where pcs.shiftTime =:shiftTime", PrivateCareShift.class)
+					.setParameter("shiftTime", shiftTime)
 					.getSingleResult();
 		}catch(Exception e){
-			log.warn("No shift found with start time : {} and end time : {}", startTime, endTime);
+			log.warn("No shift found with time : {}", shiftTime);
 		}
 		return shift;
 	}

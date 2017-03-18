@@ -25,19 +25,22 @@ public class PrivateCareScheduleDao extends GenericDao<PrivateCareSchedule>{
 	 * @param date
 	 * @return
 	 */
-	public PrivateCareSchedule findByEmployeeAndShiftAndDate(Long employeeId, Long shiftId, Date date){
+	public PrivateCareSchedule findByEmployeeAndShiftAndDate(Long employeeId, Long startShiftId, Long endShiftId, Date date){
 		PrivateCareSchedule schedule = null; 
 		try {
 			schedule = entityManager.createQuery(
 					"from PrivateCareSchedule pcs where pcs.employee.id =:employeeId "
-							+ "and pcs.shift.id =:shiftId "
+							+ "and pcs.startShift.id =:startShiftId "
+							+ "and pcs.endShift.id =:endShiftId "
 							+ "and pcs.scheduleDate =:scheduleDate", PrivateCareSchedule.class)
 					.setParameter("employeeId", employeeId)
-					.setParameter("shiftId", shiftId)
+					.setParameter("startShiftId", startShiftId)
+					.setParameter("endShiftId", endShiftId)
 					.setParameter("scheduleDate", date)
 					.getSingleResult();
 		} catch (NoResultException e) {
-			log.warn("No schedule found with employeeId : {}, shiftId : {} and date : {}", employeeId, shiftId, date);
+			log.warn("No schedule found with employeeId : {}, startShiftId : {} , endShiftId : {}and date : {}",
+					employeeId, startShiftId, endShiftId, date);
 		}
 		return schedule;
 	}

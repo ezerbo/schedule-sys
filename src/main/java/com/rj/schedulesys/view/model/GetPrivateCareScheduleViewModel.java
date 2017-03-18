@@ -38,7 +38,9 @@ public class GetPrivateCareScheduleViewModel {
 
 	private PrivateCareViewModel privateCare;
 
-	private PrivateCareShiftViewModel shift;
+	private PrivateCareShiftViewModel startShift;
+	
+	private PrivateCareShiftViewModel endShift;
 
 	private ScheduleStatusViewModel scheduleStatus;
 

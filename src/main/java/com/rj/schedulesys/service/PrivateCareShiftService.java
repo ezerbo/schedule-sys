@@ -37,12 +37,12 @@ public class PrivateCareShiftService {
 	public PrivateCareShiftViewModel create(PrivateCareShiftViewModel viewModel){
 		log.debug("Creating new shift with", viewModel);
 		Assert.notNull(viewModel, "No shift provided");
-		if(privateCareShiftDao.findByStartAndEndTime(
-				viewModel.getStartTime(), viewModel.getEndTime()) != null){
-			log.error("A shift with start time : {} and end time : {} already exists"
-					, viewModel.getStartTime(), viewModel.getEndTime());
-			throw new RuntimeException("A shift with start time : " + viewModel.getStartTime()
-			+ " and end time : " + viewModel.getEndTime() + " already exists");
+		if(privateCareShiftDao.findByTime(
+				viewModel.getShiftTime()) != null){
+			log.error("A shift with time : {} already exists"
+					, viewModel.getShiftTime());
+			throw new RuntimeException("A shift with time : " + viewModel.getShiftTime()
+			+  "already exists");
 		}
 		viewModel = this.createOrUpdate(viewModel);
 		log.debug("Created shift : {}", viewModel);
@@ -59,16 +59,11 @@ public class PrivateCareShiftService {
 			log.error("No shift found with id : ", viewModel.getId());
 			throw new RuntimeException("No shift found with id : " + viewModel.getId());
 		}
-		if((shift.getStartTime() != viewModel.getEndTime())
-				||(shift.getEndTime() != viewModel.getEndTime())){
-			log.warn("Either start or end time of both have changed, checking combiantion(startTime, endTime)'s uniqueness ");
-			if(privateCareShiftDao.findByStartAndEndTime(
-					viewModel.getStartTime(), viewModel.getEndTime()
-					) != null){
-				log.error("A shift with start time : {} and end time : {} already exists"
-						, viewModel.getStartTime(), viewModel.getEndTime());
-				throw new RuntimeException("A shift with start time : " + viewModel.getStartTime() 
-				+ " and end time : " + viewModel.getEndTime() + " already exists");
+		if((shift.getShiftTime() != viewModel.getShiftTime())){
+			log.warn("Shift time has been changed, checking its uniqueness ");
+			if(privateCareShiftDao.findByTime(viewModel.getShiftTime()) != null){
+				log.error("A shift with time : {} already exists", viewModel.getShiftTime());
+				throw new RuntimeException("A shift with time : " + viewModel.getShiftTime() + " already exists");
 			}
 		}
 		viewModel = this.createOrUpdate(viewModel);
@@ -79,10 +74,6 @@ public class PrivateCareShiftService {
 	@Transactional
 	private PrivateCareShiftViewModel createOrUpdate(PrivateCareShiftViewModel viewModel){
 		validator.validate(viewModel);
-		if(viewModel.getStartTime().equals(viewModel.getEndTime())){
-			log.error("Shift start and end time should not be the same");
-			throw new RuntimeException("Shifts start and end time must be different");
-		}
 		PrivateCareShift shift = dozerMapper.map(viewModel, PrivateCareShift.class);
 		shift  = privateCareShiftDao.merge(shift);
 		return dozerMapper.map(shift, PrivateCareShiftViewModel.class);

@@ -30,6 +30,7 @@ import com.rj.schedulesys.domain.ScheduleStatus;
 import com.rj.schedulesys.domain.ScheduleSysUser;
 import com.rj.schedulesys.domain.ScheduleUpdatePK;
 import com.rj.schedulesys.util.ObjectValidator;
+import com.rj.schedulesys.util.ServiceHelper;
 import com.rj.schedulesys.view.model.CreateScheduleViewModel;
 import com.rj.schedulesys.view.model.EmployeeViewModel;
 import com.rj.schedulesys.view.model.FacilityViewModel;
@@ -93,6 +94,12 @@ public class FacilityScheduleService {
 			log.error("The schedule is of status 'CONFIRMED' but no nurse or care giver is provided");
 			throw new RuntimeException("The schedule is of status 'CONFIRMED' but no nurse or care giver is provided");
 		}
+		
+		if(viewModel.getScheduleDate().before(ServiceHelper.yesterday())){
+			log.error("Schedule date provided was a past date : {}");
+			throw new RuntimeException("The schedule date provided is not valid. Please provide a future date. ");
+		}
+		
 		Nurse nurse = null;
 		if(viewModel.getEmployeeId() != null){
 			nurse = validateNurse(viewModel.getEmployeeId());
