@@ -137,7 +137,7 @@ public class PrivateCareScheduleService {
 		
 		if(endShift.getId() != viewModel.getEndShiftId()){
 			log.warn("Schedule's shift end time updated, validating new shift");
-			endShift = validateShift(viewModel.getStartShiftId());
+			endShift = validateShift(viewModel.getEndShiftId());
 		}
 		
 		ScheduleStatus scheduleStatus = schedule.getScheduleStatus();
