@@ -41,6 +41,8 @@ public class EmployeeViewModel {
 	
 	private Boolean insvc;
 	
+	private Boolean active;
+	
 	@NotNull
 	@JsonFormat(pattern = "yyyy-MM-dd", timezone = "America/New_York")
 	@JsonSerialize(using = JsonDateSerializer.class)

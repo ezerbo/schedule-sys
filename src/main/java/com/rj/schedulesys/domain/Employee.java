@@ -75,6 +75,9 @@ public class Employee implements Serializable {
 	
 	@Column(name = "INSVC")
 	private Boolean insvc;
+	
+	@Column(name = "ACTIVE")
+	private Boolean active;
 
 	@OneToOne(mappedBy = "employee", fetch=FetchType.LAZY, orphanRemoval = true)
 	private CareGiver careGiver;
@@ -95,6 +98,8 @@ public class Employee implements Serializable {
 	@PrePersist
 	public void onCreate(){
 		setInsvc(true);
+		setActive(true);
+		
 	}
 
 	

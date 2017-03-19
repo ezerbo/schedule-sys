@@ -24,7 +24,7 @@
 	        <th md-column>Position name</th>
 	        <th md-column>Primary phone #</th>
 	        <th md-column>Phone number type</th>
-	        <th md-column>In service</th>
+	        <th md-column>Active</th>
 	      </tr>
 	    </thead>
 	    <tbody md-body>
@@ -34,7 +34,7 @@
 	        <td md-cell>{{caregiver.positionName}}</td>
 	        <td md-cell>{{caregiver.phoneNumbers[0].number  | tel}}</td>
 	         <td md-cell>{{caregiver.phoneNumbers[0].numberType}}</td>
-	         <td md-cell>{{caregiver.insvc ? 'YES' : 'NO'}}</td>
+	         <td md-cell>{{caregiver.active ? 'YES' : 'NO'}}</td>
 	      </tr>
 	    </tbody>
 	  </table>

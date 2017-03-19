@@ -41,6 +41,8 @@ public class NurseViewModel {
 	
 	private Boolean insvc;
 	
+	private Boolean active;
+	
 	private Boolean hasExpiredLicense;
 	
 	@NotNull

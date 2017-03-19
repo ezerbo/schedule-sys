@@ -119,6 +119,7 @@ public class EmployeeService {
 		employee.setLastDayOfWork(viewModel.getLastDayOfWork());
 		employee.setRehireDate(viewModel.getRehireDate());
 		employee.setInsvc(viewModel.getInsvc());
+		employee.setActive(viewModel.getActive());
 		log.info("Phone numbers : {}", employee.getPhoneNumbers());
 		employee.setPosition(position);
 		employee = employeeDao.merge(employee);

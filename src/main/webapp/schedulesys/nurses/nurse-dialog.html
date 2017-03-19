@@ -53,6 +53,16 @@
 						<div ng-message="required">In service is required.</div>
 					</div>
 					</md-input-container>
+					<md-input-container class="md-block" flex-gt-sm>
+					<div layout="column" layout-gt-sm="row">
+						<div flex-xs="" flex="50">
+							<md-checkbox ng-model="vm.nurse.active" name="active" aria-label="Active" class="md-primary"> Active </md-checkbox>
+						</div>
+					</div>
+					<div ng-messages="nurseForm.active.$error">
+						<div ng-message="required">Active Indicator is required.</div>
+					</div>
+					</md-input-container>
 				</div>
 				<div layout-gt-sm="row">
 					<md-input-container class="md-block" flex-gt-sm>
