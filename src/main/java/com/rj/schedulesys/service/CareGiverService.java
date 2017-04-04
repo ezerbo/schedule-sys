@@ -86,7 +86,8 @@ public class CareGiverService {
 			Employee employee = careGiver.getEmployee();
 			viewModel = dozerMapper.map(employee, EmployeeViewModel.class);
 			viewModel.setPhoneNumbers(PhoneNumberUtil.convert(employee.getPhoneNumbers(), dozerMapper));
-			viewModel.setIsLastDayOfWork(employee.getLastDayOfWork().before(new Date()));
+			//viewModel.setIsLastDayOfWork(employee.getLastDayOfWork().before(new Date()));
+			viewModel.setIsLastDayOfWork((employee.getLastDayOfWork () == null) ? false : employee.getLastDayOfWork().before(new Date()));
 		}
 		return viewModel;
 	}
