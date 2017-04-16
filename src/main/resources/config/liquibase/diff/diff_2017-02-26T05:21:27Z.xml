@@ -1,0 +1,153 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="ezerbo (generated)" id="1488086491524-1">
+        <dropUniqueConstraint constraintName="UC_CARE_COMPANYNAME_TEST_COL" tableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-2">
+        <dropColumn columnName="name_test" tableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-3">
+        <dropIndex indexName="fk_carecompany_type" tableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-4">
+        <dropIndex indexName="fk_companycontact_company" tableName="company_contact"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-5">
+        <dropIndex indexName="fk_employee_position" tableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-6">
+        <dropIndex indexName="fk_employee_type" tableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-7">
+        <dropIndex indexName="fk_license_employee" tableName="license"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-8">
+        <dropIndex indexName="fk_license_type" tableName="license"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-9">
+        <dropIndex indexName="fk_phonenumber_employee" tableName="phone_number"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-10">
+        <dropIndex indexName="fk_schedule_carecompany" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-11">
+        <dropIndex indexName="fk_schedule_employee" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-12">
+        <dropIndex indexName="fk_schedule_poststatus" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-13">
+        <dropIndex indexName="fk_schedule_shiftend" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-14">
+        <dropIndex indexName="fk_schedule_shiftstart" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-15">
+        <dropIndex indexName="fk_schedule_status" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-16">
+        <dropIndex indexName="fk_schedule_user" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-17">
+        <dropIndex indexName="fk_schedulesysuser_role" tableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-18">
+        <dropIndex indexName="fk_scheduleupdate_user" tableName="schedule_update"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-19">
+        <dropIndex indexName="fk_testoccurrence_category" tableName="test_occurrence"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-20">
+        <dropIndex indexName="fk_testoccurrence_employee" tableName="test_occurrence"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-21">
+        <dropIndex indexName="fk_testoccurrence_test" tableName="test_occurrence"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-22">
+        <dropIndex indexName="fk_testsubcategory_test" tableName="test_subcategory"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-23">
+        <dropForeignKeyConstraint baseTableName="care_company" constraintName="fk_carecompany_type"/>
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="care_company" constraintName="fk_carecompany_type" referencedColumnNames="id" referencedTableName="care_company_type"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-24">
+        <dropForeignKeyConstraint baseTableName="company_contact" constraintName="fk_companycontact_company"/>
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="company_contact" constraintName="fk_companycontact_company" referencedColumnNames="id" referencedTableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-25">
+        <dropForeignKeyConstraint baseTableName="employee" constraintName="fk_employee_position"/>
+        <addForeignKeyConstraint baseColumnNames="position_id" baseTableName="employee" constraintName="fk_employee_position" referencedColumnNames="id" referencedTableName="position"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-26">
+        <dropForeignKeyConstraint baseTableName="employee" constraintName="fk_employee_type"/>
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="employee" constraintName="fk_employee_type" referencedColumnNames="id" referencedTableName="employee_type"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-27">
+        <dropForeignKeyConstraint baseTableName="license" constraintName="fk_license_employee"/>
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="license" constraintName="fk_license_employee" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-28">
+        <dropForeignKeyConstraint baseTableName="license" constraintName="fk_license_type"/>
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="license" constraintName="fk_license_type" referencedColumnNames="id" referencedTableName="license_type"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-29">
+        <dropForeignKeyConstraint baseTableName="phone_number" constraintName="fk_phonenumber_employee"/>
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="phone_number" constraintName="fk_phonenumber_employee" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-30">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_carecompany"/>
+        <addForeignKeyConstraint baseColumnNames="care_company_id" baseTableName="schedule" constraintName="fk_schedule_carecompany" referencedColumnNames="id" referencedTableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-31">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_employee"/>
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="schedule" constraintName="fk_schedule_employee" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-32">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_poststatus"/>
+        <addForeignKeyConstraint baseColumnNames="post_status_id" baseTableName="schedule" constraintName="fk_schedule_poststatus" referencedColumnNames="id" referencedTableName="schedule_post_status"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-33">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_shiftend"/>
+        <addForeignKeyConstraint baseColumnNames="shift_end_time_id" baseTableName="schedule" constraintName="fk_schedule_shiftend" referencedColumnNames="id" referencedTableName="shift_time"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-34">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_shiftstart"/>
+        <addForeignKeyConstraint baseColumnNames="shift_start_time_id" baseTableName="schedule" constraintName="fk_schedule_shiftstart" referencedColumnNames="id" referencedTableName="shift_time"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-35">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_status"/>
+        <addForeignKeyConstraint baseColumnNames="status_id" baseTableName="schedule" constraintName="fk_schedule_status" referencedColumnNames="id" referencedTableName="schedule_status"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-36">
+        <dropForeignKeyConstraint baseTableName="schedule" constraintName="fk_schedule_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="schedule" constraintName="fk_schedule_user" referencedColumnNames="id" referencedTableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-37">
+        <dropForeignKeyConstraint baseTableName="schedule_sys_user" constraintName="fk_schedulesysuser_role"/>
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="schedule_sys_user" constraintName="fk_schedulesysuser_role" referencedColumnNames="id" referencedTableName="user_role"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-38">
+        <dropForeignKeyConstraint baseTableName="schedule_update" constraintName="fk_scheduleupdate_schedule"/>
+        <addForeignKeyConstraint baseColumnNames="schedule_id" baseTableName="schedule_update" constraintName="fk_scheduleupdate_schedule" referencedColumnNames="id" referencedTableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-39">
+        <dropForeignKeyConstraint baseTableName="schedule_update" constraintName="fk_scheduleupdate_user"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="schedule_update" constraintName="fk_scheduleupdate_user" referencedColumnNames="id" referencedTableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-40">
+        <dropForeignKeyConstraint baseTableName="test_occurrence" constraintName="fk_testoccurrence_category"/>
+        <addForeignKeyConstraint baseColumnNames="test_subcategory_id" baseTableName="test_occurrence" constraintName="fk_testoccurrence_category" referencedColumnNames="id" referencedTableName="test_subcategory"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-41">
+        <dropForeignKeyConstraint baseTableName="test_occurrence" constraintName="fk_testoccurrence_employee"/>
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="test_occurrence" constraintName="fk_testoccurrence_employee" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-42">
+        <dropForeignKeyConstraint baseTableName="test_occurrence" constraintName="fk_testoccurrence_test"/>
+        <addForeignKeyConstraint baseColumnNames="test_id" baseTableName="test_occurrence" constraintName="fk_testoccurrence_test" referencedColumnNames="id" referencedTableName="test"/>
+    </changeSet>
+    <changeSet author="ezerbo (generated)" id="1488086491524-43">
+        <dropForeignKeyConstraint baseTableName="test_subcategory" constraintName="fk_testsubcategory_test"/>
+        <addForeignKeyConstraint baseColumnNames="test_id" baseTableName="test_subcategory" constraintName="fk_testsubcategory_test" referencedColumnNames="id" referencedTableName="test"/>
+    </changeSet>
+</databaseChangeLog>

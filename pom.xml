@@ -1,48 +1,40 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.rj.healthcare</groupId>
-	<artifactId>schedule-sys</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
-	<packaging>war</packaging>
-
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.3.3.RELEASE</version>
-		<relativePath />
+		<version>1.4.2.RELEASE</version>
+		<relativePath>../pom.xml</relativePath>
 	</parent>
-
+	<groupId>com.simplesoft</groupId>
+	<artifactId>rj-schedule-sys</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>ScheduleSys</name>
+	<description>Schedules management system for RJ Healthcare Services</description>
+	<packaging>war</packaging>
+	
+	<inceptionYear>2017</inceptionYear>
+	
 	<developers>
 		<developer>
 			<name>Boureima Edouard ZERBO</name>
 			<email>zerboedouard@gmail.com</email>
-		</developer>
-		<developer>
-			<name>Abhinav Sudam</name>
-			<email>abhinavsudam1@gmail.com</email>
+			<organization>SimpleSoft</organization>
+			<roles>
+				<role>Developer</role>
+			</roles>
 		</developer>
 	</developers>
 
-	<name>RJ Healthcare Schedules Management System</name>
-	<description>
-		<![CDATA[This project is fairly small system managing employees' schedules.]]>
-	</description>
 	<properties>
-		<java-version>1.8</java-version>
-		<javax.servlet.jsp-version>2.3.1</javax.servlet.jsp-version>
-		<jackson-2-version>2.6.0</jackson-2-version>
-		<lombok-version>1.16.8</lombok-version>
-		<java.el.api-version>1.1</java.el.api-version>
-		<org.slf4j-version>1.7.2</org.slf4j-version>
+		<java.version>1.8</java.version>
+		<jackson.version>2.6.7</jackson.version>
+		<io.springfox.swagger-version>2.6.1</io.springfox.swagger-version>
 		<net.sf.dozer-version>5.5.1</net.sf.dozer-version>
-		<org.hibernate-version>4.3.9.Final</org.hibernate-version>
-		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<com.jayway.jsonpath-version>2.2.0</com.jayway.jsonpath-version>
-		<docker.image.prefix>springio</docker.image.prefix>
-		<org.apache.camel-version>2.17.3</org.apache.camel-version>
+		<spring-boot-admin-server-version>1.4.5</spring-boot-admin-server-version>
+		<org.jadira.usertype-version>5.0.0.GA</org.jadira.usertype-version>
 	</properties>
 
 	<dependencies>
@@ -50,199 +42,171 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security.oauth</groupId>
-			<artifactId>spring-security-oauth2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-jwt</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-spring-boot-starter</artifactId>
-			<version>${org.apache.camel-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-velocity</artifactId>
-			<version>${org.apache.camel-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-mail</artifactId>
-			<version>${org.apache.camel-version}</version>
-		</dependency>
 
-		<!-- operations -->
-		<dependency>
-			<groupId>org.jolokia</groupId>
-			<artifactId>jolokia-core</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
-		<!-- remote shell -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-remote-shell</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.springframework.boot</groupId> -->
+		<!-- <artifactId>spring-boot-starter-security</artifactId> -->
+		<!-- </dependency> -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-hibernate4 -->
 		<dependency>
-			<groupId>org.apache.camel</groupId>
-			<artifactId>camel-commands-spring-boot</artifactId>
-			<version>${org.apache.camel-version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-hibernate4</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>${lombok-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-			<version>${net.sf.dozer-version}</version>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>tools</artifactId>
+					<groupId>com.sun</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>19.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.jadira.usertype</groupId>
 			<artifactId>usertype.core</artifactId>
-			<version>5.0.0.GA</version>
+			<version>${org.jadira.usertype-version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${io.springfox.swagger-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${io.springfox.swagger-version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+		</dependency>
+	
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>${net.sf.dozer-version}</version>
+		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>de.codecentric</groupId> -->
+<!-- 			<artifactId>spring-boot-admin-starter-client</artifactId> -->
+<!-- 			<version>${spring-boot-admin-server-version}</version> -->
+<!-- 		</dependency> -->
+		<!-- TODO Add Spring Boot Shell -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.6.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>net.spy</groupId>
-			<artifactId>spymemcached</artifactId>
-			<version>2.11.6</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-joda</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-freemarker</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
 	</dependencies>
+
 
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.liquibase</groupId>
+				<artifactId>liquibase-maven-plugin</artifactId>
+				<version>3.5.3</version>
+				<configuration>
+					<changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
+					<diffChangeLogFile>src/main/resources/config/liquibase/diff/diff_${maven.build.timestamp}.xml</diffChangeLogFile>
+					<driver>com.mysql.jdbc.Driver</driver>
+					<url>jdbc:mysql://localhost:3306/schedulesys_db</url>
+					<defaultSchemaName>schedulesys_db</defaultSchemaName>
+					<username>root</username>
+					<password>diallo1990</password>
+					<referenceUrl>hibernate:spring:com.ss.schedulesys.domain?dialect=org.hibernate.dialect.MySQL5InnoDBDialect</referenceUrl>
+					<verbose>true</verbose>
+					<logging>debug</logging>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.liquibase.ext</groupId>
+						<artifactId>liquibase-hibernate4</artifactId>
+						<version>3.6</version>
+					</dependency>
+					<dependency>
+						<groupId>javax.validation</groupId>
+						<artifactId>validation-api</artifactId>
+						<version>1.1.0.Final</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>spring-beans</artifactId>
+						<version>4.3.4.RELEASE</version>
+					</dependency>
+					<dependency>
+						<groupId>org.springframework.data</groupId>
+						<artifactId>spring-data-jpa</artifactId>
+						<version>1.10.5.RELEASE</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- Exclude some dependencies while testing -->
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
-				</configuration>
+        		<artifactId>maven-surefire-plugin</artifactId>
+        		<configuration>
+        			<classpathDependencyExcludes>
+           				<classpathDependencyExclude>de.codecentric:spring-boot-admin-starter-client</classpathDependencyExclude>
+          			</classpathDependencyExcludes>
+          			<classpathDependencyExcludes>
+           				<classpathDependencyExclude>org.springframework.boot:spring-boot-starter-actuator</classpathDependencyExclude>
+          			</classpathDependencyExcludes>
+        		</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>com.spotify</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.2.3</version>
-				<configuration>
-					<imageName>${project.artifactId}</imageName>
-					<dockerDirectory>src/main/docker</dockerDirectory>
-					<resources>
-						<resource>
-							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
-						</resource>
-					</resources>
-				</configuration>
-			</plugin>
-			<!-- <plugin> -->
-			<!-- <groupId>io.fabric8</groupId> -->
-			<!-- <artifactId>fabric8-maven-plugin</artifactId> -->
-			<!-- <version>3.1.58</version> -->
-			<!-- <executions> -->
-			<!-- <execution> -->
-			<!-- <id>fmp</id> -->
-			<!-- <goals> -->
-			<!-- <goal>resource</goal> -->
-			<!-- <goal>helm</goal> -->
-			<!-- <goal>build</goal> -->
-			<!-- </goals> -->
-			<!-- </execution> -->
-			<!-- </executions> -->
-			<!-- </plugin> -->
 		</plugins>
 	</build>
 </project>

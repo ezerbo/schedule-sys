@@ -1,0 +1,500 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="ezerbo" id="1488083980853-1">
+        <createTable tableName="care_company">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="care_companyPK"/>
+            </column>
+            <column name="address" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fax" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-2">
+        <createTable tableName="care_company_type">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="care_company_typePK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-3">
+        <createTable tableName="company_contact">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="company_contactPK"/>
+            </column>
+            <column name="fax" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="firsname" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lastname" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone_number" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-4">
+        <createTable tableName="employee">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="employeePK"/>
+            </column>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="date_of_hire" type="date"/>
+            <column name="ebc" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="firsname" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="insvc" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_day_of_work" type="date"/>
+            <column name="lastname" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="position_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-5">
+        <createTable tableName="employee_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="employee_typePK"/>
+            </column>
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-6">
+        <createTable tableName="license">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="licensePK"/>
+            </column>
+            <column name="expiry_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-7">
+        <createTable tableName="license_type">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="license_typePK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-8">
+        <createTable tableName="phone_number">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="phone_numberPK"/>
+            </column>
+            <column name="label" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-9">
+        <createTable tableName="position">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="positionPK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-10">
+        <createTable tableName="schedule">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="schedulePK"/>
+            </column>
+            <column name="billed" type="BIT"/>
+            <column name="comment" type="VARCHAR(200)"/>
+            <column name="create_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hours_worked" type="DOUBLE"/>
+            <column name="overtime" type="DOUBLE"/>
+            <column name="paid" type="BIT"/>
+            <column name="schedule_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_sheet_received" type="BIT"/>
+            <column name="care_company_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id" type="BIGINT"/>
+            <column name="post_status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shift_end_time_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="shift_start_time_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-11">
+        <createTable tableName="schedule_post_status">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="schedule_post_statusPK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-12">
+        <createTable tableName="schedule_status">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="schedule_statusPK"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-13">
+        <createTable tableName="schedule_sys_user">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="schedule_sys_userPK"/>
+            </column>
+            <column name="activation_token" type="VARCHAR(200)"/>
+            <column name="email_address" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_activated" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-14">
+        <createTable tableName="schedule_update">
+            <column name="schedule_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_date" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-15">
+        <createTable tableName="shift_time">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="shift_timePK"/>
+            </column>
+            <column name="shift_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-16">
+        <createTable tableName="test">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="testPK"/>
+            </column>
+            <column name="can_be_waived" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="has_completion_date" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="has_expiry_date" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-17">
+        <createTable tableName="test_occurrence">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="testOPK"/>
+            </column>
+            <column name="completion_date" type="date"/>
+            <column name="expiry_date" type="date"/>
+            <column name="is_applicable" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="test_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="test_subcategory_id" type="INT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-18">
+        <createTable tableName="test_subcategory">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="test_subcategoryPK"/>
+            </column>
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="test_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-19">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true" primaryKeyName="user_rolePK"/>
+            </column>
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-20">
+        <addPrimaryKey columnNames="schedule_id, user_id" constraintName="schedule_updatePK" tableName="schedule_update"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-21">
+        <addPrimaryKey columnNames="id" constraintName="test_occurrencePK" tableName="test_occurrence"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-22">
+        <addUniqueConstraint columnNames="id" constraintName="UC_CARE_COMPANYID_COL" tableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-24">
+        <addUniqueConstraint columnNames="id" constraintName="UC_CARE_COMPANY_TYPEID_COL" tableName="care_company_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-25">
+        <addUniqueConstraint columnNames="id" constraintName="UC_COMPANY_CONTACTID_COL" tableName="company_contact"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-26">
+        <addUniqueConstraint columnNames="id" constraintName="UC_EMPLOYEEID_COL" tableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-27">
+        <addUniqueConstraint columnNames="id" constraintName="UC_EMPLOYEE_TYPEID_COL" tableName="employee_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-28">
+        <addUniqueConstraint columnNames="id" constraintName="UC_LICENSEID_COL" tableName="license"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-29">
+        <addUniqueConstraint columnNames="id" constraintName="UC_LICENSE_TYPEID_COL" tableName="license_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-30">
+        <addUniqueConstraint columnNames="id" constraintName="UC_PHONE_NUMBERID_COL" tableName="phone_number"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-31">
+        <addUniqueConstraint columnNames="id" constraintName="UC_POSITIONID_COL" tableName="position"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-32">
+        <addUniqueConstraint columnNames="id" constraintName="UC_SCHEDULEID_COL" tableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-33">
+        <addUniqueConstraint columnNames="id" constraintName="UC_SCHEDULE_POST_STATUSID_COL" tableName="schedule_post_status"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-34">
+        <addUniqueConstraint columnNames="id" constraintName="UC_SCHEDULE_STATUSID_COL" tableName="schedule_status"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-35">
+        <addUniqueConstraint columnNames="id" constraintName="UC_SCHEDULE_SYS_USERID_COL" tableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-36">
+        <addUniqueConstraint columnNames="id" constraintName="UC_SHIFT_TIMEID_COL" tableName="shift_time"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-37">
+        <addUniqueConstraint columnNames="id" constraintName="UC_TESTID_COL" tableName="test"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-38">
+        <addUniqueConstraint columnNames="id" constraintName="UC_TEST_OCCURRENCEID_COL" tableName="test_occurrence"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-39">
+        <addUniqueConstraint columnNames="id" constraintName="UC_TEST_SUBCATEGORYID_COL" tableName="test_subcategory"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-40">
+        <addUniqueConstraint columnNames="id" constraintName="UC_USER_ROLEID_COL" tableName="user_role"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-41">
+        <addUniqueConstraint columnNames="name" constraintName="UK_1chowmbf27f0cbp7on9ysvhjo" tableName="test"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-42">
+        <addUniqueConstraint columnNames="name" constraintName="UK_6mmfkid7xtwewa9pxdfw1jvnm" tableName="license_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-43">
+        <addUniqueConstraint columnNames="number" constraintName="UK_76k19uydo1yl4sgkyuvxp2y8d" tableName="license"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-44">
+        <addUniqueConstraint columnNames="name" constraintName="UK_7scw8hftdu9gkptf2r6kr5he8" tableName="care_company_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-45">
+        <addUniqueConstraint columnNames="username" constraintName="UK_7v9k11oe00ehdp78pddfcc7g0" tableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-46">
+        <addUniqueConstraint columnNames="email_address" constraintName="UK_a8cu65ryqyyf9310tmd4pe509" tableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-47">
+        <addUniqueConstraint columnNames="shift_time" constraintName="UK_asuge7ttne6s378cd981b46yt" tableName="shift_time"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-48">
+        <addUniqueConstraint columnNames="name" constraintName="UK_asx2vc25jlj0fsb81s8oveqji" tableName="schedule_status"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-49">
+        <addUniqueConstraint columnNames="number" constraintName="UK_ge9moul26fwtgt8lpvuagxv2v" tableName="phone_number"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-50">
+        <addUniqueConstraint columnNames="name" constraintName="UK_gqbgamfgu20kdmpxfxebmr5fr" tableName="schedule_post_status"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-51">
+        <addUniqueConstraint columnNames="name" constraintName="UK_ic7rn1ad2lpyp18wqiv2wydy5" tableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-52">
+        <addUniqueConstraint columnNames="name" constraintName="UK_icpl0ikk6tulopj546gwvfdje" tableName="test_subcategory"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-53">
+        <addUniqueConstraint columnNames="name" constraintName="UK_lnth8w122wgy7grrjlu8hjmuu" tableName="user_role"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-54">
+        <addUniqueConstraint columnNames="name" constraintName="UK_qe48lxuex3swuovou3giy8qpk" tableName="position"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-55">
+        <addUniqueConstraint columnNames="name" constraintName="UK_skiuwllqq27o0y3mttp1mhq30" tableName="employee_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-56">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="care_company" constraintName="fk_carecompany_type" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="care_company_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-57">
+        <addForeignKeyConstraint baseColumnNames="company_id" baseTableName="company_contact" constraintName="fk_companycontact_company" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-58">
+        <addForeignKeyConstraint baseColumnNames="position_id" baseTableName="employee" constraintName="fk_employee_position" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="position"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-59">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="employee" constraintName="fk_employee_type" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-60">
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="license" constraintName="fk_license_employee" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-61">
+        <addForeignKeyConstraint baseColumnNames="type_id" baseTableName="license" constraintName="fk_license_type" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="license_type"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-62">
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="phone_number" constraintName="fk_phonenumber_employee" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-63">
+        <addForeignKeyConstraint baseColumnNames="care_company_id" baseTableName="schedule" constraintName="fk_schedule_carecompany" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="care_company"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-64">
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="schedule" constraintName="fk_schedule_employee" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-65">
+        <addForeignKeyConstraint baseColumnNames="post_status_id" baseTableName="schedule" constraintName="fk_schedule_poststatus" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="schedule_post_status"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-66">
+        <addForeignKeyConstraint baseColumnNames="shift_end_time_id" baseTableName="schedule" constraintName="fk_schedule_shiftend" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="shift_time"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-67">
+        <addForeignKeyConstraint baseColumnNames="shift_start_time_id" baseTableName="schedule" constraintName="fk_schedule_shiftstart" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="shift_time"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-68">
+        <addForeignKeyConstraint baseColumnNames="status_id" baseTableName="schedule" constraintName="fk_schedule_status" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="schedule_status"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-69">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="schedule" constraintName="fk_schedule_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-70">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="schedule_sys_user" constraintName="fk_schedulesysuser_role" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_role"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-71">
+        <addForeignKeyConstraint baseColumnNames="schedule_id" baseTableName="schedule_update" constraintName="fk_scheduleupdate_schedule" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="schedule"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-72">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="schedule_update" constraintName="fk_scheduleupdate_user" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="schedule_sys_user"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-73">
+        <addForeignKeyConstraint baseColumnNames="test_subcategory_id" baseTableName="test_occurrence" constraintName="fk_testoccurrence_category" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="test_subcategory"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-74">
+        <addForeignKeyConstraint baseColumnNames="employee_id" baseTableName="test_occurrence" constraintName="fk_testoccurrence_employee" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="employee"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-75">
+        <addForeignKeyConstraint baseColumnNames="test_id" baseTableName="test_occurrence" constraintName="fk_testoccurrence_test" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="test"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="1488083980853-76">
+        <addForeignKeyConstraint baseColumnNames="test_id" baseTableName="test_subcategory" constraintName="fk_testsubcategory_test" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="test"/>
+    </changeSet>
+    <changeSet author="ezerbo" id="care_company_type-data" context="dev">
+    	<loadData catalogName="schedulesys_db" encoding="UTF-8" file="config/liquibase/data/care_company_type.csv" 
+    		quotchar="'" schemaName="schedulesys_db" separator="," tableName="care_company_type">
+    	</loadData>
+	</changeSet>
+<!-- 	<changeSet author="ezerbo" id="care_company-data" context="dev"> -->
+<!--     	<loadData catalogName="schedulesys_db" encoding="UTF-8" file="config/liquibase/data/care_company.csv"  -->
+<!--     		quotchar="'" schemaName="schedulesys_db" separator="," tableName="care_company"> -->
+<!--     		<column name="type_id" defaultValueComputed="select id from care_company_type where name = 'facility'"/> -->
+<!--     	</loadData> -->
+<!-- 	</changeSet> -->
+</databaseChangeLog>
