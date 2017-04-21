@@ -1,15 +1,16 @@
 package com.ss.schedulesys.domain;
 // Generated Feb 11, 2017 7:27:59 PM by Hibernate Tools 5.0.0.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -36,21 +37,18 @@ public class ScheduleUpdate implements java.io.Serializable {
 
 	private static final long serialVersionUID = -2814404248018116582L;
 	
-	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(name = "scheduleId", column = @Column(name = "schedule_id", nullable = false)),
-			@AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false)) })
-	private ScheduleUpdateId id;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	private Long id;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "schedule_id", nullable = false, insertable = false, updatable = false,
-		foreignKey = @ForeignKey(name = "fk_scheduleupdate_schedule"))
+	@JoinColumn(name = "schedule_id", nullable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_scheduleupdate_schedule"))
 	private Schedule schedule;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false,
-		foreignKey = @ForeignKey(name = "fk_scheduleupdate_user"))
+	@JoinColumn(name = "user_id", nullable = false, updatable = false, foreignKey = @ForeignKey(name = "fk_scheduleupdate_user"))
 	private ScheduleSysUser scheduleSysUser;
 	
 	@Temporal(TemporalType.TIMESTAMP)

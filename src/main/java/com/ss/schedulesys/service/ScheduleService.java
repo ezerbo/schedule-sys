@@ -2,10 +2,7 @@ package com.ss.schedulesys.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.dozer.DozerBeanMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +17,6 @@ import com.ss.schedulesys.domain.SchedulePostStatus;
 import com.ss.schedulesys.domain.ScheduleStatus;
 import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.domain.ScheduleUpdate;
-import com.ss.schedulesys.domain.ScheduleUpdateId;
 import com.ss.schedulesys.repository.CareCompanyRepository;
 import com.ss.schedulesys.repository.EmployeeRepository;
 import com.ss.schedulesys.repository.SchedulePostStatusRepository;
@@ -41,9 +37,6 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class ScheduleService {
 	
-	//https://www.mkyong.com/regular-expressions/how-to-validate-time-in-12-hours-format-with-regular-expression/
-	private final String validTimeRegex = "(1[012]|0?[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)";
-
 	private EmployeeRepository employeeRepository;
     private ScheduleRepository scheduleRepository;
     private CareCompanyRepository careCompanyRepository;
@@ -51,20 +44,16 @@ public class ScheduleService {
     private SchedulePostStatusRepository schedulePostStatusRepository;
     private ScheduleUpdateRepository scheduleUpdateRepository;
     
-    private DozerBeanMapper dozerBeanMapper;
-    
     @Autowired
     public ScheduleService(ScheduleRepository scheduleRepository, CareCompanyRepository careCompanyRepository,
     		ScheduleStatusRepository scheduleStatusRepository, SchedulePostStatusRepository schedulePostStatusRepository,
-    		EmployeeRepository employeeRepository, ScheduleUpdateRepository scheduleUpdateRepository,
-    		DozerBeanMapper dozerBeanMapper) {
+    		EmployeeRepository employeeRepository, ScheduleUpdateRepository scheduleUpdateRepository) {
     	this.employeeRepository = employeeRepository;
     	this.scheduleRepository = scheduleRepository;
     	this.careCompanyRepository =  careCompanyRepository;
     	this.scheduleStatusRepository = scheduleStatusRepository;
     	this.scheduleUpdateRepository = scheduleUpdateRepository;
     	this.schedulePostStatusRepository = schedulePostStatusRepository;
-    	this.dozerBeanMapper = dozerBeanMapper;
 	}
 
     /**
@@ -81,11 +70,6 @@ public class ScheduleService {
 		}
     	
     	schedule = validateStatusesAndCareCompany(schedule);
-    	if(!(validateTime(schedule.getShiftStartTime()) && validateTime(schedule.getShiftEndTime()))){
-    		log.error("Invalid shift start or end time : {}, {}", schedule.getShiftStartTime(), schedule.getShiftEndTime());
-    		throw new ScheduleSysException(String.format("Invalid shift start or end time : %s, %s",
-    				schedule.getShiftStartTime(), schedule.getShiftEndTime()));
-    	}
     	
     	Employee employee = schedule.getEmployee();
     	if(employee != null){//Schedule has been assigned
@@ -111,8 +95,11 @@ public class ScheduleService {
     	}else{//Schedule being updated
     		log.info("Creating update record");
     		Schedule oldSchedule = scheduleRepository.findOne(schedule.getId());
-    		dozerBeanMapper.map(schedule, oldSchedule);
-    		createScheduleUpdate(oldSchedule, user);
+    		schedule = oldSchedule.billed(schedule.getBilled()).comment(schedule.getComment())
+    						.overtime(schedule.getOvertime()).timeSheetReceived(schedule.getTimeSheetReceived())
+    						.hoursWorked(schedule.getHoursWorked()).shiftStartTime(schedule.getShiftStartTime())
+    						.shiftEndTime(schedule.getShiftEndTime()).scheduleDate(schedule.getScheduleDate());
+    		createScheduleUpdate(schedule, user);
     	}
     	
         Schedule result = scheduleRepository.save(schedule);
@@ -126,10 +113,8 @@ public class ScheduleService {
      * @return
      */
     private ScheduleUpdate createScheduleUpdate(Schedule schedule, ScheduleSysUser user){
-    	log.debug("Creating schedule update log entry");
-		ScheduleUpdateId scheduleUpdateId = ScheduleUpdateId.builder()
-				.scheduleId(schedule.getId()).userId(user.getId()).build();
-		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder().id(scheduleUpdateId)
+    	log.debug("Creating schedule update log entry, user : {}, schedule : {}", user, schedule);
+		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder()
 				.schedule(schedule).scheduleSysUser(user).updateDate(new Date()).build();
 		return scheduleUpdateRepository.save(scheduleUpdate);
     }
@@ -158,17 +143,6 @@ public class ScheduleService {
     	return schedule;
     }
     
-    
-    /**
-     * @param time
-     */
-    private boolean validateTime(String time){
-    	log.debug("Validating time : {}", time);
-    	Pattern pattern = Pattern.compile(validTimeRegex);
-		Matcher matcher = pattern.matcher(time);
-		return matcher.matches();
-    }
-
     /**
      *  Get all the schedules.
      *  
