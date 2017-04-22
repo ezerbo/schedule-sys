@@ -54,9 +54,17 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML    
-
+    mail: 
+       host: localhost
+       
 liquibase:
     contexts: dev
+    
+schedule-sys:
+  security:
+    authentication:
+      jwt:
+        secret: 54947df0-0e9e-4471-a2f9-9af509fb5889
 
 
 

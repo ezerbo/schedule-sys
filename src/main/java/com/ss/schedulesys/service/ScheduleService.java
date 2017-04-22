@@ -1,15 +1,15 @@
 package com.ss.schedulesys.service;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ss.schedulesys.config.Constants;
+import com.ss.schedulesys.config.ProfileConstants;
 import com.ss.schedulesys.domain.CareCompany;
 import com.ss.schedulesys.domain.Employee;
 import com.ss.schedulesys.domain.Schedule;
@@ -115,7 +115,7 @@ public class ScheduleService {
     private ScheduleUpdate createScheduleUpdate(Schedule schedule, ScheduleSysUser user){
     	log.debug("Creating schedule update log entry, user : {}, schedule : {}", user, schedule);
 		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder()
-				.schedule(schedule).scheduleSysUser(user).updateDate(new Date()).build();
+				.schedule(schedule).scheduleSysUser(user).updateDate(new DateTime()).build();
 		return scheduleUpdateRepository.save(scheduleUpdate);
     }
     
@@ -136,7 +136,7 @@ public class ScheduleService {
 
     	SchedulePostStatus schedulePostStatus = Optional.ofNullable(schedule.getSchedulePostStatus())
     			.map(result -> schedulePostStatusRepository.findOne(result.getId()))
-    			.orElse(schedulePostStatusRepository.findByName(Constants.DEFAULT_SCHEDULE_POST_STATUS));
+    			.orElse(schedulePostStatusRepository.findByName(ProfileConstants.DEFAULT_SCHEDULE_POST_STATUS));
     	
     	schedule.careCompany(careCompany).status(status).postStatus(schedulePostStatus);
     	

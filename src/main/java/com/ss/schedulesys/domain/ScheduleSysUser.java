@@ -15,10 +15,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,9 +49,6 @@ import lombok.ToString;
 		@UniqueConstraint(columnNames = "email_address"), @UniqueConstraint(columnNames = "username") })
 public class ScheduleSysUser implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1194882658721457752L;
 	
 	@Id
@@ -55,23 +60,46 @@ public class ScheduleSysUser implements java.io.Serializable {
 	@JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "fk_schedulesysuser_role"))
 	private UserRole userRole;
 	
-	
+	@NotNull
 	@Column(name = "email_address", unique = true, nullable = false, length = 100)
 	private String emailAddress;
+	
+	@NotNull
+	@Column(name = "first_name", nullable = false, length = 100)
+	private String firstName;
+	
+	@NotNull
+	@Column(name = "last_name", nullable = false, length = 100)
+	private String lastName;
 	
 	@Column(name = "username", unique = true, nullable = false, length = 100)
 	private String username;
 	
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@Column(name = "password", nullable = false, length = 200)
 	private String password;
 	
-	@Column(name = "is_activated", nullable = false)
-	private boolean isActivated;
+	@NotNull
+	@Column(name = "activated", nullable = false)
+	private boolean activated;
 	
 	@JsonIgnore
-	@Column(name = "activation_token", length = 200)
-	private String activationToken;
+	@Column(name = "activation_key", length = 200)
+	private String activationKey;
+	
+	@JsonIgnore
+	@Size(max = 20)
+	@Column(name = "reset_key", length = 20)
+	private String resetKey;
+	
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "reset_date", nullable = true)
+	private DateTime resetDate;
+	
+	@NotNull
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@Column(name = "create_date", nullable = false)
+	private DateTime createDate;
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduleSysUser")
@@ -80,5 +108,30 @@ public class ScheduleSysUser implements java.io.Serializable {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduleSysUser")
 	private Set<ScheduleUpdate> scheduleUpdates = new HashSet<ScheduleUpdate>(0);
+	
+	@PrePersist
+	public void onCreate(){
+		createDate = new DateTime();
+	}
+	
+	public ScheduleSysUser password(String password){
+		this.password = password;
+		return this;
+	}
+	
+	public ScheduleSysUser activationKey(String activationKey){
+		this.activationKey = activationKey;
+		return this;
+	}
+	
+	public ScheduleSysUser resetKey(String resetKey){
+		this.resetKey = resetKey;
+		return this;
+	}
+	
+	public ScheduleSysUser resetDate(DateTime resetDate){
+		this.resetDate = resetDate;
+		return this;
+	}
 
 }

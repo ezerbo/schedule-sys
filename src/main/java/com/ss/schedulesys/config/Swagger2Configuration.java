@@ -29,7 +29,7 @@ public class Swagger2Configuration {
 	@Bean
 	public Docket api(){
 		return new 	Docket(DocumentationType.SWAGGER_2)
-				.enable(env.acceptsProfiles(Constants.DEV_PROFILE))
+				.enable(env.acceptsProfiles(ProfileConstants.DEV_PROFILE))
 				.select()
 				.apis(RequestHandlerSelectors.any())
 				.paths(PathSelectors.any())

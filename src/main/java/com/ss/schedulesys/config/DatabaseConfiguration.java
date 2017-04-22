@@ -44,7 +44,7 @@ public class DatabaseConfiguration {
         liquibase.setContexts(liquibaseProperties.getContexts());
         liquibase.setDefaultSchema(liquibaseProperties.getDefaultSchema());
         liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-        if (env.acceptsProfiles(Constants.LIQUIBASE_PROFILE)) {
+        if (env.acceptsProfiles(ProfileConstants.LIQUIBASE_PROFILE)) {
         	liquibase.setShouldRun(liquibaseProperties.isEnabled());
         	log.debug("Configuring Liquibase");
         } else {
@@ -58,7 +58,7 @@ public class DatabaseConfiguration {
 	 * @return H2 console's registration bean
 	 */
 	@Bean
-	@Profile(Constants.DEV_PROFILE)
+	@Profile(ProfileConstants.DEV_PROFILE)
 	public ServletRegistrationBean h2ServletRegistrationBean(){
 		ServletRegistrationBean registrationBean = new ServletRegistrationBean( new WebServlet());
         registrationBean.addUrlMappings("/h2-console/*");

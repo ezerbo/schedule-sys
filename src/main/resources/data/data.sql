@@ -1,8 +1,8 @@
 /*--------------------------------------------------------------*/
 /* 					table: user_role                      		*/
 /*--------------------------------------------------------------*/
-INSERT INTO schedulesys_db.user_role(id, name) values(1, 'Admin');
-INSERT INTO schedulesys_db.user_role(id, name) values(2, 'Supervisor');
+INSERT INTO schedulesys_db.user_role(id, name) values(1, 'ADMIN');
+INSERT INTO schedulesys_db.user_role(id, name) values(2, 'SUPERVISOR');
 
 /*--------------------------------------------------------------*/
 /* 					table: employee_type                      	*/
@@ -11,18 +11,19 @@ insert into schedulesys_db.employee_type(id, name) values(1, 'Nurse');
 insert into schedulesys_db.employee_type(id, name) values(2, 'Care giver');
 
 /*--------------------------------------------------------------*/
-/* 					table: employee_type                      	*/
+/* 					table: schedule_sys_user                   	*/
 /*--------------------------------------------------------------*/
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(01, 1, 'ezerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'ezerbo@simplesoft.com', true, '54947df0-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(02, 1, 'asudam', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'asudam@simplesoft.com', true, '54947df1-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(03, 1, 'sballo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'sballo@simplesoft.com', true, '54947df2-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(04, 2, 'mzerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'mzerbo@simplesoft.com', true, '54947df3-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(05, 2, 'fzerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'fzerbo@simplesoft.com', true, '54947df4-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(06, 2, 'czerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'czerbo@simplesoft.com', true, '54947df5-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(07, 2, 'szerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'szerbo@simplesoft.com', true, '54947df6-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(08, 2, 'nzerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'nzerbo@simplesoft.com', true, '54947df7-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(09, 2, 'dzerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'dzerbo@simplesoft.com', true, '54947df8-0e9e-4471-a2f9-9af509fb5889');
-insert into schedulesys_db.schedule_sys_user(id, role_id, username, password, email_address, is_activated, activation_token) values(10, 2, 'lzerbo', '1000:gJxZ3DKj1GIgB+ESgAkjy8M5VxVqMnpG:fIq6QneoBzx0oVmS5qQ2porDGEh0sVo/', 'lzerbo@simplesoft.com', true, '54947df9-0e9e-4471-a2f9-9af509fb5889');
+-- $2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa = secret
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(01, 1, 'ezerbo', 'Boureima Edouard', 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'ezerbo@simplesoft.com', true, '54947df0-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(02, 1, 'asudam', 'Abhinav'         , 'SUDAM', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'asudam@simplesoft.com', true, '54947df1-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(03, 1, 'sballo', 'Saibou'          , 'BALLO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'sballo@simplesoft.com', true, '54947df2-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(04, 2, 'mzerbo', 'Michel'          , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'mzerbo@simplesoft.com', true, '54947df3-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(05, 2, 'fzerbo', 'Fred'            , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'fzerbo@simplesoft.com', true, '54947df4-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(06, 2, 'czerbo', 'Chacour'         , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'czerbo@simplesoft.com', true, '54947df5-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(07, 2, 'szerbo', 'Sherif'          , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'szerbo@simplesoft.com', true, '54947df6-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(08, 2, 'nzerbo', 'Naftal'          , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'nzerbo@simplesoft.com', true, '54947df7-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(09, 2, 'dzerbo', 'Djamie'          , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'dzerbo@simplesoft.com', true, '54947df8-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
+insert into schedulesys_db.schedule_sys_user(id, role_id, username, first_name, last_name, password, email_address, activated, activation_key, create_date) values(10, 2, 'lzerbo', 'Landolo'         , 'ZERBO', '$2a$10$iVlvexqblLTUt96cIlQWkOPmbAMdLVqG8ZipIsMGcGwpxTzY7QrNa', 'lzerbo@simplesoft.com', true, '54947df9-0e9e-4471-a2f9-9af509fb5889', current_timestamp());
 
 /*--------------------------------------------------------------*/
 /* 						table: position 	                   	*/

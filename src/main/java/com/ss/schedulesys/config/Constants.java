@@ -1,23 +1,12 @@
 package com.ss.schedulesys.config;
 
 public class Constants {
+
+	public final static String LOGIN_REGEX = "^[_'.@A-Za-z0-9-]*$";
 	
-	/**
-	 * 
-	 */
-	public final static String DEV_PROFILE = "dev";
+	public final static String SHIFT_TIME_REGEX = "(1[012]|0?[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)";
 	
-	/**
-	 * 
-	 */
-	public final static String PROD_PROFILE = "prod";
+	public static final int PASSWORD_MIN_LENGTH = 4;
 	
-	/**
-	 * 
-	 */
-	public final static String LIQUIBASE_PROFILE = "liquibase";
-	
-	
-	
-	public final static String DEFAULT_SCHEDULE_POST_STATUS = "PENDING";
+    public static final int PASSWORD_MAX_LENGTH = 100;
 }

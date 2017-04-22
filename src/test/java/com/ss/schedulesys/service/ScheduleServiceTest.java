@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,6 +64,9 @@ public class ScheduleServiceTest {
 	
 	private ScheduleSysUser user ;
 	
+	@Autowired
+	private PasswordEncoder encoder;
+	
 	@Before
 	public void init(){
 		user = userRepository.findOne(1l);
@@ -108,6 +112,11 @@ public class ScheduleServiceTest {
 		assertEquals(Double.valueOf(8), updatedSchedule.getHoursWorked());
 		assertEquals(Double.valueOf(2), updatedSchedule.getOvertime());
 		assertEquals(updateEntries + 1, scheduleUpdateRepository.findAll().size());
+	}
+	
+	@Test
+	public void passwordEncryption(){
+		System.out.println(encoder.encode("secret"));
 	}
 	
 }

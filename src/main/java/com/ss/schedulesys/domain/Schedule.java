@@ -26,6 +26,7 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.ss.schedulesys.config.Constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,12 +81,12 @@ public class Schedule implements java.io.Serializable {
 	
 	@NotBlank
 	@Column(name = "shift_start_time")
-	@Pattern(regexp = "(1[012]|0?[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)", message = "Invalid shift start time")
+	@Pattern(regexp = Constants.SHIFT_TIME_REGEX, message = "Invalid shift start time")
 	private String shiftStartTime;
 	
 	@NotBlank
 	@Column(name = "shift_end_time")
-	@Pattern(regexp = "(1[012]|0?[1-9]):[0-5][0-9](\\s)?(?i)(am|pm)", message = "Invalid shift end time")
+	@Pattern(regexp = Constants.SHIFT_TIME_REGEX, message = "Invalid shift end time")
 	private String shiftEndTime;
 	
 	@NotNull

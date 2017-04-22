@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -14,9 +14,9 @@
 	<name>ScheduleSys</name>
 	<description>Schedules management system for RJ Healthcare Services</description>
 	<packaging>war</packaging>
-	
+
 	<inceptionYear>2017</inceptionYear>
-	
+
 	<developers>
 		<developer>
 			<name>Boureima Edouard ZERBO</name>
@@ -35,6 +35,7 @@
 		<net.sf.dozer-version>5.5.1</net.sf.dozer-version>
 		<spring-boot-admin-server-version>1.4.5</spring-boot-admin-server-version>
 		<org.jadira.usertype-version>5.0.0.GA</org.jadira.usertype-version>
+		<io.jsonwebtoken-version>0.6.0</io.jsonwebtoken-version>
 	</properties>
 
 	<dependencies>
@@ -52,15 +53,19 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework.boot</groupId> -->
-		<!-- <artifactId>spring-boot-starter-security</artifactId> -->
-		<!-- </dependency> -->
-		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-hibernate4 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-hibernate4</artifactId>
 		</dependency>
+		
+		 <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
@@ -83,6 +88,17 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
 		</dependency>
+		
+		<dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${io.jsonwebtoken-version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -132,23 +148,28 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-	
+
 		<dependency>
 			<groupId>net.sf.dozer</groupId>
 			<artifactId>dozer</artifactId>
 			<version>${net.sf.dozer-version}</version>
 		</dependency>
-		
-<!-- 		<dependency> -->
-<!-- 			<groupId>de.codecentric</groupId> -->
-<!-- 			<artifactId>spring-boot-admin-starter-client</artifactId> -->
-<!-- 			<version>${spring-boot-admin-server-version}</version> -->
-<!-- 		</dependency> -->
+
+		<!-- <dependency> -->
+		<!-- <groupId>de.codecentric</groupId> -->
+		<!-- <artifactId>spring-boot-admin-starter-client</artifactId> -->
+		<!-- <version>${spring-boot-admin-server-version}</version> -->
+		<!-- </dependency> -->
 		<!-- TODO Add Spring Boot Shell -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
 	</dependencies>
 
@@ -197,15 +218,15 @@
 			<!-- Exclude some dependencies while testing -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-        		<artifactId>maven-surefire-plugin</artifactId>
-        		<configuration>
-        			<classpathDependencyExcludes>
-           				<classpathDependencyExclude>de.codecentric:spring-boot-admin-starter-client</classpathDependencyExclude>
-          			</classpathDependencyExcludes>
-          			<classpathDependencyExcludes>
-           				<classpathDependencyExclude>org.springframework.boot:spring-boot-starter-actuator</classpathDependencyExclude>
-          			</classpathDependencyExcludes>
-        		</configuration>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<classpathDependencyExcludes>
+						<classpathDependencyExclude>de.codecentric:spring-boot-admin-starter-client</classpathDependencyExclude>
+					</classpathDependencyExcludes>
+					<classpathDependencyExcludes>
+						<classpathDependencyExclude>org.springframework.boot:spring-boot-starter-actuator</classpathDependencyExclude>
+					</classpathDependencyExcludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

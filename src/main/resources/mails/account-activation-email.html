@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>ScheduleSys account activation</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p>
+            Dear <label th:text="|${user.firstName} ${user.lastName}|"></label>
+        </p>
+        <p>
+            Your ScheduleSys account has been created, please click on the URL below to activate it:
+        </p>
+        <p>
+            <a th:href="@{|${baseUrl}/#/activate?key=${user.activationKey}|}">Activation Link</a>
+        </p>
+        <p>
+            <span>Regards, </span>
+            <br/>
+            <em>ScheduleSys.</em>
+        </p>
+    </body>
+</html>

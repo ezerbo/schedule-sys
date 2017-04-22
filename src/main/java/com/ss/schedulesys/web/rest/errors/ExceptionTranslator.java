@@ -5,6 +5,7 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.ss.schedulesys.security.SecurityUtils;
 import com.ss.schedulesys.service.errors.ErrorVM;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
  */
-//@Slf4j
+@Slf4j
 @ControllerAdvice
 public class ExceptionTranslator {
 
@@ -47,12 +51,13 @@ public class ExceptionTranslator {
         return ex.getErrorVM();
     }
 
-//    @ExceptionHandler(AccessDeniedException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-//    @ResponseBody
-//    public ErrorVM processAccessDeniedException(AccessDeniedException e) {
-//        return new ErrorVM(ErrorConstants.ERR_ACCESS_DENIED, e.getMessage());
-//    }
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorVM processAccessDeniedException(AccessDeniedException e) {
+    	log.info("Current user : {}", SecurityUtils.getCurrentUser().getAuthorities());
+        return new ErrorVM(ErrorConstants.ERR_ACCESS_DENIED, e.getMessage());
+    }
 
     private ErrorVM processFieldErrors(List<FieldError> fieldErrors) {
         ErrorVM dto = new ErrorVM(ErrorConstants.ERR_VALIDATION);
