@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginVM {
 
+	@NotNull
     @Pattern(regexp = Constants.LOGIN_REGEX)
-    @NotNull
     @Size(min = 1, max = 50)
     private String username;
 

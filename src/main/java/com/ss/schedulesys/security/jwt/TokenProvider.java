@@ -55,13 +55,8 @@ public class TokenProvider {
             .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity;
-        if (rememberMe) {
-            validity = new Date(now + this.tokenValidityInSecondsForRememberMe);
-        } else {
-            validity = new Date(now + this.tokenValidityInSeconds);
-        }
-
+        Date validity = rememberMe ? new Date(now + this.tokenValidityInSecondsForRememberMe) 
+        		: new Date(now + this.tokenValidityInSeconds);
         return Jwts.builder()
             .setSubject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)

@@ -49,7 +49,11 @@ spring:
         favicon:
             enabled: false
     thymeleaf:
-        mode: XHTML    
+        mode: XHTML
+    
+    jackson:
+        serialization:
+            WRITE_DATES_AS_TIMESTAMPS: false    
 
 
 server:

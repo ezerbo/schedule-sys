@@ -1,5 +1,7 @@
 package com.ss.schedulesys.web.vm;
 
+import javax.validation.constraints.NotNull;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileUpdateVM {
-
+	
+	@NotNull
 	private Long id;
 	
 	private String role;

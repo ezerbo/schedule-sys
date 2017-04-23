@@ -38,7 +38,8 @@ public class UserDetailsService implements org.springframework.security.core.use
             if (!user.isActivated()) {
                 throw new UserNotActivatedException("User " + lowercaseLogin + " was not activated");
             }
-            GrantedAuthority grantedAutority = new SimpleGrantedAuthority(user.getUserRole().getName());
+            //Had to prefix authority with ROLE_ to get this to work when jwt is parsed
+            GrantedAuthority grantedAutority = new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getName());
             return new User(lowercaseLogin, user.getPassword(), Arrays.asList(grantedAutority));
         }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
         "database"));

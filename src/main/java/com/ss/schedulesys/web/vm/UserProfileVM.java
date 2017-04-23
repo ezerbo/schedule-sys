@@ -1,5 +1,6 @@
 package com.ss.schedulesys.web.vm;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.Email;
@@ -21,20 +22,20 @@ public class UserProfileVM {
 	@NotBlank
 	private String role;
 	
-	@NotBlank
 	@Email
+	@NotBlank
 	private String emailAddress;
 	
 	@NotBlank
+	@Max(100)
 	private String firstName;
 	
 	@NotBlank
+	@Max(100)
 	private String lastName;
 	
 	@NotBlank
 	@Pattern(regexp = Constants.LOGIN_REGEX)
 	private String username;
 	
-	@NotBlank
-	private String password;
 }

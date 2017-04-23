@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+/**
+ * @author ezerbo
+ *
+ */
 @Configuration
 public class ThymeleafConfiguration {
 

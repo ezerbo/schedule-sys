@@ -3,6 +3,7 @@ package com.ss.schedulesys.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -24,6 +27,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -76,7 +80,7 @@ public class ScheduleSysUser implements java.io.Serializable {
 	private String username;
 	
 	@JsonProperty(access = Access.WRITE_ONLY)
-	@Column(name = "password", nullable = false, length = 200)
+	@Column(name = "password", length = 200)
 	private String password;
 	
 	@NotNull
@@ -92,14 +96,16 @@ public class ScheduleSysUser implements java.io.Serializable {
 	@Column(name = "reset_key", length = 20)
 	private String resetKey;
 	
+	@JsonIgnore
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "reset_date", nullable = true)
 	private DateTime resetDate;
 	
 	@NotNull
-	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_date", nullable = false)
-	private DateTime createDate;
+	private Date createDate;
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduleSysUser")
@@ -111,7 +117,7 @@ public class ScheduleSysUser implements java.io.Serializable {
 	
 	@PrePersist
 	public void onCreate(){
-		createDate = new DateTime();
+		createDate = new Date();
 	}
 	
 	public ScheduleSysUser password(String password){

@@ -47,13 +47,14 @@ public class UserService {
     	return userRepository.findOneByUsername(username);
     }
 
-    public Optional<ScheduleSysUser> activateRegistration(String key) {
+    public Optional<ScheduleSysUser> activateRegistration(String key, String password) {
         log.debug("Activating user for activation key {}", key);
         return userRepository.findOneByActivationKey(key)
             .map(user -> {
                 // activate given user for the registration key.
                 user.setActivated(true);
                 user.setActivationKey(null);
+                user.setPassword(passwordEncoder.encode(password));
                 userRepository.save(user);
                 log.debug("Activated user: {}", user);
                 return user;
@@ -91,10 +92,8 @@ public class UserService {
     	 UserRole userRole = userRoleRepository.findByName(user.getRole())
          		.orElseThrow(() -> new ScheduleSysException(String.format("No such user role : %s", user.getRole())));
         ScheduleSysUser newScheduleSysUser = new ScheduleSysUser();
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
         newScheduleSysUser.setUsername(user.getUsername());
         // new user gets initially a generated password
-        newScheduleSysUser.setPassword(encryptedPassword);
         newScheduleSysUser.setFirstName(user.getFirstName());
         newScheduleSysUser.setLastName(user.getLastName());
         newScheduleSysUser.setEmailAddress(user.getEmailAddress());

@@ -1,10 +1,9 @@
 package com.ss.schedulesys.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,7 +14,6 @@ public class TestLocalTime {
 
 	@Test
 	public void testLocalTime(){
-		LocalTime time = LocalTime.now();
 		DateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 		System.out.println(dateFormat.format(new Date()));
 	}
