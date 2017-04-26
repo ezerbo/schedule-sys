@@ -50,12 +50,21 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
-    
-    jackson:
-        serialization:
-            WRITE_DATES_AS_TIMESTAMPS: false    
+        
+# ===================================================================
+# ScheduleSys Custom Properties
+# ===================================================================
 
 
+schedule-sys: 
+        api-info:
+             title: Shifts Scheduling System
+             description: A system that helps track employees schedules
+             version: @project.version@
+             contact:
+                  name: Boureima Edouard ZERBO
+                  email: zerboedouardgmail.com
+                  url: https://github.com/edouardo
 server:
   port: 8080
 

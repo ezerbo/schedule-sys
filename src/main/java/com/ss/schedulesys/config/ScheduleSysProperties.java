@@ -10,6 +10,7 @@ public class ScheduleSysProperties {
 
 	private Mail mail = new Mail();
 	private Security security = new Security();
+	private ApiInfo apiInfo = new ApiInfo();
 	
 	@Data
 	public static class Mail {
@@ -34,6 +35,21 @@ public class ScheduleSysProperties {
 				private long tokenValidityInSecondsForRememberMe = 2592000;
 
 			}
+		}
+	}
+	
+	@Data
+	public static class ApiInfo {
+		private String title;
+		private String description;
+		private String version;
+		private Contact contact = new Contact();
+		
+		@Data
+		public static class Contact {
+			private String name;
+			private String url;
+			private String email;
 		}
 	}
 }
