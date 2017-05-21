@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.config.Constants;
+import com.ss.schedulesys.config.ScheduleSysProperties;
 import com.ss.schedulesys.service.MailService;
 import com.ss.schedulesys.service.UserService;
 import com.ss.schedulesys.web.vm.KeyAndPasswordVM;
@@ -33,11 +34,14 @@ public class AccountResource {
 
     private UserService userService;
     private MailService mailService;
+    private ScheduleSysProperties scheduleSysProperties;
     
     @Autowired
-    public AccountResource(UserService userService, MailService mailService) {
+    public AccountResource(UserService userService, MailService mailService,
+    		ScheduleSysProperties scheduleSysProperties) {
     	this.mailService = mailService;
     	this.userService = userService;
+    	this.scheduleSysProperties = scheduleSysProperties;
     }
 
     /**
@@ -95,14 +99,7 @@ public class AccountResource {
     public ResponseEntity<?> requestPasswordReset(@RequestBody String mail, HttpServletRequest request) {
         return userService.requestPasswordReset(mail)
             .map(user -> {
-            	 String baseUrl = new StringJoiner("")
-            			 .add(request.getScheme())
-            			 .add("://")
-            			 .add(request.getServerName())
-            			 .add(":")
-            			 .add(Integer.toString(request.getServerPort()))
-            			 .add(request.getContextPath())
-            			 .toString();
+            	 String baseUrl = scheduleSysProperties.getUiBaseUrl();
                 mailService.sendPasswordResetMail(user, baseUrl);
                 return new ResponseEntity<>("e-mail was sent", HttpStatus.OK);
             }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));

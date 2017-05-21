@@ -62,7 +62,7 @@ public class UserService {
     }
 
     public Optional<ScheduleSysUser> completePasswordReset(String newPassword, String key) {
-       log.debug("Reset user password for reset key {}", key);
+       log.info("Reset user password for reset key {}", key);
 
        return userRepository.findOneByResetKey(key)
             .filter(user -> {

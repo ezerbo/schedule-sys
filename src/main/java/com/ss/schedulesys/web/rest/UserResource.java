@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.config.Constants;
+import com.ss.schedulesys.config.ScheduleSysProperties;
 import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.repository.ScheduleSysUserRepository;
 import com.ss.schedulesys.security.AuthoritiesConstants;
@@ -46,16 +47,20 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class UserResource {
 
-    private ScheduleSysUserRepository userRepository;
     private MailService mailService;
     private UserService userService;
+    private ScheduleSysUserRepository userRepository;
+    
+    private ScheduleSysProperties scheduleSysProperties;
     
     @Autowired
     public UserResource(ScheduleSysUserRepository userRepository,
-    		MailService mailService, UserService userService) {
+    		MailService mailService, UserService userService,
+    		ScheduleSysProperties scheduleSysProperties) {
     	this.userRepository = userRepository;
     	this.mailService = mailService;
     	this.userService = userService;
+    	this.scheduleSysProperties = scheduleSysProperties;
 	}
 
     /**
@@ -87,14 +92,7 @@ public class UserResource {
                 .body(null);
         } else {
         	ScheduleSysUser newUser = userService.createUser(managedUserVM);
-        	 String baseUrl = new StringJoiner("")
-        			 .add(request.getScheme())
-        			 .add("://")
-        			 .add(request.getServerName())
-        			 .add(":")
-        			 .add(Integer.toString(request.getServerPort()))
-        			 .add(request.getContextPath())
-        			 .toString();
+        	 String baseUrl = scheduleSysProperties.getUiBaseUrl();
             mailService.sendActivationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getUsername()))
                 .headers(HeaderUtil.createAlert( "A user is created with identifier " + newUser.getUsername(), newUser.getUsername()))

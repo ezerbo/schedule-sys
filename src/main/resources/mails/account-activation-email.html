@@ -12,7 +12,7 @@
             Your ScheduleSys account has been created, please click on the URL below to activate it:
         </p>
         <p>
-            <a th:href="@{|${baseUrl}/#/activate?key=${user.activationKey}|}">Activation Link</a>
+            <a th:href="@{|${baseUrl}/account;key=${user.activationKey};action=activate|}">Activation Link</a>
         </p>
         <p>
             <span>Regards, </span>

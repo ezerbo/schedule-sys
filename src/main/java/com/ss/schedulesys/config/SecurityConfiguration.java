@@ -14,12 +14,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import com.ss.schedulesys.security.AuthoritiesConstants;
 import com.ss.schedulesys.security.Http401UnauthorizedEntryPoint;
 import com.ss.schedulesys.security.jwt.JWTConfigurer;
 import com.ss.schedulesys.security.jwt.TokenProvider;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -33,6 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private TokenProvider tokenProvider;
+    
+    @Autowired
+    private ScheduleSysProperties scheduleSysProperties;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -97,6 +106,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
+    }
+    
+    @Bean
+    //@ConditionalOnProperty(name = "schedule-sys.cors.allowed-origins")
+    public CorsFilter corsFilter() {
+        log.info("Registering CORS filter");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = scheduleSysProperties.getCors();
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("OPTIONS");
+        config.addAllowedMethod("GET");
+        config.addAllowedMethod("POST");
+        config.addAllowedMethod("PUT");
+        config.addAllowedMethod("DELETE");
+
+        log.info("Allowed Origins : {}", config.getAllowedOrigins());
+        source.registerCorsConfiguration("/api/**", config);
+        source.registerCorsConfiguration("/v2/api-docs", config);
+        return new CorsFilter(source);
     }
 
 }

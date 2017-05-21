@@ -1,16 +1,18 @@
 package com.ss.schedulesys.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.web.cors.CorsConfiguration;
 
 import lombok.Data;
 
 @Data
 @ConfigurationProperties(prefix = "schedule-sys", ignoreUnknownFields = false)
 public class ScheduleSysProperties {
-
+	private CorsConfiguration cors = new CorsConfiguration();
 	private Mail mail = new Mail();
 	private Security security = new Security();
 	private ApiInfo apiInfo = new ApiInfo();
+	private String uiBaseUrl = "";
 	
 	@Data
 	public static class Mail {

@@ -3,7 +3,6 @@ package com.ss.schedulesys.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,8 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -103,9 +100,9 @@ public class ScheduleSysUser implements java.io.Serializable {
 	
 	@NotNull
 	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-	@Temporal(TemporalType.TIMESTAMP)
+	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "create_date", nullable = false)
-	private Date createDate;
+	private DateTime createDate;
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduleSysUser")
@@ -117,7 +114,7 @@ public class ScheduleSysUser implements java.io.Serializable {
 	
 	@PrePersist
 	public void onCreate(){
-		createDate = new Date();
+		createDate = DateTime.now();
 	}
 	
 	public ScheduleSysUser password(String password){

@@ -38,9 +38,9 @@ public class Swagger2Configuration {
 				ssApiInfo.getContact().getUrl(), ssApiInfo.getContact().getEmail());
 		
 		springfox.documentation.service.ApiInfo apiInfo = new ApiInfoBuilder()
-						.title(scheduleSysProperties.getApiInfo().getTitle())
-						.description(scheduleSysProperties.getApiInfo().getDescription())
-						.version(scheduleSysProperties.getApiInfo().getVersion())
+						.title(ssApiInfo.getTitle())
+						.description(ssApiInfo.getDescription())
+						.version(ssApiInfo.getVersion())
 						.contact(contact)
 						.build();
 		

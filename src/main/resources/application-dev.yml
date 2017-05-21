@@ -61,10 +61,14 @@ liquibase:
     contexts: dev
     
 schedule-sys:
+  ui-base-url: http://localhost:8082
   security:
     authentication:
       jwt:
         secret: 54947df0-0e9e-4471-a2f9-9af509fb5889
+  cors:
+    allowed-origins:
+      - http://localhost:8082
 
 
 

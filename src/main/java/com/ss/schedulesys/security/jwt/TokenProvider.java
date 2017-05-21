@@ -3,6 +3,7 @@ package com.ss.schedulesys.security.jwt;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -16,6 +17,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import com.ss.schedulesys.config.ScheduleSysProperties;
+import com.ss.schedulesys.config.ScheduleSysProperties.Security.Authentication.Jwt;
+import com.ss.schedulesys.domain.ScheduleSysUser;
+import com.ss.schedulesys.repository.ScheduleSysUserRepository;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -37,16 +41,16 @@ public class TokenProvider {
 
     @Autowired
     private ScheduleSysProperties scheduleSysProperties;
+    
+    @Autowired
+    private ScheduleSysUserRepository userRepository;
 
     @PostConstruct
     public void init() {
-        this.secretKey =
-            scheduleSysProperties.getSecurity().getAuthentication().getJwt().getSecret();
-
-        this.tokenValidityInSeconds =
-            1000 * scheduleSysProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSeconds();
-        this.tokenValidityInSecondsForRememberMe =
-            1000 * scheduleSysProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSecondsForRememberMe();
+    	Jwt jwt = scheduleSysProperties.getSecurity().getAuthentication().getJwt();
+        this.secretKey = jwt.getSecret();
+        this.tokenValidityInSeconds = 1000 * jwt.getTokenValidityInSeconds();
+        this.tokenValidityInSecondsForRememberMe = 1000 * jwt.getTokenValidityInSecondsForRememberMe();
     }
 
     public String createToken(Authentication authentication, Boolean rememberMe) {
@@ -57,10 +61,12 @@ public class TokenProvider {
         long now = (new Date()).getTime();
         Date validity = rememberMe ? new Date(now + this.tokenValidityInSecondsForRememberMe) 
         		: new Date(now + this.tokenValidityInSeconds);
+        Optional<ScheduleSysUser> user = userRepository.findOneByUsername(authentication.getName());
         return Jwts.builder()
             .setSubject(authentication.getName())
+            .claim("email", user.get().getEmailAddress())
             .claim(AUTHORITIES_KEY, authorities)
-            .signWith(SignatureAlgorithm.HS512, secretKey)
+            .signWith(SignatureAlgorithm.HS256, secretKey)
             .setExpiration(validity)
             .compact();
     }
