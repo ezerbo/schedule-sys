@@ -24,7 +24,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
@@ -99,7 +98,7 @@ public class ScheduleSysUser implements java.io.Serializable {
 	private DateTime resetDate;
 	
 	@NotNull
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss.SSS")
+	@JsonIgnore
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "create_date", nullable = false)
 	private DateTime createDate;
