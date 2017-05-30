@@ -50,7 +50,7 @@ public class AccountResource {
      * @param key the activation key
      * @return the ResponseEntity with status 200 (OK) and the activated user in body, or status 500 (Internal Server Error) if the user couldn't be activated
      */
-    @PostMapping("/activate")
+    @PostMapping("/account/activate")
     public ResponseEntity<String> activateAccount(@RequestBody KeyAndPasswordVM keyAndPassword) {
     	log.debug("REST request to activate account : {}", keyAndPassword);
     	if (!checkPasswordLength(keyAndPassword.getPassword())) {

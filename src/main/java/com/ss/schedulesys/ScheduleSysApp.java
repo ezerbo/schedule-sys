@@ -13,7 +13,7 @@ import com.ss.schedulesys.config.ScheduleSysProperties;
 @SpringBootApplication(scanBasePackages =  "com.ss.schedulesys")
 @EnableConfigurationProperties(value = {ScheduleSysProperties.class})
 public class ScheduleSysApp {
-
+//TODO Check for email server availability at start up
 	/**
 	 * @param args
 	 */

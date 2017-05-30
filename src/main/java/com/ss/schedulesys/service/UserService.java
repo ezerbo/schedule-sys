@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.domain.UserRole;
@@ -18,7 +19,6 @@ import com.ss.schedulesys.repository.UserRoleRepository;
 import com.ss.schedulesys.security.SecurityUtils;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
 import com.ss.schedulesys.service.util.RandomUtil;
-import com.ss.schedulesys.web.vm.UserProfileUpdateVM;
 import com.ss.schedulesys.web.vm.UserProfileVM;
 
 /**
@@ -45,6 +45,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<ScheduleSysUser> findByUsername(String username){
     	return userRepository.findOneByUsername(username);
+    }
+    
+    @Transactional(readOnly = true)
+    public Optional<ScheduleSysUser> findByEmailAddress(String email) {
+    	return userRepository.findOneByEmailAddress(email);
     }
 
     public Optional<ScheduleSysUser> activateRegistration(String key, String password) {
@@ -107,8 +112,8 @@ public class UserService {
         return newScheduleSysUser;
     }
 
-    public void updateUser(UserProfileUpdateVM user) {
-
+    public void updateUser(UserProfileVM user) {
+    	Assert.notNull(user.getId(), "User ID is required");
         Optional.of(userRepository
             .findOne(user.getId()))
             .ifPresent(u -> {
@@ -127,7 +132,11 @@ public class UserService {
 
     public void deleteUser(String login) {
         userRepository.findOneByUsername(login).ifPresent(u -> {
-            userRepository.delete(u);
+        	if(u.getSchedules().isEmpty() && u.getScheduleUpdates().isEmpty())
+        		userRepository.delete(u);
+        	else
+        		throw new ScheduleSysException(
+        				String.format("unable to delete user, schedule have been created by %s", login));
             log.debug("Deleted ScheduleSysUser: {}", u);
         });
     }

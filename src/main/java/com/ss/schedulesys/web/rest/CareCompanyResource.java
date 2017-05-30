@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.h2.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.CareCompany;
+import com.ss.schedulesys.domain.CompanyContact;
 import com.ss.schedulesys.domain.Schedule;
 import com.ss.schedulesys.service.CareCompanyService;
+import com.ss.schedulesys.service.CompanyContactService;
 import com.ss.schedulesys.service.ScheduleService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
@@ -41,11 +44,14 @@ public class CareCompanyResource {
 
     private CareCompanyService careCompanyService;
     private ScheduleService scheduleService;
+    private CompanyContactService contactService;
     
     @Autowired
-    public CareCompanyResource(CareCompanyService careCompanyService, ScheduleService scheduleService) {
+    public CareCompanyResource(CareCompanyService careCompanyService,
+    		ScheduleService scheduleService, CompanyContactService contactService) {
     	this.careCompanyService = careCompanyService;
     	this.scheduleService = scheduleService;
+    	this.contactService = contactService;
 	}
 
     /**
@@ -107,13 +113,14 @@ public class CareCompanyResource {
     /**
      * GET  /care-companies/:id : get the "id" careCompany.
      *
-     * @param id the id of the careCompany to retrieve
+     * @param id the id or name of the careCompany to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the careCompany, or with status 404 (Not Found)
      */
     @GetMapping("/care-companies/{id}")
-    public ResponseEntity<CareCompany> getCareCompany(@PathVariable Long id) {
+    public ResponseEntity<CareCompany> getCareCompany(@PathVariable String id) {
         log.debug("REST request to get CareCompany : {}", id);
-        CareCompany careCompany = careCompanyService.findOne(id);
+        CareCompany careCompany = (StringUtils.isNumber(id)) 
+        		? careCompanyService.findOne(Long.valueOf(id)) : careCompanyService.findOneByName(id);
         return Optional.ofNullable(careCompany)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -134,6 +141,13 @@ public class CareCompanyResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("careCompany", id.toString())).build();
     }
     
+    @GetMapping("/care-companies/{id}/contacts")
+    public ResponseEntity<List<CompanyContact>> getContacts(@PathVariable Long id){
+    	log.debug("REST request to get contacts for company with id : {}", id);
+    	List<CompanyContact> contacts = contactService.getAllByEmployee(id);
+    	return (!contacts.isEmpty())
+    			? new ResponseEntity<>(contacts, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
     
     //TODO Add contact resources
     @GetMapping("/care-companies/{id}/schedules")

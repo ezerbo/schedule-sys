@@ -88,7 +88,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .authorizeRequests()
             .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
+            .antMatchers("/api/account/activate").permitAll()
             .antMatchers("/api/authenticate").permitAll()
             .antMatchers("/api/account/reset_password/init").permitAll()
             .antMatchers("/api/account/reset_password/finish").permitAll()
@@ -116,6 +116,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         CorsConfiguration config = scheduleSysProperties.getCors();
         config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
+        config.addExposedHeader("X-schedulesys-error");
+        config.addExposedHeader("X-Total-Count");
         config.addAllowedMethod("OPTIONS");
         config.addAllowedMethod("GET");
         config.addAllowedMethod("POST");

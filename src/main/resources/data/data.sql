@@ -8,7 +8,7 @@ INSERT INTO schedulesys_db.user_role(id, name) values(2, 'SUPERVISOR');
 /* 					table: employee_type                      	*/
 /*--------------------------------------------------------------*/
 insert into schedulesys_db.employee_type(id, name) values(1, 'Nurse');
-insert into schedulesys_db.employee_type(id, name) values(2, 'Care giver');
+insert into schedulesys_db.employee_type(id, name) values(2, 'Care Giver');
 
 /*--------------------------------------------------------------*/
 /* 					table: schedule_sys_user                   	*/

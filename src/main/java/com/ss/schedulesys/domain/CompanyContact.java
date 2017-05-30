@@ -38,7 +38,7 @@ public class CompanyContact implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "company_id", nullable = false, foreignKey = @ForeignKey(name = "fk_companycontact_company"))

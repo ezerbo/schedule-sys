@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,6 +47,7 @@ public class CareCompany implements java.io.Serializable {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
+	@NotNull
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_carecompany_type"))
 	private CareCompanyType careCompanyType;

@@ -9,5 +9,5 @@ import com.ss.schedulesys.domain.CareCompany;
  */
 public interface CareCompanyRepository extends JpaRepository<CareCompany,Long> {
 
-	public CareCompany findByName(String name);
+	public CareCompany findByNameIgnoreCase(String name);
 }

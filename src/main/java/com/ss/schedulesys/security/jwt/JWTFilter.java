@@ -17,11 +17,13 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Filters incoming requests and installs a Spring Security principal if a header corresponding to a valid user is
  * found.
  */
+@Slf4j
 public class JWTFilter extends GenericFilterBean {
 
     private final Logger log = LoggerFactory.getLogger(JWTFilter.class);
@@ -38,6 +40,7 @@ public class JWTFilter extends GenericFilterBean {
         try {
             HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
             String jwt = resolveToken(httpServletRequest);
+            log.info("Resolved jwt : " + jwt);
             if (StringUtils.hasText(jwt)) {
                 if (this.tokenProvider.validateToken(jwt)) {
                     Authentication authentication = this.tokenProvider.getAuthentication(jwt);

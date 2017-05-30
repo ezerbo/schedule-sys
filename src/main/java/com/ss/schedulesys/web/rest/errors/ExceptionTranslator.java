@@ -15,16 +15,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.ss.schedulesys.security.SecurityUtils;
 import com.ss.schedulesys.service.errors.ErrorVM;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
  */
-@Slf4j
 @ControllerAdvice
 public class ExceptionTranslator {
 
@@ -55,8 +51,14 @@ public class ExceptionTranslator {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseBody
     public ErrorVM processAccessDeniedException(AccessDeniedException e) {
-    	log.info("Current user : {}", SecurityUtils.getCurrentUser().getAuthorities());
         return new ErrorVM(ErrorConstants.ERR_ACCESS_DENIED, e.getMessage());
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ErrorVM processIllegalArgumentException(IllegalArgumentException e) {
+        return new ErrorVM(ErrorConstants.ERR_VALIDATION, e.getMessage());
     }
 
     private ErrorVM processFieldErrors(List<FieldError> fieldErrors) {
@@ -77,7 +79,7 @@ public class ExceptionTranslator {
         return new ErrorVM(ErrorConstants.ERR_METHOD_NOT_SUPPORTED, exception.getMessage());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class})
     public ResponseEntity<ErrorVM> processRuntimeException(Exception ex) {
     	ex.printStackTrace();
         BodyBuilder builder;

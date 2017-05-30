@@ -1,5 +1,6 @@
 package com.ss.schedulesys.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -48,6 +49,13 @@ public class CompanyContactService {
         contact.setCareCompany(careCompany);
         CompanyContact result = contactRepository.save(contact);
         return result;
+    }
+    
+    @Transactional(readOnly = true)
+    public List<CompanyContact> getAllByEmployee(Long employeeId) {
+    	log.debug("Request to get all Contacts for employee with id : {}", employeeId);
+    	List<CompanyContact> contacts = contactRepository.getAllByEmployee(employeeId);
+    	return contacts;
     }
 
     /**

@@ -40,7 +40,7 @@ public class CareCompanyType implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private Long id;
 	
 	@Column(name = "name", unique = true, nullable = false, length = 50)
 	private String name;
