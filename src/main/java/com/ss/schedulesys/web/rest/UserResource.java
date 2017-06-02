@@ -32,7 +32,6 @@ import com.ss.schedulesys.service.MailService;
 import com.ss.schedulesys.service.UserService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
-import com.ss.schedulesys.web.vm.UserProfileVM;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -76,7 +75,7 @@ public class UserResource {
      */
     @PostMapping("/users")
     //@Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<?> createUser(@RequestBody @Valid UserProfileVM managedUserVM, HttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<?> createUser(@RequestBody @Valid ScheduleSysUser managedUserVM, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
         //Lowercase the user login before comparing with database
@@ -109,7 +108,7 @@ public class UserResource {
      * or with status 500 (Internal Server Error) if the user couldn't be updated
      */
     @PutMapping("/users")
-    public ResponseEntity<ScheduleSysUser> updateUser(@Valid @RequestBody UserProfileVM managedUserVM) {
+    public ResponseEntity<ScheduleSysUser> updateUser(@Valid @RequestBody ScheduleSysUser managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);
         Optional<ScheduleSysUser> existingUser = userRepository.findOneByEmailAddress(managedUserVM.getEmailAddress());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {

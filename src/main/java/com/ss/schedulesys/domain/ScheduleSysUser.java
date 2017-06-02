@@ -19,14 +19,18 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.ss.schedulesys.config.Constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,18 +64,24 @@ public class ScheduleSysUser implements java.io.Serializable {
 	@JoinColumn(name = "role_id", nullable = false, foreignKey = @ForeignKey(name = "fk_schedulesysuser_role"))
 	private UserRole userRole;
 	
+	@Email
 	@NotNull
 	@Column(name = "email_address", unique = true, nullable = false, length = 100)
 	private String emailAddress;
 	
-	@NotNull
+	@NotBlank
+	@Size(min = 2, max = 50)
 	@Column(name = "first_name", nullable = false, length = 100)
 	private String firstName;
 	
-	@NotNull
+	@NotBlank
+	@Size(min = 2, max = 50)
 	@Column(name = "last_name", nullable = false, length = 100)
 	private String lastName;
 	
+	@NotBlank
+	@Size(min = 6, max = 20)
+	@Pattern(regexp = Constants.LOGIN_REGEX)
 	@Column(name = "username", unique = true, nullable = false, length = 100)
 	private String username;
 	
@@ -79,7 +89,6 @@ public class ScheduleSysUser implements java.io.Serializable {
 	@Column(name = "password", length = 200)
 	private String password;
 	
-	@NotNull
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
 	
@@ -97,7 +106,6 @@ public class ScheduleSysUser implements java.io.Serializable {
 	@Column(name = "reset_date", nullable = true)
 	private DateTime resetDate;
 	
-	@NotNull
 	@JsonIgnore
 	@Type(type="org.jadira.usertype.dateandtime.joda.PersistentDateTime")
 	@Column(name = "create_date", nullable = false)

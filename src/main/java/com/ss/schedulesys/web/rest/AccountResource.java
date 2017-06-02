@@ -1,8 +1,6 @@
 package com.ss.schedulesys.web.rest;
 
 
-import java.util.StringJoiner;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;

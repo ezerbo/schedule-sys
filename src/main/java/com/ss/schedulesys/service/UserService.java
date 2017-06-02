@@ -19,7 +19,6 @@ import com.ss.schedulesys.repository.UserRoleRepository;
 import com.ss.schedulesys.security.SecurityUtils;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
 import com.ss.schedulesys.service.util.RandomUtil;
-import com.ss.schedulesys.web.vm.UserProfileVM;
 
 /**
  * Service class for managing users.
@@ -92,27 +91,22 @@ public class UserService {
             });
     }
 
-    public ScheduleSysUser createUser(UserProfileVM user) {
+    public ScheduleSysUser createUser(ScheduleSysUser user) {
     	log.debug("Creating user : {}", user);
-    	 UserRole userRole = userRoleRepository.findByName(user.getRole())
-         		.orElseThrow(() -> new ScheduleSysException(String.format("No such user role : %s", user.getRole())));
-        ScheduleSysUser newScheduleSysUser = new ScheduleSysUser();
-        newScheduleSysUser.setUsername(user.getUsername());
-        // new user gets initially a generated password
-        newScheduleSysUser.setFirstName(user.getFirstName());
-        newScheduleSysUser.setLastName(user.getLastName());
-        newScheduleSysUser.setEmailAddress(user.getEmailAddress());
-        newScheduleSysUser.setUserRole(userRole);
+    	UserRole userRole = Optional.ofNullable(user.getUserRole())
+    		.map(role -> userRoleRepository.findByName(role.getName())).get()
+    		.orElseThrow(() -> new ScheduleSysException("A valid user role is required"));
+        user.setUserRole(userRole);
         // new user is not active
-        newScheduleSysUser.setActivated(false);
+        user.setActivated(false);
         // new user gets registration key
-        newScheduleSysUser.setActivationKey(RandomUtil.generateActivationKey());
-        userRepository.save(newScheduleSysUser);
-        log.debug("Created Information for ScheduleSysUser: {}", newScheduleSysUser);
-        return newScheduleSysUser;
+        user.setActivationKey(RandomUtil.generateActivationKey());
+        userRepository.save(user);
+        log.debug("Created Information for ScheduleSysUser: {}", user);
+        return user;
     }
 
-    public void updateUser(UserProfileVM user) {
+    public void updateUser(ScheduleSysUser user) {
     	Assert.notNull(user.getId(), "User ID is required");
         Optional.of(userRepository
             .findOne(user.getId()))
@@ -122,8 +116,9 @@ public class UserService {
                 u.setLastName(user.getLastName());
                 u.setEmailAddress(user.getEmailAddress());
                 u.setActivated(user.isActivated());
-                UserRole userRole = userRoleRepository.findByName(user.getRole())
-                		.orElseThrow(() -> new ScheduleSysException(String.format("No such user role : %s", user.getRole())));
+                UserRole userRole = Optional.ofNullable(user.getUserRole())
+                		.map(role -> userRoleRepository.findByName(role.getName())).get()
+                		.orElseThrow(() -> new ScheduleSysException("A valid user role is required"));
                 u.setUserRole(userRole);
                 userRepository.save(u);
                 log.debug("Changed Information for ScheduleSysUser: {}", u);

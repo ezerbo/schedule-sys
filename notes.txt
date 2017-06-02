@@ -1,1 +1,14 @@
-Can an employee have two licenses of the same type ?
+TODO
+1. Add email field to employee table.
+2. Send email, text employee on schedule assignment
+3. Add schedule tracker
+4. Build time sheet management system
+
+Property management software feature list
+
+1. Apartments application module
+2. Lease signing module
+3. Billing module
+4. Issues / apartments work module (ticketing system)
+5. Leasing office management.
+6. Tenants profile module
