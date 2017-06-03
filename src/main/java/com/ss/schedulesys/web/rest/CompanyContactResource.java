@@ -53,7 +53,7 @@ public class CompanyContactResource {
      */
     @PostMapping("/contacts")
     public ResponseEntity<CompanyContact> createContact(@Valid @RequestBody CompanyContact contact) throws URISyntaxException {
-        log.debug("REST request to save Contact : {}", contact);
+        log.info("REST request to save Contact : {}", contact);
         if (contact.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("contact", "idexists", "A new contact cannot already have an ID")).body(null);
         }

@@ -9,8 +9,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -25,8 +23,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class JWTFilter extends GenericFilterBean {
-
-    private final Logger log = LoggerFactory.getLogger(JWTFilter.class);
 
     private TokenProvider tokenProvider;
 
@@ -50,7 +46,9 @@ public class JWTFilter extends GenericFilterBean {
             filterChain.doFilter(servletRequest, servletResponse);
         } catch (ExpiredJwtException eje) {
             log.info("Security exception for user {} - {}", eje.getClaims().getSubject(), eje.getMessage());
-            ((HttpServletResponse) servletResponse).setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            HttpServletResponse httpServletResponse = ((HttpServletResponse) servletResponse);
+            httpServletResponse.setHeader("X-schedulesys-error", "Security token expired");
+            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 

@@ -142,11 +142,12 @@ public class CareCompanyResource {
     }
     
     @GetMapping("/care-companies/{id}/contacts")
-    public ResponseEntity<List<CompanyContact>> getContacts(@PathVariable Long id){
-    	log.debug("REST request to get contacts for company with id : {}", id);
-    	List<CompanyContact> contacts = contactService.getAllByEmployee(id);
-    	return (!contacts.isEmpty())
-    			? new ResponseEntity<>(contacts, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<List<CompanyContact>> getContacts(@PathVariable Long id, Pageable pageable) throws URISyntaxException{
+    	log.info("REST request to get contacts for company with id : {}, {}, {}", id, pageable.getPageNumber(), pageable.getPageSize());
+    	Page<CompanyContact> contacts = contactService.getAllByCareCompanyId(id, pageable);
+    	HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(contacts, "/api/care-companies/" + id + "/contacts");
+    	log.info("Size : {}", contacts.getContent().size());
+    	return new ResponseEntity<>(contacts.getContent(), headers, HttpStatus.OK);
     }
     
     //TODO Add contact resources

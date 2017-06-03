@@ -190,16 +190,16 @@ insert into schedulesys_db.care_company (id, name, address, phone_number, fax, t
 /* 					table: company_contact 	                    */
 /*--------------------------------------------------------------*/
 
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (1, 'contact-1-fn', 'contact-1-ln', 'contact-1-title', '1234569870','0789654321', 1);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (2, 'contact-2-fn', 'contact-2-ln', 'contact-2-title', '1234569872','0789654322', 2);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (3, 'contact-3-fn', 'contact-3-ln', 'contact-3-title', '1234569873','0789654323', 3);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (4, 'contact-4-fn', 'contact-4-ln', 'contact-4-title', '1234569874','0789654324', 4);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (5, 'contact-5-fn', 'contact-5-ln', 'contact-5-title', '1234569875','0789654325', 5);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (6, 'contact-6-fn', 'contact-6-ln', 'contact-6-title', '1234569876','0789654326', 6);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (7, 'contact-7-fn', 'contact-7-ln', 'contact-7-title', '1234569877','0789654327', 7);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (8, 'contact-8-fn', 'contact-8-ln', 'contact-8-title', '1234569878','0789654328', 8);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (9, 'contact-9-fn', 'contact-9-ln', 'contact-9-title', '1234569879','0789654329', 9);
-insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (10,'contact-10-fn','contact-10-ln','contact-10-title','1234569810','0789654311', 10);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (1, 'contact-1-fn', 'contact-1-ln', 'contact-1-title', '1234569870','1789654321', 1);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (2, 'contact-2-fn', 'contact-2-ln', 'contact-2-title', '1234569872','1789654322', 2);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (3, 'contact-3-fn', 'contact-3-ln', 'contact-3-title', '1234569873','1789654323', 3);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (4, 'contact-4-fn', 'contact-4-ln', 'contact-4-title', '1234569874','1789654324', 4);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (5, 'contact-5-fn', 'contact-5-ln', 'contact-5-title', '1234569875','1789654325', 5);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (6, 'contact-6-fn', 'contact-6-ln', 'contact-6-title', '1234569876','1789654326', 6);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (7, 'contact-7-fn', 'contact-7-ln', 'contact-7-title', '1234569877','1789654327', 7);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (8, 'contact-8-fn', 'contact-8-ln', 'contact-8-title', '1234569878','1789654328', 8);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (9, 'contact-9-fn', 'contact-9-ln', 'contact-9-title', '1234569879','1789654329', 9);
+insert into schedulesys_db.company_contact(id, first_name, last_name, title, phone_number, fax, company_id) values (10,'contact-10-fn','contact-10-ln','contact-10-title','1234569810','1789654311', 10);
 
 
 /*--------------------------------------------------------------*/

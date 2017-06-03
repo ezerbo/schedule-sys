@@ -1,6 +1,5 @@
 package com.ss.schedulesys.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -42,19 +41,16 @@ public class CompanyContactService {
         log.debug("Request to save Contact : {}", contact);
         CareCompany careCompany = Optional.ofNullable(contact.getCareCompany())
         			.map(result -> careCompanyRepository.findOne(result.getId()))
-        			.orElseThrow(() -> new ScheduleSysException("A valid care company is reauired to create a contact"));
-        if(contactRepository.findByPhoneNumber(contact.getPhoneNumber()) != null){
-        	throw new ScheduleSysException(String.format("Phone number %s is already in use", contact.getPhoneNumber()));
-        }
+        			.orElseThrow(() -> new ScheduleSysException("A valid care company is required to create a contact"));
         contact.setCareCompany(careCompany);
         CompanyContact result = contactRepository.save(contact);
         return result;
     }
     
     @Transactional(readOnly = true)
-    public List<CompanyContact> getAllByEmployee(Long employeeId) {
-    	log.debug("Request to get all Contacts for employee with id : {}", employeeId);
-    	List<CompanyContact> contacts = contactRepository.getAllByEmployee(employeeId);
+    public Page<CompanyContact> getAllByCareCompanyId(Long careCompanyId, Pageable pageable) {
+    	log.debug("Request to get all Contacts for care company with id : {}", careCompanyId);
+    	Page<CompanyContact> contacts = contactRepository.getAllByCareCompanyId(careCompanyId, pageable);
     	return contacts;
     }
 

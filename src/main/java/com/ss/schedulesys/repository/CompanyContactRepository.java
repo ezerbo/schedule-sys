@@ -1,10 +1,8 @@
 package com.ss.schedulesys.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import com.ss.schedulesys.domain.CompanyContact;
 
@@ -15,6 +13,5 @@ public interface CompanyContactRepository extends JpaRepository<CompanyContact,L
 	
 	public CompanyContact findByPhoneNumber(String phoneNumber);
 	
-	@Query("from CompanyContact cc where cc.id = :employeeId")
-	public List<CompanyContact> getAllByEmployee(@Param("employeeId") Long employeeId);
+	public Page<CompanyContact> getAllByCareCompanyId(Long careCompanyId, Pageable pageable);
 }
