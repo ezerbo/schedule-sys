@@ -1,0 +1,10 @@
+---
+applications:
+- name: schedule-sys
+  memory: 1024M
+  buildpack: java_buildpack
+  domain: local.pcfdev.io
+  path: target/schedule-sys.jar
+  services:
+    - my-spring-db
+  instances: 1

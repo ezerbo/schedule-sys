@@ -65,10 +65,10 @@ public class EmployeeService {
         return employee;
     }
 	
-	 public void delete(Long id) {
-	        log.debug("Request to delete Employee : {}", id);
-	        employeeRepository.delete(id);
-	 }
+	public void delete(Long id) {
+		log.debug("Request to delete Employee : {}", id);
+	    employeeRepository.delete(id);
+	}
 	 
 //	 @Transactional(readOnly = true)
 //	 public Page<Employee> search(String query, Pageable pageable) {

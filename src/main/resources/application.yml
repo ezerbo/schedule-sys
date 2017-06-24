@@ -50,6 +50,8 @@ spring:
             enabled: false
     thymeleaf:
         mode: XHTML
+    mail: 
+       host: localhost
         
 # ===================================================================
 # ScheduleSys Custom Properties

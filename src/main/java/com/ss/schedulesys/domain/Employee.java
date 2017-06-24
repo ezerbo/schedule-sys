@@ -83,19 +83,19 @@ public class Employee implements java.io.Serializable {
 	private boolean insvc;
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", orphanRemoval = true)
 	private Set<Schedule> schedules = new HashSet<Schedule>(0);
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", orphanRemoval = true)
 	private Set<License> licenses = new HashSet<License>(0);
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", orphanRemoval = true)
 	private Set<TestOccurrence> testOccurrences = new HashSet<TestOccurrence>(0);
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", orphanRemoval = true)
 	private Set<PhoneNumber> phoneNumbers = new HashSet<PhoneNumber>(0);
 
 }

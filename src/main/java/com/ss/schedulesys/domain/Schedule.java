@@ -117,13 +117,17 @@ public class Schedule implements java.io.Serializable {
 	private Boolean billed;
 	
 	@JsonIgnore
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule", orphanRemoval = true)
 	private Set<ScheduleUpdate> scheduleUpdates = new HashSet<ScheduleUpdate>(0);
 	
 	@PrePersist
 	public void onCreate(){
-		System.out.println("Pre persist fired");
-		createDate(new Date()).billed(false).paid(false).timeSheetReceived(false).hoursWorked(0d).overtime(0d);
+		createDate(new Date())
+			.billed(false)
+			.paid(false)
+			.timeSheetReceived(false)
+			.hoursWorked(0d)
+			.overtime(0d);
 	}
 	
 	public Schedule careCompany(CareCompany careCompany){
