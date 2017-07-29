@@ -21,6 +21,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -64,10 +65,12 @@ public class Employee implements java.io.Serializable {
 	@Column(name = "last_name", nullable = false, length = 50)
 	private String lastName;
 	
+	@JsonFormat(timezone = "America/New_York")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "date_of_hire", length = 10)
 	private Date dateOfHire;
 	
+	@JsonFormat(timezone = "America/New_York")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "last_day_of_work", length = 10)
 	private Date lastDayOfWork;

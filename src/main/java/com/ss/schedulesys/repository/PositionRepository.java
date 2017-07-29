@@ -6,4 +6,5 @@ import com.ss.schedulesys.domain.Position;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {
 
+	public Position findByName(String name);
 }

@@ -71,85 +71,85 @@ insert into schedulesys_db.employee (id, position_id, first_name, last_name, dat
 /* 						table: phone_number 	                */
 /*--------------------------------------------------------------*/
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (1, '7187109836', 'Primary'  , 'Home'  , 1);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (2, '7187119836', 'Secondary', 'Mobile', 1);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (3, '7187129836', 'Other'    , 'Home'  , 1);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (1, '7187109836', 'PRIMARY'  , 'HOME'   , 1);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (2, '7187119836', 'SECONDARY', 'MOBILE' , 1);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (3, '7187129836', 'OTHER'    , 'HOME'   , 1);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (4, '7187139836', 'Primary'  , 'Mobile', 2);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (5, '7187149836', 'Secondary', 'Home'  , 2);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (6, '7187159836', 'Other'    , 'Mobile', 2);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (4, '7187139836', 'PRIMARY'  , 'MOBILE' , 2);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (5, '7187149836', 'SECONDARY', 'HOME'   , 2);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (6, '7187159836', 'OTHER'    , 'MOBILE' , 2);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (7, '7187169836', 'Primary'  , 'Mobile',3);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (8, '7187179836', 'Secondary', 'Home',  3);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (9, '7187189836', 'Other'    , 'Home',  3);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (7, '7187169836', 'PRIMARY'  , 'HOME'   , 3);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (8, '7187179836', 'SECONDARY', 'MOBILE' , 3);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (9, '7187189836', 'OTHER'    , 'HOME'   , 3);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (10, '7181909836', 'Primary'  , 'Home',   4);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (11, '7181989836', 'Secondary', 'Mobile', 4);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (12, '7181979836', 'Other'    , 'Home',   4);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (10, '7181909836', 'PRIMARY'  , 'HOME'  , 4);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (11, '7181989836', 'SECONDARY', 'MOBILE', 4);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (12, '7181979836', 'OTHER'    , 'HOME'  , 4);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (13, '6187909836', 'Primary'  , 'Home',   5);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (14, '6187989836', 'Secondary', 'Mobile', 5);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (15, '6187979836', 'Other'    , 'Home',   5);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (13, '6187909836', 'PRIMARY'  , 'HOME'  , 5);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (14, '6187989836', 'SECONDARY', 'MOBILE', 5);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (15, '6187979836', 'OTHER'    , 'HOME'  , 5);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (16, '5187909836', 'Primary'  , 'Home',   6);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (17, '5187989836', 'Secondary', 'Mobile', 6);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (18, '5187979836', 'Other'    , 'Home',   6);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (16, '5187909836', 'PRIMARY'  , 'HOME'  , 6);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (17, '5187989836', 'SECONDARY', 'MOBILE', 6);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (18, '5187979836', 'OTHER'    , 'HOME'  , 6);
                                                                                           
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (19, '4187909836', 'Primary'  , 'Home',   7);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (20, '4187989836', 'Secondary', 'Mobile', 7);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (21, '4187979836', 'Other'    , 'Home',   7);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (19, '4187909836', 'PRIMARY'  , 'HOME'  , 7);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (20, '4187989836', 'SECONDARY', 'MOBILE', 7);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (21, '4187979836', 'OTHER'    , 'HOME'  , 7);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (22, '3187909836', 'Primary'  , 'Home',   8);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (23, '3187989836', 'Secondary', 'Mobile', 8);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (24, '3187979836', 'Other'    , 'Home',   8);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (22, '3187909836', 'PRIMARY'  , 'HOME'  , 8);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (23, '3187989836', 'SECONDARY', 'MOBILE', 8);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (24, '3187979836', 'OTHER'    , 'HOME'  , 8);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (25, '2187909836', 'Primary'  , 'Home', 9);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (26, '2187989836', 'Secondary', 'Mobile', 9);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (27, '2187979836', 'Other'    , 'Home', 9);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (25, '2187909836', 'PRIMARY'  , 'HOME'  , 9);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (26, '2187989836', 'SECONDARY', 'MOBILE', 9);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (27, '2187979836', 'OTHER'    , 'HOME'  , 9);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (28, '1187909836', 'Primary'  , 'Home', 10);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (29, '1187989836', 'Secondary', 'Mobile', 10);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (30, '1187979836', 'Other'    , 'Home', 10);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (28, '1187909836', 'PRIMARY'  , 'HOME'  , 10);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (29, '1187989836', 'SECONDARY', 'MOBILE', 10);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (30, '1187979836', 'OTHER'    , 'HOME'  , 10);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (31, '8187909836', 'Primary'  , 'Home', 11);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (32, '8187989836', 'Secondary', 'Mobile', 11);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (33, '8187979836', 'Other'    , 'Home', 11);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (31, '8187909836', 'PRIMARY'  , 'HOME'  , 11);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (32, '8187989836', 'SECONDARY', 'MOBILE', 11);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (33, '8187979836', 'OTHER'    , 'HOME'  , 11);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (34, '9187901136', 'Primary'  , 'Home', 12);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (35, '9186989836', 'Secondary', 'Mobile', 12);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (36, '9187979836', 'Other'    , 'Home', 12);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (34, '9187901136', 'PRIMARY'  , 'HOME'  , 12);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (35, '9186989836', 'SECONDARY', 'MOBILE', 12);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (36, '9187979836', 'OTHER'    , 'HOME'  , 12);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (37, '9287909836', 'Primary'  , 'Home', 13);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (38, '9287989836', 'Secondary', 'Mobile', 13);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (39, '9287979836', 'Other'    , 'Home', 13);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (37, '9287909836', 'PRIMARY'  , 'HOME'  , 13);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (38, '9287989836', 'SECONDARY', 'MOBILE', 13);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (39, '9287979836', 'OTHER'    , 'HOME'  , 13);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (40, '9487909836', 'Primary'  , 'Home', 14);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (41, '9587989836', 'Secondary', 'Mobile', 14);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (42, '9680979836', 'Other'    , 'Home', 14);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (40, '9487909836', 'PRIMARY'  , 'HOME'  , 14);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (41, '9587989836', 'SECONDARY', 'MOBILE', 14);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (42, '9680979836', 'OTHER'    , 'HOME'  , 14);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (43, '9186909836', 'Primary'  , 'Home', 15);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (44, '9186339836', 'Secondary', 'Mobile', 15);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (45, '9188979836', 'Other'    , 'Home', 15);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (43, '9186909836', 'PRIMARY'  , 'HOME'  , 15);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (44, '9186339836', 'SECONDARY', 'MOBILE', 15);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (45, '9188979836', 'OTHER'    , 'HOME'  , 15);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (46, '9187905836', 'Primary'  , 'Home', 16);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (47, '9187299836', 'Secondary', 'Mobile', 16);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (48, '9187009836', 'Other'    , 'Home', 16);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (46, '9187905836', 'PRIMARY'  , 'HOME'  , 16);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (47, '9187299836', 'SECONDARY', 'MOBILE', 16);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (48, '9187009836', 'OTHER'    , 'HOME'  , 16);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (49, '9187900836', 'Primary'  , 'Home', 17);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (50, '9187989836', 'Secondary', 'Mobile', 17);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (51, '9185979836', 'Other'    , 'Home', 17);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (49, '9187900836', 'PRIMARY'  , 'HOME'  , 17);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (50, '9187989836', 'SECONDARY', 'MOBILE', 17);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (51, '9185979836', 'OTHER'    , 'HOME'  , 17);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (52, '9787909866', 'Primary'  , 'Home', 18);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (53, '9987989872', 'Secondary', 'Mobile', 18);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (54, '9387979800', 'Other'    , 'Home', 18);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (52, '9787909866', 'PRIMARY'  , 'HOME'  , 18);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (53, '9987989872', 'SECONDARY', 'MOBILE', 18);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (54, '9387979800', 'OTHER'    , 'HOME'  , 18);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (55, '9387009036', 'Primary'  , 'Home', 19);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (56, '9787089036', 'Secondary', 'Mobile', 19);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (57, '9687079036', 'Other'    , 'Home', 19);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (55, '9387009036', 'PRIMARY'  , 'HOME'  , 19);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (56, '9787089036', 'SECONDARY', 'MOBILE', 19);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (57, '9687079036', 'OTHER'    , 'HOME'  , 19);
 
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (58, '9507909836', 'Primary'  , 'Home', 20);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (59, '9407989836', 'Secondary', 'Mobile', 20);
-insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (60, '9207979836', 'Other'    , 'Home', 20);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (58, '9507909836', 'PRIMARY'  , 'HOME'  , 20);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (59, '9407989836', 'SECONDARY', 'MOBILE', 20);
+insert into schedulesys_db.phone_number (id, number, type, label, employee_id) values (60, '9207979836', 'OTHER'    , 'HOME'  , 20);
 
 
 /*------------------------------------------------------------------*/

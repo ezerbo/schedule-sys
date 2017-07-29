@@ -15,6 +15,6 @@ public interface PhoneNumberRepository extends JpaRepository<PhoneNumber, Long> 
 
 	public PhoneNumber findByNumber(String number);
 	
-	@Query(value = "from PhoneNumber p where p.employee.id = :employeeId and p.label = :label")
-	public PhoneNumber findByEmployeeAndLabel(@Param("employeeId") Long employeeId, @Param("label") String label);
+	@Query(value = "from PhoneNumber p where p.employee.id = :employeeId and p.type = :type")
+	public PhoneNumber findByEmployeeAndType(@Param("employeeId") Long employeeId, @Param("type") String type);
 }

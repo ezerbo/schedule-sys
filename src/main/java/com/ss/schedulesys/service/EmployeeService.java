@@ -38,11 +38,11 @@ public class EmployeeService {
 	public Employee create(Employee employee){
 		log.info("Saving employee : {}", employee);
 		EmployeeType employeeType = Optional.ofNullable(employee.getEmployeeType())
-			.map(result -> employeeTypeRepository.findOne(result.getId()))
+			.map(result -> employeeTypeRepository.findByName(result.getName()))
 			.orElseThrow(() -> new ScheduleSysException("A valid type is required to create an employee"));
 		
 		Position position = Optional.ofNullable(employee.getPosition())
-				.map(result -> positionRepository.findOne(result.getId()))
+				.map(result -> positionRepository.findByName(result.getName()))
 				.orElseThrow(() -> new ScheduleSysException("A Valid position is required to create an employee"));
 		
 		employee.setEmployeeType(employeeType);

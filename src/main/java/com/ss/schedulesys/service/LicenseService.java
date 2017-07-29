@@ -52,10 +52,11 @@ public class LicenseService {
         		.orElseThrow(() -> new ScheduleSysException("A valid employee is required to create a new license"));
         
         LicenseType licenseType = Optional.ofNullable(license.getLicenseType())
-        		.map(result -> licenseTypeRepository.findOne(result.getId()))
+        		.map(result -> licenseTypeRepository.findByName(result.getName()))
         		.orElseThrow(() -> new ScheduleSysException("A valid license type is required to create a new license"));
-        		
-        if(licenseRepository.findByNumber(license.getNumber()) != null){
+        
+        License byNumberAndType = licenseRepository.findByNumberAndType(license.getNumber(), licenseType.getName());
+        if(byNumberAndType != null && byNumberAndType.getId() != license.getId()){
         	throw new ScheduleSysException(String.format("License number %s is already in use", license.getNumber()));
         }
         license.setEmployee(employee);

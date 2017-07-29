@@ -15,6 +15,8 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,7 +36,7 @@ public class PhoneNumber implements java.io.Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
+	private Long id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "employee_id", nullable = false, foreignKey = @ForeignKey(name = "fk_phonenumber_employee"))
@@ -49,5 +51,14 @@ public class PhoneNumber implements java.io.Serializable {
 	
 	@Column(name = "type", nullable = false, length = 45)
 	private String type;
+	
+	@JsonProperty("phoneNumber")
+	public void setNumber(String number){
+		this.number = number;
+	}
 
+	@JsonProperty("numberType")
+	public void setType(String type){
+		this.type = type;
+	}
 }

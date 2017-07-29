@@ -27,7 +27,7 @@ public class PhoneNumberService {
 
     private final Logger log = LoggerFactory.getLogger(PhoneNumberService.class);
     
-    private final static int phoneNumbersPerEmployeeLimit = 3;
+    private final static int phoneNumbersPerEmployee = 3;
     
     private EmployeeRepository employeeRepository;
     private PhoneNumberRepository phoneNumberRepository;
@@ -47,27 +47,28 @@ public class PhoneNumberService {
      * @return the persisted entity
      */
     public PhoneNumber create(PhoneNumber phoneNumber) {
-        log.debug("Request to save PhoneNumber : {}", phoneNumber);
+        log.info("Request to save PhoneNumber : {}", phoneNumber);
         Employee employee = Optional.ofNullable(phoneNumber.getEmployee())
         		.map(result -> employeeRepository.findOne(result.getId()))
         		.orElseThrow(()-> new ScheduleSysException("An employee is required for a phone number creation"));
         
-        if(phoneNumberRepository.findAllByEmployee(employee.getId()).size() == phoneNumbersPerEmployeeLimit){
+        if(phoneNumberRepository.findAllByEmployee(employee.getId()).size() == phoneNumbersPerEmployee && phoneNumber.getId() == null){
         	log.error("Could not create new phone number, employee : {} has already 03 phone numbers", employee);
-        	throw new ScheduleSysException("Could not create new phone number, employee has already 03 phone numbers");
+        	throw new ScheduleSysException("Employee has already 03 phone numbers");
         }
         //TODO Prevent users from creating duplicate phone_number_labels
         PhoneNumberType.validate(phoneNumber.getType());
         PhoneNumberLabel.validate(phoneNumber.getLabel());
-        if(phoneNumberRepository.findByNumber(phoneNumber.getNumber()) != null){
+        PhoneNumber number = phoneNumberRepository.findByNumber(phoneNumber.getNumber());
+        if(number != null && number.getId() != phoneNumber.getId()){
         	log.error("Phone number : {} is already taken", phoneNumber.getNumber());
         	throw new ScheduleSysException(String.format("Phone number '%s' is already in use", phoneNumber.getNumber()));
         }
-        
-        if(phoneNumberRepository.findByEmployeeAndLabel(employee.getId(), phoneNumber.getLabel()) != null){
-        	log.error("Could not create new phone number, employee already has a number with label : {}", phoneNumber.getLabel());
+        PhoneNumber numberByType = phoneNumberRepository.findByEmployeeAndType(employee.getId(), phoneNumber.getType());
+        if(numberByType != null && numberByType.getId() != phoneNumber.getId()){
+        	log.error("Could not create new phone number, employee already has a number with type : {}", phoneNumber.getType());
         	throw new ScheduleSysException(
-        			String.format("Could not create new phone number, employee already has a number with label : %s", phoneNumber.getLabel()));
+        			String.format("Employee already has a number with type : %s", phoneNumber.getType()));
         }
         phoneNumber.setEmployee(employee);
         PhoneNumber result = phoneNumberRepository.save(phoneNumber);

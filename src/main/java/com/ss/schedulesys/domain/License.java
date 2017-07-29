@@ -16,6 +16,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -27,7 +30,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "license", catalog = "schedulesys_db", uniqueConstraints = @UniqueConstraint(columnNames = "number"))
+@Table(name = "license", catalog = "schedulesys_db", uniqueConstraints = @UniqueConstraint(columnNames = {"number", "type_id"}))
 public class License implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4965664010911349613L;
@@ -45,10 +48,16 @@ public class License implements java.io.Serializable {
 	@JoinColumn(name = "type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_license_type"))
 	private LicenseType licenseType;
 	
-	@Column(name = "number", unique = true, nullable = false, length = 100)
+	@Column(name = "number", nullable = false, length = 100)
 	private String number;
 	
+	@JsonFormat(timezone = "America/New_York")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "expiry_date", nullable = false, length = 10)
 	private Date expiryDate;
+	
+	@JsonProperty("licenseNumber")
+	public void setNumber(String number){
+		this.number = number;
+	}
 }

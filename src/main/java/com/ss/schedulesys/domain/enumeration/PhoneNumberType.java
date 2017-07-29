@@ -3,7 +3,7 @@ package com.ss.schedulesys.domain.enumeration;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
 
 public enum PhoneNumberType {
-	HOME, MOBILE;
+	PRIMARY, SECONDARY, OTHER;
 	
 	public static PhoneNumberType validate(String value){
 		try {

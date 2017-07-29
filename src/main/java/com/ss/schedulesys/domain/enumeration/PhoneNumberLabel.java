@@ -3,7 +3,7 @@ package com.ss.schedulesys.domain.enumeration;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
 
 public enum PhoneNumberLabel {
-	PRIMARY, SECONDARY, OTHER;
+	MOBILE, HOME;
 	
 	public static PhoneNumberLabel validate(String value){
 		try {

@@ -10,7 +10,8 @@ import com.ss.schedulesys.domain.License;
 
 public interface LicenseRepository extends JpaRepository<License, Long> {
 
-	public License findByNumber(String number);
+	@Query("from License l where l.number = :number and l.licenseType.name = :typeName")
+	public License findByNumberAndType(@Param("number") String number, @Param("typeName") String typeName);
 	
 	@Query("from License l where l.employee.id = :employeeId")
 	public List<License> findByEmployeeId(@Param("employeeId") Long employeeId);
