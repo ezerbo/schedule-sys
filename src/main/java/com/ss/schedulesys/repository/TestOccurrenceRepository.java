@@ -15,8 +15,8 @@ public interface TestOccurrenceRepository extends JpaRepository<TestOccurrence, 
 	List<TestOccurrence> findAllByEmployee(@Param("employeeId") Long employeeId);
 	
 	@Query("from TestOccurrence to where to.test.id = :testId and to.employee.id = :employeeId"
-			+ " and to.completionDate = :completionDate and to.expiryDate = :expiryDate")
+			+ " and to.completionDate = :completionDate and to.expirationDate = :expirationDate")
 	TestOccurrence findDuplicate(@Param("testId") Long testId, @Param("employeeId") Long employeeId,
-			@Param("completionDate") Date completionDate, @Param("expiryDate") Date expiryDate);
+			@Param("completionDate") Date completionDate, @Param("expirationDate") Date expirationDate);
 
 }

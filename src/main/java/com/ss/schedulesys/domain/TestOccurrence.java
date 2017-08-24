@@ -17,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -51,12 +53,14 @@ public class TestOccurrence implements java.io.Serializable {
 	private TestSubcategory testSubcategory;
 	
 	@Column(name = "is_applicable", nullable = false)
-	private boolean isApplicable;
+	private boolean applicable;
 	
+	@JsonFormat(timezone = "America/New_York")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "expiry_date", length = 10)
-	private Date expiryDate;
+	private Date expirationDate;
 	
+	@JsonFormat(timezone = "America/New_York")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "completion_date", length = 10)
 	private Date completionDate;
@@ -77,7 +81,7 @@ public class TestOccurrence implements java.io.Serializable {
 	}
 	
 	public TestOccurrence expiryDate(Date expiryDate){
-		this.expiryDate = expiryDate;
+		this.expirationDate = expiryDate;
 		return this;
 	}
 	

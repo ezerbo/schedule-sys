@@ -4,7 +4,6 @@ package com.ss.schedulesys.domain;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -118,7 +117,7 @@ public class Schedule implements java.io.Serializable {
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule", orphanRemoval = true)
-	private Set<ScheduleUpdate> scheduleUpdates = new HashSet<ScheduleUpdate>(0);
+	private Set<ScheduleUpdate> scheduleUpdates;
 	
 	@PrePersist
 	public void onCreate(){

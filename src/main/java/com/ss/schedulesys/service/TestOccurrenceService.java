@@ -54,7 +54,7 @@ public class TestOccurrenceService {
      * @return the persisted entity
      */
     public TestOccurrence save(TestOccurrence testOcurrence) {
-        log.debug("Request to save TestOccurrence : {}", testOcurrence);
+        log.info("Request to save TestOccurrence : {}", testOcurrence);
         //TODO Should each employee have at most one test occurrence per test?
         //In which case, record of past tests occurrence are not kept.
         Employee employee = Optional.ofNullable(testOcurrence.getEmployee())
@@ -62,25 +62,29 @@ public class TestOccurrenceService {
         		.orElseThrow(() -> new ScheduleSysException("A valid employee is required to add a test"));
         
         Test test = Optional.ofNullable(testOcurrence.getTest())
-        		.map(result -> testRepository.findOne(result.getId()))
+        		.map(result -> testRepository.findByNameIgnoreCase(result.getName()))
         		.orElseThrow(() -> new ScheduleSysException("A valid test is required to add a test"));
         
         TestSubcategory testSubcategory = Optional.ofNullable(testOcurrence.getTestSubcategory())
-        		.map(result -> testSubcategoryRepository.findOne(result.getId()))
+        		.map(result -> testSubcategoryRepository.findByNameAndTest(result.getName(), test))
         		.orElse(null);
         
-        //The current test can have a completion date, is applicable but no completion date provided
-    	if(test.isHasCompletionDate() && testOcurrence.isApplicable() 
-				&& (testOcurrence.getCompletionDate() == null)){
-			throw new ScheduleSysException("A completion date is required");
-		}
-    	
-    	//The current test has expiration date, is applicable but no expiration date provided
-    	if(test.isHasExpiryDate() && testOcurrence.isApplicable()
-				&& (testOcurrence.getExpiryDate() == null)){
-			throw new ScheduleSysException("An expiration date is required");
-		}
-    	
+      //Current test is not applicable to current employee, the no expiry and no completion date 
+    	if(!testOcurrence.isApplicable()){
+    		log.info("Nullifying dates");
+    		testOcurrence.expiryDate(null).completionDate(null);
+    	}else{
+    		  //The current test can have a completion date, is applicable but no completion date provided
+        	if(test.isHasCompletionDate() && (testOcurrence.getCompletionDate() == null)){
+    			throw new ScheduleSysException("A completion date is required");
+    		}
+        	
+        	//The current test has expiration date, is applicable but no expiration date provided
+        	if(test.isHasExpiryDate() && (testOcurrence.getExpirationDate() == null)){
+    			throw new ScheduleSysException("An expiration date is required");
+    		}
+    	}
+        
     	//Test completion date must be in the past
     	if(testOcurrence.getCompletionDate() != null && testOcurrence.getCompletionDate().after(new Date())){
 			log.error("Completed date must be in the past");
@@ -88,20 +92,16 @@ public class TestOccurrenceService {
 		}
     	//TODO expiry date must be after completed date
     	if(testOcurrenceRepository.findDuplicate(test.getId(), employee.getId(),
-    			testOcurrence.getCompletionDate(), testOcurrence.getExpiryDate()) != null){
+    			testOcurrence.getCompletionDate(), testOcurrence.getExpirationDate()) != null){
     		log.error("Duplicate record detected for : {}", testOcurrence);
     		throw new ScheduleSysException(String.format("%s as already taken test '%s' on %s and expiring on %s",
     				employee.getFirstName().concat(" ").concat(employee.getLastName()), test.getName(),
-    				testOcurrence.getCompletionDate(), testOcurrence.getExpiryDate()));
-    	}
-    	
-    	//Current test is not applicable to current employee, the no expiry and no completion date 
-    	if(!testOcurrence.isApplicable()){
-    		testOcurrence.expiryDate(null).completionDate(null);
+    				testOcurrence.getCompletionDate(), testOcurrence.getExpirationDate()));
     	}
     	
         testOcurrence.employee(employee).test(test).testSubcategory(testSubcategory);
         TestOccurrence result = testOcurrenceRepository.save(testOcurrence);
+        log.info("Result : {}", result);
         return result;
     }
 

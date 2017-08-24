@@ -30,6 +30,7 @@ import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.repository.ScheduleSysUserRepository;
 import com.ss.schedulesys.service.MailService;
 import com.ss.schedulesys.service.UserService;
+import com.ss.schedulesys.service.errors.ErrorVM;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
 
@@ -77,18 +78,18 @@ public class UserResource {
     //@Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<?> createUser(@RequestBody @Valid ScheduleSysUser managedUserVM, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
-
+        String errorMsg;
         //Lowercase the user login before comparing with database
         if (userRepository.findOneByUsername(managedUserVM.getUsername().toLowerCase()).isPresent()) {
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("userManagement", "userexists",
-                		String.format("Username '%s' already in use", managedUserVM.getUsername())))
-                .body(null);
+            errorMsg = String.format("Username '%s' already in use", managedUserVM.getUsername());
+        	return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("userManagement", "userexists", errorMsg))
+                .body(ErrorVM.builder().message(errorMsg).build());
         } else if (userRepository.findOneByEmailAddress(managedUserVM.getEmailAddress()).isPresent()) {
-            return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert("userManagement", "emailexists",
-                		String.format("Email address '%s' already in use", managedUserVM.getEmailAddress())))
-                .body(null);
+        	errorMsg = String.format("Email address '%s' already in use", managedUserVM.getEmailAddress());
+        	return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert("userManagement", "emailexists", errorMsg))
+                .body(ErrorVM.builder().message(errorMsg).build());
         } else {
         	ScheduleSysUser newUser = userService.createUser(managedUserVM);
         	 String baseUrl = scheduleSysProperties.getUiBaseUrl();

@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 /**
  * View Model for transferring error message with a list of field errors.
  */
 @Data
+@Builder
 @AllArgsConstructor
 public class ErrorVM implements Serializable {
 

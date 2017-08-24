@@ -1,5 +1,7 @@
 package com.ss.schedulesys.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +38,8 @@ public class TestService {
      */
     public Test save(Test test) {
         log.debug("Request to save Test : {}", test);
-        if(testRepository.findByName(test.getName()) != null){
+        Test byNameIgnoreCase = testRepository.findByNameIgnoreCase(test.getName());
+        if(byNameIgnoreCase != null && byNameIgnoreCase.getId() != test.getId()){
         	throw new ScheduleSysException(String.format("Test name '%s' is already in use", test.getName()));
         }
         Test result = testRepository.save(test);
@@ -68,6 +71,19 @@ public class TestService {
         Test test = testRepository.findOne(id);
         return test;
     }
+    
+    /**
+     *  Get one test by name.
+     *
+     *  @param name the name of the entity
+     *  @return the entity
+     */
+    @Transactional(readOnly = true) 
+    public Test findOne(String name) {
+        log.debug("Request to get Test : {}", name);
+        Test test = testRepository.findByNameIgnoreCase(name);
+        return test;
+    }
 
     /**
      *  Delete the  test by id.
@@ -80,6 +96,12 @@ public class TestService {
         	throw new ScheduleSysException("Could not delete test, it has already been taken by employees");
         }
         testRepository.delete(id);
+    }
+    
+    @Transactional(readOnly = true) 
+    public List<Test> search(String query) {
+        log.debug("Request to get Test : {}", query);
+        return testRepository.searchByName(query);
     }
 
 }

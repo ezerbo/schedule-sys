@@ -48,7 +48,8 @@ public class TestSubCategoryService {
         		.map(result -> testRepository.findOne(result.getId()))
         		.orElseThrow(() -> new ScheduleSysException("A valid test is required to create a test subcategory"));
         
-        if(testSubcategoryRepository.findByName(testSubCategory.getName()) != null){
+        TestSubcategory byName = testSubcategoryRepository.findByNameAndTest(testSubCategory.getName(), test);
+		if(byName != null){
         	throw new ScheduleSysException(
         			String.format("Test subcategory name '%s' is already in use", testSubCategory.getName()));
         }

@@ -3,7 +3,6 @@ package com.ss.schedulesys.domain;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -113,11 +112,11 @@ public class ScheduleSysUser implements java.io.Serializable {
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduleSysUser")
-	private Set<Schedule> schedules = new HashSet<Schedule>(0);
+	private Set<Schedule> schedules;
 	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduleSysUser")
-	private Set<ScheduleUpdate> scheduleUpdates = new HashSet<ScheduleUpdate>(0);
+	private Set<ScheduleUpdate> scheduleUpdates;
 	
 	@PrePersist
 	public void onCreate(){

@@ -16,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,7 +35,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(exclude = {"testOccurrences"})
 @EqualsAndHashCode(exclude = {"testOccurrences"})
-@Table(name = "test_subcategory", catalog = "schedulesys_db", uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = "test_subcategory", catalog = "schedulesys_db")
 public class TestSubcategory implements java.io.Serializable {
 
 	
@@ -52,7 +51,7 @@ public class TestSubcategory implements java.io.Serializable {
 	private Test test;
 	
 	@Size(min = 2, max = 45)
-	@Column(name = "name", unique = true, nullable = false, length = 45)
+	@Column(name = "name", nullable = false, length = 45)
 	private String name;
 	
 	@JsonIgnore

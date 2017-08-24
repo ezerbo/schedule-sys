@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.Test;
@@ -112,9 +114,9 @@ public class TestResource {
      * @return the ResponseEntity with status 200 (OK) and with body the test, or with status 404 (Not Found)
      */
     @GetMapping("/tests/{id}")
-    public ResponseEntity<Test> getTest(@PathVariable Long id) {
-        log.debug("REST request to get Test : {}", id);
-        Test test = testService.findOne(id);
+    public ResponseEntity<Test> getTest(@PathVariable String id) {
+        log.info("REST request to get Test : {}", id);
+        Test test = StringUtils.isNumeric(id) ? testService.findOne(Long.parseLong(id)) : testService.findOne(id);
         return Optional.ofNullable(test)
             .map(result -> new ResponseEntity<>(
                 result,
@@ -144,5 +146,16 @@ public class TestResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("test", id.toString())).build();
     }
     
-
+    /**
+     * GET  /tests/search : get tests starting with 'query'
+     *
+     * @param query the query used to retrieve tests
+     * @return the ResponseEntity with status 200 (OK) and with body the test
+     */
+    @GetMapping("/tests/search")
+    public ResponseEntity<List<Test>> search(@RequestParam String query) {
+        log.info("REST request to get Tests : {}", query);
+        List<Test> tests = testService.search(query);
+        return  new ResponseEntity<>(tests, HttpStatus.OK);
+    }
 }
