@@ -22,7 +22,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	@Query("from Schedule s where s.employee.id = :employeeId and s.careCompany.id = :careCompanyId "
 			+ " and s.shiftStartTime = :shiftStartTime and s.shiftEndTime = :shiftEndTime and s.scheduleDate = :scheduleDate")
 	public Schedule find(@Param("employeeId") Long employeeId, @Param("careCompanyId") Long careCompanyId,
-			@Param("scheduleDate") Date scheduleDate, @Param("shiftStartTime") String shiftStartTime, @Param("shiftEndTime") String shiftEndTime);
+			@Param("scheduleDate") Date scheduleDate, @Param("shiftStartTime") Date shiftStartTime, @Param("shiftEndTime") Date shiftEndTime);
 	
 	/**
 	 * @param careCompanyId

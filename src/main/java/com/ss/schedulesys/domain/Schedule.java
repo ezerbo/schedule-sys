@@ -24,6 +24,7 @@ import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ss.schedulesys.config.Constants;
 
@@ -78,17 +79,20 @@ public class Schedule implements java.io.Serializable {
 	@JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_schedule_user"))
 	private ScheduleSysUser scheduleSysUser;
 	
-	@NotBlank
+	@NotNull
+	@JsonFormat(timezone = "America/New_York")
 	@Column(name = "shift_start_time")
-	@Pattern(regexp = Constants.SHIFT_TIME_REGEX, message = "Invalid shift start time")
-	private String shiftStartTime;
-	
-	@NotBlank
-	@Column(name = "shift_end_time")
-	@Pattern(regexp = Constants.SHIFT_TIME_REGEX, message = "Invalid shift end time")
-	private String shiftEndTime;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date shiftStartTime;
 	
 	@NotNull
+	@JsonFormat(timezone = "America/New_York")
+	@Column(name = "shift_end_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date shiftEndTime;
+	
+	@NotNull
+	@JsonFormat(timezone = "America/New_York")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "schedule_date", nullable = false, length = 10)
 	private Date scheduleDate;
@@ -159,12 +163,12 @@ public class Schedule implements java.io.Serializable {
 		return this;
 	}
 	
-	public Schedule shiftStartTime(String shiftTime){
+	public Schedule shiftStartTime(Date shiftTime){
 		this.shiftStartTime = shiftTime;
 		return this;
 	}
 	
-	public Schedule shiftEndTime(String shiftTime){
+	public Schedule shiftEndTime(Date shiftTime){
 		this.shiftEndTime = shiftTime;
 		return this;
 	}

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.Employee;
@@ -144,6 +145,19 @@ public class EmployeeResource {
     	List<Schedule> schedules = scheduleService.findAllByEmployee(id);
     	return (!schedules.isEmpty())
     			? new ResponseEntity<>(schedules, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+    
+    /**
+     * GET  /tests/search : get employees whose names start with 'query'
+     *
+     * @param query the query used to retrieve employees
+     * @return the ResponseEntity with status 200 (OK) and with body the test
+     */
+    @GetMapping("/employees/search")
+    public ResponseEntity<List<Employee>> search(@RequestParam String query) {
+        log.info("REST request to get Employees : {}", query);
+        List<Employee> tests = employeeService.search(query);
+        return  new ResponseEntity<>(tests, HttpStatus.OK);
     }
 	
 }

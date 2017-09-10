@@ -37,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class ScheduleService {
 	
+	private final static String PENDING_STATUS = "PENDING";
+	
 	private EmployeeRepository employeeRepository;
     private ScheduleRepository scheduleRepository;
     private CareCompanyRepository careCompanyRepository;
@@ -131,12 +133,12 @@ public class ScheduleService {
     			.orElseThrow(() -> new ScheduleSysException("A valid care company is required to create a schedule"));
 
     	ScheduleStatus status = Optional.ofNullable(schedule.getScheduleStatus())
-    			.map(result -> scheduleStatusRepository.findOne(result.getId()))
+    			.map(result -> scheduleStatusRepository.findByName(result.getName()))
     			.orElseThrow(() -> new ScheduleSysException("A valid status is required to create a schedule"));
 
     	SchedulePostStatus schedulePostStatus = Optional.ofNullable(schedule.getSchedulePostStatus())
-    			.map(result -> schedulePostStatusRepository.findOne(result.getId()))
-    			.orElse(schedulePostStatusRepository.findByName(ProfileConstants.DEFAULT_SCHEDULE_POST_STATUS));
+    			.map(result -> schedulePostStatusRepository.findByName(result.getName()))
+    			.orElse(schedulePostStatusRepository.findByName(PENDING_STATUS));
     	
     	schedule.careCompany(careCompany).status(status).postStatus(schedulePostStatus);
     	

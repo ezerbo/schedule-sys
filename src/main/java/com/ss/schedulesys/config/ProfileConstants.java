@@ -17,7 +17,4 @@ public class ProfileConstants {
 	 */
 	public final static String LIQUIBASE_PROFILE = "liquibase";
 	
-	
-	
-	public final static String DEFAULT_SCHEDULE_POST_STATUS = "PENDING";
 }

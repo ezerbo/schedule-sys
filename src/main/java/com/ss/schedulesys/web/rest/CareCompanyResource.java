@@ -154,7 +154,7 @@ public class CareCompanyResource {
     @GetMapping("/care-companies/{id}/schedules")
     public ResponseEntity<List<Schedule>> getSchedules(@PathVariable Long id){
     	log.debug("REST request to get schedules for company with id : {}", id);
-    	List<Schedule> schedules = scheduleService.findAllByEmployee(id);
+    	List<Schedule> schedules = scheduleService.findAllByCareCompany(id);
     	return (!schedules.isEmpty())
     			? new ResponseEntity<>(schedules, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

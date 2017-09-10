@@ -1,5 +1,6 @@
 package com.ss.schedulesys.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,12 @@ public class EmployeeService {
 	public void delete(Long id) {
 		log.debug("Request to delete Employee : {}", id);
 	    employeeRepository.delete(id);
+	}
+
+	public List<Employee> search(String query) {
+		log.debug("Request to get Employees with query : {}", query);
+		List<Employee> employees = employeeRepository.searchByFirstAndLastNames(query);
+		return employees;
 	}
 	 
 //	 @Transactional(readOnly = true)

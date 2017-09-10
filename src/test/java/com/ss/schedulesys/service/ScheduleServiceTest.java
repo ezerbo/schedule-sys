@@ -84,8 +84,8 @@ public class ScheduleServiceTest {
 				.scheduleStatus(scheduleStatus)
 				.schedulePostStatus(schedulePostStatus)
 				.scheduleDate(new Date())
-				.shiftStartTime("10:00AM")
-				.shiftEndTime("11:00AM")
+				.shiftStartTime(new Date())
+				.shiftEndTime(new Date())
 				.comment("Comment on schedule")
 				.build();
 		Schedule createdSchedule = scheduleService.save(schedule, user);
