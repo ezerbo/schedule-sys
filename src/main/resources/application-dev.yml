@@ -61,7 +61,6 @@ liquibase:
     contexts: dev
     
 schedule-sys:
-  ui-base-url: http://localhost:8082
   security:
     authentication:
       jwt:
@@ -69,6 +68,13 @@ schedule-sys:
   cors:
     allowed-origins:
       - http://localhost:8082
+      
+logging:
+  level:
+    org:
+     springframework: 
+                   jdbc: 
+                      core: DEBUG
 
 
 

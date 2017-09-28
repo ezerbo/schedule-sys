@@ -12,6 +12,8 @@ import com.ss.schedulesys.domain.Schedule;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 
 	/**
+	 * 	Checks if an employee has a duplicate schedule
+	 * 
 	 * @param employeeId
 	 * @param careCompanyId
 	 * @param scheduleDate
@@ -40,4 +42,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	 */
 	@Query("from Schedule s where s.employee.id = :employeeId")
 	public List<Schedule> findAllByEmployee(@Param("employeeId") Long employeeId);
+	
+
 }

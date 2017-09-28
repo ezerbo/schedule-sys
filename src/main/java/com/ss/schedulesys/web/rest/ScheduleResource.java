@@ -1,6 +1,7 @@
 package com.ss.schedulesys.web.rest;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,12 +22,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.Schedule;
+import com.ss.schedulesys.domain.ScheduleSummary;
 import com.ss.schedulesys.domain.ScheduleSysUser;
-import com.ss.schedulesys.repository.ScheduleSysUserRepository;
 import com.ss.schedulesys.service.ScheduleService;
+import com.ss.schedulesys.service.ScheduleSummaryService;
+import com.ss.schedulesys.service.UserService;
+import com.ss.schedulesys.service.util.SecurityUtil;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
 
@@ -42,13 +47,16 @@ public class ScheduleResource {
         
     private ScheduleService scheduleService;
     //TODO Remove once security feature has been built
-    private ScheduleSysUserRepository userRepository;
+    private UserService userService;
+    private ScheduleSummaryService scheduleSummaryService;
     
     @Autowired
-    public ScheduleResource(ScheduleService scheduleService,
-    		ScheduleSysUserRepository userRepository) {
+    public ScheduleResource(
+    		ScheduleService scheduleService,
+    		UserService userService, ScheduleSummaryService scheduleSummaryService) {
 		this.scheduleService = scheduleService;
-		this.userRepository = userRepository;
+		this.userService = userService;
+		this.scheduleSummaryService = scheduleSummaryService;
 	}
 
     /**
@@ -64,8 +72,7 @@ public class ScheduleResource {
         if (schedule.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("schedule", "idexists", "A new schedule cannot already have an ID")).body(null);
         }
-        //TODO Call security utility and set user authenticated user on schedule
-        ScheduleSysUser user = userRepository.findOne(1l);
+        ScheduleSysUser user = userService.findByUsername(SecurityUtil.getAuthenticatedUser()).get();
         Schedule result = scheduleService.save(schedule, user);
         return ResponseEntity.created(new URI("/api/schedules/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("schedule", result.getId().toString()))
@@ -87,8 +94,7 @@ public class ScheduleResource {
         if (schedule.getId() == null) {
             return createSchedule(schedule);
         }
-        //TODO Call security utility and set user authenticated user on schedule
-        ScheduleSysUser user = userRepository.findOne(1l);
+        ScheduleSysUser user = userService.findByUsername(SecurityUtil.getAuthenticatedUser()).get();
         Schedule result = scheduleService.save(schedule, user);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("schedule", schedule.getId().toString()))
@@ -126,6 +132,13 @@ public class ScheduleResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    
+    @GetMapping("/schedules/summary")
+    public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam Date scheduleDate) {
+        log.info("REST request to get Schedules summary for : {}", scheduleDate);
+        List<ScheduleSummary> schedulesSummary = scheduleSummaryService.getSchedulesSummary(scheduleDate);
+        return new ResponseEntity<>(schedulesSummary, HttpStatus.OK);
     }
 
     /**

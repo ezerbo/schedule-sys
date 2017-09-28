@@ -1,5 +1,6 @@
 package com.ss.schedulesys.service;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.joda.time.DateTime;
@@ -9,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ss.schedulesys.config.ProfileConstants;
 import com.ss.schedulesys.domain.CareCompany;
 import com.ss.schedulesys.domain.Employee;
 import com.ss.schedulesys.domain.Schedule;
@@ -66,7 +66,7 @@ public class ScheduleService {
      */
     public Schedule save(Schedule schedule, ScheduleSysUser user) {
         log.debug("Request to save Schedule : {}", schedule);
-    	if(schedule.getScheduleDate().before(DateUtil.yesterday())){
+    	if(schedule.getScheduleDate().before(DateUtil.yesterday()) && Objects.isNull(schedule.getId())){
 			log.error("Schedule date received is in the past.");
 			throw new ScheduleSysException("The schedule date provided is not valid because it is in the past.");
 		}

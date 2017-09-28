@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ss.schedulesys.domain.Employee;
-import com.ss.schedulesys.domain.Test;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 

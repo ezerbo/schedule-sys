@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.config.Constants;
-import com.ss.schedulesys.config.ScheduleSysProperties;
 import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.repository.ScheduleSysUserRepository;
 import com.ss.schedulesys.service.MailService;
@@ -49,16 +48,13 @@ public class UserResource {
     private UserService userService;
     private ScheduleSysUserRepository userRepository;
     
-    private ScheduleSysProperties scheduleSysProperties;
     
     @Autowired
     public UserResource(ScheduleSysUserRepository userRepository,
-    		MailService mailService, UserService userService,
-    		ScheduleSysProperties scheduleSysProperties) {
+    		MailService mailService, UserService userService) {
     	this.userRepository = userRepository;
     	this.mailService = mailService;
     	this.userService = userService;
-    	this.scheduleSysProperties = scheduleSysProperties;
 	}
 
     /**
@@ -92,7 +88,7 @@ public class UserResource {
                 .body(ErrorVM.builder().message(errorMsg).build());
         } else {
         	ScheduleSysUser newUser = userService.createUser(managedUserVM);
-        	 String baseUrl = scheduleSysProperties.getUiBaseUrl();
+        	 String baseUrl = request.getHeader("Origin");
             mailService.sendActivationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getUsername()))
                 .headers(HeaderUtil.createAlert( "A user is created with identifier " + newUser.getUsername(), newUser.getUsername()))
