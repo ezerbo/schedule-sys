@@ -76,5 +76,9 @@ logging:
                    jdbc: 
                       core: DEBUG
 
-
-
+server: 
+   port: 8443
+   ssl: 
+     key-password: Schedulesys123
+     key-store: classpath:KeyStore.jks
+     key-store-password: Schedulesys123
