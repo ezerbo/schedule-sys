@@ -1,9 +1,9 @@
 package com.ss.schedulesys.service;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -117,7 +117,7 @@ public class ScheduleService {
     private ScheduleUpdate createScheduleUpdate(Schedule schedule, ScheduleSysUser user){
     	log.debug("Creating schedule update log entry, user : {}, schedule : {}", user, schedule);
 		ScheduleUpdate scheduleUpdate = ScheduleUpdate.builder()
-				.schedule(schedule).scheduleSysUser(user).updateDate(new DateTime()).build();
+				.schedule(schedule).scheduleSysUser(user).updateDate(new Date()).build();
 		return scheduleUpdateRepository.save(scheduleUpdate);
     }
     
@@ -155,6 +155,19 @@ public class ScheduleService {
     public Page<Schedule> findAll(Pageable pageable) {
         log.debug("Request to get all Schedules");
         Page<Schedule> result = scheduleRepository.findAll(pageable);
+        return result;
+    }
+    
+    /**
+     *  Get all the schedules.
+     *  
+     *  @param pageable the pagination information
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<Schedule> findAllByDateAndCompanyType(Date scheduleDate, String companyType) {
+        log.debug("Request to get all Shifts schedules on : {}", scheduleDate);
+        List<Schedule> result = scheduleRepository.findAllByDateAndCompanyType(scheduleDate, companyType);
         return result;
     }
     

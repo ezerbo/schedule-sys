@@ -25,11 +25,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ss.schedulesys.config.CompanyTypeConstants;
 import com.ss.schedulesys.domain.Schedule;
 import com.ss.schedulesys.domain.ScheduleSummary;
 import com.ss.schedulesys.domain.ScheduleSysUser;
+import com.ss.schedulesys.domain.ScheduleUpdate;
 import com.ss.schedulesys.service.ScheduleService;
 import com.ss.schedulesys.service.ScheduleSummaryService;
+import com.ss.schedulesys.service.ScheduleUpdateService;
 import com.ss.schedulesys.service.UserService;
 import com.ss.schedulesys.service.util.SecurityUtil;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
@@ -49,14 +52,16 @@ public class ScheduleResource {
     //TODO Remove once security feature has been built
     private UserService userService;
     private ScheduleSummaryService scheduleSummaryService;
+    private ScheduleUpdateService scheduleUpdateService;
     
     @Autowired
     public ScheduleResource(
-    		ScheduleService scheduleService,
-    		UserService userService, ScheduleSummaryService scheduleSummaryService) {
+    		ScheduleService scheduleService, UserService userService,
+    		ScheduleSummaryService scheduleSummaryService, ScheduleUpdateService scheduleUpdateService) {
 		this.scheduleService = scheduleService;
 		this.userService = userService;
 		this.scheduleSummaryService = scheduleSummaryService;
+		this.scheduleUpdateService = scheduleUpdateService;
 	}
 
     /**
@@ -116,6 +121,37 @@ public class ScheduleResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/schedules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    
+    /**
+     * GET  /schedules : get history of changes applied to schedule with provided id.
+     *
+     * @param id id of schedule being looked up
+     * @return the ResponseEntity with status 200 (OK) and the list of schedules in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @GetMapping("/schedules/{id}/audit")
+    public ResponseEntity<List<ScheduleUpdate>> getAllScheduleAudit(@PathVariable Long id)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Schedules");
+        List<ScheduleUpdate> scheduleUpdates = scheduleUpdateService.findByScheduleId(id);
+        return new ResponseEntity<>(scheduleUpdates, HttpStatus.OK);
+    }
+    
+    /**
+     * GET  /schedules : get all the schedules on specific date.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of schedules in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @GetMapping("/schedules/employee-summary")
+    public ResponseEntity<List<Schedule>> getAllSchedules(@RequestParam Date scheduleDate, @RequestParam(required = false) String by)
+        throws URISyntaxException {
+    	// Ignored 'by', Will use it when we need a summary of schedules for private cares
+        log.debug("REST request to get a page of Schedules");
+        List<Schedule> schedules = scheduleService.findAllByDateAndCompanyType(scheduleDate, CompanyTypeConstants.FACILITY);
+        return new ResponseEntity<>(schedules, HttpStatus.OK);
+    }
 
     /**
      * GET  /schedules/:id : get the "id" schedule.
@@ -134,7 +170,7 @@ public class ScheduleResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
     
-    @GetMapping("/schedules/summary")
+    @GetMapping("/schedules/company-summary")
     public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam Date scheduleDate) {
         log.info("REST request to get Schedules summary for : {}", scheduleDate);
         List<ScheduleSummary> schedulesSummary = scheduleSummaryService.getSchedulesSummary(scheduleDate);

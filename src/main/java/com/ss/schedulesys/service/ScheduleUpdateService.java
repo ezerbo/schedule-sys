@@ -1,5 +1,7 @@
 package com.ss.schedulesys.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +34,9 @@ public class ScheduleUpdateService {
 	 * @return
 	 */
 	@Transactional(readOnly = true)
-	public ScheduleUpdate findByScheduleId(Long scheduleId){
+	public List<ScheduleUpdate> findByScheduleId(Long scheduleId){
 		log.debug("Request to get revisions, upates for schedule with id : ", scheduleId);
-		ScheduleUpdate scheduleUpdate = scheduleUpdateRepository.findByScheduleId(scheduleId);
+		List<ScheduleUpdate> scheduleUpdate = scheduleUpdateRepository.findByScheduleId(scheduleId);
 		return scheduleUpdate;
 	}
 }

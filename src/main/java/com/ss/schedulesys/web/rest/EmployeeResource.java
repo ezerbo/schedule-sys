@@ -35,6 +35,7 @@ import com.ss.schedulesys.service.ScheduleService;
 import com.ss.schedulesys.service.TestOccurrenceService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
+import com.ss.schedulesys.web.vm.EmployeeFilter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -107,10 +108,10 @@ public class EmployeeResource {
     }
 	
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getAllEmployees(Pageable pageable)
+    public ResponseEntity<List<Employee>> getAllEmployees(EmployeeFilter filter, Pageable pageable)
         throws URISyntaxException {
-        log.debug("REST request to get a page of Employees");
-        Page<Employee> page = employeeService.findAll(pageable);
+        log.info("REST request to get a page of Employees : {}", filter);
+        Page<Employee> page = employeeService.findAll(filter, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/employees");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

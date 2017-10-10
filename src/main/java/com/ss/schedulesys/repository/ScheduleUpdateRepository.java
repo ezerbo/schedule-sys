@@ -1,6 +1,10 @@
 package com.ss.schedulesys.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.ss.schedulesys.domain.ScheduleUpdate;
 
@@ -10,6 +14,7 @@ import com.ss.schedulesys.domain.ScheduleUpdate;
  */
 public interface ScheduleUpdateRepository extends JpaRepository<ScheduleUpdate, Long> {
 	
-	public ScheduleUpdate findByScheduleId(Long scheduleId);
+	@Query("from ScheduleUpdate su where su.schedule.id = :scheduleId")
+	public List<ScheduleUpdate> findByScheduleId(@Param("scheduleId") Long scheduleId);
 
 }

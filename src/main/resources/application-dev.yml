@@ -18,7 +18,7 @@ management:
             enabled: false # When using the MailService, configure an SMTP server and set this to true
 spring:
     application:
-        name: employee-service
+        name: schedule-sys
     profiles:
         # The commented value for `active` can be replaced with valid spring profiles to load.
         # Otherwise, it will be filled in by maven when building the WAR file
