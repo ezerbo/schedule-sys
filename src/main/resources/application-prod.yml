@@ -1,3 +1,0 @@
-logging:
-  file: schedulesys.log
-  path: ~/schedulesys

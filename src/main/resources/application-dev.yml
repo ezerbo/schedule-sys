@@ -68,6 +68,7 @@ schedule-sys:
   cors:
     allowed-origins:
       - http://localhost:8082
+      - http://schedule-sys.frozenicetest.xyz
       
 logging:
   level:
@@ -75,10 +76,3 @@ logging:
      springframework: 
                    jdbc: 
                       core: DEBUG
-
-server: 
-   port: 8443
-   ssl: 
-     key-password: Schedulesys123
-     key-store: classpath:KeyStore.jks
-     key-store-password: Schedulesys123

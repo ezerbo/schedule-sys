@@ -13,7 +13,7 @@
 	<version>2.0.0-SNAPSHOT</version>
 	<name>ScheduleSys</name>
 	<description>Shifts Scheduling System</description>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<inceptionYear>2017</inceptionYear>
 
