@@ -76,20 +76,20 @@ public class Schedule implements java.io.Serializable {
 	private ScheduleSysUser scheduleSysUser;
 	
 	@NotNull
-	@JsonFormat(timezone = "America/New_York")
+	//@JsonFormat(timezone = "America/New_York")
 	@Column(name = "shift_start_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date shiftStartTime;
 	
 	@NotNull
-	@JsonFormat(timezone = "America/New_York")
+	//@JsonFormat(timezone = "America/New_York")
 	@Column(name = "shift_end_time")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date shiftEndTime;
 	
 	@NotNull
-	@JsonFormat(timezone = "America/New_York")
-	@Temporal(TemporalType.DATE)
+	//@JsonFormat(timezone = "America/New_York")
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "schedule_date", nullable = false, length = 10)
 	private Date scheduleDate;
 	

@@ -95,9 +95,10 @@ public class ScheduleService {
     	if(schedule.getId() == null){//New schedule being created
     		schedule.scheduleSysUser(user);
     	}else{//Schedule being updated
-    		log.info("Creating update record");
     		Schedule oldSchedule = scheduleRepository.findOne(schedule.getId());
-    		schedule = oldSchedule.billed(schedule.getBilled()).comment(schedule.getComment())
+    		schedule = oldSchedule.billed(schedule.getBilled())
+    						.status(schedule.getScheduleStatus()).postStatus(schedule.getSchedulePostStatus())
+    						.paid(schedule.getPaid()).comment(schedule.getComment())
     						.overtime(schedule.getOvertime()).timeSheetReceived(schedule.getTimeSheetReceived())
     						.hoursWorked(schedule.getHoursWorked()).shiftStartTime(schedule.getShiftStartTime())
     						.shiftEndTime(schedule.getShiftEndTime()).scheduleDate(schedule.getScheduleDate());

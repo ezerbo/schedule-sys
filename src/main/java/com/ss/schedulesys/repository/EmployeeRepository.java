@@ -11,6 +11,6 @@ import com.ss.schedulesys.domain.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long>,  JpaSpecificationExecutor<Employee> {
 
-	@Query("from Employee e where lower(e.firstName) like lower(concat('%', :query, '%')) or lower(e.lastName) like lower(concat('%', :query, '%'))")
+	@Query("from Employee e where lower(concat(e.firstName, ' ', e.lastName)) like lower(concat('%', :query, '%'))")
 	public List<Employee> searchByFirstAndLastNames(@Param("query") String query);
 }
