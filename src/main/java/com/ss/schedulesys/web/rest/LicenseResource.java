@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.License;
+import com.ss.schedulesys.service.EmployeeService;
 import com.ss.schedulesys.service.LicenseService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
@@ -39,10 +40,13 @@ public class LicenseResource {
 
         
     private LicenseService licenseService;
+    private EmployeeService employeeService;
     
-    @Autowired
-    public LicenseResource(LicenseService licenseService) {
+    
+    //@Autowired
+    public LicenseResource(LicenseService licenseService, EmployeeService employeeService) {
     	this.licenseService = licenseService;
+    	this.employeeService = employeeService;
 	}
 
     /**
@@ -54,10 +58,11 @@ public class LicenseResource {
      */
     @PostMapping("/licenses")
     public ResponseEntity<License> createLicense(@Valid @RequestBody License license) throws URISyntaxException {
-        log.debug("REST request to save License : {}", license);
+        log.info("REST request to save License : {}", license);
         if (license.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("license", "idexists", "A new license cannot already have an ID")).body(null);
         }
+        employeeService.save(license.getEmployee());
         License result = licenseService.save(license);
         return ResponseEntity.created(new URI("/api/licenses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("license", result.getId().toString()))
@@ -79,6 +84,7 @@ public class LicenseResource {
         if (license.getId() == null) {
             return createLicense(license);
         }
+        employeeService.save(license.getEmployee());
         License result = licenseService.save(license);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("license", license.getId().toString()))

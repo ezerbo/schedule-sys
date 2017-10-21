@@ -35,7 +35,7 @@ import com.ss.schedulesys.service.ScheduleService;
 import com.ss.schedulesys.service.TestOccurrenceService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
-import com.ss.schedulesys.web.vm.EmployeeFilter;
+import com.ss.schedulesys.web.vm.EmployeeFilterModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -68,7 +68,7 @@ public class EmployeeResource {
 			return ResponseEntity.badRequest().headers(
 					HeaderUtil.createFailureAlert("employee", "idexists", "A new employee cannot already have an ID")).body(null);
 		}
-		Employee result = employeeService.create(employee);
+		Employee result = employeeService.save(employee);
 		return ResponseEntity.created(new URI("/api/employees/" + result.getId()))
 				.headers(HeaderUtil.createEntityCreationAlert("employee", result.getId().toString()))
 				.body(result);
@@ -80,7 +80,7 @@ public class EmployeeResource {
 		if(employee.getId() == null){
 			return createEmployee(employee);
 		}
-		Employee result = employeeService.create(employee);
+		Employee result = employeeService.save(employee);
 		return ResponseEntity.ok()
 				.headers(HeaderUtil.createEntityUpdateAlert("employee", employee.getId().toString()))
 				.body(result);
@@ -108,7 +108,7 @@ public class EmployeeResource {
     }
 	
     @GetMapping("/employees")
-    public ResponseEntity<List<Employee>> getAllEmployees(EmployeeFilter filter, Pageable pageable)
+    public ResponseEntity<List<Employee>> getAllEmployees(EmployeeFilterModel filter, Pageable pageable)
         throws URISyntaxException {
         log.info("REST request to get a page of Employees : {}", filter);
         Page<Employee> page = employeeService.findAll(filter, pageable);

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeFilter {
+public class EmployeeFilterModel {
 	private String firstName;
 	private String lastName;
 	private String positionName;

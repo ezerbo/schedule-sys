@@ -20,7 +20,7 @@ import com.ss.schedulesys.repository.EmployeeRepository;
 import com.ss.schedulesys.repository.EmployeeTypeRepository;
 import com.ss.schedulesys.repository.PositionRepository;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
-import com.ss.schedulesys.web.vm.EmployeeFilter;
+import com.ss.schedulesys.web.vm.EmployeeFilterModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,7 +41,7 @@ public class EmployeeService {
 		this.employeeTypeRepository = employeeTypeRepository;
 	}
 	
-	public Employee create(Employee employee){
+	public Employee save(Employee employee){
 		log.info("Saving employee : {}", employee);
 		EmployeeType employeeType = Optional.ofNullable(employee.getEmployeeType())
 			.map(result -> employeeTypeRepository.findByName(result.getName()))
@@ -58,7 +58,7 @@ public class EmployeeService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<Employee> findAll(EmployeeFilter filter, Pageable pageable){
+	public Page<Employee> findAll(EmployeeFilterModel filter, Pageable pageable){
 		log.debug("Getting all employees : {}");
 		List<SearchCriteria> criterias = new LinkedList<>();
 		if(filter.getFirstName() != null)
@@ -69,7 +69,6 @@ public class EmployeeService {
 			criterias.add(new SearchCriteria("employeeType", ":", filter.getEmployeeTypeName()));
 		if(filter.getPositionName() != null)
 			criterias.add(new SearchCriteria("position", ":", filter.getPositionName()));
-		
 		Page<Employee> employees = null;
 		if(criterias.isEmpty()){
 			employees = employeeRepository.findAll(pageable);
