@@ -52,6 +52,10 @@ public class CareCompany implements java.io.Serializable {
 	@JoinColumn(name = "type_id", nullable = false, foreignKey = @ForeignKey(name = "fk_carecompany_type"))
 	private CareCompanyType careCompanyType;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "insurance_company_id", foreignKey = @ForeignKey(name = "fk_carecompany_insurance"))
+	private InsuranceCompany insuranceCompany;
+	
 	@Size(min = 2, max = 50)
 	@Column(name = "name", unique = true, nullable = false, length = 50)
 	private String name;
@@ -75,5 +79,15 @@ public class CareCompany implements java.io.Serializable {
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "careCompany")
 	private Set<Schedule> schedules = new HashSet<Schedule>(0);
+	
+	public CareCompany careCompanyType(CareCompanyType careCompanyType) {
+		this.careCompanyType = careCompanyType;
+		return this;
+	}
+	
+	public CareCompany insuranceCompany(InsuranceCompany insuranceCompany) {
+		this.insuranceCompany = insuranceCompany;
+		return this;
+	}
 
 }

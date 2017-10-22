@@ -1,6 +1,5 @@
 package com.ss.schedulesys.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -8,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ss.schedulesys.domain.CareCompany;
 import com.ss.schedulesys.domain.CareCompanyType;
+import com.ss.schedulesys.domain.InsuranceCompany;
 import com.ss.schedulesys.repository.CareCompanyRepository;
 import com.ss.schedulesys.repository.CareCompanyTypeRepository;
+import com.ss.schedulesys.repository.InsuranceCompanyRepository;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,13 +25,14 @@ public class CareCompanyService {
 
     private CareCompanyRepository careCompanyRepository;
     private CareCompanyTypeRepository careCompanyTypeRepository;
+    private InsuranceCompanyRepository insuranceCompanyRepository;
 
-    @Autowired
     public CareCompanyService(CareCompanyRepository careCompanyRepository,
-    		CareCompanyTypeRepository careCompanyTypeRepository) {
+    		CareCompanyTypeRepository careCompanyTypeRepository, InsuranceCompanyRepository insuranceCompanyRepository) {
     	this.careCompanyRepository = careCompanyRepository;
     	this.careCompanyTypeRepository = careCompanyTypeRepository;
-    }
+    	this.insuranceCompanyRepository = insuranceCompanyRepository;
+    }	
     
     /**
      * Save a careCompany.
@@ -51,7 +53,16 @@ public class CareCompanyService {
         	throw new ScheduleSysException("A company type is required");
         }
         log.info("Care company type : {}", careCompanyType);
-        careCompany.setCareCompanyType(careCompanyType);
+        InsuranceCompany insuranceCompany = null;
+        if(careCompany.getInsuranceCompany() != null) {
+        	String companyName = careCompany.getInsuranceCompany().getName();
+        	InsuranceCompany company = insuranceCompanyRepository.findByName(companyName);
+        	if(company == null) {
+        		throw new ScheduleSysException(String.format("No such insurance company : %s", companyName));
+        	}
+        	insuranceCompany = company;
+        }
+        careCompany.careCompanyType(careCompanyType).insuranceCompany(insuranceCompany);
         CareCompany result = careCompanyRepository.save(careCompany);
         return result;
     }

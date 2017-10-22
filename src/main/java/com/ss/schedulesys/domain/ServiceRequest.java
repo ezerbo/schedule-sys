@@ -39,11 +39,11 @@ public class ServiceRequest implements java.io.Serializable {
 	
 	@NotNull
 	@Column(name = "phone_number", nullable = false)
-	private String phone_number;
+	private String phoneNumber;
 	
 	@Email
 	@Column(name = "email_address", nullable = false)
-	private String email_address;
+	private String emailAddress;
 	
 	@Column(name = "ccc")
 	private boolean ccc;
@@ -90,27 +90,27 @@ public class ServiceRequest implements java.io.Serializable {
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_date", nullable = false)
-	private Date start_date;
+	private Date startDate;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "end_date", nullable = false)
-	private Date end_date;
+	private Date endDate;
 	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_time", nullable = false)
-	private Date start_time;
+	private Date startTime;
 	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "end_time", nullable = false)
-	private Date end_time;
+	private Date endTime;
 	
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "request_date", nullable = false)
-	private Date request_date;
+	private Date requestDate;
 	
 	@Column(name = "comment")
 	private String comment;

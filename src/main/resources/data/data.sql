@@ -161,30 +161,39 @@ insert into schedulesys_db.care_company_type(id, name) values (1, 'Facility');
 insert into schedulesys_db.care_company_type(id, name) values (2, 'Private care');
 
 
+/*==============================================================*/
+/* 					table: service_request	                    */
+/*==============================================================*/
+
+insert into schedulesys_db.insurance_company(id, name) values (01, 'Horizon');
+insert into schedulesys_db.insurance_company(id, name) values (02, 'Veteran');
+insert into schedulesys_db.insurance_company(id, name) values (03, 'Private');
+
+
 /*------------------------------------------------------------------*/
 /* 						table: care_company                         */
 /*------------------------------------------------------------------*/
 
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(01, 'Sunnyside'               , '7080 Samuel Morse Dr' , '9081899371', '9839838888', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(02, 'Brandywine'              , '650 S Exeter'         , '9081899322', '9839834444', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(03, 'Moutmouth'               , '442 Ridge Rd'         , '9081899113', '9839832222', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(04, 'Burnside'                , '1057 SIMPSON AVENUE'  , '9081899374', '9839838888', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(05, 'Bedford'                 , '229W 34TH STREET'     , '9081899325', '9839834444', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(06, 'Woodlawn'                , '834 East 155TH STREET', '9081899116', '9839832222', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(07, 'Beltville'               , '1138 MANOR AVENUE'    , '9081899377', '9839838888', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(08, 'Silver Spring'           , '1173 FULTON STREET'   , '9081899328', '9839834444', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(09, 'Jackson'                 , '15E 199TH STREET'     , '9081899119', '9839832222', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(10, 'Simpson'                 , '1075 GERARD AVENUE'   , '9081899110', '9839832222', 1);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(11, 'A Caring Hand'           , '7080 Samuel Morse Dr' , '9081899371', '9839838888', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(12, 'A Life Saver Home Care'  , '650 S Exeter'         , '9081899322', '9839834444', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(13, 'Age & The City Home Care', '442 Ridge Rd'         , '9081899113', '9839832222', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(14, 'All Care Hospice'        , '1057 SIMPSON AVENUE'  , '9081899374', '9839838888', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(15, 'Always Here Home Care'   , '229W 34TH STREET'     , '9081899325', '9839834444', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(16, 'Best Choice Home Care'   , '834 East 155TH STREET', '9081899116', '9839832222', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(17, 'Big Hearts Home Care'    , '1138 MANOR AVENUE'    , '9081899377', '9839838888', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(18, 'Cameo Caregivers'        , '1173 FULTON STREET'   , '9081899328', '9839834444', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(19, 'Caring Professionals'    , '15E 199TH STREET'     , '9081899119', '9839832222', 2);
-insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id) values(20,'Center Light Care'        , '1075 GERARD AVENUE'   , '9081899110', '9839832222', 2);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(01, 'Sunnyside'               , '7080 Samuel Morse Dr' , '9081899371', '9839838888', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(02, 'Brandywine'              , '650 S Exeter'         , '9081899322', '9839834444', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(03, 'Moutmouth'               , '442 Ridge Rd'         , '9081899113', '9839832222', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(04, 'Burnside'                , '1057 SIMPSON AVENUE'  , '9081899374', '9839838888', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(05, 'Bedford'                 , '229W 34TH STREET'     , '9081899325', '9839834444', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(06, 'Woodlawn'                , '834 East 155TH STREET', '9081899116', '9839832222', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(07, 'Beltville'               , '1138 MANOR AVENUE'    , '9081899377', '9839838888', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(08, 'Silver Spring'           , '1173 FULTON STREET'   , '9081899328', '9839834444', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(09, 'Jackson'                 , '15E 199TH STREET'     , '9081899119', '9839832222', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(10, 'Simpson'                 , '1075 GERARD AVENUE'   , '9081899110', '9839832222', 1, null);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(11, 'A Caring Hand'           , '7080 Samuel Morse Dr' , '9081899371', '9839838888', 2, 1);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(12, 'A Life Saver Home Care'  , '650 S Exeter'         , '9081899322', '9839834444', 2, 2);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(13, 'Age & The City Home Care', '442 Ridge Rd'         , '9081899113', '9839832222', 2, 3);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(14, 'All Care Hospice'        , '1057 SIMPSON AVENUE'  , '9081899374', '9839838888', 2, 1);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(15, 'Always Here Home Care'   , '229W 34TH STREET'     , '9081899325', '9839834444', 2, 2);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(16, 'Best Choice Home Care'   , '834 East 155TH STREET', '9081899116', '9839832222', 2, 3);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(17, 'Big Hearts Home Care'    , '1138 MANOR AVENUE'    , '9081899377', '9839838888', 2, 1);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(18, 'Cameo Caregivers'        , '1173 FULTON STREET'   , '9081899328', '9839834444', 2, 2);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(19, 'Caring Professionals'    , '15E 199TH STREET'     , '9081899119', '9839832222', 2, 3);
+insert into schedulesys_db.care_company (id, name, address, phone_number, fax, type_id, insurance_company_id) values(20,'Center Light Care'        , '1075 GERARD AVENUE'   , '9081899110', '9839832222', 2, 1);
 
 
 /*--------------------------------------------------------------*/
@@ -393,6 +402,7 @@ insert into schedulesys_db.schedule_update (schedule_id, user_id, update_date) v
 /*==============================================================*/
 /* 					table: service_request	                    */
 /*==============================================================*/
+
 insert into schedulesys_db.service_request (id, name, phone_number, email_address, ccc, lis, bad, aw, lh, mp, laundry, se, mr, lt, ccg, ae, cpp, prlc, start_date, end_date, start_time, end_time, request_date, comment) values(01, 'zengutsu-01', '5678767601', 'abhinavsudam-01@gmail.com', false, false, false, false, false, false, false, false, false, false, false, false, false, false, current_date(), dateadd('DAY', 1, current_date()), current_timestamp(), timestampadd('HOUR', 5, current_timestamp()), current_date(), 'comment-01');
 insert into schedulesys_db.service_request (id, name, phone_number, email_address, ccc, lis, bad, aw, lh, mp, laundry, se, mr, lt, ccg, ae, cpp, prlc, start_date, end_date, start_time, end_time, request_date, comment) values(02, 'zengutsu-02', '5678767602', 'abhinavsudam-02@gmail.com', false, false, false, false, false, false, false, false, false, false, false, false, false, false, current_date(), dateadd('DAY', 1, current_date()), current_timestamp(), timestampadd('HOUR', 5, current_timestamp()), current_date(), 'comment-02');
 insert into schedulesys_db.service_request (id, name, phone_number, email_address, ccc, lis, bad, aw, lh, mp, laundry, se, mr, lt, ccg, ae, cpp, prlc, start_date, end_date, start_time, end_time, request_date, comment) values(03, 'zengutsu-03', '5678767603', 'abhinavsudam-03@gmail.com', false, false, false, false, false, false, false, false, false, false, false, false, false, false, current_date(), dateadd('DAY', 1, current_date()), current_timestamp(), timestampadd('HOUR', 5, current_timestamp()), current_date(), 'comment-03');
