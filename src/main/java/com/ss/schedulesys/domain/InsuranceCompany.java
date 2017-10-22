@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -45,4 +46,11 @@ public class InsuranceCompany implements java.io.Serializable {
 	@JsonIgnore
 	@OneToMany(mappedBy = "insuranceCompany")
 	private Set<CareCompany> careCompanies = new HashSet<CareCompany>(0);
+	
+	@PreRemove
+	public void onRemove(){
+		for(CareCompany careCompany : careCompanies) {
+			careCompany.setInsuranceCompany(null);
+		}
+	}
 }

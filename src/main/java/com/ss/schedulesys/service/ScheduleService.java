@@ -66,10 +66,10 @@ public class ScheduleService {
      */
     public Schedule save(Schedule schedule, ScheduleSysUser user) {
         log.debug("Request to save Schedule : {}", schedule);
-    	if(schedule.getScheduleDate().before(DateUtil.yesterday()) && Objects.isNull(schedule.getId())){
-			log.error("Schedule date received is in the past.");
-			throw new ScheduleSysException("The schedule date provided is not valid because it is in the past.");
-		}
+//    	if(schedule.getScheduleDate().before(DateUtil.yesterday()) && Objects.isNull(schedule.getId())){
+//			log.error("Schedule date received is in the past.");
+//			throw new ScheduleSysException("The schedule date provided is not valid because it is in the past.");
+//		}
     	
     	schedule = validateStatusesAndCareCompany(schedule);
     	

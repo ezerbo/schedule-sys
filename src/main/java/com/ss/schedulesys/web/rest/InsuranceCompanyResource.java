@@ -7,9 +7,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,10 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.InsuranceCompany;
-import com.ss.schedulesys.domain.License;
 import com.ss.schedulesys.service.InsuranceCompanyService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
-import com.ss.schedulesys.web.rest.util.PaginationUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -64,7 +59,7 @@ public class InsuranceCompanyResource {
      *
      * @param insucanceCompany the insurance company to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated insurance company,
-     * or with status 400 (Bad Request) if the license is not valid,
+     * or with status 400 (Bad Request) if the insurance company is not valid,
      * or with status 500 (Internal Server Error) if the insurance company couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
@@ -83,44 +78,42 @@ public class InsuranceCompanyResource {
     /**
      * GET  /insurance-companies : get all the insurance-companies.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of insurance-companies in body
-     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    /*@GetMapping("/insurance-companies")
+    @GetMapping("/insurance-companies")
     public ResponseEntity<List<InsuranceCompany>> getAll(){
         log.debug("REST request to get a page of InsuranceCompanies");
         List<InsuranceCompany> insuranceCompanies = insuranceCompanyService.findAll();
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }*/
+        return new ResponseEntity<>(insuranceCompanies, HttpStatus.OK);
+    }
 
     /**
-     * GET  /licenses/:id : get the "id" license.
+     * GET  /insurance-companies/:id : get the "id" insurance companies.
      *
-     * @param id the id of the license to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the license, or with status 404 (Not Found)
+     * @param id the id of the insurance company to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the insurance, or with status 404 (Not Found)
      */
-  /*  @GetMapping("/licenses/{id}")
-    public ResponseEntity<License> getLicense(@PathVariable Long id) {
-        log.debug("REST request to get License : {}", id);
-        License license = licenseService.findOne(id);
-        return Optional.ofNullable(license)
+    @GetMapping("/insurance-companies/{id}")
+    public ResponseEntity<InsuranceCompany> get(@PathVariable Long id) {
+        log.debug("REST request to get InsuranceCompany : {}", id);
+        InsuranceCompany insuranceCompany = insuranceCompanyService.findOne(id);
+        return Optional.ofNullable(insuranceCompany)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
+    }
 
     /**
-     * DELETE  /licenses/:id : delete the "id" license.
+     * DELETE  /insurance-companies/:id : delete the "id" insurance company.
      *
-     * @param id the id of the license to delete
+     * @param id the id of the insurabce company to delete
      * @return the ResponseEntity with status 200 (OK)
      */
-    /*@DeleteMapping("/licenses/{id}")
-    public ResponseEntity<Void> deleteLicense(@PathVariable Long id) {
-        log.debug("REST request to delete License : {}", id);
-        licenseService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("license", id.toString())).build();
-    }*/
+    @DeleteMapping("/insurance-companies/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.debug("REST request to delete InsuranceCompany : {}", id);
+        insuranceCompanyService.delete(id);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("insuranceCompany", id.toString())).build();
+    }
 }
