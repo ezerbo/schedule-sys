@@ -1,10 +1,8 @@
 package com.ss.schedulesys.service;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +22,6 @@ import com.ss.schedulesys.repository.ScheduleRepository;
 import com.ss.schedulesys.repository.ScheduleStatusRepository;
 import com.ss.schedulesys.repository.ScheduleUpdateRepository;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
-import com.ss.schedulesys.service.util.DateUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,7 +43,6 @@ public class ScheduleService {
     private SchedulePostStatusRepository schedulePostStatusRepository;
     private ScheduleUpdateRepository scheduleUpdateRepository;
     
-    @Autowired
     public ScheduleService(ScheduleRepository scheduleRepository, CareCompanyRepository careCompanyRepository,
     		ScheduleStatusRepository scheduleStatusRepository, SchedulePostStatusRepository schedulePostStatusRepository,
     		EmployeeRepository employeeRepository, ScheduleUpdateRepository scheduleUpdateRepository) {
@@ -66,10 +62,6 @@ public class ScheduleService {
      */
     public Schedule save(Schedule schedule, ScheduleSysUser user) {
         log.debug("Request to save Schedule : {}", schedule);
-//    	if(schedule.getScheduleDate().before(DateUtil.yesterday()) && Objects.isNull(schedule.getId())){
-//			log.error("Schedule date received is in the past.");
-//			throw new ScheduleSysException("The schedule date provided is not valid because it is in the past.");
-//		}
     	
     	schedule = validateStatusesAndCareCompany(schedule);
     	

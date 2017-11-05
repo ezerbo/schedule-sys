@@ -57,7 +57,7 @@ public class CareCompanyService {
         if(careCompany.getInsuranceCompany() != null) {
         	String companyName = careCompany.getInsuranceCompany().getName();
         	InsuranceCompany company = insuranceCompanyRepository.findByName(companyName);
-        	if(company == null) {
+        	if(company == null && companyName != null) {
         		throw new ScheduleSysException(String.format("No such insurance company : %s", companyName));
         	}
         	insuranceCompany = company;
