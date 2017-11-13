@@ -158,7 +158,7 @@ insert into schedulesys_db.phone_number (id, number, type, label, employee_id) v
 /*------------------------------------------------------------------*/
 
 insert into schedulesys_db.care_company_type(id, name) values (1, 'Facility');
-insert into schedulesys_db.care_company_type(id, name) values (2, 'Private care');
+insert into schedulesys_db.care_company_type(id, name) values (2, 'Client');
 
 
 /*==============================================================*/

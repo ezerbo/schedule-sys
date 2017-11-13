@@ -1,17 +1,24 @@
 package com.ss.schedulesys.service;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ss.schedulesys.domain.CareCompany;
 import com.ss.schedulesys.domain.CareCompanyType;
 import com.ss.schedulesys.domain.InsuranceCompany;
+import com.ss.schedulesys.domain.SearchCriteria;
+import com.ss.schedulesys.domain.specification.CareCompanySpecification;
 import com.ss.schedulesys.repository.CareCompanyRepository;
 import com.ss.schedulesys.repository.CareCompanyTypeRepository;
 import com.ss.schedulesys.repository.InsuranceCompanyRepository;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
+import com.ss.schedulesys.web.vm.CareCompanyFilterModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,10 +81,30 @@ public class CareCompanyService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true) 
-    public Page<CareCompany> findAll(Pageable pageable) {
+    public Page<CareCompany> findAll(CareCompanyFilterModel filter, Pageable pageable) {
         log.debug("Request to get all CareCompanies");
-        Page<CareCompany> result = careCompanyRepository.findAll(pageable);
-        return result;
+		List<SearchCriteria> criterias = new LinkedList<>();
+		if(filter.getName() != null)
+			criterias.add(new SearchCriteria("name", ":", filter.getName()));
+		if(filter.getTypeName() != null)
+			criterias.add(new SearchCriteria("careCompanyType", ":", filter.getTypeName()));
+		Page<CareCompany> careCompanies = null;
+		if(criterias.isEmpty()){
+			careCompanies = careCompanyRepository.findAll(pageable);
+		}else{
+			Specifications<CareCompany> specifications = null;
+			for (int i = 0; i < criterias.size(); i++) {
+				if(i == 0) {
+					specifications = Specifications.where(new CareCompanySpecification(criterias.get(0)));
+				} else {
+					specifications.and(new CareCompanySpecification(criterias.get(i)));
+				}
+			}
+			careCompanies = careCompanyRepository.findAll(specifications, pageable);
+		}
+		
+		return careCompanies;
+       
     }
 
     /**

@@ -31,6 +31,7 @@ import com.ss.schedulesys.service.CompanyContactService;
 import com.ss.schedulesys.service.ScheduleService;
 import com.ss.schedulesys.web.rest.util.HeaderUtil;
 import com.ss.schedulesys.web.rest.util.PaginationUtil;
+import com.ss.schedulesys.web.vm.CareCompanyFilterModel;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -102,10 +103,10 @@ public class CareCompanyResource {
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @GetMapping("/care-companies")
-    public ResponseEntity<List<CareCompany>> getAllCareCompanies(Pageable pageable)
+    public ResponseEntity<List<CareCompany>> getAllCareCompanies(CareCompanyFilterModel filter, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of CareCompanies");
-        Page<CareCompany> page = careCompanyService.findAll(pageable);
+        Page<CareCompany> page = careCompanyService.findAll(filter, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/care-companies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
