@@ -60,4 +60,14 @@ public class License implements java.io.Serializable {
 	public void setNumber(String number){
 		this.number = number;
 	}
+	
+	public License employee(Employee employee) {
+		this.employee = employee;
+		return this;
+	}
+	
+	public License licenseType(LicenseType licenseType) {
+		this.licenseType = licenseType;
+		return this;
+	}
 }

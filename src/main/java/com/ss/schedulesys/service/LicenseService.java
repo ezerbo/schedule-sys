@@ -1,5 +1,6 @@
 package com.ss.schedulesys.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +60,11 @@ public class LicenseService {
         if(byNumberAndType != null && byNumberAndType.getId() != license.getId()){
         	throw new ScheduleSysException(String.format("License number %s is already in use", license.getNumber()));
         }
-        license.setEmployee(employee);
-        license.setLicenseType(licenseType);
+        if(license.getExpiryDate().before(new Date())) {
+        	log.error("License expiration date is in the past");
+        	throw new ScheduleSysException("License expiration date must be in the future");
+        }
+        license.employee(employee).licenseType(licenseType);
         License result = licenseRepository.save(license);
         return result;
     }

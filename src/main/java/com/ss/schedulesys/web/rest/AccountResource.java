@@ -95,8 +95,8 @@ public class AccountResource {
             .map(user -> {
             	 String baseUrl = request.getHeader("Origin");
                 mailService.sendPasswordResetMail(user, baseUrl);
-                return new ResponseEntity<>("e-mail was sent", HttpStatus.OK);
-            }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));
+                return new ResponseEntity<>(HttpStatus.OK);
+            }).orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     /**
@@ -106,13 +106,13 @@ public class AccountResource {
      * @return the ResponseEntity with status 200 (OK) if the password has been reset,
      * or status 400 (Bad Request) or 500 (Internal Server Error) if the password could not be reset
      */
-    @PostMapping(path = "/account/reset_password/finish", produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
+    @PostMapping(path = "/account/reset_password/finish")
+    public ResponseEntity<?> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (!checkPasswordLength(keyAndPassword.getPassword())) {
             return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
         }
         return userService.completePasswordReset(keyAndPassword.getPassword(), keyAndPassword.getKey())
-              .map(user -> new ResponseEntity<String>(HttpStatus.OK))
+              .map(user -> new ResponseEntity<>(HttpStatus.OK))
               .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
