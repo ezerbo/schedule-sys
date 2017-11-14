@@ -26,13 +26,20 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<name>Abhinav SUDAM</name>
+			<email>abhinavsudam1@gmail.com</email>
+			<organization>Frozen Ice</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<properties>
 		<java.version>1.8</java.version>
 		<jackson.version>2.6.7</jackson.version>
 		<io.springfox.swagger-version>2.6.1</io.springfox.swagger-version>
-		<net.sf.dozer-version>5.5.1</net.sf.dozer-version>
 		<spring-boot-admin-server-version>1.4.5</spring-boot-admin-server-version>
 		<org.jadira.usertype-version>5.0.0.GA</org.jadira.usertype-version>
 		<io.jsonwebtoken-version>0.6.0</io.jsonwebtoken-version>
@@ -158,18 +165,6 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>net.sf.dozer</groupId>
-			<artifactId>dozer</artifactId>
-			<version>${net.sf.dozer-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.hawt</groupId>
-			<artifactId>hawtio-springboot</artifactId>
-			<version>1.5.1</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -179,10 +174,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>net.sourceforge.htmlunit</groupId>
-			<artifactId>htmlunit</artifactId>
 		</dependency>
 	</dependencies>
 

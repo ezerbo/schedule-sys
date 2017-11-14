@@ -6,13 +6,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 import com.ss.schedulesys.config.ScheduleSysProperties;
 
-import io.hawt.springboot.EnableHawtio;
-
 /**
  * @author ezerbo
  *
  */
-@EnableHawtio
 @SpringBootApplication
 @EnableConfigurationProperties(value = {ScheduleSysProperties.class})
 public class ScheduleSysApp {
