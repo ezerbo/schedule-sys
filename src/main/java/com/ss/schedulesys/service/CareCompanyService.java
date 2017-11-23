@@ -63,11 +63,10 @@ public class CareCompanyService {
         InsuranceCompany insuranceCompany = null;
         if(careCompany.getInsuranceCompany() != null) {
         	String companyName = careCompany.getInsuranceCompany().getName();
-        	InsuranceCompany company = insuranceCompanyRepository.findByName(companyName);
-        	if(company == null && companyName != null) {
-        		throw new ScheduleSysException(String.format("No such insurance company : %s", companyName));
+        	insuranceCompany = insuranceCompanyRepository.findByName(companyName);
+        	if(insuranceCompany == null) {
+        		log.warn("No such insurance company : {}, no insurance company will be set", companyName);
         	}
-        	insuranceCompany = company;
         }
         careCompany.careCompanyType(careCompanyType).insuranceCompany(insuranceCompany);
         CareCompany result = careCompanyRepository.save(careCompany);
