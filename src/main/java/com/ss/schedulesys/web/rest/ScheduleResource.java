@@ -171,7 +171,7 @@ public class ScheduleResource {
     }
     
     @GetMapping("/schedules/company-summary")
-    public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam Date scheduleDate) {
+    public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam Date scheduleDate) throws Exception {
         log.info("REST request to get Schedules summary for : {}", scheduleDate);
         List<ScheduleSummary> schedulesSummary = scheduleSummaryService.getSchedulesSummary(scheduleDate);
         return new ResponseEntity<>(schedulesSummary, HttpStatus.OK);

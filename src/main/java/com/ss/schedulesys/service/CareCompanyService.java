@@ -87,6 +87,9 @@ public class CareCompanyService {
 			criterias.add(new SearchCriteria("name", ":", filter.getName()));
 		if(filter.getTypeName() != null)
 			criterias.add(new SearchCriteria("careCompanyType", ":", filter.getTypeName()));
+		if(filter.getInsuranceName() != null)
+			criterias.add(new SearchCriteria("insuranceCompany", ":", filter.getInsuranceName()));
+		
 		Page<CareCompany> careCompanies = null;
 		if(criterias.isEmpty()){
 			careCompanies = careCompanyRepository.findAll(pageable);

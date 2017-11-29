@@ -22,7 +22,7 @@ public class ScheduleSummaryService {
 		this.scheduleSummaryRepository = scheduleSummaryRepository;
 	}
 	
-	public List<ScheduleSummary> getSchedulesSummary(Date scheduleDate) {
+	public List<ScheduleSummary> getSchedulesSummary(Date scheduleDate) throws Exception {
 		log.debug("Getting schedules summary for : {}", scheduleDate);
 		return scheduleSummaryRepository.getSchedulesSummary(scheduleDate);
 	}

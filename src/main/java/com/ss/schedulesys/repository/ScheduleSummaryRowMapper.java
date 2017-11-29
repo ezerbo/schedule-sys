@@ -16,6 +16,7 @@ public class ScheduleSummaryRowMapper implements RowMapper<ScheduleSummary> {
 				.careCompanyName(result.getString("care_company_name"))
 				.careCompanyType(result.getString("care_company_type_name"))
 				.shiftsScheduled(result.getLong("shifts_count"))
+				.scheduleDate(result.getDate("schedule_date"))
 				.build();
 		return scheduleSummary;
 	}

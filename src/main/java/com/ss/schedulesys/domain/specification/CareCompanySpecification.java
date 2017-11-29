@@ -9,6 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.ss.schedulesys.domain.CareCompany;
 import com.ss.schedulesys.domain.CareCompanyType;
+import com.ss.schedulesys.domain.InsuranceCompany;
 import com.ss.schedulesys.domain.SearchCriteria;
 
 public class CareCompanySpecification implements Specification<CareCompany> {
@@ -26,7 +27,8 @@ public class CareCompanySpecification implements Specification<CareCompany> {
                 return cb.like(cb.lower(root.<String>get(criteria.getKey())), "%" + criteria.getValue().toLowerCase() + "%");
             if(root.get(criteria.getKey()).getJavaType() == CareCompanyType.class)
                 return cb.like(cb.lower(root.get(criteria.getKey()).get("name")), "%" + criteria.getValue().toLowerCase() + "%");
-            
+            if(root.get(criteria.getKey()).getJavaType() == InsuranceCompany.class)
+                return cb.like(cb.lower(root.get(criteria.getKey()).get("name")), "%" + criteria.getValue().toLowerCase() + "%");
 		}
 		return null;
 	}

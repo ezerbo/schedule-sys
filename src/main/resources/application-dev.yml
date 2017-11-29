@@ -44,7 +44,7 @@ spring:
             ddl-auto: create-drop #Done via liquibase
    
     datasource:
-        url: jdbc:h2:mem:schedulesys_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=create schema if not exists schedulesys_db;
+        url: jdbc:h2:mem:schedulesys_db;MODE=MYSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;INIT=create schema if not exists schedulesys_db;
         username: sa
         password: 
         type: com.zaxxer.hikari.HikariDataSource

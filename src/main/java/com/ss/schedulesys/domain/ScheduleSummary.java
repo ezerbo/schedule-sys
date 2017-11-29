@@ -1,5 +1,7 @@
 package com.ss.schedulesys.domain;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,4 +16,5 @@ public class ScheduleSummary {
 	private String careCompanyName;
 	private String careCompanyType;
 	private Long shiftsScheduled;
+	private Date scheduleDate;
 }

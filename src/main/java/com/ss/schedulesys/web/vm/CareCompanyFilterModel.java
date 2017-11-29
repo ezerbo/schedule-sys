@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class CareCompanyFilterModel {
 	private String name;
 	private String typeName;
+	private String insuranceName;
 	
 }
