@@ -31,7 +31,6 @@ import com.ss.schedulesys.domain.ScheduleSummary;
 import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.domain.ScheduleUpdate;
 import com.ss.schedulesys.service.ScheduleService;
-import com.ss.schedulesys.service.ScheduleSummaryService;
 import com.ss.schedulesys.service.ScheduleUpdateService;
 import com.ss.schedulesys.service.UserService;
 import com.ss.schedulesys.service.util.SecurityUtil;
@@ -51,16 +50,13 @@ public class ScheduleResource {
     private ScheduleService scheduleService;
     //TODO Remove once security feature has been built
     private UserService userService;
-    private ScheduleSummaryService scheduleSummaryService;
     private ScheduleUpdateService scheduleUpdateService;
     
     @Autowired
-    public ScheduleResource(
-    		ScheduleService scheduleService, UserService userService,
-    		ScheduleSummaryService scheduleSummaryService, ScheduleUpdateService scheduleUpdateService) {
+    public ScheduleResource(ScheduleService scheduleService, UserService userService,
+    		ScheduleUpdateService scheduleUpdateService) {
 		this.scheduleService = scheduleService;
 		this.userService = userService;
-		this.scheduleSummaryService = scheduleSummaryService;
 		this.scheduleUpdateService = scheduleUpdateService;
 	}
 
@@ -173,7 +169,7 @@ public class ScheduleResource {
     @GetMapping("/schedules/company-summary")
     public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam Date scheduleDate) throws Exception {
         log.info("REST request to get Schedules summary for : {}", scheduleDate);
-        List<ScheduleSummary> schedulesSummary = scheduleSummaryService.getSchedulesSummary(scheduleDate);
+        List<ScheduleSummary> schedulesSummary = scheduleService.getSchedulesSummary(scheduleDate);
         return new ResponseEntity<>(schedulesSummary, HttpStatus.OK);
     }
 

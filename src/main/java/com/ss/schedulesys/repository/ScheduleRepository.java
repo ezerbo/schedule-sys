@@ -47,5 +47,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	@Query("from Schedule s where s.employee.id = :employeeId")
 	public List<Schedule> findAllByEmployee(@Param("employeeId") Long employeeId);
 	
+	public List<Schedule> findAllByScheduleDate(Date scheduleDate);
 
 }

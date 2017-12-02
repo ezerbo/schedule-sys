@@ -1,5 +1,8 @@
 package com.ss.schedulesys.service;
+import static java.util.stream.Collectors.groupingBy;
+
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +16,7 @@ import com.ss.schedulesys.domain.Employee;
 import com.ss.schedulesys.domain.Schedule;
 import com.ss.schedulesys.domain.SchedulePostStatus;
 import com.ss.schedulesys.domain.ScheduleStatus;
+import com.ss.schedulesys.domain.ScheduleSummary;
 import com.ss.schedulesys.domain.ScheduleSysUser;
 import com.ss.schedulesys.domain.ScheduleUpdate;
 import com.ss.schedulesys.repository.CareCompanyRepository;
@@ -23,7 +27,7 @@ import com.ss.schedulesys.repository.ScheduleStatusRepository;
 import com.ss.schedulesys.repository.ScheduleUpdateRepository;
 import com.ss.schedulesys.service.errors.ScheduleSysException;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j; 
 
 /**
  * @author ezerbo
@@ -197,6 +201,22 @@ public class ScheduleService {
         log.debug("Request to get Schedule : {}", id);
         Schedule schedule = scheduleRepository.findOne(id);
         return schedule;
+    }
+    
+    public List<ScheduleSummary> getSchedulesSummary(Date scheduleDate) {
+    	List<ScheduleSummary> summaries = new LinkedList<>();
+    	scheduleRepository.findAllByScheduleDate(scheduleDate).stream()
+    		.collect(groupingBy(schedule -> schedule.getCareCompany()))
+    		.forEach((company, schedules) -> {
+    			ScheduleSummary scheduleSummary = ScheduleSummary.builder()
+    					.careCompanyId(company.getId())
+    					.careCompanyName(company.getName())
+    					.careCompanyType(company.getCareCompanyType().getName())
+    					.shiftsScheduled(Long.valueOf(schedules.size()))
+    					.build();
+    			summaries.add(scheduleSummary);
+    		});
+    	return summaries;
     }
 
     /**
