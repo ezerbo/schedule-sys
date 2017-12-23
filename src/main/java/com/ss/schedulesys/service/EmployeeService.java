@@ -6,7 +6,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,6 +63,8 @@ public class EmployeeService {
 	@Transactional(readOnly = true)
 	public Page<Employee> findAll(EmployeeFilterModel filter, Pageable pageable){
 		log.debug("Getting all employees : {}");
+		Sort sort = new Sort(Direction.ASC, "lastName");
+		PageRequest request = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), sort);
 		List<SearchCriteria> criterias = new LinkedList<>();
 		if(filter.getFirstName() != null)
 			criterias.add(new SearchCriteria("firstName", ":", filter.getFirstName()));
@@ -71,7 +76,7 @@ public class EmployeeService {
 			criterias.add(new SearchCriteria("position", ":", filter.getPositionName()));
 		Page<Employee> employees = null;
 		if(criterias.isEmpty()){
-			employees = employeeRepository.findAll(pageable);
+			employees = employeeRepository.findAll(request);
 		}else{
 			Specifications<Employee> specifications = null;
 			for (int i = 0; i < criterias.size(); i++) {
@@ -81,7 +86,7 @@ public class EmployeeService {
 					specifications.and(new EmployeeSpecification(criterias.get(i)));
 				}
 			}
-			employees = employeeRepository.findAll(specifications, pageable);
+			employees = employeeRepository.findAll(specifications, request);
 		}
 		
 		return employees;
