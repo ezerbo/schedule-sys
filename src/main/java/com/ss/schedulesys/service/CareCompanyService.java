@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specifications;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +84,7 @@ public class CareCompanyService {
     @Transactional(readOnly = true) 
     public Page<CareCompany> findAll(CareCompanyFilterModel filter, Pageable pageable) {
         log.debug("Request to get all CareCompanies");
+        PageRequest request = new PageRequest(pageable.getPageNumber(), pageable.getPageSize(), Direction.ASC, "name");
 		List<SearchCriteria> criterias = new LinkedList<>();
 		if(filter.getName() != null)
 			criterias.add(new SearchCriteria("name", ":", filter.getName()));
@@ -92,7 +95,7 @@ public class CareCompanyService {
 		
 		Page<CareCompany> careCompanies = null;
 		if(criterias.isEmpty()){
-			careCompanies = careCompanyRepository.findAll(pageable);
+			careCompanies = careCompanyRepository.findAll(request);
 		}else{
 			Specifications<CareCompany> specifications = null;
 			for (int i = 0; i < criterias.size(); i++) {
@@ -102,7 +105,7 @@ public class CareCompanyService {
 					specifications.and(new CareCompanySpecification(criterias.get(i)));
 				}
 			}
-			careCompanies = careCompanyRepository.findAll(specifications, pageable);
+			careCompanies = careCompanyRepository.findAll(specifications, request);
 		}
 		
 		return careCompanies;
