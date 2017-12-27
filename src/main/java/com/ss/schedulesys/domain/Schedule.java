@@ -111,6 +111,9 @@ public class Schedule implements java.io.Serializable {
 	@Column(name = "billed")
 	private Boolean billed;
 	
+	@Column(name = "archived")
+	private Boolean archived;
+	
 	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule", orphanRemoval = true)
 	private Set<ScheduleUpdate> scheduleUpdates;
@@ -121,6 +124,7 @@ public class Schedule implements java.io.Serializable {
 			.billed(false)
 			.paid(false)
 			.timeSheetReceived(false)
+			.archived(false)
 			.hoursWorked(0d)
 			.overtime(0d);
 	}
@@ -192,6 +196,11 @@ public class Schedule implements java.io.Serializable {
 	
 	public Schedule billed(Boolean billed){
 		this.billed = billed;
+		return this;
+	}
+	
+	public Schedule archived(Boolean archived){
+		this.archived = archived;
 		return this;
 	}
 	

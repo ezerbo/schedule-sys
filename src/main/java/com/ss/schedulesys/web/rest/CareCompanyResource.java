@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.domain.CareCompany;
@@ -153,11 +154,11 @@ public class CareCompanyResource {
     
     //TODO Add contact resources
     @GetMapping("/care-companies/{id}/schedules")
-    public ResponseEntity<List<Schedule>> getSchedules(@PathVariable Long id){
+    public ResponseEntity<List<Schedule>> getSchedules(@PathVariable Long id, @RequestParam boolean archived){
     	log.debug("REST request to get schedules for company with id : {}", id);
-    	List<Schedule> schedules = scheduleService.findAllByCareCompany(id);
-    	return (!schedules.isEmpty())
-    			? new ResponseEntity<>(schedules, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    	List<Schedule> schedules = scheduleService.findAllByCareCompany(id, archived);
+    	return (!schedules.isEmpty()) ? new ResponseEntity<>(schedules, HttpStatus.OK) 
+    			: new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

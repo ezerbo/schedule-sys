@@ -10,11 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ss.schedulesys.domain.CareCompany;
 import com.ss.schedulesys.domain.Employee;
+import com.ss.schedulesys.domain.Preference;
 import com.ss.schedulesys.domain.Schedule;
 import com.ss.schedulesys.domain.SchedulePostStatus;
 import com.ss.schedulesys.domain.ScheduleStatus;
@@ -48,16 +50,19 @@ public class ScheduleService {
     private ScheduleStatusRepository scheduleStatusRepository;
     private SchedulePostStatusRepository schedulePostStatusRepository;
     private ScheduleUpdateRepository scheduleUpdateRepository;
+    private PreferenceService preferenceService;
     
     public ScheduleService(ScheduleRepository scheduleRepository, CareCompanyRepository careCompanyRepository,
     		ScheduleStatusRepository scheduleStatusRepository, SchedulePostStatusRepository schedulePostStatusRepository,
-    		EmployeeRepository employeeRepository, ScheduleUpdateRepository scheduleUpdateRepository) {
+    		EmployeeRepository employeeRepository, ScheduleUpdateRepository scheduleUpdateRepository,
+    		PreferenceService preferenceService) {
     	this.employeeRepository = employeeRepository;
     	this.scheduleRepository = scheduleRepository;
     	this.careCompanyRepository =  careCompanyRepository;
     	this.scheduleStatusRepository = scheduleStatusRepository;
     	this.scheduleUpdateRepository = scheduleUpdateRepository;
     	this.schedulePostStatusRepository = schedulePostStatusRepository;
+    	this.preferenceService = preferenceService;
 	}
 
     /**
@@ -175,10 +180,10 @@ public class ScheduleService {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<Schedule> findAllByCareCompany(Long careCompanyId) {
+    public List<Schedule> findAllByCareCompany(Long careCompanyId, boolean archived) {
     	Sort sort = new Sort(Direction.ASC, "scheduleDate");
     	log.debug("Request to get all schedules for care company with id : {}", careCompanyId);
-    	List<Schedule> schedules = scheduleRepository.findAllByCareCompany(careCompanyId, sort);
+    	List<Schedule> schedules = scheduleRepository.findAllByCareCompany(careCompanyId, archived, sort);
     	return schedules;
     }
     
@@ -206,9 +211,9 @@ public class ScheduleService {
         return schedule;
     }
     
-    public List<ScheduleSummary> getSchedulesSummary(Date scheduleDate) {
+    public List<ScheduleSummary> getSchedulesSummary(Date startDate, Date endDate, String careCompanyType) {
     	List<ScheduleSummary> summaries = new LinkedList<>();
-    	scheduleRepository.findAllByScheduleDate(scheduleDate).stream()
+    	scheduleRepository.findAllByCompanyTypeAndScheduleDates(startDate, endDate, careCompanyType).stream()
     		.collect(groupingBy(schedule -> schedule.getCareCompany()))
     		.forEach((company, schedules) -> {
     			ScheduleSummary scheduleSummary = ScheduleSummary.builder()
@@ -230,6 +235,21 @@ public class ScheduleService {
     public void delete(Long id) {
         log.debug("Request to delete Schedule : {}", id);
         scheduleRepository.delete(id);
+    }
+    
+    /**
+     * Archives billed, paid,.. schedules
+     */
+    @Scheduled(cron = "0 0 5 * * ?")
+    public void archiveSchedules() {
+    	Preference preference = preferenceService.getOne().get();
+    	Date date = new Date(System.currentTimeMillis() - preference.getScheduleArchDays() * 86400000);
+    	scheduleRepository.oldSchedules(date)
+    			.stream().forEach(schedule -> {
+    				log.info("Archiving schedule : {}", schedule);
+    				schedule.setArchived(true);
+    				scheduleRepository.save(schedule);
+    			});
     }
 
 }

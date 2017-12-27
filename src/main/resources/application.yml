@@ -50,6 +50,9 @@ spring:
     mvc:
         favicon:
             enabled: false
+        view:
+          suffix: .jsp
+          prefix: /WEB-INF/views/
     thymeleaf:
         mode: XHTML
     mail: 
@@ -68,7 +71,7 @@ schedule-sys:
              contact:
                   name: Boureima Edouard ZERBO
                   email: zerboedouardgmail.com
-                  url: https://github.com/edouardo
+                  url: https://github.com/ezerbo
 server:
   port: 8080
 

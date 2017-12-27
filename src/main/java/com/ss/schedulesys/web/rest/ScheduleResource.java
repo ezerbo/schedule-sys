@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ss.schedulesys.config.CompanyTypeConstants;
+import com.ss.schedulesys.domain.CareCompaniesConstants;
 import com.ss.schedulesys.domain.Schedule;
 import com.ss.schedulesys.domain.ScheduleSummary;
 import com.ss.schedulesys.domain.ScheduleSysUser;
@@ -46,7 +47,7 @@ import com.ss.schedulesys.web.rest.util.PaginationUtil;
 public class ScheduleResource {
 
     private final Logger log = LoggerFactory.getLogger(ScheduleResource.class);
-        
+    
     private ScheduleService scheduleService;
     //TODO Remove once security feature has been built
     private UserService userService;
@@ -138,7 +139,7 @@ public class ScheduleResource {
      *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of schedules in body
-     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     * @throws URISyntaxException if thereSchedules is an error to generate the pagination HTTP headers
      */
     @GetMapping("/schedules/employee-summary")
     public ResponseEntity<List<Schedule>> getAllSchedules(@RequestParam Date scheduleDate, @RequestParam(required = false) String by)
@@ -167,9 +168,10 @@ public class ScheduleResource {
     }
     
     @GetMapping("/schedules/company-summary")
-    public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam Date scheduleDate) throws Exception {
-        log.info("REST request to get Schedules summary for : {}", scheduleDate);
-        List<ScheduleSummary> schedulesSummary = scheduleService.getSchedulesSummary(scheduleDate);
+    public ResponseEntity<List<ScheduleSummary>> getSchedulesSummary(@RequestParam(required = false) Date startDate,
+    		@RequestParam(required = false) Date endDate) throws Exception {
+        log.info("REST request to get Schedules summary between : {} and {}", startDate, endDate);
+        List<ScheduleSummary> schedulesSummary = scheduleService.getSchedulesSummary(startDate, endDate, CareCompaniesConstants.FACILITY.name());
         return new ResponseEntity<>(schedulesSummary, HttpStatus.OK);
     }
 
