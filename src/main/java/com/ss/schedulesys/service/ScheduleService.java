@@ -8,8 +8,6 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -180,10 +178,9 @@ public class ScheduleService {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<Schedule> findAllByCareCompany(Long careCompanyId, boolean archived) {
-    	Sort sort = new Sort(Direction.ASC, "scheduleDate");
+    public List<Schedule> findAllByCareCompany(Long careCompanyId, boolean archived, Pageable pageable) {
     	log.debug("Request to get all schedules for care company with id : {}", careCompanyId);
-    	List<Schedule> schedules = scheduleRepository.findAllByCareCompany(careCompanyId, archived, sort);
+    	List<Schedule> schedules = scheduleRepository.findAllByCareCompany(careCompanyId, archived, pageable);
     	return schedules;
     }
     

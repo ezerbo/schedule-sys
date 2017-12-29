@@ -3,7 +3,7 @@ package com.ss.schedulesys.repository;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,7 +36,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
 	 * @return
 	 */
 	@Query("from Schedule s where s.careCompany.id = :careCompanyId and s.archived is :archived")
-	public List<Schedule> findAllByCareCompany(@Param("careCompanyId") Long careCompanyId, @Param("archived") boolean archived, Sort sort);
+	public List<Schedule> findAllByCareCompany(@Param("careCompanyId") Long careCompanyId, @Param("archived") boolean archived, Pageable pageable);
 	
 	
 	/**

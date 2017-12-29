@@ -154,9 +154,9 @@ public class CareCompanyResource {
     
     //TODO Add contact resources
     @GetMapping("/care-companies/{id}/schedules")
-    public ResponseEntity<List<Schedule>> getSchedules(@PathVariable Long id, @RequestParam boolean archived){
+    public ResponseEntity<List<Schedule>> getSchedules(@PathVariable Long id, @RequestParam boolean archived, Pageable pageable){
     	log.debug("REST request to get schedules for company with id : {}", id);
-    	List<Schedule> schedules = scheduleService.findAllByCareCompany(id, archived);
+    	List<Schedule> schedules = scheduleService.findAllByCareCompany(id, archived, pageable);
     	return (!schedules.isEmpty()) ? new ResponseEntity<>(schedules, HttpStatus.OK) 
     			: new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
