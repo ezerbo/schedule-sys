@@ -1,0 +1,20 @@
+{
+  "billed": true,
+  "careCompany": {
+    "id": 1
+  },
+  "comment": "Test comment on the schedule",
+  "employee": {
+    "id": 1
+  },
+  "hoursWorked": 0,
+  "overtime": 0,
+  "paid": true,
+  "scheduleDate": "2017-03-26T15:22:29.780Z",
+  "scheduleStatus": {
+    "id": 1
+  },
+  "shiftEndTime": "10:30AM",
+  "shiftStartTime": "12:30PM",
+  "timeSheetReceived": false
+}

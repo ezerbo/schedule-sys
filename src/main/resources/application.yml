@@ -1,0 +1,77 @@
+# ===================================================================
+# Spring Boot configuration.
+#
+# This configuration will be overridden by the Spring profile you use,
+# for example application-dev.yml if you use the "dev" profile.
+# ===================================================================
+
+# ===================================================================
+# Standard Spring Boot properties.
+# Full reference is available at:
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+# ===================================================================
+
+management:
+    context-path: /management
+    health:
+        mail:
+            enabled: false # When using the MailService, configure an SMTP server and set this to true
+spring:
+    application:
+        name: employee-service
+    profiles:
+        # The commented value for `active` can be replaced with valid spring profiles to load.
+        # Otherwise, it will be filled in by maven when building the WAR file
+        # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+        active: #spring.profiles.active#
+    
+  #  boot:
+    #   admin:
+     #    url: http://localhost:8080
+   
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        show-sql: false
+        properties:
+            hibernate.cache.use_second_level_cache: true
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+            hibernate.cache.region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+        hibernate: 
+           ddl-auto: none
+            
+    datasource:
+        url: jdbc:mysql://localhost:3306/schedulesys_db?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password: diallo1990
+        type: com.zaxxer.hikari.HikariDataSource
+   
+    mvc:
+        favicon:
+            enabled: false
+        view:
+          suffix: .jsp
+          prefix: /WEB-INF/views/
+    thymeleaf:
+        mode: XHTML
+    mail: 
+       host: localhost
+        
+# ===================================================================
+# ScheduleSys Custom Properties
+# ===================================================================
+
+
+schedule-sys: 
+        api-info:
+             title: Shifts Scheduling System
+             description: A system that helps track employees schedules
+             version: @project.version@
+             contact:
+                  name: Boureima Edouard ZERBO
+                  email: zerboedouardgmail.com
+                  url: https://github.com/ezerbo
+server:
+  port: 8080
+
