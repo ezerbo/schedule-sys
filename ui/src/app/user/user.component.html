@@ -1,0 +1,108 @@
+<p-panel header="Users Management" >
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-users fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div class="data-table">
+			<p-messages [(value)]="msgs"></p-messages>
+			<p-dataTable [value]="users" [rows]="10" [paginator]="true"  [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedUser" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No users found'">
+			    <p-header>ScheduleSys Users</p-header>
+			    <p-column field="emailAddress" header="Email"></p-column>
+			    <p-column field="username" header="Username"></p-column>
+			    <p-column field="firstName" header="First Name"></p-column>
+			    <p-column field="lastName" header="Last Name"></p-column>
+			    <p-column field="userRole.name" header="Role"></p-column>
+			    <p-column field="activated" header="Activated"></p-column>
+			</p-dataTable>
+		</div>
+		<md-divider></md-divider>
+		<data-table-crud (new)="showDialog(false, true)" (edit)="showDialog(true, true);" (delete)="deleteUser()" 
+			[disabled]="selectedUser === undefined" (back)="gotToHome()"></data-table-crud>
+	</md-list>
+	
+	<p-dialog [(visible)]="dialogDisplayed" width="450" *ngIf="user !== undefined">
+		 <p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing a User</span>
+        	<span *ngSwitchCase="false"> Adding a User</span>
+   		 </p-header>
+   		 	<form (ngSubmit)="create()" #userForm="ngForm">
+   		 		<div class="ui-g">
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.username">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.username}}
+						</div>
+						<div class="ui-g-4">
+							<label>Username :</label>
+						</div>
+						<div class="ui-g-8">
+							<input #username pInputText name="username" placeholder="Username" [(ngModel)]="user.username"
+								appValueInUse appInputRegex [value]="user.username" [old_value]="editing ? selectedUser.username : undefined"
+								(duplicate)="onDuplicates($event)" minlength="6" maxlength="20" [field_name]="'username'"
+								[regex]="'^[_\'.@A-Za-z0-9-]*$'" [entity_service]="userService" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.email">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.email}}
+						</div>
+						<div class="ui-g-4">
+							<label>Email Address :</label>
+						</div>
+						<div class="ui-g-8">
+							<input #email pInputText name="email" type="email" placeholder="Email Address" [(ngModel)]="user.emailAddress"
+								appValueInUse appInputRegex [value]="user.emailAddress" [old_value]="editing ? selectedUser.emailAddress : undefined" [field_name]="'email'"
+								(duplicate)="onDuplicates($event)" maxlength="50" [regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'"
+								[entity_service]="userService" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.firstname">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.firstname}}
+						</div>
+						<div class="ui-g-4">
+							<label>First Name :</label>						
+						</div>
+						<div class="ui-g-8">
+							<input #firstName pInputText  name="firstname" placeholder="First Name" [(ngModel)]="user.firstName"
+								minlength="2" maxlength="50" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-f-12" *ngIf="validation.formErrors.lastname">
+								<i class="fa fa-close"></i>
+								{{validation.formErrors.lastname}}
+						</div>
+						<div class="ui-g-4">
+							<label>Last Name :</label>
+						</div>
+						<div class="ui-g-8">
+							<input #lastName pInputText  name="lastname" placeholder="Last Name" [(ngModel)]="user.lastName"
+								minlength="2" maxlength="50" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.role">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.role}}
+						</div>
+						<div class="ui-g-4">
+							<label>User Role :</label>
+						</div>
+						<div class="ui-g-6">
+							<p-dropdown name="role" [options]="userRoles" [(ngModel)]="user.userRole.name" placeholder="User Role" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+						</div>
+					</div>
+   		 		</div>
+   		 		<div class="ui divider"></div>
+				<app-dialog-crud (cancel)="showDialog(false, false)" [disabled]="!userForm.form.valid"></app-dialog-crud>
+			</form>
+	</p-dialog>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
+</p-panel>

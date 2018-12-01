@@ -1,0 +1,93 @@
+<p-panel header="Tests Management" >
+		<div style="text-align: center;">
+			<span  class="fa fa-book fa-5x" ></span>
+		</div>
+		<div class="ui divider"></div>
+		<div class="data-table">
+			<p-messages [(value)]="msgs"></p-messages>
+			<p-dataTable [value]="tests" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedTest" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No tests to display'">
+			    <p-header>Tests</p-header>
+			    <p-column field="name" header="Name"></p-column>
+			    <p-column field="hasCompletionDate" header="Has Completion Date">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] == true ? 'yes' : 'no'}}</span>
+       				</ng-template>
+			    </p-column>
+			 	 <p-column field="hasExpiryDate" header="Has Expiration Date">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] == true ? 'yes' : 'no'}}</span>
+       				</ng-template>
+			    </p-column>
+			     <p-column field="canBeWaived" header="Can Be Waived">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] == true ? 'yes' : 'no'}}</span>
+       				</ng-template>
+			    </p-column>
+			</p-dataTable>
+		</div>
+		<div class="ui divider"></div>
+		<data-table-crud (new)="showOrHideDialog(false)" (edit)="showOrHideDialog(true)" (delete)="deleteOne()" 
+			[disabled]="selectedTest === undefined" (back)="gotToHome()"></data-table-crud>
+	
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
+	
+	<p-dialog [(visible)]="dialogDisplayed" width="425" *ngIf="test != undefined">
+		<p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing a Test</span>
+        	<span *ngSwitchCase="false"> Adding a Test</span>
+   		 </p-header>
+   		 <div>
+   		 	<form (ngSubmit)="create()" #testForm="ngForm">
+		   	 	<div class="ui-g">
+		   	 		<div class="ui-g-12">
+		   	 			<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.name">
+								<i class="fa fa-close"></i>
+								{{validation.formErrors.name}}
+						</div>
+		   	 			<div class="ui-g-3">
+		   	 				<label>Name : </label>
+		   	 			</div>
+		   	 			<div class="ui-g-6">
+							<div class="input-full">
+								<input #testName pInputText  appValueInUse [value]="test.name" [field_name]="'name'" [old_value]="editing ? selectedTest.name : undefined"
+								 	(duplicate)="onDuplicates($event)" id="name" name="name" placeholder="Name" [(ngModel)]="test.name"
+								 	minlength="2" maxlength="50" [entity_service]="testService" required>
+							</div>
+						</div>
+		   	 		</div>
+		   	 		<div class="ui-g-12">
+		   	 			<div class="ui-g-6">
+		   	 				<label>Has Completion Date : </label>
+		   	 			</div>
+		   	 			<div class="ui-g-6">
+		   	 				<p-toggleButton name="has_completion_date" [(ngModel)]="test.hasCompletionDate" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
+		   	 			</div>
+		   	 			
+		   	 			<div class="ui-g-6">
+			   	 			<label>Has Expiration Date : </label>
+			   	 		</div>
+			   	 		<div class="ui-g-6">
+			   	 			<p-toggleButton name="has_expiry_date" [(ngModel)]="test.hasExpiryDate" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
+			   	 		</div>
+			   	 		
+			   	 		<div class="ui-g-6">
+			   	 			<label>Can Be Waived : </label>
+			   	 		</div>
+			   	 		<div class="ui-g-6">
+			   	 			<p-toggleButton name="can_be_waived" [(ngModel)]="test.canBeWaived" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
+			   	 		</div>
+		   	 		</div>
+		   	 	</div>
+		   	 	<div class="ui divider"></div>
+		   	 	<div class="btns-panel">
+		   	 		<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="testForm.form.invalid" class="ui-button-success"></button>
+		   	 		<button pButton label="Clear" icon="fa fa-eraser" type="reset"></button>
+		   	 		<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+		   	 	</div>
+		   	</form>
+   		 </div>
+   	</p-dialog>
+</p-panel>

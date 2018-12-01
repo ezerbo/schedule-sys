@@ -1,0 +1,22 @@
+<p-panel header="">
+	<p-header [ngSwitch]="(careCompany == undefined) && (employee == undefined)">
+    	<span *ngSwitchCase="true">Schedules Summary For {{today | date: 'fullDate'}}</span>
+        <span *ngSwitchCase="false">Scheduling Page</span>
+   	</p-header>
+	<div>
+		<div style="text-align: center;">
+			<span  class="fa fa-clock-o fa-5x" ></span>
+		</div>
+		<div class="ui divider"></div>
+		<div *ngIf="careCompany != undefined">
+			<app-company-schedule [careCompany]="careCompany"></app-company-schedule>
+		</div>
+		<div *ngIf="employee != undefined">
+			<app-employee-schedule [employee]="employee"> </app-employee-schedule>
+		</div>
+		<div *ngIf="(careCompany == undefined) && (employee == undefined)">
+			<app-schedule-summary></app-schedule-summary>
+		</div>
+	</div>
+	
+</p-panel>

@@ -1,0 +1,144 @@
+<p-panel header="Employees Management" >
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-user-md fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div class="data-table">
+			<p-messages [(value)]="msgs"></p-messages>
+			<p-dataTable [value]="employees" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedEmployee" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No employees found'">
+			    <p-header>
+					Employees
+			        <div class="ui-helper-clearfix">
+			            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+			            	[disabled]="employees.length === 0"></button>
+			        </div>
+	        	</p-header>
+			    <p-column field="firstName" header="First Name" [filter]="true"></p-column>
+			    <p-column field="lastName" header="Last Name" [filter]="true"></p-column>
+			    <p-column field="dateOfHire" header="Date Of Hire">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] === null ? 'Not provided' : row[col.field] | date: 'shortDate'}}</span>
+       				</ng-template>
+			    </p-column>
+			    <p-column field="lastDayOfWork" header="Last Day Of Work">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] === null ? 'Not provided' : row[col.field] | date: 'shortDate'}}</span>
+       				</ng-template>
+			    </p-column>
+			    <p-column field="ebc" header="Ebc">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+       				</ng-template>
+			    </p-column>
+			    <p-column field="insvc" header="Active">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+       				</ng-template>
+			    </p-column>
+			    
+			    <p-column field="position.name" header="Position" [filter]="true" filterField="positionName"></p-column>
+			    <p-column field="employeeType.name" header="Employee Type" [filter]="true" filterField="employeeTypeName"></p-column>
+			</p-dataTable>
+		</div>
+		<md-divider></md-divider>
+		<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteOne()" 
+			[disabled]="selectedEmployee === undefined" (back)="gotToHome()"></data-table-crud>
+	</md-list>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
+	
+   	<p-dialog [(visible)]="dialogDisplayed" width="840" *ngIf="employee != undefined">
+		<p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing an Employee</span>
+        	<span *ngSwitchCase="false"> Adding an Employee</span>
+   		 </p-header>
+   		 <div>
+   		 	<form (ngSubmit)="create()" #employeeForm="ngForm">
+		   	 	<div class="ui-g">
+		   	 		<div class="ui-g-12">
+		   	 			<div class="ui-g-3">
+		   	 				<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.firstName">
+								<i class="fa fa-close"></i>
+								{{validation.formErrors.firstName}}
+							</div>
+							<md-input-container class="input-full">
+								<input #firstName mdInput id="firstName" name="firstName" placeholder="First Name" [(ngModel)]="employee.firstName"
+									minlength="2" maxlength="50" required>
+								<md-hint align="end">{{firstName.value.length}} / 50</md-hint>
+							</md-input-container>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+		   	 				<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastName">
+								<i class="fa fa-close"></i>
+								{{validation.formErrors.lastName}}
+							</div>
+							<md-input-container class="input-full">
+								<input #lastName mdInput id="lastName" name="lastName" placeholder="Last Name" [(ngModel)]="employee.lastName"
+									minlength="2" maxlength="50" required>
+								<md-hint align="end">{{lastName.value.length}} / 50</md-hint>
+							</md-input-container>
+		   	 			</div>
+		   	 			<div class="ui-g-2">
+		   	 				<label>Employee type : </label>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+		   	 				<p-dropdown name="employeeType" [(ngModel)]="employee.employeeType.name" [options]="employeeTypes" placeholder="Employee Type"
+		   	 				 appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+		   	 			</div>
+		   	 		</div>
+		   	 		<div class="ui-g-12">
+		   	 			<div class="ui-g-6">
+		   	 				<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.dateOfHire">
+								<i class="fa fa-close"></i>
+								{{validation.formErrors.dateOfHire}}
+							</div>
+							<label>Date of hire : </label>
+							<p-calendar [showIcon]="true" id="dateOfHire" name="dateOfHire" appendTo="body" [(ngModel)]="employee.dateOfHire"></p-calendar>
+		   	 			</div>
+		   	 			<div class="ui-g-6">
+		   	 				<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastDayOfWork">
+								<i class="fa fa-close"></i>
+								{{validation.formErrors.lastDayOfHire}}
+							</div>
+							<label>Last day of work : </label>
+							<p-calendar [showIcon]="true" id="lastDayOfWork" name="lastDayOfWork"  appendTo="body" [(ngModel)]="employee.lastDayOfWork"></p-calendar>
+		   	 			</div>
+		   	 		</div>
+		   	 		<div class="ui-g-12">
+		   	 			<div class="ui-g-3">
+		   	 				<label>EBC : </label>
+		   	 				<p-toggleButton name="ebc" [(ngModel)]="employee.ebc" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+		   	 				<label>Active : </label>
+		   	 				<p-toggleButton name="insvc" [(ngModel)]="employee.insvc" onIcon="fa-check-square" offIcon="fa-square"></p-toggleButton>
+		   	 			</div>
+		   	 			<div class="ui-g-2">
+		   	 				<label>Position : </label>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+		   	 				<p-dropdown name="position" [(ngModel)]="employee.position.name" [options]="positions" placeholder="Position" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+		   	 			</div>
+		   	 		</div>
+		   	 		<div class="ui-g-12">
+			   	 		<div class="ui-g-2">
+			   	 			<label> Comment : </label>
+			   	 		</div>
+			   	 		<div class="ui-g-10">
+			   	 			<textarea cols="78" name="comment" pInputTextarea [(ngModel)]="employee.comment"></textarea>
+			   	 		</div>
+		   	 		</div>
+		   	 	</div>
+		   	 	<div class="ui divider"></div>
+		   	 	<div class="btns-panel">
+		   	 		<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="employeeForm.form.invalid" class="ui-button-success"></button>
+		   	 		<button pButton label="Clear" icon="fa fa-eraser" type="reset"></button>
+		   	 		<button pButton label="Cancel" type="button" (click)="hideDialog()" icon="fa fa-close"></button>
+		   	 	</div>
+		   	</form>
+   		 </div>
+   	</p-dialog>
+</p-panel>

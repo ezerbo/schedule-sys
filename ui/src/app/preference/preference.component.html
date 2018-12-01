@@ -1,0 +1,16 @@
+<div class="ui-g" *ngIf="preference !== undefined">
+	<div class="ui-g-5">
+		<p-panel header="Schedules">
+			<p-messages [(value)]="msgs"></p-messages>
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<label>Archive schedules older than (in days) : </label>
+	    			<p-spinner size="20" [(ngModel)]="preference.scheduleArchDays" [min]="1" [max]="20"></p-spinner>
+	    		</div>
+	    	</div>
+	    	<p-footer>
+				<button pButton label="Save" icon="fa fa-floppy-o" (click)="save()"></button>
+    		</p-footer>
+		</p-panel>
+	</div>
+</div>

@@ -7,4 +7,4 @@ target/
 .project
 .factorypath
 /.apt_generated/
-release.sh
+**/node_modules/**

@@ -1,0 +1,46 @@
+<p-panel header="Positions Management" >
+	<div style="text-align: center;">
+		<span  class="fa fa-medkit fa-5x" ></span>
+	</div>
+	<div class="ui divider"></div>
+	<div>
+		<p-messages [(value)]="msgs"></p-messages>
+		<p-dataTable #poitions_table [value]="positions" [rows]="10" [paginator]="true"  [rowsPerPageOptions]="[5,10]"
+			selectionMode="single" [(selection)]="selectedPosition" dataKey="id" [emptyMessage]="'No position to display'">
+		    <p-header>Positions</p-header>
+		    <p-column field="name" header="Name"></p-column>
+		</p-dataTable>
+	</div>
+	
+	<div>
+		<div class="ui divider"></div>
+		<data-table-crud (new)="showOrHideDialog(false)" (edit)="showOrHideDialog(true)" (delete)="deleteOne()" 
+			[disabled]="selectedPosition === undefined" (back)="gotToHome()"></data-table-crud>
+	</div>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	
+	<p-dialog [(visible)]="displayDialog" appendTo="body" width="500" *ngIf="position !== undefined">
+	<p-header [ngSwitch]="editing">
+		<span *ngSwitchCase="true">Editing a Position</span>
+		<span *ngSwitchCase="false">Adding a Position</span>
+	</p-header>
+	<p-messages [(value)]="dialogMsgs"></p-messages>
+	<form (ngSubmit)="create()" #positionForm="ngForm">
+		<div class="ui-g">
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-4">
+   	 				<label>Name : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<input #pName pInputText [(ngModel)]="position.name" id="name" name="name" required>
+   	 			</div>
+ 			</div>
+		</div>
+		<div class="ui divider"></div>
+ 		<div>
+ 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="positionForm.form.invalid" class="ui-button-success"></button>
+ 			<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+ 		</div>
+	</form>
+</p-dialog>
+</p-panel>

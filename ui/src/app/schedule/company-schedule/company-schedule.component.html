@@ -1,0 +1,158 @@
+<div class="data-table" [hidden]="showScheduleDetail">
+	<div class="btn-panel">
+		<button pButton icon="fa fa-archive" label="Show Archived" [disabled]="showArchived" (click)="onShowArchived()"></button>
+		<button pButton icon="fa fa-undo" [disabled]="!showArchived" (click)="onHideArchived()"></button>
+	</div>
+	<p-messages [(value)]="msgs"></p-messages>
+	<p-dataTable #dt [value]="schedules" [rows]="10" [paginator]="true" resizableColumns="true" [rowsPerPageOptions]="[10,20]"
+		selectionMode="single" dataKey="id" [totalRecords]="tableItemsCount" [(selection)]="selectedSchedule"
+		[lazy]="true" (onLazyLoad)="loadDataLazy($event)" [loading]="tableDataLoading" [emptyMessage]="'No schedules to display'" (onRowDblclick)="onRowDblClick()">
+			<p-header>
+				Schedules for {{careCompany.name}}
+		        <div class="ui-helper-clearfix">
+		            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+		            	[disabled]="schedules.length === 0"></button>
+		        </div>
+	        </p-header>
+			<p-column field="scheduleDate" header="Schedule Date">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortDate'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="shiftStartTime" header="Start Time">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortTime'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="shiftEndTime" header="End Time">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortTime'}}</span>
+				</ng-template>
+			</p-column>
+			 
+			<p-column field="employee.position.name" header="Job"></p-column>
+			
+			<p-column field="employee.firstName" header="First Name"></p-column>
+			<p-column field="employee.lastName" header="Last Name"></p-column>
+			
+			<p-column field="scheduleStatus.name" header="Status"></p-column>
+			<p-column field="schedulePostStatus.name" header="Post Status"></p-column>
+			
+			<p-column field="scheduleSysUser.username" header="Filled By"></p-column>
+		<p-footer>
+			<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success"></button>
+			<button pButton label="Edit" icon="fa fa-edit" (click)="showOrHideDialog(true)" [disabled]="selectedSchedule === undefined"></button>
+			<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteSchedule()" class="ui-button-danger" [disabled]="selectedSchedule === undefined"></button>
+		</p-footer>
+	</p-dataTable>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
+</div>
+
+<div [hidden]="!showScheduleDetail">
+	<app-schedule-detail [schedule]="selectedSchedule" (back)="onBackBtnClick()" [scheduleType]="scheduleType" ></app-schedule-detail>
+</div>
+
+<p-dialog [(visible)]="displayDialog" width="925" *ngIf="schedule != undefined">
+		<p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing a Schedule</span>
+        	<span *ngSwitchCase="false"> Adding a Schedule</span>
+   		 </p-header>
+   		 <div>
+   		 	<p-messages [(value)]="dialogMsgs"></p-messages>
+   		 	<form (ngSubmit)="create()" #scheduleForm="ngForm">
+				<div class="ui-g">
+		 			<div class="ui-g-12">
+		   	 			<div class="ui-g-3">
+		   	 				<label>Employee : </label>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+		   	 			<!-- Revise the required enabling/disabling -->
+		   	 				<p-autoComplete [(ngModel)]="schedule.employee" [suggestions]="employees" (completeMethod)="searchEmployees($event)" field="firstName"
+		   	 					 id="employee" name="employee" required></p-autoComplete>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+		   	 				<label>Schedule Date : </label>
+		   	 			</div>
+		   	 			<div class="ui-g-3">
+   	 						<p-calendar [showIcon]="true" [showButtonBar]="true" id="scheduleDate" name="scheduleDate" appendTo="body" [(ngModel)]="schedule.scheduleDate" 
+   	 							[readonlyInput]="true" required></p-calendar>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-3">
+   	 						<label>Start Time : </label>
+   	 					</div>
+   	 					<div class="ui-g-3">
+   	 						<p-calendar  id="shiftStartTime" name="shiftStartTime" [timeOnly]="true"
+   	 							appendTo="body" [(ngModel)]="schedule.shiftStartTime" [stepMinute]="30" [readonlyInput]="true"
+   	 							[defaultDate]="defaultDate"></p-calendar>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-3">
+   	 						<label>End Time : </label>
+   	 					</div>
+   	 					<div class="ui-g-3">
+   	 						<p-calendar  id="shiftEndTime" name="shiftEndTime" [timeOnly]="true"
+   	 							appendTo="body" [(ngModel)]="schedule.shiftEndTime" [stepMinute]="30" [readonlyInput]="true" [defaultDate]="defaultDate"></p-calendar>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-3">
+   	 						<label>Status : </label>
+   	 					</div>
+   	 					<div class="ui-g-3">
+   	 						<p-dropdown #scheduleStatus name="scheduleStatus" [(ngModel)]="schedule.scheduleStatus.name"  [options]="scheduleStatuses" 
+   	 							placeholder="Schedule Status" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-3" *ngIf="editing">
+   	 						<label>Post Status : </label>
+   	 					</div>
+   	 					<div class="ui-g-3" *ngIf="editing">
+   	 						<p-dropdown name="schedulePostStatus" [(ngModel)]="schedule.schedulePostStatus.name"  [options]="schedulePostStatuses" 
+   	 							placeholder="Schedule Post Status" appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-3" *ngIf="editing">
+   	 						<label>Hours Worked : </label>
+   	 					</div>
+   	 					<div class="ui-g-3" *ngIf="editing">
+   	 						<p-spinner [(ngModel)]="schedule.hoursWorked" [step]="0.5" [min]="0" name="hoursWorked"></p-spinner>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-3" *ngIf="editing">
+   	 						<label>Overtime : </label>
+   	 					</div>
+   	 					<div class="ui-g-3" *ngIf="editing">
+   	 						<p-spinner [(ngModel)]="schedule.overtime" [step]="0.5" [min]="0" name="overtime"></p-spinner>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-4" *ngIf="editing">
+   	 						<p-checkbox name="timeSheetReceived" value="TSR" label="TSR" [(ngModel)]="schedule.timeSheetReceived" 
+   	 							[binary]="true"></p-checkbox>
+   	 					</div>
+   	 					<div class="ui-g-4" *ngIf="editing">
+   	 						<p-checkbox name="billed" value="Billed" label="Billed" [(ngModel)]="schedule.billed" [binary]="true"></p-checkbox>
+   	 					</div>
+   	 					<div class="ui-g-4" *ngIf="editing">
+   	 						<p-checkbox name="paid" value="Paid" label="Paid" [(ngModel)]="schedule.paid" [binary]="true"></p-checkbox>
+   	 					</div>
+   	 					<!--  -->
+   	 					<div class="ui-g-12">
+   	 						<div class="ui-g-2">
+		   	 					<label> Comment : </label>
+		   	 				</div>
+		   	 				<div class="ui-g-10">
+		   	 					<textarea cols="78" name="comment" pInputTextarea [(ngModel)]="schedule.comment"></textarea>
+		   	 				</div>
+   	 					</div>
+   	 					
+		 			</div>
+				</div>
+			<div class="ui divider"></div>
+	 		<div>
+	 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="scheduleForm.form.invalid" class="ui-button-success"></button>
+	 			<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+	 		</div>
+		</form>
+   		 </div>
+</p-dialog>

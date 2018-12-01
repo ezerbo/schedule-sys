@@ -1,0 +1,24 @@
+<div class="centered-panel">
+	<p-messages [(value)]="msgs"></p-messages>
+	<p-panel header="{{title}}">
+		<form #accountForm="ngForm" (ngSubmit)="resetOrActivateAccount()">
+			<div>
+			<md-input-container class="input-full">
+				<input type="password" minlength="8" maxlength="20" mdInput id="password" name="password" placeholder="Password" [(ngModel)]="password"  required>
+			</md-input-container>
+			</div>
+			<div>
+			<md-input-container class="input-full">
+				<input type="password" minlength="8" maxlength="20" mdInput id="passwordConfirmation" 
+						name="passwordConfirmation" placeholder="Confirm password" [(ngModel)]="pwdConfirmation" required>
+			</md-input-container>
+			</div>
+			<div class="btns-panel">
+				<button pButton type="submit" label="{{btnText}}" [disabled] = "!accountForm.form.valid || password != pwdConfirmation"></button>
+				<button pButton type="reset" label="Clear"></button>
+				<button pButton label="Cancel" (click)="onCancelBtnClick()"></button>
+			</div>
+		</form>
+	</p-panel>
+</div>
+<!-- TODO Add hints -->

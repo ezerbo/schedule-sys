@@ -1,0 +1,55 @@
+
+<div class="date-control">
+	<div class="ui-g">
+		<div class="ui-g-4">
+			<button pButton icon="fa fa-chevron-circle-left" label="Last Week" (click)="onLeftBtnClick()" [disabled]="endDate === today"></button>
+			<button pButton icon="fa fa-chevron-circle-right" label="Next Week" iconPos="right" (click)="onRightBtnClick()" [disabled]="startDate === today"></button>
+			<button pButton icon="fa fa-undo" label="Today" [disabled]="startDate === null && endDate === null" (click)="onTodayBtnClick()"></button>
+		</div>
+		<div class="ui-g-8" *ngIf="startDate !== null && endDate !== null">
+			<label>Showing schedules for dates ranging from {{startDate | date: 'shortDate'}} to {{endDate | date: 'shortDate'}}</label>
+		</div>
+	</div>
+</div>
+
+<div *ngIf="showByCompany">
+	<p-dataTable #summary_table [value]="scheduleSummaries"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,15,20]"
+		selectionMode="single"  [emptyMessage]="'No schedule to display'" (onRowDblclick)="onRowDblclick($event)">
+	    <p-header>Shifts summary</p-header>
+	    <p-column field="careCompanyName" header="Care Company" [filter]="true" filterPlaceholder="Search" filterMatchMode="contains"></p-column>
+	    <p-column field="shiftsScheduled" header="Shifts Scheduled"></p-column>
+	    <p-column field="careCompanyType" header="Type Of Company"></p-column>
+	    <p-footer>
+	    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()" [disabled]="startDate !== null || endDate !== null"></button>
+	    </p-footer>
+	</p-dataTable>
+</div>
+
+<div *ngIf="!showByCompany">
+	<div class="ui-widget-header" style="padding:4px 10px;border-bottom: 0 none">
+    	<i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+    	<input #gf type="text" pInputText size="50" placeholder="Global Filter">
+	</div>
+	<p-dataTable #summary_table [value]="employeeScheduleSummaries"  [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,15,20]"
+		selectionMode="single"  [emptyMessage]="'No schedule to display'" [globalFilter]="gf" #dt>
+	    <p-header>Shifts summary</p-header>
+	    <p-column field="careCompany.name" header="Facility"></p-column>
+	    <p-column field="employee.position.name" header="Job"></p-column>
+	    <p-column field="shiftStartTime" header="Start Time">
+			<ng-template let-col let-row="rowData" pTemplate="body">
+				<span>{{row[col.field] | date: 'shortTime'}}</span>
+			</ng-template>
+		</p-column>
+		<p-column field="shiftEndTime" header="End Time">
+			<ng-template let-col let-row="rowData" pTemplate="body">
+				<span>{{row[col.field] | date: 'shortTime'}}</span>
+			</ng-template>
+		</p-column>
+		<p-column field="employee.firstName"  header="First Name"></p-column>
+	    <p-column field="employee.lastName" header="Last Name"></p-column>
+	    <p-footer>
+	    	<button pButton [label]="displayPreferenceBtnLabel" (click)="onDisplayPreferenceChange()" [disabled]="startDate !== null || endDate !== null"></button>
+	    </p-footer>
+	</p-dataTable>
+</div>
+

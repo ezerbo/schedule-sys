@@ -1,0 +1,59 @@
+<p-dataTable #phone_numbers  [value]="phoneNumbers" [rows]="3" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[3]" 
+	selectionMode="single" [(selection)]="selectedPhoneNumber"  dataKey="id"
+	[loading]="tableDataLoading" [emptyMessage]="'No phone numbers to display'">
+    <p-header>Employee's phone numbers</p-header>
+     <p-column field="phoneNumber" header="Number">
+    	<ng-template let-col let-row="rowData" pTemplate="body">
+			<span>{{row[col.field] | phonenumber}}</span>
+		</ng-template>
+    </p-column>
+    <p-column field="label" header="Label"></p-column>
+    <p-column field="numberType" header="Type"></p-column>
+    <p-footer>
+		<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success" [disabled]="phoneNumbers.length === phoneNumbersPerEmployee"></button>
+		<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedPhoneNumber === undefined" (click)="showOrHideDialog(true)"></button>
+		<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteOne()" class="ui-button-danger" [disabled]="selectedPhoneNumber === undefined"></button>
+    </p-footer>
+</p-dataTable>
+<p-dialog [(visible)]="displayDialog" appendTo="body" width="500">
+	<p-header [ngSwitch]="editing">
+		<span *ngSwitchCase="true">Editing a Phone Number</span>
+		<span *ngSwitchCase="false">Adding a Phone Number</span>
+	</p-header>
+	<p-messages [(value)]="dialogMsgs"></p-messages>
+	<form (ngSubmit)="create()" #phoneNumberForm="ngForm">
+		<div class="ui-g">
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-3">
+   	 				<label>Number : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<input #pNumber pInputText [(ngModel)]="phoneNumber.phoneNumber"  [textMask]="{mask: phoneNumberMask}" id="number" name="number" required>
+   	 			</div>
+ 			</div>
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-3">
+   	 				<label>Label : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<p-dropdown name="pNumberLabel" [(ngModel)]="phoneNumber.label" [options]="phoneNumberLabels" placeholder="Label"
+   	 					 appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+   	 			</div>
+ 			</div>
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-3">
+   	 				<label>Type : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<p-dropdown name="pNumberType" [(ngModel)]="phoneNumber.numberType"  [options]="phoneNumberTypes" placeholder="Phone Number Type"
+   	 					 appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+   	 			</div>
+ 			</div>
+		</div>
+		<div class="ui divider"></div>
+ 		<div>
+ 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="phoneNumberForm.form.invalid || (unmaskNumber(pNumber.value).length != 10)" class="ui-button-success"></button>
+ 			<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+ 		</div>
+	</form>
+</p-dialog>

@@ -1,0 +1,59 @@
+<p-panel header="Test Details" *ngIf="test != undefined">
+	<div style="text-align: center">
+		<span class="fa fa-stethoscope fa-5x"></span>
+	</div>
+	<div class="ui divider"></div>
+	<div class="ui-g">
+		<div class="ui card ui-g-4" >
+			<div class="image">
+				<img src="../../../assets/images/test.jpg">
+			</div>
+			<div class="content">
+				<a class="header">{{test.name}}</a>
+				<div class="meta">
+					<span class="date">How many employees have taken this ?</span>
+				</div>
+				<div class="description ui-g-12">
+					<div class="ui-g-8">
+						<span>Has Completion Date :</span>
+					</div>
+					<div class="ui-g-4">
+						<span>{{test.hasCompletionDate ? 'YES' : 'NO'}}</span>
+					</div>
+					<div class="ui-g-8">
+						<span>Has Expiration Date :</span>
+					</div>
+					<div class="ui-g-4">
+						<span>{{test.hasExpiryDate ? 'YES' : 'NO'}}</span>
+					</div>
+					<div class="ui-g-8">
+						<span>Can Be waived :</span>
+					</div>
+					<div class="ui-g-4">
+						<span>{{test.canBeWaived ? 'YES' : 'NO'}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="extra content">
+				<p></p>
+			</div>
+		</div>
+		<div class="ui-g-8">
+			<p-accordion [multiple]="true" (onOpen)="onTabOpen($event)">
+				<p-messages [(value)]="msgs"></p-messages>
+				<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+				<p-accordionTab header="Sub Categories">
+					<app-test-subcategory [test]="test" (entity_events)="onEntityEvent($event)"> </app-test-subcategory>
+    			</p-accordionTab>
+			</p-accordion>
+		</div>
+	</div>
+	
+	<div class="ui divider"></div>
+	<div class="ui-g" style="margin-bottom: 20px;">
+		<div class="ui-g-11"></div>
+		<div class="ui-g-1">
+			<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBackClick()"></button>
+		</div>
+	</div>
+</p-panel>

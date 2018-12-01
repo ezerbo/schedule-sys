@@ -1,0 +1,81 @@
+<p-dataTable #test_occurrences  [value]="testOccurrences" [rows]="10" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[10, 20]" 
+	selectionMode="single" [(selection)]="selectedTestOccurrence"  dataKey="id"
+	[loading]="tableDataLoading" [emptyMessage]="'No tests to display'">
+    <p-header>Employee's tests</p-header>
+    <p-column field="test.name" header="Test Name"></p-column>
+    <p-column field="testSubcategory.name" header="Sub-category Name"></p-column>
+    <p-column field="completionDate" header="Completion Date">
+		<ng-template let-col let-row="rowData" pTemplate="body">
+        	<span>{{row[col.field] === undefined ? 'NONE' : row[col.field] | date: 'shortDate'}}</span>
+       	</ng-template>
+	</p-column>
+	<p-column field="expirationDate" header="Expiration Date">
+		<ng-template let-col let-row="rowData" pTemplate="body">
+        	<span>{{row[col.field] === undefined ? 'NONE' : row[col.field] | date: 'shortDate'}}</span>
+       	</ng-template>
+	</p-column>
+     <p-column field="applicable" header="Status">
+    	<ng-template let-col let-row="rowData" pTemplate="body">
+			<span>{{row[col.field] === true ? 'APPLICABLE' : 'NOT APPLICABLE'}}</span>
+		</ng-template>
+    </p-column>
+    <p-footer>
+		<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success"></button>
+		<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedTestOccurrence === undefined" (click)="showOrHideDialog(true)"></button>
+		<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteOne()" class="ui-button-danger" [disabled]="selectedTestOccurrence === undefined"></button>
+    </p-footer>
+</p-dataTable>
+<p-dialog [(visible)]="displayDialog" appendTo="body" width="500">
+	<p-header [ngSwitch]="editing">
+		<span *ngSwitchCase="true">Editing a Test</span>
+		<span *ngSwitchCase="false">Adding a Test</span>
+	</p-header>
+	<p-messages [(value)]="dialogMsgs"></p-messages>
+	<form (ngSubmit)="create()" #testOccurrenceForm="ngForm">
+		<div class="ui-g">
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-5">
+   	 				<label>Test Name : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<p-autoComplete [(ngModel)]="testOccurrence.test" [suggestions]="tests" (completeMethod)="searchTests($event)" field="name"
+   	 					 id="testName" name="testName" (onSelect)="onTestSelect()" appendTo="body" required></p-autoComplete>
+   	 			</div>
+   	 			<div class="ui-g-5" *ngIf="testSubcategories.length != 0">
+   	 				<label>Category : </label>
+   	 			</div>
+   	 			<div class="ui-g-7" *ngIf="testSubcategories.length != 0">
+		   	 		<p-dropdown name="sub_category" [(ngModel)]="testOccurrence.testSubcategory.name" [options]="testSubcategories" placeholder="Sub Category"
+		   	 			appendTo="body" [style]="{'width':'100%'}" required></p-dropdown>
+				</div>
+				
+				<div class="ui-g-5" *ngIf="testOccurrence.test != undefined && testOccurrence.test.hasCompletionDate">
+   	 				<label>Completion Date : </label>
+   	 			</div>
+   	 			<div class="ui-g-7" *ngIf="testOccurrence.test != undefined && testOccurrence.test.hasCompletionDate">
+   	 				<p-calendar [showIcon]="true" id="completion_date" name="completion_date" 
+   	 					appendTo="body" [(ngModel)]="testOccurrence.completionDate" [disabled]="!testOccurrence.applicable" required></p-calendar>
+   	 			</div>
+   	 			
+   	 			<div class="ui-g-5" *ngIf="testOccurrence.test != undefined && testOccurrence.test.hasExpiryDate">
+   	 				<label>Expiration Date : </label>
+   	 			</div>
+   	 			<div class="ui-g-7" *ngIf="testOccurrence.test != undefined && testOccurrence.test.hasExpiryDate">
+   	 				<p-calendar [showIcon]="true" id="expiration_date" name="expiration_date"  
+   	 					appendTo="body" [(ngModel)]="testOccurrence.expirationDate" [disabled]="!testOccurrence.applicable" required></p-calendar>
+   	 			</div>
+   	 			
+   	 			<div class="ui-g-5" *ngIf="testOccurrence.test != undefined && testOccurrence.test.canBeWaived">
+		   	 		<p-toggleButton name="isApplicable"  [(ngModel)]="testOccurrence.applicable" onIcon="fa-check-square" offIcon="fa-square" 
+		   	 			onLabel="Applicable" offLabel="Not Applicable"></p-toggleButton>
+		   	 	</div>
+ 			</div>
+ 			
+		</div>
+		<div class="ui divider"></div>
+ 		<div>
+ 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="testOccurrenceForm.form.invalid" class="ui-button-success"></button>
+ 			<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+ 		</div>
+	</form>
+</p-dialog>

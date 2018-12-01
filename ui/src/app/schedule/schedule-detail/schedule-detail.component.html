@@ -1,0 +1,123 @@
+<div *ngIf="schedule != undefined">
+	<h2 class="ui header">
+		<img src="../../../assets/images/schedule-detail.svg">
+		<div class="content">
+			Schedule Details
+			<div class="sub header" *ngIf="scheduleType == companySchedule">
+				Company : {{schedule.careCompany.name + ', type : ' + schedule.careCompany.careCompanyType.name}}
+			</div>
+			<div class="sub header" *ngIf="scheduleType == employeeSchedule">
+				Employee : {{schedule.employee.firstName + ' ' + schedule.employee.lastName +', type : ' + schedule.employee.employeeType.name}}
+			</div>
+		</div>
+	</h2>
+	<div class="ui-g">
+		<div id="schedule_detail" class="ui list ui-g-5">
+			<div class="item">
+				<i class="user icon"></i>
+				<div class="content">Filled by : {{schedule.scheduleSysUser.username}}</div>
+			</div>
+			<div class="item" *ngIf="scheduleType == employeeSchedule">
+				<i class="hospital icon"></i>
+				<div class="content">Company : {{schedule.careCompany.name}}</div>
+			</div>
+			<div class="item" *ngIf="scheduleType == companySchedule">
+				<i class="doctor icon"></i>
+				<div class="content">Employee : {{schedule.employee.firstName + ' ' + schedule.employee.lastName}}</div>
+			</div>
+			<div class="item">
+				<i class="calendar icon"></i>
+				<div class="content">
+					<div class="content">Date : {{schedule.scheduleDate | date: 'shortDate'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="suitcase icon"></i>
+				<div class="content">
+					<div class="content">Job : {{schedule.employee.position.name}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="checkmark box icon"></i>
+				<div class="content">
+					<div class="content">Status : {{schedule.scheduleStatus.name}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="checkmark box icon"></i>
+				<div class="content">
+					<div class="content">Post Status : {{schedule.schedulePostStatus.name}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="clock icon"></i>
+				<div class="content">
+					<div class="content">Start Time : {{schedule.shiftStartTime | date: 'shortTime'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="clock icon"></i>
+				<div class="content">
+					<div class="content">End time : {{schedule.shiftEndTime | date: 'shortTime'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="file icon"></i>
+				<div class="content">
+					<div class="content">TSR : {{schedule.timeSheetReceived ? 'Yes' : 'No'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="clock icon"></i>
+				<div class="content">
+					<div class="content">Hours Worked : {{schedule.hoursWorked}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="clock icon"></i>
+				<div class="content">
+					<div class="content">Overtime : {{schedule.overtime}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="usd icon"></i>
+				<div class="content">
+					<div class="content">Billed : {{schedule.billed ? 'Yes' : 'No'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="usd icon"></i>
+				<div class="content">
+					<div class="content">Paid : {{schedule.paid ? 'Yes' : 'No'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="commenting icon"></i>
+				<div class="content">
+					<div class="content">Comment : {{schedule.comment}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui-g-6" *ngIf="showAudit">
+			<p-dataTable #audit_table  [value]="scheduleAudits" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10]"
+				selectionMode="single" dataKey="id" [emptyMessage]="'No change to display'">
+			    <p-header>Schedule Audit</p-header>
+			    <p-column field="scheduleSysUser.username" header="Modified By"></p-column>
+			    <p-column field="updateDate" header="Date">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+						<span>{{row[col.field] | date: 'short'}}</span>
+					</ng-template>
+				</p-column>
+			</p-dataTable>
+		</div>
+	</div>
+	<div class="ui divider"></div>
+	<div class="ui-g">
+		<div class="ui-g-11">
+			<button pButton [label]="auditBtnLabel" (click)="showOrHideAudit()" icon="fa fa-history"></button>
+		</div>
+		<div class="ui-g-1">
+			<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBackBtnClick()"></button>
+		</div>
+	</div>
+</div>

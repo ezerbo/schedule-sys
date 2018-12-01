@@ -1,0 +1,10 @@
+<div class="btns-panel ui-g">
+	<div class="ui-g-11">
+		<button pButton label="New" icon="fa fa-plus-circle" (click)="onNewRecord()" class="ui-button-success"></button>
+		<button pButton label="Edit" icon="fa fa-edit" [disabled]="disabled" (click)="onEditRecord()"></button>
+		<button pButton label="Delete" icon="fa fa-minus-circle" (click)="onDeleteRecord()" class="ui-button-danger" [disabled]="disabled"></button>
+	</div>
+	<div class="ui-g-1">
+		<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBackNavigation()"></button>
+	</div>
+</div>

@@ -1,0 +1,55 @@
+<div class="data-table" [hidden]="showScheduleDetail">
+	<p-dataTable [value]="schedules" [rows]="10" [paginator]="true" resizableColumns="true" [rowsPerPageOptions]="[10,20]"
+		selectionMode="single" dataKey="id" [totalRecords]="tableItemsCount" [(selection)]="selectedSchedule"
+		[loading]="tableDataLoading" [emptyMessage]="'No schedules to display'" (onRowDblclick)="onRowDblClick()">
+		<p-header>Schedules for {{employee.firstName + ' ' + employee.lastName}}</p-header>
+			<p-column field="scheduleDate" header="Schedule Date">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortDate'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="shiftStartTime" header="Start Time">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'short'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="shiftEndTime" header="End Time">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'short'}}</span>
+				</ng-template>
+			</p-column>
+			 
+			<p-column field="employee.position.name" header="Job"></p-column>
+			
+			<p-column field="careCompany.name" header="Care Company"></p-column>
+			<p-column field="hoursWorked" header="Hours"></p-column>
+			<p-column field="overtime" header="OT"></p-column>
+			
+			<p-column field="scheduleStatus.name" header="Status"></p-column>
+			<p-column field="schedulePostStatus.name" header="Post Status"></p-column>
+			
+			
+			<p-column field="timeSheetReceived" header="TSR">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="paid" header="Paid">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="billed" header="Billed">
+				<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] ? 'yes' : 'no'}}</span>
+				</ng-template>
+			</p-column>
+			
+			<p-column field="comment" header="Comments"></p-column>
+			<p-column field="scheduleSysUser.username" header="Filled By"></p-column>
+	</p-dataTable>
+</div>
+
+<div [hidden]="!showScheduleDetail">
+	<app-schedule-detail [schedule]="selectedSchedule" (back)="onBackBtnClick()" [scheduleType]="scheduleType" ></app-schedule-detail>
+</div>

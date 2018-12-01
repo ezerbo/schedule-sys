@@ -1,0 +1,28 @@
+<div class="centered-panel">
+	<div style="text-align: center;margin-bottom: 10px;">
+		<span class="fa fa-users fa-5x"></span>
+	</div>
+	<p-messages [(value)]="msgs"></p-messages>
+	<p-panel header="Sing in">
+		<form (ngSubmit)="login()" #loginForm="ngForm">
+			<div>
+				<md-input-container class="input-full">
+					<input mdInput id="username" name="username" placeholder="Username" [(ngModel)]="loginVM.username" #username="ngModel" required>
+				</md-input-container>
+			</div>
+			<div>
+				<md-input-container class="input-full">
+					<input type="password" mdInput id="password" name="password" placeholder="Password" [(ngModel)]="loginVM.password" #password="ngModel" required>
+				</md-input-container>
+			</div>
+			<div>
+				<span ><a routerLink="/pwd-reset-request" class="forgot_pwd_lnk">I forgot my password</a></span>
+			</div>
+			<md-slide-toggle (change)="onRememberMeChange()" class="remember-me">Remember me</md-slide-toggle>
+			<div class="btns-panel">
+				<button pButton icon="fa fa-sign-in" type="submit" label="Sign in" [disabled] = "!loginForm.form.valid"></button>
+				<button pButton icon="fa fa-eraser" type="reset" label="Clear"></button>
+			</div>
+		</form>
+	</p-panel>
+</div>

@@ -1,0 +1,100 @@
+<p-panel header="{{careCompany.name}}'s Contacts Management" *ngIf="careCompany != undefined">
+	<md-list>
+		<div style="text-align: center;">
+			<span  class="fa fa-address-book-o fa-5x" ></span>
+		</div>
+		<md-divider></md-divider>
+		<div >
+			<div class="data-table">
+				<p-messages [(value)]="msgs"></p-messages>
+				<p-dataTable [value]="contacts" [rows]="10" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[10,20]"
+					selectionMode="single" [(selection)]="selectedContact" [contextMenu]="cm" dataKey="id" [totalRecords]="tableItemsCount"
+					[loading]="tableDataLoading" [emptyMessage]="'No contacts found for ' + careCompany.name" [lazy]="true"
+					(onLazyLoad)="loadDataLazy($event, careCompany.id)">
+			    <p-header>{{careCompany.name}}'s Contacts</p-header>
+			    <p-column field="firstName" header="First Name"></p-column>
+			    <p-column field="lastName" header="Last Name"></p-column>
+			    <p-column field="title" header="Title"></p-column>
+			    <p-column field="phoneNumber" header="Phone Number">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] | phonenumber}}</span>
+       				</ng-template>
+			    </p-column>
+			    <p-column field="fax" header="Fax">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+            			<span>{{row[col.field] | phonenumber}}</span>
+       				</ng-template>
+			    </p-column>
+			</p-dataTable>
+			</div>
+			<md-divider></md-divider>
+			<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteContact()" 
+				[disabled]="selectedContact === undefined" (back)="goToCareCompanies()"> </data-table-crud>
+		</div>
+	</md-list>
+	<p-dialog [(visible)]="dialogDisplayed" width="450">
+		 <p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing a Contact</span>
+        	<span *ngSwitchCase="false"> Adding a Contact</span>
+   		 </p-header>
+   		 <div>
+   		 	<form (ngSubmit)="create()" #contactForm="ngForm">
+				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.firstName">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.firstName}}
+					</div>
+					<md-input-container class="input-full">
+						<input #firstName mdInput id="firstName" name="firstName" placeholder="First Name" [(ngModel)]="contact.firstName"
+							minlength="2" maxlength="50" required>
+						<md-hint align="end">{{firstName.value.length}} / 50</md-hint>
+					</md-input-container>
+				</div>
+				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastName">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.lastName}}
+					</div>
+					<md-input-container class="input-full">
+						<input #lastName mdInput id="lastName" name="lastName"  placeholder="Last Name" [(ngModel)]="contact.lastName" maxlength="50" required>
+						<md-hint align="end">{{lastName.value.length}} / 50</md-hint>
+					</md-input-container>
+				</div>
+				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastName">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.title}}
+					</div>
+					<md-input-container class="input-full">
+						<input #title mdInput id="title" name="title"  placeholder="Title" [(ngModel)]="contact.title" maxlength="50" required>
+						<md-hint align="end">{{title.value.length}} / 50</md-hint>
+					</md-input-container>
+				</div>
+				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.phoneNumber">
+						<i class="fa fa-close"></i>
+						{{validation.formErrors.phoneNumber}}
+					</div>
+					<md-input-container class="input-full">
+						<input #phoneNumber [textMask]="{mask: phoneNumberMask}"  mdInput id="phoneNumber" 
+						name="phoneNumber" placeholder="Phone Number" [(ngModel)]="contact.phoneNumber" required>
+					</md-input-container>
+				</div>
+				<div>
+					<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.fax">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.fax}}
+					</div>
+					<md-input-container class="input-full">
+						<input #fax [textMask]="{mask: phoneNumberMask}" mdInput id="fax" name="fax" placeholder="Fax" [(ngModel)]="contact.fax" required>
+					</md-input-container>
+				</div>
+				
+				<app-dialog-crud (cancel)="hideDialog()" 
+					[disabled]="!contactForm.form.valid || (unmaskNumber(phoneNumber.value).length != 10) || (unmaskNumber(fax.value).length != 10)"></app-dialog-crud>
+			</form>
+   		 </div>
+	</p-dialog>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
+</p-panel>

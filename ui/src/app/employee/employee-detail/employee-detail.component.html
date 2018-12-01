@@ -1,0 +1,72 @@
+<p-panel header="Employee Details" *ngIf="employee != undefined">
+	<div style="text-align: center">
+		<span class="fa fa-address-book-o fa-5x"></span>
+	</div>
+	<div class="ui divider"></div>
+	<div class="ui-g">
+		<div class="ui card ui-g-4" >
+			<div class="image">
+				<img src="../../../assets/images/employee.svg">
+			</div>
+			<div class="content">
+				<a class="header">{{employee.firstName + ' ' + employee.lastName}}</a>
+				<div class="meta">
+					<span class="date">{{employee.employeeType.name}}, hired on {{employee.dateOfHire | date: 'shortDate'}}</span>
+				</div>
+				<div class="description ui-g-12">
+					<div class="ui-g-6">
+						<span>Position : </span>
+					</div>
+					<div class="ui-g-6">
+						<span>{{employee.position.name}}</span>
+					</div>
+					<div class="ui-g-6">
+						<span>Active : </span>
+					</div>
+					<div class="ui-g-6">
+						<span>{{employee.insvc == true ? 'yes' : 'no'}}</span>
+					</div>
+					<div class="ui-g-6">
+						<span>EBC : </span>
+					</div>
+					<div class="ui-g-6">
+						<span>{{employee.ebc == true ? 'yes' : 'no'}}</span>
+					</div>
+					<div class="ui-g-6">
+						<span>Last Day : </span>
+					</div>
+					<div class="ui-g-6">
+						<span>{{employee.lastDayOfWork | date: 'shortDate'}}</span>
+					</div>
+				</div>
+			</div>
+			<div class="extra content">
+				<p>{{employee.comment}}</p>
+			</div>
+		</div>
+		<div class="ui-g-8">
+			<p-accordion (onOpen)="onTabOpen($event)">
+				<p-messages [(value)]="msgs"></p-messages>
+				<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+    			<p-accordionTab header="Phone Numbers">
+    				<app-phone-number [employee]="employee" (entity_events)="onEntityEvent($event)"></app-phone-number>
+    			</p-accordionTab>
+			    <p-accordionTab header="Licenses" *ngIf="showLicenceTab">
+			    	<app-license [employee]="employee" (entity_events)="onEntityEvent($event)"></app-license>
+			    </p-accordionTab>
+			    <p-accordionTab header="Tests">
+			    	<app-test-occurrence [employee]="employee" (entity_events)="onEntityEvent($event)"></app-test-occurrence>
+			    </p-accordionTab>
+			</p-accordion>
+		</div>
+	</div>
+	
+	<div class="ui divider"></div>
+	<div class="ui-g" style="margin-bottom: 20px;">
+		<div class="ui-g-11"></div>
+		<div class="ui-g-1">
+			<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBackClick()"></button>
+		</div>
+	</div>
+	
+</p-panel>

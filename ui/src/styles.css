@@ -1,0 +1,111 @@
+/* You can add global styles to this file, and also import other style files */
+
+.centered-panel
+{
+  margin: 10% auto 0 auto;
+  max-width: 700px;
+  min-width: 200px;
+  width: 50%;
+}
+
+.input-full
+{
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+.input {
+	width: 100%;
+}
+
+.btns-panel{
+	margin-top: 20px;
+}
+
+.remember-me {
+	margin-top: 10px;
+}
+a, u {
+	text-decoration: none;
+	cursor: hand;
+}
+
+.forgot_pwd_lnk{
+	font-size: 12px;
+}
+
+.centered-txt {
+	text-align: center;
+}
+
+.data-table {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#home-card {
+	width: 95%;
+	margin: 20px auto auto auto;
+	height: 100%;
+}
+
+#welcome-div {
+	margin-top: 10px;
+	margin-left: 5px;
+}
+
+#home-panel {
+	padding: 0px;
+	margin-top: 20px;
+}
+
+#home-inner-card{
+	width: 70%
+}
+
+#main-panel {
+	min-height: 70%;	
+}
+
+.hand-hover {
+	cursor: hand;
+}
+
+/*#main-panel {
+	height: 50vh;
+}*/
+
+#logout {
+	font-style: italic;
+}
+
+#schedule_detail {
+	padding-left: 10px;
+}
+
+.ui-steps .ui-steps-item {
+   width: 50%;
+}
+        
+.ui-steps.steps-custom {
+   margin-bottom: 30px;
+}
+  
+ .ui-steps.steps-custom .ui-steps-item .ui-menuitem-link {
+     height: 10px;
+     padding: 0 1em;
+ }
+  
+ .ui-steps.steps-custom .ui-steps-item .ui-steps-number {
+     background-color: #0081c2;
+     color: #FFFFFF;
+     display: inline-block;
+     width: 36px;
+     border-radius: 50%;
+     margin-top: -14px;
+     margin-bottom: 10px;
+ }
+ 
+ .ui-steps.steps-custom .ui-steps-item .ui-steps-title {
+     color: #555555;
+ }

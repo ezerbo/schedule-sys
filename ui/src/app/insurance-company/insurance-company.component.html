@@ -1,0 +1,44 @@
+<p-panel header="Insurance Companies Management">
+	<div style="text-align: center;">
+		<span  class="fa fa-info fa-5x" ></span>
+	</div>
+	<div class="ui divider"></div>
+	<p-messages [(value)]="msgs"></p-messages>
+	<p-dataTable #companies_table  [value]="insuranceCompanies" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[5,10]"
+		selectionMode="single" [(selection)]="selectedInsuranceCompany"  dataKey="id" [emptyMessage]="'No company to display'">
+	    <p-header>Insurance Companies</p-header>
+	    <p-column field="name" header="Name"></p-column>
+	</p-dataTable>
+	<div class="ui divider"></div>
+	<data-table-crud (new)="showOrHideDialog(false)" (edit)="showOrHideDialog(true)" (delete)="deleteInsuranceCompany()" 
+		[disabled]="selectedInsuranceCompany === undefined" (back)="gotToHome()">
+	</data-table-crud>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	
+	<p-dialog [(visible)]="displayDialog" appendTo="body" width="500" *ngIf="insuranceCompany !== undefined">
+		<p-header [ngSwitch]="editing">
+			<span *ngSwitchCase="true">Editing a Company</span>
+			<span *ngSwitchCase="false">Adding a Company</span>
+		</p-header>
+		<p-messages [(value)]="dialogMsgs"></p-messages>
+		<form (ngSubmit)="create()" #insuranceCompanyForm="ngForm">
+			<div class="ui-g">
+	 			<div class="ui-g-12">
+	   	 			<div class="ui-g-4">
+	   	 				<label>Name : </label>
+	   	 			</div>
+	   	 			<div class="ui-g-7">
+	   	 				<input pInputText [(ngModel)]="insuranceCompany.name" id="number" name="number" required>
+	   	 			</div>
+	 			</div>
+	 			
+			</div>
+			<div class="ui divider"></div>
+		 	<div>
+		 		<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="insuranceCompanyForm.form.invalid" class="ui-button-success"></button>
+		 		<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+		 	</div>
+		</form>
+		
+	</p-dialog>
+</p-panel>

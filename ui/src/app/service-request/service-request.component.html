@@ -1,0 +1,57 @@
+<p-panel header="Service Requests Management" >
+	<div style="text-align: center;">
+		<span  class="fa fa-ambulance fa-5x" ></span>
+	</div>
+	<div class="ui divider"></div>
+	<div [hidden]="showRequestDetail">
+		<p-dataTable #requests_table  [value]="serviceRequests" [rows]="10" [paginator]="true"  [rowsPerPageOptions]="[5,10]"
+			selectionMode="single" [(selection)]="selectedServiceRequest" dataKey="id" [emptyMessage]="'No service requests to display'" (onRowDblclick)="onRowDblClick()">
+		    <p-header>
+				Requests
+			    <div class="ui-helper-clearfix">
+			    	<button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+			        	[disabled]="serviceRequests.length === 0"></button>
+			    </div>
+	        </p-header>
+		    <p-column field="name" header="Name"></p-column>
+		     <p-column field="phoneNumber" header="Phone Number" frozen="true">
+		    	<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | phonenumber}}</span>
+				</ng-template>
+		    </p-column>
+		    <p-column field="emailAddress" header="Email Address" [style]="{'width':'250px'}"></p-column>
+			 <p-column field="startDate" header="Start Date">
+		    	<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortDate'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="endDate" header="End Date">
+		    	<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortDate'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="startTime" header="Start Time">
+		    	<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortTime'}}</span>
+				</ng-template>
+			</p-column>
+			<p-column field="endTime" header="End Time">
+		    	<ng-template let-col let-row="rowData" pTemplate="body">
+					<span>{{row[col.field] | date: 'shortTime'}}</span>
+				</ng-template>
+			</p-column>
+		</p-dataTable>
+	</div>
+	<div [hidden]="!showRequestDetail">
+		<app-request-detail [serviceRequest]="selectedServiceRequest" (back)="onBackBtnClick()"></app-request-detail>
+	</div>
+	<div [hidden]="showRequestDetail">
+		<div class="ui divider"></div>
+		<div class="ui-g">
+			<div class="ui-g-11"></div>
+			<div class="ui-g-1">
+				<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="gotToHome()"></button>
+			</div>
+		</div>
+	</div>
+</p-panel>

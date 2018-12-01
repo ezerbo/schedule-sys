@@ -1,0 +1,138 @@
+<p-panel header="Care Companies Management">
+	<div style="text-align: center;">
+		<span  class="fa fa-hospital-o fa-5x" ></span>
+	</div>
+	<div class="ui divider"></div>
+	<div>
+		<div class="data-table">
+			<p-messages [(value)]="msgs"></p-messages>
+			<p-dataTable [value]="careCompanies" [rows]="10" [paginator]="true" [rowsPerPageOptions]="[10,20]"
+				selectionMode="single" [(selection)]="selectedCompany" [contextMenu]="cm" dataKey="name" [totalRecords]="tableItemsCount"
+				[lazy]="true" (onLazyLoad)="loadDataLazy($event)" (onRowSelect)="onRowSelect()" [loading]="tableDataLoading" [emptyMessage]="'No care companies found'">
+			    <p-header>
+					Care Companies
+			        <div class="ui-helper-clearfix">
+			            <button type="button" pButton icon="fa-file-o" iconPos="left" label="Export To CSV" (click)="exportCSV()" style="float:left"
+			            	[disabled]="careCompanies.length === 0"></button>
+			        </div>
+	        	</p-header>
+			    <p-column field="name" header="Name" filter="true" ></p-column>
+			    <p-column field="address" header="Address"></p-column>
+			    <p-column field="phoneNumber" header="Phone Number">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+		    			<span>{{row[col.field] | phonenumber}}</span>
+					</ng-template>
+			    </p-column>
+			    <p-column field="fax" header="Fax">
+			    	<ng-template let-col let-row="rowData" pTemplate="body">
+		    			<span>{{row[col.field] | phonenumber}}</span>
+					</ng-template>
+			    </p-column>
+			    <p-column field="careCompanyType.name" header="Type" filter = "true" filterField = "typeName"></p-column>
+			    
+			   	<p-column field="insuranceCompany" header="Insurance" filter="true" filterField="insuranceName">
+					<ng-template let-col let-row="rowData" pTemplate="body">
+			    		<span>{{(row[col.field] === undefined || row[col.field] === null)? 'None' : row[col.field].name}}</span>
+					</ng-template>
+				</p-column>
+			</p-dataTable>
+		</div>
+		<div class="ui divider"></div>
+		<data-table-crud (new)="showDialog(false)" (edit)="showDialog(true)" (delete)="deleteCareCompany()" 
+			[disabled]="editAndDeleteDisabled" (back)="gotToHome()">
+		</data-table-crud>
+	</div>
+	<p-dialog [(visible)]="dialogDisplayed" width="450">
+		 <p-header [ngSwitch]="editing">
+        	<span *ngSwitchCase="true"> Editing a Care Company</span>
+        	<span *ngSwitchCase="false"> Adding a Care Company</span>
+   		 </p-header>
+   		 	<form (ngSubmit)="create()" #companyForm="ngForm">
+	   		 	<div class="ui-g">
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.name">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.name}}
+						</div>
+						<div class="ui-g-4">
+							<label>Name : </label>
+						</div>
+						<div class="ui-g-8">
+							<input #name pInputText id="name" name="name" placeholder="Name" [(ngModel)]="careCompany.name"
+								appValueInUse [value]="careCompany.name" [old_value]="editing ? selectedCompany.name : undefined" 
+								(duplicate)="onDuplicates($event)" [entity_service]="careCompanyService" [field_name]="'name'" minlength="2" maxlength="50" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.address">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.address}}
+						</div>
+						<div class="ui-g-4">
+							<label>Address : </label>
+						</div>
+						<div class="ui-g-8">
+							<input #address pInputText id="address" name="address"  placeholder="Address" [(ngModel)]="careCompany.address" maxlength="50" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.phoneNumber">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.phoneNumber}}
+						</div>
+						<div class="ui-g-4">
+							<label>Phone Number : </label>
+						</div>
+						<div class="ui-g-8">
+							<input #phoneNumber [textMask]="{mask: phoneNumberMask}"  pInputText id="phoneNumber" name="phoneNumber" placeholder="Phone Number" [(ngModel)]="careCompany.phoneNumber" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.fax">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.fax}}
+						</div>
+						<div class="ui-g-4">
+							<label>Fax : </label>
+						</div>
+						<div class="ui-g-8">
+							<input #fax [textMask]="{mask: phoneNumberMask}" pInputText id="fax" name="fax" placeholder="Fax" [(ngModel)]="careCompany.fax" required>
+						</div>
+					</div>
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.careCompanyType">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.careCompanyType}}
+						</div>
+						<div class="ui-g-4">
+							<label>Company Type : </label>
+						</div>
+						<div class="ui-g-6">
+							<p-dropdown name="companyType" [options]="careCompanyTypes" [(ngModel)]="careCompany.careCompanyType.name" placeholder="Company Type"
+								appendTo="body" [style]="{'width':'100%'}" required>
+							</p-dropdown>
+						</div>
+					</div>
+					
+					<div class="ui-g-12">
+						<div class="ui-message ui-messages-error ui-corner-all ui-g-12" *ngIf="validation.formErrors.careCompanyType">
+							<i class="fa fa-close"></i>
+							{{validation.formErrors.careCompanyType}}
+						</div>
+						<div class="ui-g-4">
+							<label>Insurance : </label>
+						</div>
+						<div class="ui-g-6">
+							<p-dropdown name="insurance" [options]="insuranceCompanies" [(ngModel)]="careCompany.insuranceCompany.name" placeholder="Insurance"
+								appendTo="body" [style]="{'width':'100%'}">
+							</p-dropdown>
+						</div>
+					</div>
+	   		 	</div>
+	   		 	<div class="ui divider"></div>
+	   		 	<app-dialog-crud (cancel)="hideDialog()" [disabled]="!companyForm.form.valid || (unmaskNumber(phoneNumber.value).length != 10) || (unmaskNumber(fax.value).length != 10)"></app-dialog-crud>
+			</form>
+	</p-dialog>
+	<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+	<p-contextMenu #cm [model]="contextMenuItems" appendTo="body"></p-contextMenu>
+</p-panel>

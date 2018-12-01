@@ -1,0 +1,152 @@
+<div *ngIf="serviceRequest != undefined">
+	<h2 class="ui header">
+		<img src="../../../assets/images/schedule-detail.svg">
+		<div class="content">
+			Service Request Details
+			<div class="sub header"> Request Date : {{serviceRequest.requestDate | date: 'shortDate'}}</div>
+		</div>
+	</h2>
+	<div class="ui-g">
+		<div class="ui list ui-g-4 detail">
+			<div class="item">
+				<i class="user icon"></i>
+				<div class="content">Name : {{serviceRequest.name}}</div>
+			</div>
+			<div class="item">
+				<i class="phone icon"></i>
+				<div class="content">Phone Number : {{serviceRequest.phoneNumber | phonenumber}}</div>
+			</div>
+			<div class="item">
+				<i class="mail icon"></i>
+				<div class="content">
+					<div class="content">Email Address : {{serviceRequest.emailAddress}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="calendar icon"></i>
+				<div class="content">
+					<div class="content">Start Date : {{serviceRequest.startDate | date: 'shortDate'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="calendar icon"></i>
+				<div class="content">
+					<div class="content">End Date : {{serviceRequest.endDate | date: 'shortDate'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="clock icon"></i>
+				<div class="content">
+					<div class="content">Start Time : {{serviceRequest.startTime | date: 'shortTime'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="clock icon"></i>
+				<div class="content">
+					<div class="content">End Time : {{serviceRequest.endTime | date: 'shortTime'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="comment icon"></i>
+				<div class="content">
+					<div class="content">Comment: {{serviceRequest.comment}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui list ui-g-4">
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">CCC : {{serviceRequest.ccc ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">LIS : {{serviceRequest.lis ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">BAD : {{serviceRequest.bad ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">AW : {{serviceRequest.aw ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">LH : {{serviceRequest.lh ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">MP : {{serviceRequest.mp ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">LAUNDRY : {{serviceRequest.laundry ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="ui list ui-g-4">
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">SE : {{serviceRequest.se ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">MR : {{serviceRequest.mr ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">LT : {{serviceRequest.lt ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">CCG : {{serviceRequest.ccg ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">AE : {{serviceRequest.ae ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">CPP : {{serviceRequest.cpp ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+			<div class="item">
+				<i class="info icon"></i>
+				<div class="content">
+					<div class="content">PRLC : {{serviceRequest.prlc ? 'yes' : 'no'}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui divider"></div>
+	<div class="ui-g">
+		<div class="ui-g-11"></div>
+		<div class="ui-g-1">
+			<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBackBtnClick()"></button>
+		</div>
+	</div>
+</div>

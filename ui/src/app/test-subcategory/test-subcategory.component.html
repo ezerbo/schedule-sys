@@ -1,0 +1,35 @@
+<p-dataTable #test_subcategories  [value]="testSubcategories" [rows]="10" [paginator]="true" resizableColumns="true"  [rowsPerPageOptions]="[10, 20]" 
+	selectionMode="single" [(selection)]="selectedSubcategory"  dataKey="id"
+	[loading]="tableDataLoading" [emptyMessage]="'No subcategories to display'">
+    <p-header>Test's Subcategories</p-header>
+     <p-column field="name" header="Name"></p-column>
+    <p-footer>
+		<button pButton label="New" icon="fa fa-plus-circle" (click)="showOrHideDialog(false)" class="ui-button-success"></button>
+		<button pButton label="Edit" icon="fa fa-edit" [disabled]="selectedSubcategory === undefined" (click)="showOrHideDialog(true)"></button>
+		<button pButton label="Delete" icon="fa fa-minus-circle" (click)="deleteOne()" class="ui-button-danger" [disabled]="selectedSubcategory === undefined"></button>
+    </p-footer>
+</p-dataTable>
+<p-dialog [(visible)]="displayDialog" appendTo="body" width="500">
+	<p-header [ngSwitch]="editing">
+		<span *ngSwitchCase="true">Editing a Sub-category</span>
+		<span *ngSwitchCase="false">Adding a Sub-category</span>
+	</p-header>
+	<p-messages [(value)]="dialogMsgs"></p-messages>
+	<form (ngSubmit)="create()" #subcategoryForm="ngForm">
+		<div class="ui-g">
+ 			<div class="ui-g-12">
+   	 			<div class="ui-g-3">
+   	 				<label>Name : </label>
+   	 			</div>
+   	 			<div class="ui-g-7">
+   	 				<input pInputText [(ngModel)]="testSubcategory.name"   id="name" name="name" required>
+   	 			</div>
+ 			</div>
+		</div>
+		<div class="ui divider"></div>
+ 		<div>
+ 			<button pButton label="Save" icon="fa fa-floppy-o" [disabled]="subcategoryForm.form.invalid" class="ui-button-success"></button>
+ 			<button pButton label="Cancel" type="button" (click)="showOrHideDialog(false)" icon="fa fa-close"></button>
+ 		</div>
+	</form>
+</p-dialog>

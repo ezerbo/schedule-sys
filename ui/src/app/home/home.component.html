@@ -1,0 +1,33 @@
+<md-card id="home-card" class="ui-g">
+	<p-menubar [model]="items"></p-menubar>
+	<div id="welcome-div">
+		<span>Welcome to ScheduleSys, {{profile.sub}} ! <a routerLink=""  (click)="logout()">logout</a></span>
+	</div>
+	<div id="home-panel">
+		<div class="ui-g-2">
+			<div class="ui card" *ngIf="user !== undefined">
+				<div class="image">
+			    	<img src="../../assets/images/user.png">
+				</div>
+				<div class="content">
+			    	<a class="header" routerLink="profile">{{user.firstName + ' ' + user.lastName}}</a>
+				    <div class="meta">
+				      <span class="date">{{user.emailAddress}}</span>
+				    </div>
+			  	</div>
+				<div class="extra content ui-g">
+				    <div class="ui-g-12">
+				    	<a routerLink="profile">Username : {{profile.sub}}</a>
+				    </div>
+			 	</div>
+			</div>
+		</div>
+		<div class="ui-g-10">
+			<md-card>
+				<div id="main-panel">
+					<router-outlet></router-outlet>
+				</div>
+			</md-card>
+		</div>
+	</div>
+</md-card>

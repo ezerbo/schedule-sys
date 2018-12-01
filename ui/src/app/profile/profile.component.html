@@ -1,0 +1,81 @@
+<p-panel header="User Profile" *ngIf="user != undefined">
+		<div style="text-align: center;">
+			<span  class="fa fa-user-circle-o fa-5x" ></span>
+		</div>
+		<div class="ui divider"></div>
+			<div class="ui-g">
+			
+			<div class="ui-g-7" *ngIf="userProfile != undefined">
+				<p-messages [(value)]="msgs"></p-messages>
+				<p-panel header="Profile Edit">
+					<form (ngSubmit)="updateProfile()" #profileForm="ngForm">
+						<div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.username">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.username}}
+								</div>
+								<md-input-container class="input-full">
+									<input #username mdInput id="username" name="username" placeholder="Username" [(ngModel)]="userProfile.username" 
+									appValueInUse [entity_service]="profileService" appInputRegex [value]="userProfile.username" [old_value]="user.username" (duplicate)="onDuplicates($event)"
+									minlength="6" maxlength="20" [regex]="'^[_\'.@A-Za-z0-9-]*$'" [field_name]="'username'" required>
+									<md-hint align="end">{{username.value.length}} / 20</md-hint>
+								</md-input-container>
+							</div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.email">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.email}}
+								</div>
+								<md-input-container class="input-full">
+									<input #email mdInput id="email" name="email" placeholder="Email" [(ngModel)]="userProfile.emailAddress"
+									appValueInUse [entity_service]="profileService" appInputRegex [value]="userProfile.emailAddress" [old_value]="user.emailAddress"
+									(duplicate)="onDuplicates($event)" maxlength="50" [regex]="'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$'" [field_name]="'email'" required>
+									<md-hint align="end">{{email.value.length}} / 50</md-hint>
+								</md-input-container>
+							</div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.firstname">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.firstname}}
+								</div>
+								<md-input-container class="input-full">
+									<input #firstName mdInput id="firstName" name="firstName" placeholder="FirstName" [(ngModel)]="userProfile.firstName"
+										minlength="2" maxlength="50" required>
+									<md-hint align="end">{{firstName.value.length}} / 50</md-hint>
+								</md-input-container>
+							</div>
+							<div>
+								<div class="ui-message ui-messages-error ui-corner-all" *ngIf="validation.formErrors.lastname">
+									<i class="fa fa-close"></i>
+									{{validation.formErrors.lastname}}
+								</div>
+								<md-input-container class="input-full">
+									<input #lastName mdInput id="lastName" name="lastName" placeholder="LastName" [(ngModel)]="userProfile.lastName"
+										minlength="2" maxlength="50" required>
+									<md-hint align="end">{{lastName.value.length}} / 50</md-hint>
+								</md-input-container>
+							</div>
+						</div>
+						<span *ngIf="(user.username != userProfile.username) || (user.emailAddress != userProfile.emailAddress)"
+							class="ui-message ui-messages-warn ui-corner-all">
+							 <i class="fa fa-exclamation-triangle"></i>
+							username and/or email address update will require you to sign back in
+						</span>
+						<div class="btns-panel">
+							<button pButton label="Save" icon="fa fa-floppy-o" type="submit"></button>
+							<button pButton label="Cancel" icon="fa fa-close" (click)="onCancel()"></button>
+						</div>
+					</form>
+				</p-panel>
+			</div>
+		</div>
+		<div class="ui divider"></div>
+		<div class="btns-panel ui-g">
+			<div class="ui-g-11"></div>
+			<div class="ui-g-1">
+				<button pButton label="Back" icon="fa fa-chevron-circle-left" (click)="onBack()"></button>
+			</div>
+		</div>
+	
+</p-panel>
