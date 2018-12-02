@@ -26,16 +26,19 @@ Convenience scripts are also available (build & start the app)
 
 Building an image
 ```
+./build.sh
 docker build -t schedulesys:latest .
 ```
 
 Running image produced by previous step
 ```
+./build.sh
 docker run -d --rm --name schedulesys -p 8080:8080 schedulesys:latest
 ```
 
 ### Using Docker Compose
 Run the following command and open your browser to http://localhost:1080 (SMTP server GUI) and http://localhost:8080 (ScheduleSys)
 ```
+./build.sh
 docker-compose up
 ```
