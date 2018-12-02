@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ./build.sh
 STATUS=$?
 if [ $STATUS -eq 0 ]; then
