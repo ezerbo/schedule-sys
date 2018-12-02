@@ -319,7 +319,7 @@
 									<goal>npm</goal>
 								</goals>
 								<configuration>
-									<arguments>run build</arguments>
+									<arguments>run prod</arguments>
 								</configuration>
 							</execution>
 						</executions>

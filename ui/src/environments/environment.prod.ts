@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://schedule-sys.rjscheduler.us'
+  apiBaseUrl: 'http://localhost:8080'
 };

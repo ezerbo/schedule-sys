@@ -45,7 +45,7 @@ export class CommonComponent {
   /**
    * Presents a notification to the user and removes it after 3 seconds
    */
-  protected displayMessage(msg: Message, msgs?: Message[]): void {
+  displayMessage(msg: Message, msgs?: Message[]): void {
       if (msgs === undefined) {
           msgs = this.msgs;
       }
@@ -57,7 +57,7 @@ export class CommonComponent {
    *  angular2-text-mask does not provide the user's input without the mask
    *  This method removes the mask.
    */
-  protected unmaskNumber(value): string {
+  unmaskNumber(value): string {
     return (value === null) ? '' : value.replace(/\D+/g, '');
   }
 
