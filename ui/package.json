@@ -40,7 +40,7 @@
     "papaparse": "^4.3.6",
     "primeng": "^4.2.1",
     "rxjs": "^5.4.3",
-    "semantic-ui": "^2.2.13",
+    "semantic-ui": "^2.5.0",
     "spin": "0.0.1",
     "src": "^1.1.2",
     "tasks": "0.0.3",
